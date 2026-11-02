@@ -54,7 +54,9 @@ cult:'Tipo de culto',theme:'Tema del mensaje',sermon:'Sermón',later_pick:'Elegi
 your_name:'Tu nombre',language:'Idioma de la app',appearance:'Apariencia',light:'Claro',dark:'Oscuro',auto:'Auto',def_bible:'Biblia',categories:'Categorías',add_cat:'Nueva categoría',add:'Agregar',
 backup:'Copia de seguridad',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar o traer sermones',restore_d:'Pega aquí una copia de seguridad o el texto copiado en «Levar para o app próprio».',import:'Importar',imported:'{n} sermón(es) importado(s)',nothing_new:'Nada nuevo para importar',bad_paste:'No reconocí el texto pegado. Cópialo de nuevo.',
 account:'Cuenta',local_only:'Sin cuenta: los sermones quedan solo en este celular.',logout:'Cerrar sesión',login_btn:'Entrar con una cuenta',soon:'Próximamente',s_rec:'Grabar audio',s_tr:'Audio a texto',s_trl:'Traducir ES ↔ PT',s_ai:'Asistente para sermones',
-credits:'Versículos: Reina-Valera 1909 (dominio público) y Bíblia Livre (licencia libre CC BY).',
+credits:'Biblias: Reina-Valera 1909 y 1865 (dominio público), Bíblia Livre y Bíblia Livre TR (licencia libre), Nova Versão de Acesso Livre, Textus Receptus griego y Códice de Leningrado hebreo (dominio público). Traducción automática: MyMemory.',
+cmp:'Comparar versiones',cmp_t:'Versiones',orig:'En el original',orig_g:'Griego',orig_h:'Hebreo',translit:'pronunciación aproximada',cmp_load:'Abriendo las versiones…',cmp_none:'Este versículo no está en esta versión.',cmp_tip:'Toca la cita para comparar versiones',
+tr_to:'Traducir al {l}',tr_t:'Traducir sermón',tr_d:'Se crea una copia traducida; el original no cambia. Los versículos se colocan desde la Biblia del otro idioma. El resto del texto se envía al servicio gratuito MyMemory para traducir.',tr_lim:'Este sermón tiene {n} caracteres. Límite gratuito: unos 5.000 por día, o 50.000 si pones tu correo en Perfil.',tr_go:'Traducir',tr_prog:'Traduciendo… {i} de {n}',tr_done:'Traducción creada. Revísala antes de predicar.',tr_quota:'Se acabó el límite gratuito de hoy. Intenta mañana o pon tu correo en Perfil para tener más.',tr_err:'No pude traducir ahora. Revisa la conexión e intenta de nuevo.',tr_mail:'Correo para traducción',tr_mail_d:'Opcional. Se envía a MyMemory solo para aumentar el límite diario.',
 sync_ok:'Guardado en tu cuenta',sync_local:'Guardado en este celular',sync_conn:'Conectando…',sync_off:'Sin señal: usando la copia del celular',sync_pend:'Guardando… se envía cuando haya señal',sync_err:'No pude leer tu cuenta ahora. Queda guardado en el celular.',sync_noperm:'Tu cuenta todavía no puede guardar en la nube. Queda en este celular.',
 login_t:'Entra para guardar tus sermones',login_d:'Tus sermones quedan en tu cuenta y aparecen en cualquier celular donde entres.',email:'Correo',pass:'Contraseña',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Crear cuenta',forgot:'Olvidé la contraseña',nologin:'Usar sin cuenta',reset_sent:'Te enviamos un correo para crear una contraseña nueva',
 e_email:'Correo inválido. Revisa si lo escribiste bien.',e_pass:'Escribe la contraseña.',e_weak:'La contraseña necesita al menos 6 caracteres.',e_used:'Este correo ya tiene cuenta. Toca Entrar.',e_cred:'Correo o contraseña no coinciden. Intenta de nuevo o toca Olvidé la contraseña.',e_many:'Muchos intentos. Espera unos minutos.',e_net:'Sin internet. Conéctate para entrar la primera vez.',e_gen:'No pude entrar ahora. Intenta de nuevo.',e_reset:'Escribe tu correo arriba y toca otra vez Olvidé la contraseña.',
@@ -91,7 +93,9 @@ cult:'Tipo de culto',theme:'Tema da mensagem',sermon:'Sermão',later_pick:'Escol
 your_name:'Seu nome',language:'Idioma do app',appearance:'Aparência',light:'Claro',dark:'Escuro',auto:'Auto',def_bible:'Bíblia',categories:'Categorias',add_cat:'Nova categoria',add:'Adicionar',
 backup:'Cópia de segurança',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar ou trazer sermões',restore_d:'Cole aqui uma cópia de segurança ou o texto copiado em «Levar para o app próprio».',import:'Importar',imported:'{n} sermão(ões) importado(s)',nothing_new:'Nada novo para importar',bad_paste:'Não reconheci o texto colado. Copie de novo.',
 account:'Conta',local_only:'Sem conta: os sermões ficam só neste celular.',logout:'Sair da conta',login_btn:'Entrar com uma conta',soon:'Em breve',s_rec:'Gravar áudio',s_tr:'Áudio para texto',s_trl:'Traduzir ES ↔ PT',s_ai:'Assistente de sermões',
-credits:'Versículos: Reina-Valera 1909 (domínio público) e Bíblia Livre (licença livre CC BY).',
+credits:'Bíblias: Reina-Valera 1909 e 1865 (domínio público), Bíblia Livre e Bíblia Livre TR (licença livre), Nova Versão de Acesso Livre, Textus Receptus grego e Códice de Leningrado hebraico (domínio público). Tradução automática: MyMemory.',
+cmp:'Comparar versões',cmp_t:'Versões',orig:'No original',orig_g:'Grego',orig_h:'Hebraico',translit:'pronúncia aproximada',cmp_load:'Abrindo as versões…',cmp_none:'Este versículo não está nesta versão.',cmp_tip:'Toque na referência para comparar versões',
+tr_to:'Traduzir para {l}',tr_t:'Traduzir sermão',tr_d:'É criada uma cópia traduzida; o original não muda. Os versículos vêm da Bíblia do outro idioma. O resto do texto é enviado ao serviço grátis MyMemory para traduzir.',tr_lim:'Este sermão tem {n} caracteres. Limite grátis: uns 5.000 por dia, ou 50.000 se você colocar seu e-mail no Perfil.',tr_go:'Traduzir',tr_prog:'Traduzindo… {i} de {n}',tr_done:'Tradução criada. Revise antes de pregar.',tr_quota:'Acabou o limite grátis de hoje. Tente amanhã ou coloque seu e-mail no Perfil para ter mais.',tr_err:'Não consegui traduzir agora. Confira a conexão e tente de novo.',tr_mail:'E-mail para tradução',tr_mail_d:'Opcional. É enviado ao MyMemory só para aumentar o limite diário.',
 sync_ok:'Salvo na sua conta',sync_local:'Salvo neste celular',sync_conn:'Conectando…',sync_off:'Sem sinal: usando a cópia do celular',sync_pend:'Salvando… envia quando tiver sinal',sync_err:'Não consegui ler sua conta agora. Fica salvo no celular.',sync_noperm:'Sua conta ainda não pode guardar na nuvem. Fica neste celular.',
 login_t:'Entre para guardar seus sermões',login_d:'Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',email:'E-mail',pass:'Senha',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Criar conta',forgot:'Esqueci a senha',nologin:'Usar sem conta',reset_sent:'Enviamos um e-mail para criar uma senha nova',
 e_email:'E-mail inválido. Confira se digitou certo.',e_pass:'Digite a senha.',e_weak:'A senha precisa ter pelo menos 6 caracteres.',e_used:'Este e-mail já tem conta. Toque em Entrar.',e_cred:'E-mail ou senha não conferem. Tente de novo ou toque em Esqueci a senha.',e_many:'Muitas tentativas. Espere alguns minutos.',e_net:'Sem internet. Conecte-se para entrar pela primeira vez.',e_gen:'Não consegui entrar agora. Tente de novo.',e_reset:'Digite seu e-mail acima e toque de novo em Esqueci a senha.',
@@ -150,16 +154,83 @@ function parseRef(txt){
 const RX_REF=/^((?:[1-3]|i{1,3})\s*)?[A-Za-zÀ-ÿ]{2,}\.?(?:\s+de\s+[A-Za-zÀ-ÿ]+)?\s+\d{1,3}\s*[:.]\s*\d{1,3}(?:\s*[-–,]\s*\d{1,3})*$/i;
 function isRef(t){const c=cleanRef(t);return RX_REF.test(c)&&!!parseRef(c)}
 const BIB={},BIBP={};
-function loadBible(l){l=l==='pt'?'pt':'es';if(BIB[l])return Promise.resolve(BIB[l]);
-  if(!BIBP[l])BIBP[l]=fetch(l==='es'?'biblia/es-rv1909.json':'biblia/pt-livre.json').then(r=>{if(!r.ok)throw new Error('bible');return r.json()}).then(d=>BIB[l]=d).catch(e=>{BIBP[l]=null;throw e});
+const VFILE={es:'es-rv1909',pt:'pt-livre',es65:'es-rv1865',ptr:'pt-livretr',nva:'pt-nva',grc:'grc-tr',hbo:'hbo-wlc'};
+const VNAME={es:'Reina-Valera 1909',pt:'Bíblia Livre',es65:'Reina-Valera 1865',ptr:'Bíblia Livre TR',nva:'Nova Versão de Acesso Livre',grc:'Textus Receptus',hbo:'Códice de Leningrado'};
+const vkey=l=>VFILE[l]?l:(l==='pt'?'pt':'es');
+function loadBible(l){l=vkey(l);if(BIB[l])return Promise.resolve(BIB[l]);
+  if(!BIBP[l])BIBP[l]=fetch('biblia/'+VFILE[l]+'.json').then(r=>{if(!r.ok)throw new Error('bible');return r.json()}).then(d=>BIB[l]=d).catch(e=>{BIBP[l]=null;throw e});
   return BIBP[l]}
-function bibleText(ref,l){const B=BIB[l==='pt'?'pt':'es'];if(!B)return'';const p=parseRef(ref);if(!p||!p.vs)return'';const c=(B[p.b]||[])[p.ch-1];if(!c)return'';
+function bibleText(ref,l){const B=BIB[vkey(l)];if(!B)return'';const p=parseRef(ref);if(!p||!p.vs)return'';const c=(B[p.b]||[])[p.ch-1];if(!c)return'';
   const parts=p.vs.map(v=>c[v-1]?{v,t:c[v-1]}:null).filter(Boolean);if(!parts.length)return'';
   return parts.length===1?parts[0].t:parts.map(x=>`${x.v} ${x.t}`).join(' ')}
 function refName(b,ch,vs,l){const name=t('books',null,l)[b];if(!vs||!vs.length)return`${name} ${ch}`;
   const s=[...vs].sort((a,b)=>a-b);const out=[];let a=s[0],p=s[0];for(let i=1;i<=s.length;i++){if(s[i]===p+1){p=s[i];continue}out.push(a===p?`${a}`:`${a}-${p}`);a=p=s[i]}
   return`${name} ${ch}:${out.join(',')}`}
-const verLabel=l=>l==='pt'?'Bíblia Livre':'Reina-Valera 1909';
+const verLabel=l=>VNAME[vkey(l)];
+/* pronunciación aproximada */
+const GRK={'α':'a','β':'b','γ':'g','δ':'d','ε':'e','ζ':'z','η':'e','θ':'th','ι':'i','κ':'k','λ':'l','μ':'m','ν':'n','ξ':'x','ο':'o','π':'p','ρ':'r','σ':'s','ς':'s','τ':'t','υ':'y','φ':'f','χ':'j','ψ':'ps','ω':'o'};
+function translitGr(t){t=t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  return t.replace(/ου/g,'u').replace(/αυ/g,'au').replace(/ευ/g,'eu').replace(/γγ/g,'ng').replace(/γκ/g,'nk').replace(/[α-ως]/g,c=>GRK[c]??c)}
+const HC={'א':'','ב':'v','ג':'g','ד':'d','ה':'h','ו':'v','ז':'z','ח':'j','ט':'t','י':'y','כ':'j','ך':'j','ל':'l','מ':'m','ם':'m','נ':'n','ן':'n','ס':'s','ע':'','פ':'f','ף':'f','צ':'ts','ץ':'ts','ק':'k','ר':'r','ש':'sh','ת':'t'};
+const HV={'ֱ':'e','ֲ':'a','ֳ':'o','ִ':'i','ֵ':'e','ֶ':'e','ַ':'a','ָ':'a','ֹ':'o','ֺ':'o','ֻ':'u','ׇ':'o'};
+function translitHe(t){t=t.replace(/[֑-ֽֿ֯׀ׅׄ\/]/g,'');let out='',wordStart=true;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(HC[c]!==undefined){let marks='';let j=i+1;while(j<t.length&&/[ְ-ׇ]/.test(t[j])){marks+=t[j];j++}
+      const dag=marks.includes('ּ');let base=HC[c];
+      if(dag&&(c==='ב'))base='b';if(dag&&(c==='כ'||c==='ך'))base='k';if(dag&&(c==='פ'||c==='ף'))base='p';
+      if(c==='ש'&&marks.includes('ׂ'))base='s';
+      if(c==='י'&&!marks&&/[ie]$/.test(out))base='';
+      if(c==='ו'&&marks.includes('ֹ')&&!/[ְ-ֻ]/.test(marks.replace('ֹ','')))base='o',marks=marks.replace('ֹ','');
+      if(c==='ו'&&dag&&!/[ְ-ֻ]/.test(marks))base='u';
+      let v='';for(const m of marks){if(HV[m])v+=HV[m];else if(m==='ְ'&&wordStart)v+='e'}
+      out+=base+v;wordStart=false;i=j-1;continue}
+    if(c==='־'){out+='-';wordStart=true;continue}
+    if(c==='׃'){out+='.';continue}
+    if(/\s/.test(c)){out+=' ';wordStart=true;continue}
+  }
+  return out.replace(/\s+/g,' ').trim()}
+/* comparar versiones */
+function compareRef(ref,host,lang){const p=parseRef(ref);if(!p||!p.vs){toast(t('verse_nf'));return}
+  const first=lang==='pt'?['pt','ptr','nva','es','es65']:['es','es65','pt','ptr','nva'];const og=p.b>=39?'grc':'hbo';const keys=[...first,og];
+  const sh=openSheet(`<h3>${esc(t('cmp_t'))} · ${esc(refName(p.b,p.ch,p.vs,lang))}</h3><div id="cmpBody" class="sub">${esc(t('cmp_load'))}</div>`,{host});
+  Promise.all(keys.map(k=>loadBible(k).catch(()=>null))).then(()=>{if(!sh.isConnected)return;
+    $('#cmpBody',sh).outerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${keys.map(k=>{const tx=bibleText(ref,k);const orig=k===og;
+      return`<div style="display:flex;flex-direction:column;gap:4px;${orig?'border-top:1px solid var(--line);padding-top:12px':''}">
+        <span class="lbl" style="color:var(--gold-ink)">${esc(orig?`${t('orig')} · ${t(og==='grc'?'orig_g':'orig_h')}`:VNAME[k])}</span>
+        ${tx?`<span ${orig&&og==='hbo'?'dir="rtl" lang="he"':orig?'lang="grc"':''} style="font-family:var(--read);font-size:${orig?19:16.5}px;line-height:1.6">${esc(tx)}</span>
+        ${orig?`<span class="sub" style="font-style:italic">${esc(og==='grc'?translitGr(tx):translitHe(tx))}</span><span class="sub" style="font-size:11px">${esc(t('translit'))} · ${esc(VNAME[k])}</span>`:''}`
+        :`<span class="sub">${esc(t('cmp_none'))}</span>`}</div>`}).join('')}</div>`})}
+
+/* traducción (MyMemory) */
+function splitChunks(text,max=450){const out=[];let rest=text.trim();
+  while(rest.length>max){let cut=rest.lastIndexOf('. ',max);if(cut<max*.5)cut=rest.lastIndexOf(' ',max);if(cut<1)cut=max;out.push(rest.slice(0,cut+1).trim());rest=rest.slice(cut+1).trim()}
+  if(rest)out.push(rest);return out}
+async function mmTranslate(text,from,to){const pair=`${from==='pt'?'pt-BR':'es'}|${to==='pt'?'pt-BR':'es'}`;const parts=[];
+  for(const ch of splitChunks(text)){const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(ch)}&langpair=${encodeURIComponent(pair)}${prefs.mmEmail?'&de='+encodeURIComponent(prefs.mmEmail):''}`;
+    let r;try{r=await fetch(url)}catch(e){throw{code:'net'}}
+    if(r.status===429)throw{code:'quota'};if(!r.ok)throw{code:'net'};const j=await r.json();
+    const tx=j&&j.responseData&&j.responseData.translatedText||'';
+    if(j.quotaFinished||/MYMEMORY WARNING|USED ALL AVAILABLE FREE/i.test(tx))throw{code:'quota'};
+    if(+j.responseStatus!==200||!tx)throw{code:'net'};parts.push(tx)}
+  return parts.join(' ')}
+async function translateSermon(id){const s=sermons.find(x=>x.id===id);if(!s)return;closeSheet();const from=sLang(s),to=from==='pt'?'es':'pt';
+  const d=docOf(s);const chars=d.textContent.length;
+  const sh=openSheet(`<h3>${esc(t('tr_t'))}</h3><p style="margin:0;font-size:15px;line-height:1.5">${esc(t('tr_d'))}</p><p class="sub" style="margin:0">${esc(t('tr_lim',{n:chars.toLocaleString()}))}</p>
+    <div class="sub" id="trProg" hidden></div><div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn gold" id="trGo">${ic('lang')}${esc(t('tr_go'))}</button></div>`);
+  $('#trGo',sh).onclick=async()=>{const go=$('#trGo',sh);go.disabled=true;const pr=$('#trProg',sh);pr.hidden=false;
+    try{await loadBible(to)}catch(e){}
+    const work=[];[...d.children].forEach(el=>{if(el.tagName==='OL'||el.tagName==='UL')$$('li',el).forEach(li=>work.push(li));else work.push(el)});
+    const todo=work.filter(el=>el.textContent.trim()&&!(el.tagName==='BLOCKQUOTE'&&el.getAttribute('data-ref')&&(parseRef(el.getAttribute('data-ref'))||{}).vs));
+    let i=0;
+    try{for(const el of work){
+        if(el.tagName==='BLOCKQUOTE'&&el.getAttribute('data-ref')){const p=parseRef(el.getAttribute('data-ref'));
+          if(p&&p.vs){const nr=refName(p.b,p.ch,p.vs,to);el.setAttribute('data-ref',nr);if(el.textContent.trim())el.textContent=bibleText(nr,to)||el.textContent;continue}}
+        const tx=el.textContent.trim();if(!tx)continue;i++;pr.textContent=t('tr_prog',{i,n:todo.length});
+        const out=await mmTranslate(tx,from,to);const onlyMark=el.children.length===1&&el.firstElementChild.tagName==='MARK'&&el.firstElementChild.textContent.trim()===tx;
+        el.innerHTML=onlyMark?`<mark>${esc(out)}</mark>`:esc(out)}}
+    catch(e){go.disabled=false;pr.hidden=true;toast(t(e&&e.code==='quota'?'tr_quota':'tr_err'));return}
+    const c=JSON.parse(JSON.stringify(s));Object.assign(c,{id:uid(),html:cleanHtml(d.innerHTML),lang:to,fav:false,log:[],preached:{},created:Date.now(),v:2,translatedFrom:s.id});delete c.body;
+    putSermon(c,{silent:true});closeSheet();openEditor(c.id);toast(t('tr_done'))}}
 
 /* =========================================================
    Modelo del sermón
@@ -428,6 +499,7 @@ function sermonMenu(id){const s=sermons.find(x=>x.id===id);if(!s)return;const d=
    <button class="act" data-act="fav" data-id="${esc(id)}">${ic('star')}${esc(t(s.fav?'act_unfav':'act_fav'))}</button>
    <button class="act" data-act="dup" data-id="${esc(id)}">${ic('copy')}${esc(t('act_dup'))}</button>
    <button class="act" data-act="share" data-id="${esc(id)}">${ic('share')}${esc(t('act_share'))}</button>
+   <button class="act" data-act="trans" data-id="${esc(id)}">${ic('lang')}${esc(t('tr_to',{l:sLang(s)==='pt'?'Español':'Português'}))}</button>
    <button class="act" data-act="hist" data-id="${esc(id)}">${ic('cal')}${esc(t('act_hist'))}</button>
    <button class="act red" data-act="delAsk" data-id="${esc(id)}">${ic('trash')}${esc(t('act_del'))}</button></div>`);
   return sh}
@@ -555,6 +627,7 @@ function edMenu(){if(!E)return;edSave();if(!sermons.find(x=>x.id===E.s.id)){toas
   openSheet(`<div class="acts">
    <button class="act" data-act="share" data-id="${esc(id)}">${ic('share')}${esc(t('act_share'))}</button>
    <button class="act" data-act="dup" data-id="${esc(id)}">${ic('copy')}${esc(t('act_dup'))}</button>
+   <button class="act" data-act="trans" data-id="${esc(id)}">${ic('lang')}${esc(t('tr_to',{l:sLang(E.s)==='pt'?'Español':'Português'}))}</button>
    <button class="act" data-act="hist" data-id="${esc(id)}">${ic('cal')}${esc(t('act_hist'))}</button>
    <button class="act red" data-act="delAsk" data-id="${esc(id)}">${ic('trash')}${esc(t('act_del'))}</button></div>`)}
 function pickCategory(cb,cur){const cats=[...new Set([...meta.cats,...sermons.map(catOf).filter(Boolean)])];
@@ -667,11 +740,11 @@ function pgRender(){if(!PG)return;const s=PG.s,l=PG.lang;const d=docOf(s);const 
       else{n++;const clean=tx.replace(RX_PT,'').replace(/^[:\-–\s]+/,'')||tx;out.push(`<h2 id="${id}"><span class="n">${n}.</span><span>${esc(clean)}</span></h2>`);PG.secs.push({id,label:clean,pt:n})}continue}
     if(tg==='H3'){if(tx)out.push(`<h3>${esc(tx)}</h3>`);continue}
     if(tg==='BLOCKQUOTE'){const ref=el.getAttribute('data-ref');const v=tx||(ref?bibleText(ref,l):'');
-      if(ref)out.push(`<div class="vq"><span class="r">${esc(ref)}</span>${v?`<span class="x">${tx?inner:esc(v)}</span>`:''}${!tx&&v?`<span class="src">${esc(verLabel(l))}</span>`:''}</div>`);
+      if(ref)out.push(`<div class="vq"><button class="r" data-act="cmp" data-ref="${esc(ref)}">${esc(ref)} <span class="cv">· ${esc(t('cmp_t',null,l))} ›</span></button>${v?`<span class="x">${tx?inner:esc(v)}</span>`:''}${!tx&&v?`<span class="src">${esc(verLabel(l))}</span>`:''}</div>`);
       else out.push(`<div class="vq"><span class="x">${inner}</span></div>`);continue}
     if(tg==='P'){if(!tx)continue;
       if(el.classList.contains('nt')||tx.startsWith('@')){out.push(`<p class="nt" data-l="${esc(t('note',null,l))}">${esc(tx.replace(/^@\s?/,''))}</p>`);continue}
-      if(isRef(tx)){const v=bibleText(tx,l);out.push(`<div class="vq"><span class="r">${esc(cleanRef(tx))}</span>${v?`<span class="x">${esc(v)}</span><span class="src">${esc(verLabel(l))}</span>`:''}</div>`);continue}
+      if(isRef(tx)){const v=bibleText(tx,l);out.push(`<div class="vq"><button class="r" data-act="cmp" data-ref="${esc(cleanRef(tx))}">${esc(cleanRef(tx))} <span class="cv">· ${esc(t('cmp_t',null,l))} ›</span></button>${v?`<span class="x">${esc(v)}</span><span class="src">${esc(verLabel(l))}</span>`:''}</div>`);continue}
       const cls=[...el.classList].filter(c=>c==='lg'||c==='il').join(' ');out.push(`<p${cls?` class="${cls}"`:''}>${inner}</p>`);continue}
     out.push(`<${tg.toLowerCase()}>${inner}</${tg.toLowerCase()}>`)}
   PG.npts=n;$('#pgText').innerHTML=out.join('');$('#pgText').classList.toggle('outline',!!prefs.p.outline);pgWhere()}
@@ -750,6 +823,7 @@ function bibleHtml(){const l=bver();const B=BIB[l];const names=t('books',null,l)
    ${sel.length&&!BV.fav?`<div class="vbar"><span class="ref">${esc(refName(BV.b,BV.c,sel,l))}</span>
      <button class="iconbtn" data-act="bCopy" aria-label="${esc(t('copy_txt'))}">${ic('copy')}</button>
      <button class="iconbtn" data-act="bFav" aria-label="${esc(t('act_fav'))}">${ic('star')}</button>
+     <button class="iconbtn" data-act="bCmp" aria-label="${esc(t('cmp'))}">${ic('lang')}</button>
      <button class="btn sm gold" data-act="bIns">${esc(t('ins_s'))}</button></div>`:''}`}
 function bibleAfter(){const l=bver();if(!BIB[l]&&!BV.err)loadBible(l).then(()=>{if(view.tab==='bible'&&!view.overlay)render()}).catch(()=>{BV.err=true;if(view.tab==='bible')render()});
   const bb=$('#bBook'),bc=$('#bChap');if(bb)bb.onchange=()=>{BV.b=+bb.value;BV.c=1;BV.sel.clear();render()};if(bc)bc.onchange=()=>{BV.c=+bc.value;BV.sel.clear();render()}}
@@ -818,11 +892,12 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     <form class="row" data-form="catAdd"><input class="inp" id="catNew" placeholder="${esc(t('add_cat'))}" style="height:42px"><button class="btn sm dark">${esc(t('add'))}</button></form></div></div>
   <div class="pgrp">
     <div class="prow"><span><span class="k">${esc(t('backup'))}</span><span class="s">${esc(t('last_bak',{d:lb?fmtD(todayISO(new Date(lb))):t('never')}))}</span></span><button class="btn sm ghost" data-act="bakGo">${esc(t('copy_now'))}</button></div>
+    <div class="prow"><span><label class="k" for="pMail">${esc(t('tr_mail'))}</label><span class="s">${esc(t('tr_mail_d'))}</span></span><input class="inp" id="pMail" type="email" value="${esc(prefs.mmEmail||'')}" placeholder="—" style="max-width:220px;height:42px" data-input="pMail"></div>
     <div class="prow"><span class="k">${esc(t('restore'))}</span><button class="btn sm ghost" data-act="impOpen">${ic('clip')}${esc(t('import'))}</button></div>
     <div class="prow"><span class="sync" data-sync>${syncHtml()}</span>${localMode?(window.firebase&&firebase.apps&&firebase.apps.length?`<button class="btn sm dark" data-act="toLogin">${esc(t('login_btn'))}</button>`:''):`<button class="btn sm ghost" data-act="logout">${ic('out')}${esc(t('logout'))}</button>`}</div>
   </div>
   <span class="lbl" style="padding:4px 4px 0">${esc(t('soon'))}</span>
-  <div class="soon"><div>${ic('mic')}${esc(t('s_rec'))}</div><div>${ic('text')}${esc(t('s_tr'))}</div><div>${ic('lang')}${esc(t('s_trl'))}</div><div>${ic('spark')}${esc(t('s_ai'))}</div></div>
+  <div class="soon"><div>${ic('mic')}${esc(t('s_rec'))}</div><div>${ic('text')}${esc(t('s_tr'))}</div><div>${ic('spark')}${esc(t('s_ai'))}</div></div>
   <p class="sub" style="margin:0;text-align:center;font-size:12px">${esc(t('credits'))}</p>`}
 function importSheet(){const sh=openSheet(`<h3>${esc(t('restore'))}</h3><p class="sub" style="margin:0">${esc(t('restore_d'))}</p><textarea class="inp" id="impTa" rows="6"></textarea><button class="btn gold block" id="impGo">${esc(t('import'))}</button>`);
   $('#impGo',sh).onclick=()=>{let o;try{o=JSON.parse($('#impTa',sh).value.trim())}catch(e){toast(t('bad_paste'));return}
@@ -866,6 +941,8 @@ const ACT={
   menu:b=>sermonMenu(b.dataset.id),
   dup:b=>{if(E){edSave();closeEditor(()=>duplicate(b.dataset.id))}else duplicate(b.dataset.id)},
   share:b=>shareSheet(b.dataset.id),
+  trans:b=>{if(E){const id=b.dataset.id;edSave(true);closeEditor(()=>{render();translateSermon(id)})}else translateSermon(b.dataset.id)},
+  cmp:b=>compareRef(b.dataset.ref,PG?$('#pg'):null,PG?PG.lang:bver()),
   hist:b=>histSheet(b.dataset.id),
   delAsk:b=>{closeSheet();const id=b.dataset.id;const sh=openSheet(`<h3>${esc(t('del_q'))}</h3><p class="serif" style="margin:0;font-size:17px">${esc(derive(sermons.find(x=>x.id===id)||{}).title||'')}</p><div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn danger" id="dYes">${ic('trash')}${esc(t('act_del'))}</button></div>`);
     $('#dYes',sh).onclick=()=>{closeSheet();if(E&&E.s.id===id){document.removeEventListener('selectionchange',tbState);E=null;view.overlay=null}delSermon(id);render();toast(t('deleted'))}},
@@ -894,11 +971,13 @@ const ACT={
   bGo:b=>{BV.b=+b.dataset.b;BV.c=+b.dataset.c;BV.q='';BV.sel=new Set([+b.dataset.v]);render();setTimeout(()=>{const el=$(`.vs[data-v="${b.dataset.v}"]`);el&&el.scrollIntoView({block:'center'})},50)},
   bCopy:()=>{const x=bSelText();copyText(`${x.text}\n— ${x.ref} (${verLabel(x.v)})`).then(()=>toast(t('copied')))},
   bFav:()=>{const x=bSelText();const i=meta.favVerses.findIndex(f=>f.ref===x.ref&&f.v===x.v);if(i>=0){meta.favVerses.splice(i,1);toast(t('fav_rm'))}else{meta.favVerses.unshift(x);toast(t('fav_add'))}putMeta();BV.sel.clear();render()},
+  bCmp:()=>{const x=bSelText();compareRef(x.ref,null,x.v)},
   bIns:()=>{const x=bSelText();chooseSermon(id=>{BV.sel.clear();insertVerseInto(id,x.ref,x.text)})},
   bFavOpen:b=>{const f=meta.favVerses[+b.dataset.i];if(!f)return;const sh=openSheet(`<h3>${esc(f.ref)}</h3><p class="serif" style="margin:0;font-size:17px;line-height:1.6;font-style:italic">${esc(f.text)}</p>
-     <div class="acts"><button class="act" id="fvC">${ic('copy')}${esc(t('copy_txt'))}</button><button class="act" id="fvI">${ic('doc')}${esc(t('ins_s'))}</button><button class="act red" id="fvD">${ic('trash')}${esc(t('act_unfav'))}</button></div>`);
+     <div class="acts"><button class="act" id="fvC">${ic('copy')}${esc(t('copy_txt'))}</button><button class="act" id="fvI">${ic('doc')}${esc(t('ins_s'))}</button><button class="act" id="fvK">${ic('lang')}${esc(t('cmp'))}</button><button class="act red" id="fvD">${ic('trash')}${esc(t('act_unfav'))}</button></div>`);
     $('#fvC',sh).onclick=()=>copyText(`${f.text}\n— ${f.ref} (${verLabel(f.v)})`).then(()=>{toast(t('copied'));closeSheet()});
     $('#fvI',sh).onclick=()=>{closeSheet();chooseSermon(id=>insertVerseInto(id,f.ref,f.text))};
+    $('#fvK',sh).onclick=()=>{closeSheet();compareRef(f.ref,null,f.v)};
     $('#fvD',sh).onclick=()=>{meta.favVerses.splice(+b.dataset.i,1);putMeta();closeSheet();render()}},
   // agenda
   evNew:()=>evForm(null),evEdit:b=>evForm(b.dataset.id),
@@ -917,6 +996,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
 document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.input;if(!k)return;
   if(k==='listQ'){listState.q=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(render,180)}
   if(k==='bQ'){BV.q=e.target.value;const p=parseRef(BV.q);clearTimeout(e.target._t);e.target._t=setTimeout(()=>{if(p){BV.b=p.b;BV.c=Math.max(1,p.ch);BV.sel=new Set(p.vs||[]);}render()},300)}
+  if(k==='pMail'){prefs.mmEmail=e.target.value.trim();savePrefs()}
   if(k==='pName'){meta.name=e.target.value.trim();clearTimeout(e.target._t);e.target._t=setTimeout(putMeta,600)}});
 document.addEventListener('submit',e=>{const f=e.target.dataset.form;if(!f)return;e.preventDefault();
   if(f==='homeSearch'){listState.q=$('#hq').value;listState.f='all';listState.cat='';go('list')}
