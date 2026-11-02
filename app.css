@@ -439,3 +439,8 @@ html.tabs #app{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling
 .tb .sty .s-lg{font-family:var(--read);font-size:17px;font-weight:500}
 .tb .sty button[aria-pressed="true"]{box-shadow:0 0 0 1.5px var(--gold) inset;background:var(--gold-soft)}
 .tb .fmt #tbH[aria-expanded="true"]{background:var(--surface);box-shadow:0 0 0 1.5px var(--gold) inset}
+.pwbox{position:relative}.pwbox .inp{padding-right:52px;width:100%}
+.pwbox .iconbtn{position:absolute;right:4px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.pwbox .iconbtn[aria-pressed="true"]{color:var(--gold-ink)}
+.login .okmark{width:64px;height:64px;border-radius:32px;background:var(--okbg);color:var(--ok);display:flex;align-items:center;justify-content:center}
+.login .okmark svg{width:30px;height:30px;stroke-width:2.4}

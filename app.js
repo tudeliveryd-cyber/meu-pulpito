@@ -53,13 +53,13 @@ schedule:'Programar',upcoming:'Próximas predicaciones',past:'Anteriores',no_ev:
 cult:'Tipo de culto',theme:'Tema del mensaje',sermon:'Sermón',later_pick:'Elegir después',pick_s:'Elegir sermón',tbd:'tema por definir',ev_saved:'Predicación programada',ev_del:'Predicación eliminada',
 your_name:'Tu nombre',language:'Idioma de la app',appearance:'Apariencia',light:'Claro',dark:'Oscuro',auto:'Auto',def_bible:'Biblia',categories:'Categorías',add_cat:'Nueva categoría',add:'Agregar',
 backup:'Copia de seguridad',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar o traer sermones',restore_d:'Pega aquí una copia de seguridad o el texto copiado en «Levar para o app próprio».',import:'Importar',imported:'{n} sermón(es) importado(s)',nothing_new:'Nada nuevo para importar',bad_paste:'No reconocí el texto pegado. Cópialo de nuevo.',
-account:'Cuenta',acc_conn:'Conectando con tu cuenta…',acc_fail:'No se pudo conectar con el sistema de cuentas. Revisa tu internet o abre el app desde el ícono de la pantalla de inicio.',local_only:'Sin cuenta: los sermones quedan solo en este celular.',logout:'Cerrar sesión',login_btn:'Entrar con una cuenta',soon:'Próximamente',s_rec:'Grabar audio',s_tr:'Audio a texto',s_trl:'Traducir ES ↔ PT',s_ai:'Asistente para sermones',
+account:'Cuenta',rec_t:'Recuperar contraseña',rec_d:'Escribe el correo de tu cuenta. Te enviaremos un enlace para crear una contraseña nueva.',rec_send:'Enviar enlace',rec_sending:'Enviando…',rec_ok_t:'Revisa tu correo',rec_ok_d:'Enviamos el enlace a {e}. Ábrelo, crea tu contraseña nueva y vuelve aquí para entrar. Si no aparece, mira en Spam o Promociones.',rec_back:'Volver a entrar',rec_again:'Enviar de nuevo',retry:'Intentar de nuevo',show_pw:'Mostrar contraseña',acc_conn:'Conectando con tu cuenta…',acc_fail:'No se pudo conectar con el sistema de cuentas. Revisa tu internet o abre el app desde el ícono de la pantalla de inicio.',local_only:'Sin cuenta: los sermones quedan solo en este celular.',logout:'Cerrar sesión',login_btn:'Entrar con una cuenta',soon:'Próximamente',s_rec:'Grabar audio',s_tr:'Audio a texto',s_trl:'Traducir ES ↔ PT',s_ai:'Asistente para sermones',
 credits:'Biblias: Reina-Valera 1909 y 1865 (dominio público), Bíblia Livre y Bíblia Livre TR (licencia libre), Nova Versão de Acesso Livre, Textus Receptus griego y Códice de Leningrado hebreo (dominio público). Traducción automática: MyMemory.',
 cmp:'Comparar versiones',cmp_t:'Versiones',orig:'En el original',orig_g:'Griego',orig_h:'Hebreo',translit:'pronunciación aproximada',cmp_load:'Abriendo las versiones…',cmp_none:'Este versículo no está en esta versión.',cmp_tip:'Toca la cita para comparar versiones',
 tr_to:'Traducir al {l}',tr_t:'Traducir sermón',tr_d:'Se crea una copia traducida; el original no cambia. Los versículos se colocan desde la Biblia del otro idioma. El resto del texto se envía al servicio gratuito MyMemory para traducir.',tr_lim:'Este sermón tiene {n} caracteres. Límite gratuito: unos 5.000 por día, o 50.000 si pones tu correo en Perfil.',tr_go:'Traducir',tr_prog:'Traduciendo… {i} de {n}',tr_done:'Traducción creada. Revísala antes de predicar.',tr_quota:'Se acabó el límite gratuito de hoy. Intenta mañana o pon tu correo en Perfil para tener más.',tr_err:'No pude traducir ahora. Revisa la conexión e intenta de nuevo.',tr_mail:'Correo para traducción',tr_mail_d:'Opcional. Se envía a MyMemory solo para aumentar el límite diario.',
 sync_ok:'Guardado en tu cuenta',sync_local:'Guardado en este celular',sync_conn:'Conectando…',sync_off:'Sin señal: usando la copia del celular',sync_pend:'Guardando… se envía cuando haya señal',sync_err:'No pude leer tu cuenta ahora. Queda guardado en el celular.',sync_noperm:'Tu cuenta todavía no puede guardar en la nube. Queda en este celular.',
-login_t:'Entra para guardar tus sermones',login_d:'Tus sermones quedan en tu cuenta y aparecen en cualquier celular donde entres.',email:'Correo',pass:'Contraseña',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Crear cuenta',forgot:'Olvidé la contraseña',nologin:'Usar sin cuenta',reset_sent:'Te enviamos un correo para crear una contraseña nueva',
-e_email:'Correo inválido. Revisa si lo escribiste bien.',e_pass:'Escribe la contraseña.',e_weak:'La contraseña necesita al menos 6 caracteres.',e_used:'Este correo ya tiene cuenta. Toca Entrar.',e_cred:'Correo o contraseña no coinciden. Intenta de nuevo o toca Olvidé la contraseña.',e_many:'Muchos intentos. Espera unos minutos.',e_net:'Sin internet. Conéctate para entrar la primera vez.',e_gen:'No pude entrar ahora. Intenta de nuevo.',e_reset:'Escribe tu correo arriba y toca otra vez Olvidé la contraseña.',
+login_t:'Entra para guardar tus sermones',login_d:'Tus sermones quedan en tu cuenta y aparecen en cualquier celular donde entres.',email:'Correo',pass:'Contraseña',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Crear cuenta',forgot:'¿Olvidaste tu contraseña?',nologin:'Usar sin cuenta',reset_sent:'Te enviamos un correo para crear una contraseña nueva',
+e_email:'Correo inválido. Revisa si lo escribiste bien.',e_pass:'Escribe la contraseña.',e_weak:'La contraseña necesita al menos 6 caracteres.',e_used:'Este correo ya tiene cuenta. Toca Entrar.',e_cred:'Correo o contraseña no coinciden. Intenta de nuevo o toca «¿Olvidaste tu contraseña?».',e_many:'Muchos intentos. Espera unos minutos.',e_net:'Sin internet. Conéctate para entrar la primera vez.',e_gen:'No pude entrar ahora. Intenta de nuevo.',e_reset:'Escribe tu correo arriba y toca otra vez Olvidé la contraseña.',
 entering:'Entrando…',creating:'Creando…',
 share:'Compartir',full:'Completo',only_points:'Solo puntos',wa:'WhatsApp',copy_txt:'Copiar texto',pdf:'PDF o imprimir',other_apps:'Otras apps',txt_copied:'Texto copiado',pdf_tip:'En la pantalla de impresión, toca Compartir para guardar como PDF.',
 wc:'{w} palabras · ~{m} min',models:'Modelos',model_t:'Empezar con un modelo',model_d:'Reemplaza el contenido de la hoja (el título se mantiene). Puedes deshacer.',details:'Detalles',details_t:'Detalles del sermón',organize:'Organizar',org_t:'Organizar el sermón',org_pts:'Puntos',org_par:'Párrafos',org_hint:'Usa las flechas para mover. Puedes deshacer.',org_start:'Inicio del sermón',up:'Subir',down:'Bajar',
@@ -111,13 +111,13 @@ schedule:'Agendar',upcoming:'Próximas pregações',past:'Anteriores',no_ev:'Nad
 cult:'Tipo de culto',theme:'Tema da mensagem',sermon:'Sermão',later_pick:'Escolher depois',pick_s:'Escolher sermão',tbd:'tema a definir',ev_saved:'Pregação agendada',ev_del:'Pregação excluída',
 your_name:'Seu nome',language:'Idioma do app',appearance:'Aparência',light:'Claro',dark:'Escuro',auto:'Auto',def_bible:'Bíblia',categories:'Categorias',add_cat:'Nova categoria',add:'Adicionar',
 backup:'Cópia de segurança',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar ou trazer sermões',restore_d:'Cole aqui uma cópia de segurança ou o texto copiado em «Levar para o app próprio».',import:'Importar',imported:'{n} sermão(ões) importado(s)',nothing_new:'Nada novo para importar',bad_paste:'Não reconheci o texto colado. Copie de novo.',
-account:'Conta',acc_conn:'Conectando com a sua conta…',acc_fail:'Não foi possível conectar ao sistema de contas. Verifique a internet ou abra o app pelo ícone da tela inicial.',local_only:'Sem conta: os sermões ficam só neste celular.',logout:'Sair da conta',login_btn:'Entrar com uma conta',soon:'Em breve',s_rec:'Gravar áudio',s_tr:'Áudio para texto',s_trl:'Traduzir ES ↔ PT',s_ai:'Assistente de sermões',
+account:'Conta',rec_t:'Recuperar senha',rec_d:'Digite o e-mail da sua conta. Vamos enviar um link para criar uma senha nova.',rec_send:'Enviar link',rec_sending:'Enviando…',rec_ok_t:'Confira seu e-mail',rec_ok_d:'Enviamos o link para {e}. Abra, crie sua senha nova e volte aqui para entrar. Se não aparecer, olhe em Spam ou Promoções.',rec_back:'Voltar para entrar',rec_again:'Enviar de novo',retry:'Tentar de novo',show_pw:'Mostrar senha',acc_conn:'Conectando com a sua conta…',acc_fail:'Não foi possível conectar ao sistema de contas. Verifique a internet ou abra o app pelo ícone da tela inicial.',local_only:'Sem conta: os sermões ficam só neste celular.',logout:'Sair da conta',login_btn:'Entrar com uma conta',soon:'Em breve',s_rec:'Gravar áudio',s_tr:'Áudio para texto',s_trl:'Traduzir ES ↔ PT',s_ai:'Assistente de sermões',
 credits:'Bíblias: Reina-Valera 1909 e 1865 (domínio público), Bíblia Livre e Bíblia Livre TR (licença livre), Nova Versão de Acesso Livre, Textus Receptus grego e Códice de Leningrado hebraico (domínio público). Tradução automática: MyMemory.',
 cmp:'Comparar versões',cmp_t:'Versões',orig:'No original',orig_g:'Grego',orig_h:'Hebraico',translit:'pronúncia aproximada',cmp_load:'Abrindo as versões…',cmp_none:'Este versículo não está nesta versão.',cmp_tip:'Toque na referência para comparar versões',
 tr_to:'Traduzir para {l}',tr_t:'Traduzir sermão',tr_d:'É criada uma cópia traduzida; o original não muda. Os versículos vêm da Bíblia do outro idioma. O resto do texto é enviado ao serviço grátis MyMemory para traduzir.',tr_lim:'Este sermão tem {n} caracteres. Limite grátis: uns 5.000 por dia, ou 50.000 se você colocar seu e-mail no Perfil.',tr_go:'Traduzir',tr_prog:'Traduzindo… {i} de {n}',tr_done:'Tradução criada. Revise antes de pregar.',tr_quota:'Acabou o limite grátis de hoje. Tente amanhã ou coloque seu e-mail no Perfil para ter mais.',tr_err:'Não consegui traduzir agora. Confira a conexão e tente de novo.',tr_mail:'E-mail para tradução',tr_mail_d:'Opcional. É enviado ao MyMemory só para aumentar o limite diário.',
 sync_ok:'Salvo na sua conta',sync_local:'Salvo neste celular',sync_conn:'Conectando…',sync_off:'Sem sinal: usando a cópia do celular',sync_pend:'Salvando… envia quando tiver sinal',sync_err:'Não consegui ler sua conta agora. Fica salvo no celular.',sync_noperm:'Sua conta ainda não pode guardar na nuvem. Fica neste celular.',
-login_t:'Entre para guardar seus sermões',login_d:'Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',email:'E-mail',pass:'Senha',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Criar conta',forgot:'Esqueci a senha',nologin:'Usar sem conta',reset_sent:'Enviamos um e-mail para criar uma senha nova',
-e_email:'E-mail inválido. Confira se digitou certo.',e_pass:'Digite a senha.',e_weak:'A senha precisa ter pelo menos 6 caracteres.',e_used:'Este e-mail já tem conta. Toque em Entrar.',e_cred:'E-mail ou senha não conferem. Tente de novo ou toque em Esqueci a senha.',e_many:'Muitas tentativas. Espere alguns minutos.',e_net:'Sem internet. Conecte-se para entrar pela primeira vez.',e_gen:'Não consegui entrar agora. Tente de novo.',e_reset:'Digite seu e-mail acima e toque de novo em Esqueci a senha.',
+login_t:'Entre para guardar seus sermões',login_d:'Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',email:'E-mail',pass:'Senha',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Criar conta',forgot:'Esqueceu a senha?',nologin:'Usar sem conta',reset_sent:'Enviamos um e-mail para criar uma senha nova',
+e_email:'E-mail inválido. Confira se digitou certo.',e_pass:'Digite a senha.',e_weak:'A senha precisa ter pelo menos 6 caracteres.',e_used:'Este e-mail já tem conta. Toque em Entrar.',e_cred:'E-mail ou senha não conferem. Tente de novo ou toque em «Esqueceu a senha?».',e_many:'Muitas tentativas. Espere alguns minutos.',e_net:'Sem internet. Conecte-se para entrar pela primeira vez.',e_gen:'Não consegui entrar agora. Tente de novo.',e_reset:'Digite seu e-mail acima e toque de novo em Esqueci a senha.',
 entering:'Entrando…',creating:'Criando…',
 share:'Compartilhar',full:'Completo',only_points:'Só os pontos',wa:'WhatsApp',copy_txt:'Copiar texto',pdf:'PDF ou imprimir',other_apps:'Outros apps',txt_copied:'Texto copiado',pdf_tip:'Na tela de impressão, toque em Compartilhar para salvar como PDF.',
 wc:'{w} palavras · ~{m} min',models:'Modelos',model_t:'Começar com um modelo',model_d:'Substitui o conteúdo da folha (o título fica). Dá para desfazer.',details:'Detalhes',details_t:'Detalhes do sermão',organize:'Organizar',org_t:'Organizar o sermão',org_pts:'Pontos',org_par:'Parágrafos',org_hint:'Use as setas para mover. Dá para desfazer.',org_start:'Início do sermão',up:'Subir',down:'Descer',
@@ -485,7 +485,7 @@ function subCol(ref,getL,setL,onAny){let first=true;
     else if(!first||remote.length)arr=remote;
     if(arr){setL(arr);cacheAll();onAny&&onAny(snap)}
   },err=>onAny&&onAny(null,err))}
-function startCloud(u){authU=u;localMode=false;loadLocal();ready=true;go(view.tab||'home');setSync(false,'sync_conn');
+function startCloud(u){authU=u;localMode=false;loadLocal();const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;go(view.tab||'home');setSync(false,'sync_conn');
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -495,7 +495,13 @@ function startCloud(u){authU=u;localMode=false;loadLocal();ready=true;go(view.ta
     cols=P[i]();
     unsubs.push(subCol(cols.s,()=>sermons,a=>{sermons=a},(snap,err)=>{
       if(err){if(err.code==='permission-denied')listen(i+1);else setSync(false,'sync_err');return}
-      ls.set(PK,i);setSync(!snap.metadata.hasPendingWrites&&!snap.metadata.fromCache,snap.metadata.hasPendingWrites?'sync_pend':snap.metadata.fromCache?'sync_off':'sync_ok');refreshBg()}));
+      ls.set(PK,i);if(!migrated&&!snap.metadata.fromCache){migrated=true;const [as,an,aa]=anon;
+        if(as.length||an.length||aa.length){ls.set('pulpito.anon.bak',{s:as,n:an,a:aa,at:Date.now()});
+          as.forEach(x=>{if(!sermons.some(y=>y.id===x.id))cols.s.doc(x.id).set(strip(x)).catch(()=>{})});
+          an.forEach(x=>{if(!notes.some(y=>y.id===x.id))cols.n.doc(x.id).set(strip(x)).catch(()=>{})});
+          aa.forEach(x=>{if(!agenda.some(y=>y.id===x.id))cols.a.doc(x.id).set(strip(x)).catch(()=>{})});
+          ['s','n','a'].forEach(k=>ls.set(K[k],[]))}}
+      setSync(!snap.metadata.hasPendingWrites&&!snap.metadata.fromCache,snap.metadata.hasPendingWrites?'sync_pend':snap.metadata.fromCache?'sync_off':'sync_ok');refreshBg()}));
     unsubs.push(subCol(cols.a,()=>agenda,a=>{agenda=a},()=>refreshBg()));
     unsubs.push(subCol(cols.n,()=>notes,a=>{notes=a},()=>refreshBg()));
     unsubs.push(cols.m.onSnapshot(d=>{if(d.exists){const r=d.data();if((r.updated||0)>=(meta.updated||0)){meta=r;fixMeta();cacheAll();refreshBg()}else putMeta()}else if(meta.updated)putMeta()},()=>{}));
@@ -504,23 +510,23 @@ function startCloud(u){authU=u;localMode=false;loadLocal();ready=true;go(view.ta
 }
 // Entrar con cuenta desde el modo sin cuenta: si el sistema de cuentas no cargó, lo intenta cargar de nuevo
 function loadScript(u){return new Promise((ok,ko)=>{const sc=document.createElement('script');sc.src=u;sc.onload=ok;sc.onerror=ko;document.head.appendChild(sc);setTimeout(ko,12000)})}
-async function toLogin(){
-  if(!(window.firebase&&firebase.apps&&firebase.apps.length)){
-    toast(t('acc_conn'));
-    try{if(!window.firebase||!firebase.auth||!firebase.firestore){for(const n of['app','auth','firestore'])await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-'+n+'-compat.js')}
-      firebase.initializeApp(window.FIREBASE_CONFIG);try{firebase.firestore().enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
-      firebase.auth().onAuthStateChanged(u=>{if(u&&!authU){localMode=false;ls.set('pulpito.local',false);startCloud(u)}})}
-    catch(e){toast(t('acc_fail'));return}}
-  ls.set('pulpito.local',false);localMode=false;showLogin()}
+let fbWait=null;
+function fbReady(){return !!(window.firebase&&firebase.apps&&firebase.apps.length&&firebase.auth)}
+function ensureFb(){if(fbReady())return Promise.resolve(true);if(fbWait)return fbWait;
+  fbWait=(async()=>{try{if(!window.firebase||!firebase.auth||!firebase.firestore){for(const n of['app','auth','firestore'])await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-'+n+'-compat.js')}
+      if(!firebase.apps.length)firebase.initializeApp(window.FIREBASE_CONFIG);try{firebase.firestore().enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
+      firebase.auth().onAuthStateChanged(u=>{if(u&&!authU){localMode=false;ls.set('pulpito.local',false);startCloud(u)}});return true}
+    catch(e){fbWait=null;return false}})();return fbWait}
+async function toLogin(){ls.set('pulpito.local',false);localMode=false;showLogin()}
 function startLocal(){localMode=true;ls.set('pulpito.local',true);unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;authU=null;loadLocal();ready=true;setSync(false,'sync_local');go(view.tab||'home')}
 function anyShown(){return !!$('#app').firstElementChild}
-function fallback(){if(anyShown())return;if(window.firebase&&firebase.apps&&firebase.apps.length)showLogin();else startLocal()}
+function fallback(){if(anyShown())return;showLogin()}
 function initStore(){
   const cfg=window.FIREBASE_CONFIG;
-  if(!cfg||!cfg.apiKey||!window.firebase||!firebase.auth||!firebase.firestore){startLocal();return}
-  try{firebase.initializeApp(cfg)}catch(e){startLocal();return}
+  if(!cfg||!cfg.apiKey||!window.firebase||!firebase.auth||!firebase.firestore){showLogin();return}
+  try{firebase.initializeApp(cfg)}catch(e){showLogin();return}
   try{firebase.firestore().enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
-  if(ls.get('pulpito.local',false))startLocal();
+  ls.set('pulpito.local',false);
   const tm=setTimeout(()=>{if(!authU&&!localMode)fallback()},2500);
   try{firebase.auth().onAuthStateChanged(u=>{clearTimeout(tm);if(u){if(!localMode||!ready)startCloud(u)}else if(!localMode)showLogin()},()=>{clearTimeout(tm);fallback()})}
   catch(e){clearTimeout(tm);fallback()}
@@ -1377,23 +1383,45 @@ function dictStop(){if(DICT){const r=DICT;DICT=null;try{r.stop()}catch(e){}}}
 /* =========================================================
    Entrada (login)
    ========================================================= */
-function showLogin(){ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
+function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
+  const langSeg=`<div class="seg" style="margin-top:6px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div>`;
+  const keepE=(($('#lgE')||{}).value||showLogin._e||'').trim();
+  if(mode==='rec'||mode==='sent'){
+    $('#app').innerHTML=`<div class="login"><img class="logo" src="logo.jpg" alt="Meu Púlpito">
+     ${mode==='rec'?`<h2>${esc(t('rec_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('rec_d'))}</p>
+     <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="tu@correo.com"></div>
+     <p class="err" id="lgErr" hidden></p>
+     <button class="btn gold block" id="lgSend">${esc(t('rec_send'))}</button>`
+     :`<div class="okmark">${ic('check')}</div><h2>${esc(t('rec_ok_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.55">${esc(t('rec_ok_d',{e:keepE}))}</p>
+     <button class="btn ghost block" id="lgAgain">${esc(t('rec_again'))}</button>`}
+     <button class="btn ${mode==='sent'?'gold':'ghost'} block" id="lgBack">${ic('back')}${esc(t('rec_back'))}</button></div>`;
+    showLogin._e=keepE;
+    $('#lgBack').onclick=()=>showLogin();
+    if(mode==='sent'){$('#lgAgain').onclick=()=>showLogin('rec');return}
+    const err=m=>{const e=$('#lgErr');e.textContent=m;e.hidden=!m};
+    const send=async()=>{const em=$('#lgE').value.trim();if(!em){err(t('e_email'));return}const b=$('#lgSend');b.disabled=true;b.textContent=t('rec_sending');
+      if(!await ensureFb()){err(t('acc_fail'));b.disabled=false;b.textContent=t('rec_send');return}
+      try{await firebase.auth().sendPasswordResetEmail(em);showLogin._e=em;showLogin('sent')}
+      catch(e){const c=e&&e.code||'';err(t(c.includes('invalid-email')?'e_email':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen'));b.disabled=false;b.textContent=t('rec_send')}};
+    $('#lgSend').onclick=send;$('#lgE').addEventListener('keydown',e=>{if(e.key==='Enter')send()});setTimeout(()=>{try{$('#lgE').focus()}catch(e){}},50);return}
   $('#app').innerHTML=`<div class="login"><img class="logo" src="logo.jpg" alt="Meu Púlpito"><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
-   <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" placeholder="tu@correo.com"></div>
-   <div class="fld"><label for="lgP">${esc(t('pass'))}</label><input class="inp" id="lgP" type="password" autocomplete="current-password" placeholder="${esc(t('pass_ph'))}"></div>
+   <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="tu@correo.com"></div>
+   <div class="fld"><label for="lgP">${esc(t('pass'))}</label><div class="pwbox"><input class="inp" id="lgP" type="password" autocomplete="current-password" placeholder="${esc(t('pass_ph'))}"><button class="iconbtn" id="lgEye" type="button" aria-label="${esc(t('show_pw'))}" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+   <button class="lnk" id="lgF" style="align-self:flex-end;margin-top:-6px">${esc(t('forgot'))}</button>
    <p class="err" id="lgErr" hidden></p>
    <button class="btn gold block" id="lgIn">${esc(t('enter'))}</button><button class="btn ghost block" id="lgUp">${esc(t('create'))}</button>
-   <div class="between"><button class="lnk" id="lgF">${esc(t('forgot'))}</button><button class="lnk" id="lgL">${esc(t('nologin'))}</button></div>
-   <div class="seg" style="margin-top:10px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div></div>`;
+   ${langSeg}</div>`;
   const err=m=>{const e=$('#lgErr');e.textContent=m;e.hidden=!m};
   const msg=e=>{const c=e&&e.code||'';return t(c.includes('invalid-email')?'e_email':c.includes('missing-password')?'e_pass':c.includes('weak-password')?'e_weak':c.includes('email-already-in-use')?'e_used':(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))?'e_cred':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen')};
   const doAuth=async create=>{err('');const em=$('#lgE').value.trim(),pw=$('#lgP').value;const b=create?$('#lgUp'):$('#lgIn');const tx=b.textContent;b.disabled=true;b.textContent=t(create?'creating':'entering');
+    if(!await ensureFb()){err(t('acc_fail'));b.disabled=false;b.textContent=tx;return}
     try{ls.set('pulpito.local',false);localMode=false;if(create)await firebase.auth().createUserWithEmailAndPassword(em,pw);else await firebase.auth().signInWithEmailAndPassword(em,pw)}catch(e){err(msg(e))}
     if(document.body.contains(b)){b.disabled=false;b.textContent=tx}};
   $('#lgIn').onclick=()=>doAuth(false);$('#lgUp').onclick=()=>doAuth(true);$('#lgP').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth(false)});
-  $('#lgF').onclick=async()=>{const em=$('#lgE').value.trim();if(!em){err(t('e_reset'));return}try{await firebase.auth().sendPasswordResetEmail(em);err('');toast(t('reset_sent'))}catch(e){err(msg(e))}};
-  $('#lgL').onclick=()=>{view.overlay=null;startLocal()};
-  $$('[data-lg]').forEach(b=>b.onclick=()=>{prefs.ui=b.dataset.lg;savePrefs();document.documentElement.lang=prefs.ui==='pt'?'pt-BR':'es';showLogin()})}
+  $('#lgEye').onclick=()=>{const p=$('#lgP'),b=$('#lgEye');const on=p.type==='password';p.type=on?'text':'password';b.setAttribute('aria-pressed',String(on))};
+  $('#lgF').onclick=()=>{showLogin._e=$('#lgE').value.trim();showLogin('rec')};
+  $$('[data-lg]').forEach(b=>b.onclick=()=>{showLogin._e=$('#lgE').value.trim();prefs.ui=b.dataset.lg;savePrefs();document.documentElement.lang=prefs.ui==='pt'?'pt-BR':'es';showLogin()});
+  if(!fbReady())ensureFb()}
 
 /* =========================================================
    Acciones (un solo manejador de toques)
@@ -1492,7 +1520,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
    Inicio de la app
    ========================================================= */
 window.addEventListener('error',()=>setTimeout(fallback,300));
-try{initStore()}catch(e){startLocal()}
+try{initStore()}catch(e){showLogin()}
 setTimeout(()=>{try{purgeTrash()}catch(e){}autoSnap()},8000);
 if(lockCfg())showLock();
 setTimeout(fallback,5000);
