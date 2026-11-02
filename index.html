@@ -481,14 +481,21 @@ function startCloud(u){authU=u;localMode=false;sermons=ls.get(lsKey(),[]);showAp
 }
 function showApp(){$('#vLogin').hidden=true;$('#vLib').hidden=false;$('#vEd').hidden=true;renderList()}
 function showLogin(){$('#vLogin').hidden=false;$('#vLib').hidden=true;$('#vEd').hidden=true}
+function anyView(){return !$('#vLogin').hidden||!$('#vLib').hidden||!$('#vEd').hidden||!$('#vPul').hidden}
+function fallbackView(){if(anyView())return;if(window.firebase&&firebase.apps&&firebase.apps.length)showLogin();else startLocal()}
 async function initStore(){
   const cfg=window.FIREBASE_CONFIG;
-  if(!cfg||!cfg.apiKey||!window.firebase){startLocal();return}
-  firebase.initializeApp(cfg);
-  try{await firebase.firestore().enablePersistence({synchronizeTabs:true})}catch(e){}
-  if(ls.get('pulpito.local',false)){startLocal()}
-  firebase.auth().onAuthStateChanged(u=>{if(u)startCloud(u);else if(!localMode)showLogin()});
+  if(!cfg||!cfg.apiKey||!window.firebase||!firebase.auth||!firebase.firestore){startLocal();return}
+  try{firebase.initializeApp(cfg)}catch(e){startLocal();return}
+  try{firebase.firestore().enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
+  if(ls.get('pulpito.local',false))startLocal();
+  // se a conta demorar para responder, mostra a tela de entrar em vez de ficar preta
+  const t=setTimeout(()=>{if(!authU&&!localMode)fallbackView()},2500);
+  try{firebase.auth().onAuthStateChanged(u=>{clearTimeout(t);if(u)startCloud(u);else if(!localMode)showLogin()},()=>{clearTimeout(t);fallbackView()})}
+  catch(e){clearTimeout(t);fallbackView()}
 }
+window.addEventListener('error',()=>setTimeout(fallbackView,300));
+window.addEventListener('unhandledrejection',()=>setTimeout(fallbackView,300));
 async function pushRemote(s){
   if(!col)return;
   try{const {id,...data}=s;await col.doc(id).set(JSON.parse(JSON.stringify(data)))}
@@ -953,7 +960,8 @@ $('#pScroll').addEventListener('scroll',()=>{const sc=$('#pScroll');lastTop=sc.s
   document.querySelectorAll('#jump button').forEach(b=>{const a=b.dataset.j===on;if(a&&!b.classList.contains('on'))b.scrollIntoView({inline:'center',block:'nearest'});b.classList.toggle('on',a)})},{passive:true});
 document.addEventListener('visibilitychange',async()=>{if(!$('#vPul').hidden&&document.visibilityState==='visible'){try{wake=await navigator.wakeLock?.request('screen')}catch(e){}}});
 
-initStore();
+try{initStore()}catch(e){startLocal()}
+setTimeout(fallbackView,5000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
