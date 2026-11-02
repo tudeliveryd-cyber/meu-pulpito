@@ -365,3 +365,14 @@ html[data-mode="dark"] .bsel .book{background-color:#1C2638}
 }
 .bsel select{appearance:none;-webkit-appearance:none;background-repeat:no-repeat;background-position:right 12px center;background-size:14px}
 .bsel .chap{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+.mini .ti,.sm-card .ti{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ---------- lectura cómoda ---------- */
+.doc h2[data-n]::before{content:attr(data-n) " ";color:var(--gold-ink)}
+.doc h2.imp::after{content:" ★";color:var(--gold)}
+.pg-text h2.imp{color:var(--pfg)}
+.pg-text h2 .star-i{width:.7em;height:.7em;fill:var(--gold);stroke:var(--gold);vertical-align:.05em}
+button.pg-where{background:none;padding:6px 4px;color:var(--pmut);font:inherit;font-size:13px;font-weight:700}
+.pg.clean .pg-top,.pg.clean .pg-bot,.pg.clean .pg-prog{opacity:0;pointer-events:none;transition:opacity .25s}
+.pg.clean.show .pg-top,.pg.clean.show .pg-bot,.pg.clean.show .pg-prog,.pg.clean.tw .pg-top{opacity:1;pointer-events:auto}
+.pg.clean .pg-scroll{touch-action:pan-y}

@@ -79,6 +79,8 @@ ai:'Meu Púlpito IA',ai_d:'Asistente para preparar el sermón. No sustituye tu e
 ai_thinking:'Pensando…',ai_intro:'Crear introducción',ai_point:'Desarrollar el punto actual',ai_concl:'Mejorar la conclusión',ai_apps:'Aplicaciones prácticas',ai_ctx:'Contexto bíblico',ai_refs:'Referencias relacionadas',ai_gram:'Corregir gramática',ai_trans:'Traducir el sermón',ai_ask:'Pregunta libre',ai_ask_ph:'Ej.: ¿qué significa «propuso en su corazón»?',ai_send:'Enviar',ai_insert:'Insertar en el sermón',ai_replace:'Reemplazar el texto',ai_again:'Otra respuesta',ai_dropped:'{n} cita(s) no encontradas en la Biblia fueron quitadas.',ai_unver:'(cita no verificada)',ai_inserted:'Agregado al sermón',ai_replaced:'Texto corregido',ai_need_sel:'Coloca el cursor en el párrafo o selecciona el texto que quieres corregir.',ai_tr_ai:'Se usa la IA para traducir (mejor calidad).',
 rec:'Audio y dictado',rec_d:'Los audios quedan guardados en este celular.',rec_start:'Grabar',rec_stop:'Detener',rec_saved:'Audio guardado',rec_none:'Todavía no hay audios en este sermón.',rec_none_g:'Todavía no hay notas de voz.',rec_err:'No pude usar el micrófono. Revisa el permiso en Ajustes → Safari → Micrófono.',rec_to_note:'Convertir en anotación',rec_del:'Eliminar audio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
 dict:'Dictar (voz a texto)',dict_on:'Escuchando… habla con calma',dict_stop:'Terminar dictado',dict_none:'El dictado no está disponible aquí. Usa el micrófono del teclado del iPhone: es igual de rápido.',dict_ins:'Insertar en el sermón',dict_note:'Guardar como anotación',dict_ph:'El texto aparece aquí…',voice_notes:'Notas de voz',
+long_t:'El título quedó muy largo. ¿Usar «{t}» como título y pasar el resto al texto?',long_fix:'Arreglar título',long_done:'Título arreglado. El resto quedó debajo; puedes moverlo con Organizar.',
+night:'Lectura nocturna',night_d:'Fondo negro, letras blancas y brillo más bajo.',clean:'Interfaz limpia',clean_d:'Esconde los botones. Toca el centro de la pantalla para verlos.',tip_clean:'Toca el centro de la pantalla para ver los controles',index:'Índice',imp:'Punto importante',imp_on:'Marcado como importante',imp_off:'Ya no es importante',imp_need:'Coloca el cursor en un punto (título) para marcarlo',from_start:'Desde el inicio',pinch:'Junta o separa dos dedos para cambiar el tamaño de la letra',
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
@@ -135,13 +137,15 @@ ai:'Meu Púlpito IA',ai_d:'Assistente para preparar o sermão. Não substitui o 
 ai_thinking:'Pensando…',ai_intro:'Criar introdução',ai_point:'Desenvolver o ponto atual',ai_concl:'Melhorar a conclusão',ai_apps:'Aplicações práticas',ai_ctx:'Contexto bíblico',ai_refs:'Referências relacionadas',ai_gram:'Corrigir gramática',ai_trans:'Traduzir o sermão',ai_ask:'Pergunta livre',ai_ask_ph:'Ex.: o que significa «propôs no seu coração»?',ai_send:'Enviar',ai_insert:'Inserir no sermão',ai_replace:'Substituir o texto',ai_again:'Outra resposta',ai_dropped:'{n} referência(s) não encontradas na Bíblia foram retiradas.',ai_unver:'(referência não conferida)',ai_inserted:'Adicionado ao sermão',ai_replaced:'Texto corrigido',ai_need_sel:'Coloque o cursor no parágrafo ou selecione o texto que quer corrigir.',ai_tr_ai:'A IA é usada para traduzir (melhor qualidade).',
 rec:'Áudio e ditado',rec_d:'Os áudios ficam guardados neste celular.',rec_start:'Gravar',rec_stop:'Parar',rec_saved:'Áudio guardado',rec_none:'Ainda não há áudios neste sermão.',rec_none_g:'Ainda não há notas de voz.',rec_err:'Não consegui usar o microfone. Confira a permissão em Ajustes → Safari → Microfone.',rec_to_note:'Transformar em anotação',rec_del:'Excluir áudio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
 dict:'Ditar (voz para texto)',dict_on:'Ouvindo… fale com calma',dict_stop:'Terminar ditado',dict_none:'O ditado não está disponível aqui. Use o microfone do teclado do iPhone: é igualmente rápido.',dict_ins:'Inserir no sermão',dict_note:'Salvar como anotação',dict_ph:'O texto aparece aqui…',voice_notes:'Notas de voz',
+long_t:'O título ficou muito longo. Usar «{t}» como título e passar o resto para o texto?',long_fix:'Arrumar título',long_done:'Título arrumado. O resto ficou embaixo; você pode mover com Organizar.',
+night:'Leitura noturna',night_d:'Fundo preto, letras brancas e brilho mais baixo.',clean:'Interface limpa',clean_d:'Esconde os botões. Toque no centro da tela para vê-los.',tip_clean:'Toque no centro da tela para ver os controles',index:'Índice',imp:'Ponto importante',imp_on:'Marcado como importante',imp_off:'Não é mais importante',imp_need:'Coloque o cursor num ponto (título) para marcar',from_start:'Do início',pinch:'Junte ou afaste dois dedos para mudar o tamanho da letra',
 cats:['Santa Ceia','Culto de Ensino','Culto da Família','Jovens','Liderança','Evangelismo','Consagração','Mensagens especiais'],
 wd:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],months:['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
 books:['Gênesis','Êxodo','Levítico','Números','Deuteronômio','Josué','Juízes','Rute','1 Samuel','2 Samuel','1 Reis','2 Reis','1 Crônicas','2 Crônicas','Esdras','Neemias','Ester','Jó','Salmos','Provérbios','Eclesiastes','Cânticos','Isaías','Jeremias','Lamentações','Ezequiel','Daniel','Oseias','Joel','Amós','Obadias','Jonas','Miqueias','Naum','Habacuque','Sofonias','Ageu','Zacarias','Malaquias','Mateus','Marcos','Lucas','João','Atos','Romanos','1 Coríntios','2 Coríntios','Gálatas','Efésios','Filipenses','Colossenses','1 Tessalonicenses','2 Tessalonicenses','1 Timóteo','2 Timóteo','Tito','Filemom','Hebreus','Tiago','1 Pedro','2 Pedro','1 João','2 João','3 João','Judas','Apocalipse']}
 };
 let prefs=Object.assign({ui:/^pt/i.test(navigator.language||'')?'pt':'es',theme:'auto',bibleVer:null,
-  p:{fs:30,lh:1.5,bg:'negro',timer:true,goal:30,outline:false,tap:true,font:'serif',color:'auto',align:'left',margin:24,ps:.75,dim:0,speed:3}},ls.get('mp.prefs',{}));
-prefs.p=Object.assign({fs:30,lh:1.5,bg:'negro',timer:true,goal:30,outline:false,tap:true,font:'serif',color:'auto',align:'left',margin:24,ps:.75,dim:0,speed:3},prefs.p||{});
+  p:{fs:30,lh:1.5,bg:'negro',timer:true,goal:30,outline:false,tap:true,font:'serif',color:'auto',align:'left',margin:24,ps:.75,dim:0,speed:3,clean:true}},ls.get('mp.prefs',{}));
+prefs.p=Object.assign({fs:30,lh:1.5,bg:'negro',timer:true,goal:30,outline:false,tap:true,font:'serif',color:'auto',align:'left',margin:24,ps:.75,dim:0,speed:3,clean:true},prefs.p||{});
 const savePrefs=()=>ls.set('mp.prefs',prefs);
 function t(k,vars,lang){const d=I18N[lang||prefs.ui]||I18N.es;let s=d[k]??I18N.es[k]??k;if(vars&&typeof s==='string')s=s.replace(/\{(\w+)\}/g,(_,v)=>vars[v]??'');return s}
 
@@ -408,7 +412,7 @@ function getHtml(s){if(s.html)return s.html;const k=s.id+'|'+(s.updated||0);if(!
 /* limpieza: solo las etiquetas del editor */
 const ALLOW={H1:'h1',H2:'h2',H3:'h3',P:'p',DIV:'p',OL:'ol',UL:'ul',LI:'li',BLOCKQUOTE:'blockquote',B:'b',STRONG:'b',I:'i',EM:'i',U:'u',MARK:'mark',BR:'br'};
 const DROP=/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED|SVG|IMG|META|LINK|TEMPLATE|NOSCRIPT|BUTTON|INPUT|SELECT|TEXTAREA|VIDEO|AUDIO|CANVAS)$/i;
-const KEEPCLS=new Set(['lg','il','nt']);
+const KEEPCLS=new Set(['lg','il','nt','imp']);
 const BLOCK=new Set(['h1','h2','h3','p','ol','ul','blockquote']);
 function cleanHtml(html){
   const tp=document.createElement('template');tp.innerHTML=String(html||'');const root=document.createElement('div');
@@ -454,7 +458,7 @@ const K={s:'pulpito.v1',a:'pulpito.agenda',m:'pulpito.meta',n:'pulpito.notas'};
 let sermons=[],agenda=[],notes=[],meta={},authU=null,localMode=false,cols=null,unsubs=[],sync={ok:false,msg:'sync_conn'},ready=false;
 const keyOf=k=>localMode||!authU?K[k]:K[k]+'.'+authU.uid;
 function loadLocal(){sermons=ls.get(keyOf('s'),[])||[];notes=ls.get(keyOf('n'),[])||[];agenda=ls.get(keyOf('a'),[])||[];meta=ls.get(keyOf('m'),{})||{};fixMeta()}
-function fixMeta(){if(!Array.isArray(meta.cats))meta.cats=t('cats').slice();if(!Array.isArray(meta.favVerses))meta.favVerses=[];if(typeof meta.name!=='string')meta.name=''}
+function fixMeta(){if(meta.read&&typeof meta.read==='object')prefs.p=Object.assign({},prefs.p,meta.read);if(!Array.isArray(meta.cats))meta.cats=t('cats').slice();if(!Array.isArray(meta.favVerses))meta.favVerses=[];if(typeof meta.name!=='string')meta.name=''}
 function cacheAll(){ls.set(keyOf('n'),notes);ls.set(keyOf('s'),sermons);ls.set(keyOf('a'),agenda);ls.set(keyOf('m'),meta)}
 const strip=x=>{const c=JSON.parse(JSON.stringify(x));delete c.id;return c};
 function setSync(ok,msg){sync={ok,msg};$$('[data-sync]').forEach(el=>{el.innerHTML=syncHtml()})}
@@ -711,6 +715,7 @@ function openEditor(id,fresh){
        <button data-act="fmtOl" data-keep aria-label="${esc(t('tb_list'))}">${ic('ol')}</button>
        <button data-act="fmtHl" data-keep aria-label="${esc(t('tb_hl'))}">${ic('hl')}</button>
        <button data-act="fmtNote" data-keep aria-label="${esc(t('tb_note'))}" style="font-size:18px">@</button>
+       <button data-act="fmtImp" data-keep aria-label="${esc(t('imp'))}">${ic('star')}</button>
        <button data-act="aiOpen" data-keep aria-label="${esc(t('ai'))}" style="color:var(--gold-ink)">${ic('spark')}</button>
        <button data-act="recE" data-keep aria-label="${esc(t('rec'))}">${ic('mic')}</button>
      </div>
@@ -734,9 +739,14 @@ function drawEdMeta(){if(!E)return;const s=E.s;const c=catOf(s);const l=sLang(s)
    <button class="tag add" data-act="edLang" aria-label="${esc(t('lang_msg'))}">${l==='pt'?'PT':'ES'}</button>
    <button class="tag add" data-act="edInfo">${esc(t('details'))}</button>
    ${empty?`<button class="tag add" data-act="edTpl" style="box-shadow:0 0 0 1.5px var(--gold) inset;color:var(--fg)">${esc(t('models'))}</button>`:`<button class="tag add" data-act="edOrg">${esc(t('organize'))}</button>`}
-   <span class="sub" id="edWc" style="margin-left:auto;align-self:center;font-size:12.5px"></span>`;updWc()
+   <span class="sub" id="edWc" style="margin-left:auto;align-self:center;font-size:12.5px"></span>${longTitleHtml()}`;updWc()
   $$('#edMeta svg').forEach(s=>{s.style.width='16px';s.style.height='16px'})}
-function updWc(){const el=$('#edWc');if(!el||!E)return;const w=(edText().match(/\S+/g)||[]).length;el.textContent=w?t('wc',{w,m:Math.max(1,Math.round(w/130))}):''}
+function splitLongTitle(){const h1=$('#ed h1');if(!h1)return null;const tx=h1.textContent.trim();if(tx.length<=120)return null;
+  const parts=tx.split(/(?<=[.!?…])\s*/).map(x=>x.trim()).filter(Boolean);let title=parts.length>1?parts[parts.length-1]:'';
+  if(!title||title.length>110){title=parts[0].length<=110?parts[0]:'';}if(!title)return null;const rest=tx.replace(title,'').trim();return{title,rest}}
+function longTitleHtml(){const r=splitLongTitle();return r?`<div class="banner" style="width:100%;margin-top:6px"><div class="tx">${esc(t('long_t',{t:r.title}))}</div><button class="btn sm gold" data-act="fixTitle">${esc(t('long_fix'))}</button></div>`:''}
+function numberPts(){const ed=$('#ed');if(!ed)return;let n=0;$$('h2',ed).forEach(h=>{const tx=h.textContent.trim();if(tx&&!secOf(tx)){n++;h.setAttribute('data-n',n+'.')}else h.removeAttribute('data-n')})}
+function updWc(){numberPts();const el=$('#edWc');if(!el||!E)return;const w=(edText().match(/\S+/g)||[]).length;el.textContent=w?t('wc',{w,m:Math.max(1,Math.round(w/130))}):''}
 function edText(){const ed=$('#ed');return ed?ed.textContent.trim():''}
 function onEdInput(e){if(!E)return;E.dirty=true;$('#edSaved').innerHTML=`<span class="st" style="display:inline">${esc(t('saving'))}</span>`;
   if(e&&e.inputType==='insertParagraph'){const b=curBlock();if(b&&/^(H1|H2|H3|DIV|BLOCKQUOTE)$/.test(b.tagName)&&!b.textContent.trim()){document.execCommand('formatBlock',false,'<p>')}}
@@ -760,7 +770,11 @@ function onEdKey(e){if((e.metaKey||e.ctrlKey)&&!e.altKey){const k=e.key.toLowerC
   if(e.key==='Enter'&&!e.shiftKey){const b=curBlock();if(b&&/^H[123]$/.test(b.tagName)){setTimeout(()=>{const n=curBlock();if(n&&n!==b&&!/^(P|LI|OL|UL)$/.test(n.tagName))document.execCommand('formatBlock',false,'<p>')},0)}
     if(b&&b.tagName==='BLOCKQUOTE'){const sel=getSelection();const r=sel.rangeCount&&sel.getRangeAt(0);const atEnd=r&&r.collapsed&&(()=>{const t2=document.createRange();t2.selectNodeContents(b);t2.setStart(r.endContainer,r.endOffset);return!t2.toString().length})();
       if(atEnd){e.preventDefault();const p=document.createElement('p');p.innerHTML='<br>';b.after(p);placeCaret(p,0);onEdInput()}}}}
-function onPaste(e){e.preventDefault();const cd=e.clipboardData;if(!cd)return;const html=cd.getData('text/html');const txt=cd.getData('text/plain');
+function onPaste(e){e.preventDefault();const cd=e.clipboardData;if(!cd)return;
+  {const b=curBlock();const raw=cd.getData('text/plain')||'';if(b&&b.tagName==='H1'&&(raw.includes('\n')||cd.getData('text/html'))){
+    if(!b.textContent.trim()){const first=raw.split('\n').map(x=>x.trim()).find(Boolean)||'';const rest=raw.slice(raw.indexOf(first)+first.length);
+      b.textContent=first.replace(RX_T,'$2').trim();const p=document.createElement('p');p.innerHTML='<br>';b.after(p);placeCaret(p,0);if(rest.trim()){document.execCommand('insertHTML',false,linesToHtml(rest,{}).html)}onEdInput();return}
+    const p=document.createElement('p');p.innerHTML='<br>';b.after(p);placeCaret(p,0)}}const html=cd.getData('text/html');const txt=cd.getData('text/plain');
   let ins='';
   if(txt&&txt.includes('\n')&&!/<(h[1-3]|blockquote|ol|ul)\b/i.test(html)){
     const r=linesToHtml(txt,{});const h1=$('#ed h1');if(r.title&&h1&&!h1.textContent.trim()){h1.textContent=r.title}ins=r.html}
@@ -976,12 +990,12 @@ let PG=null;
 async function openPreach(id,{resume}={}){
   if(E&&E.s.id===id)edSave();const s=sermons.find(x=>x.id===id)||(E&&E.s.id===id?E.s:null);if(!s)return;while($('.ov'))closeSheet();
   const lang=sLang(s);const r=getResume();const fromSaved=r&&r.id===id;
-  PG={s,lang,tSec:fromSaved?(r.tSec||0):0,run:false,int:0,calm:false,top:fromSaved?(r.top||0):0,wake:null,raf:0};
+  const pos=(ls.get('mp.pos',{})||{})[id];PG={s,lang,tSec:fromSaved?(r.tSec||0):0,run:false,int:0,calm:false,top:fromSaved?(r.top||0):(pos?pos.top:0),wake:null,raf:0};
   const el=document.createElement('div');el.className='pg '+prefs.p.bg;el.id='pg';
   el.innerHTML=`<div class="pg-top">
      <button class="iconbtn" data-act="pgClose" aria-label="${esc(t('exit'))}">${ic('x')}</button>
      <button class="pg-timer" id="pgTimer" data-act="pgTimer" aria-label="${esc(t('p_timer'))}">${ic('play')}<span id="pgT">00:00</span><small id="pgG"></small></button>
-     <span class="pg-where" id="pgWhere"></span>
+     <button class="pg-where" id="pgWhere" data-act="pgIdx" aria-label="${esc(t('index'))}"></button>
      <button class="iconbtn" data-act="pgSet" aria-label="${esc(t('p_set'))}" style="color:var(--pfg);font-weight:800;font-size:16px">Aa</button></div>
    <div class="pg-prog"><i id="pgProg"></i></div>
    <div class="pg-scroll" id="pgScroll"><article class="pg-text" id="pgText"></article></div>
@@ -990,11 +1004,15 @@ async function openPreach(id,{resume}={}){
   document.body.appendChild(el);document.body.style.overflow='hidden';
   pgRender();pgApply();
   const sc=$('#pgScroll');sc.addEventListener('scroll',pgScroll,{passive:true});
-  sc.addEventListener('click',pgTap);sc.addEventListener('touchstart',()=>{if(PG&&PG.asc){ascStop();toast(t('scroll_pause',null,PG.lang))}},{passive:true});sc.addEventListener('wheel',()=>{if(PG&&PG.asc)ascStop()},{passive:true});
+  sc.addEventListener('click',pgTap);
+  let pz=null;const dist=ts=>Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY);
+  sc.addEventListener('touchstart',e=>{if(e.touches.length===2){pz={d:dist(e.touches),fs:prefs.p.fs};if(PG&&PG.asc)ascStop()}},{passive:true});
+  sc.addEventListener('touchmove',e=>{if(pz&&e.touches.length===2){e.preventDefault();const f=Math.round(Math.min(60,Math.max(20,pz.fs*dist(e.touches)/pz.d)));if(f!==prefs.p.fs){const ratio=sc.scrollTop/Math.max(1,sc.scrollHeight);prefs.p.fs=f;pgApply();sc.scrollTop=ratio*sc.scrollHeight}}},{passive:false});
+  sc.addEventListener('touchend',e=>{if(e.touches.length<2)pz=null},{passive:true});sc.addEventListener('touchstart',()=>{if(PG&&PG.asc){ascStop();toast(t('scroll_pause',null,PG.lang))}},{passive:true});sc.addEventListener('wheel',()=>{if(PG&&PG.asc)ascStop()},{passive:true});
   requestAnimationFrame(()=>{sc.scrollTop=PG.top});
   try{await loadBible(lang);if(PG){const top=sc.scrollTop;pgRender();sc.scrollTop=top}}catch(e){}
   if(PG&&PG.top)requestAnimationFrame(()=>{sc.scrollTop=PG.top});
-  if(prefs.p.tap&&!ls.get('mp.tip',false)){ls.set('mp.tip',true);toast(t('tip_tap',null,lang))}else if(fromSaved&&(r.top>40||r.tSec))toast(t('cont',null,lang));
+  if(prefs.p.tap&&!ls.get('mp.tip',false)){ls.set('mp.tip',true);toast(t('tip_tap',null,lang))}else if(prefs.p.clean&&!ls.get('mp.tipc',false)){ls.set('mp.tipc',true);toast(t('tip_clean',null,lang))}else if(PG&&PG.top>40)toast(t('cont',null,lang));
   try{PG.wake=await navigator.wakeLock?.request('screen')}catch(e){}
 }
 function pgRender(){if(!PG)return;const s=PG.s,l=PG.lang;const d=docOf(s);const out=[];let n=0,k=0;PG.secs=[];
@@ -1003,7 +1021,7 @@ function pgRender(){if(!PG)return;const s=PG.s,l=PG.lang;const d=docOf(s);const 
     if(tg==='H1'){if(dv.passage&&!d.querySelector('blockquote[data-ref]'))out.push(`<div class="ref-top">${esc(t('base',null,l))} · ${esc(dv.passage)}</div>`);if(tx)out.push(`<h1>${esc(tx)}</h1>`);continue}
     if(tg==='H2'){if(!tx)continue;const sk=secOf(tx);const id='s'+(k++);
       if(sk){out.push(`<h2 class="sec s-${sk}" id="${id}">${esc(tx.replace(/:$/,''))}</h2>`);PG.secs.push({id,label:tx.replace(/:$/,''),pt:0})}
-      else{n++;const clean=tx.replace(RX_PT,'').replace(/^[:\-–\s]+/,'')||tx;out.push(`<h2 id="${id}"><span class="n">${n}.</span><span>${esc(clean)}</span></h2>`);PG.secs.push({id,label:clean,pt:n})}continue}
+      else{n++;const clean=tx.replace(RX_PT,'').replace(/^[:\-–\s]+/,'')||tx;const imp=el.classList.contains('imp');out.push(`<h2 id="${id}"${imp?' class="imp"':''}><span class="n">${n}.</span><span>${esc(clean)}${imp?` <svg class="i star-i" aria-label="${esc(t('imp',null,l))}" role="img"><use href="#i-star"/></svg>`:''}</span></h2>`);PG.secs.push({id,label:clean,pt:n,imp})}continue}
     if(tg==='H3'){if(tx)out.push(`<h3>${esc(tx)}</h3>`);continue}
     if(tg==='BLOCKQUOTE'){const ref=el.getAttribute('data-ref');const v=tx||(ref?bibleText(ref,l):'');
       if(ref)out.push(`<div class="vq"><button class="r" data-act="cmp" data-ref="${esc(ref)}">${esc(ref)} <span class="cv">· ${esc(t('cmp_t',null,l))} ›</span></button>${v?`<span class="x">${tx?inner:esc(v)}</span>`:''}${!tx&&v?`<span class="src">${esc(verLabel(l))}</span>`:''}</div>`);
@@ -1020,14 +1038,14 @@ function pgApply(){if(!PG)return;const p=prefs.p;const el=$('#pg');el.className=
   tx.style.setProperty('--ps',p.ps+'em');tx.style.setProperty('--mx',p.margin+'px');tx.style.textAlign=p.align;tx.dataset.al=p.align;tx.lang=PG.lang==='pt'?'pt-BR':'es';tx.style.fontFamily=PFONT[p.font]||PFONT.serif;
   if(p.color&&p.color!=='auto')el.style.setProperty('--pfg',p.color);else el.style.removeProperty('--pfg');
   $('#pgDim').style.opacity=p.dim||0;
-  $('#pgTimer').hidden=!p.timer;$('#pgG').textContent=p.goal?`/ ${p.goal}:00`:'';pgTimerDraw();savePrefs()}
+  $('#pgTimer').hidden=!p.timer;$('#pgG').textContent=p.goal?`/ ${p.goal}:00`:'';el.classList.toggle('clean',!!p.clean);pgTimerDraw();savePrefs();clearTimeout(pgApply._t);pgApply._t=setTimeout(()=>{if(JSON.stringify(meta.read||{})!==JSON.stringify(prefs.p)){meta.read=Object.assign({},prefs.p);putMeta()}},2000)}
 function pgTimerDraw(){if(!PG)return;$('#pgT').textContent=fmtSec(PG.tSec);const gs=prefs.p.goal*60;const ov=!!prefs.p.goal&&PG.tSec>=gs;const wn=!!prefs.p.goal&&!ov&&gs>300&&PG.tSec>=gs-300;
   const b=$('#pgTimer');b.classList.toggle('over',ov);b.classList.toggle('warn',wn);$('#pg').classList.toggle('tw',ov||wn);
   b.querySelector('use').setAttribute('href',PG.run?'#i-pause':'#i-play')}
 function pgTimer(){if(!PG)return;PG.run=!PG.run;clearInterval(PG.int);
   if(PG.run)PG.int=setInterval(()=>{if(!PG)return;PG.tSec++;pgTimerDraw();const g=prefs.p.goal*60;
     if(g>300&&PG.tSec===g-300)toast(t('five',null,PG.lang));if(g&&PG.tSec===g)toast(t('done_t',null,PG.lang));if(PG.tSec%10===0)pgSave()},1000);pgTimerDraw()}
-function pgSave(){if(!PG)return;ls.set(RES,{id:PG.s.id,top:PG.top,tSec:PG.tSec,at:Date.now()})}
+function pgSave(){if(!PG)return;ls.set(RES,{id:PG.s.id,top:PG.top,tSec:PG.tSec,at:Date.now()});const m=ls.get('mp.pos',{})||{};m[PG.s.id]={top:PG.top,at:Date.now()};const ks=Object.keys(m);if(ks.length>200)delete m[ks.sort((a,b)=>m[a].at-m[b].at)[0]];ls.set('mp.pos',m)}
 let pgST=0;
 function pgScroll(){if(!PG)return;const sc=$('#pgScroll');PG.top=sc.scrollTop;const max=Math.max(1,sc.scrollHeight-sc.clientHeight-window.innerHeight*.4);
   $('#pgProg').style.width=Math.min(100,PG.top/max*100)+'%';pgWhere();clearTimeout(pgST);pgST=setTimeout(pgSave,600)}
@@ -1040,8 +1058,13 @@ function pgGo(dir){if(!PG)return;const sc=$('#pgScroll');const els=(PG.secs||[])
   if(dir>0){const nx=els.find(h=>h.offsetTop-16>y+8);if(!nx){toast(t('p_last',null,PG.lang));return}tg=nx.offsetTop-16}
   else{const pv=els.filter(h=>h.offsetTop-16<y-8);tg=pv.length?pv[pv.length-1].offsetTop-16:0}
   sc.scrollTo({top:Math.max(0,tg),behavior:'smooth'})}
-function pgTap(e){if(!PG||!prefs.p.tap||e.target.closest('button,a,input'))return;if(String(getSelection()||'').length)return;
-  const r=$('#pgScroll').getBoundingClientRect();const x=(e.clientX-r.left)/r.width;if(x>.62)pgGo(1);else if(x<.38)pgGo(-1)}
+function pgTap(e){if(!PG||e.target.closest('button,a,input'))return;if(String(getSelection()||'').length)return;
+  const r=$('#pgScroll').getBoundingClientRect();const x=(e.clientX-r.left)/r.width;if(prefs.p.tap&&x>.62)pgGo(1);else if(prefs.p.tap&&x<.38)pgGo(-1);else pgShowCtl()}
+function pgShowCtl(){const el=$('#pg');if(!el||!prefs.p.clean)return;el.classList.add('show');clearTimeout(pgShowCtl._t);pgShowCtl._t=setTimeout(()=>{const e=$('#pg');if(e&&!e.querySelector('.ov'))e.classList.remove('show')},5000)}
+function pgIndex(){if(!PG)return;const cur=pgCur();const l=PG.lang;
+  const sh=openSheet(`<h3>${esc(t('index',null,l))}</h3><div class="acts"><button class="act" data-ix="top">${ic('home')}${esc(t('from_start',null,l))}</button>
+    ${(PG.secs||[]).map((x,i)=>`<button class="act" data-ix="${x.id}" ${i===cur?'style="color:var(--gold)"':''}>${x.pt?`<b style="color:var(--gold);min-width:26px">${x.pt}.</b>`:`<span style="min-width:26px"></span>`}<span style="flex:1;${x.pt?'':'font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:800'}">${esc(x.label)}</span>${x.imp?`<svg class="i" style="fill:var(--gold);stroke:var(--gold)" aria-label="${esc(t('imp',null,l))}" role="img"><use href="#i-star"/></svg>`:''}</button>`).join('')}</div>`,{host:$('#pg')});
+  sh.addEventListener('click',e=>{const b=e.target.closest('[data-ix]');if(!b)return;closeSheet();const sc=$('#pgScroll');if(b.dataset.ix==='top'){sc.scrollTo({top:0,behavior:'smooth'});return}const h=document.getElementById(b.dataset.ix);if(h)sc.scrollTo({top:Math.max(0,h.offsetTop-16),behavior:'smooth'})})}
 document.addEventListener('keydown',e=>{if(!PG||$('.ov')||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''))return;
   if(['ArrowRight','PageDown',' ','ArrowDown'].includes(e.key)){e.preventDefault();pgGo(1)}else if(['ArrowLeft','PageUp','ArrowUp'].includes(e.key)){e.preventDefault();pgGo(-1)}});
 document.addEventListener('visibilitychange',async()=>{if(PG&&document.visibilityState==='visible'){try{PG.wake=await navigator.wakeLock?.request('screen')}catch(e){}}else if(PG)pgSave()});
@@ -1058,8 +1081,10 @@ function pgSettings(){if(!PG)return;const p=prefs.p,l=PG.lang;const seg=(k,opts)
   const sw=k=>`<div class="seg" data-pk="color">${colors.map(([v,l])=>`<button data-v="${v}" aria-pressed="${p.color===v}" ${v!=='auto'?`style="color:${v};font-size:22px" aria-label="${v}"`:''}>${esc(l)}</button>`).join('')}</div>`;
   const rng=(id,k,min,max,step,lab,fmt)=>`<div class="fld"><span class="lb">${esc(lab)} · <span id="${id}V">${fmt(p[k])}</span></span><input class="rng" type="range" min="${min}" max="${max}" step="${step}" value="${p[k]}" data-rk="${k}" data-fmt="${id}" aria-label="${esc(lab)}"></div>`;
   const sh=openSheet(`<h3>${esc(t('p_set'))}</h3>
+   <button class="btn block" id="psNight" style="background:#080D16;color:#fff;justify-content:flex-start;padding:0 16px;height:56px;box-shadow:0 0 0 1px rgba(214,173,85,.5) inset"><svg class="i" aria-hidden="true" style="stroke:#D6AD55"><use href="#i-spark"/></svg><span style="display:flex;flex-direction:column;align-items:flex-start;gap:1px"><span>${esc(t('night'))}</span><span style="font-size:12px;font-weight:500;opacity:.75">${esc(t('night_d'))}</span></span></button>
+   <div class="fld"><span class="lb">${esc(t('clean'))}</span>${seg('clean',[[true,t('yes')],[false,t('no')]])}<span class="sub" style="font-size:12px">${esc(t('clean_d'))}</span></div>
    <span class="lbl">${esc(t('g_read'))}</span>
-   ${rng('psFs','fs',20,60,1,t('p_size'),v=>v)}
+   ${rng('psFs','fs',20,60,1,t('p_size'),v=>v)}<span class="sub" style="font-size:12px;margin-top:-6px">${esc(t('pinch'))}</span>
    <div class="fld"><span class="lb">${esc(t('p_font'))}</span>${seg('font',[['serif',t('f_serif')],['sans',t('f_sans')],['wide',t('f_wide')]])}</div>
    <div class="fld"><span class="lb">${esc(t('p_lh'))}</span>${seg('lh',[[1.35,'S'],[1.5,'M'],[1.7,'L'],[1.95,'XL']])}</div>
    <div class="fld"><span class="lb">${esc(t('p_pspace'))}</span>${seg('ps',[[.4,'S'],[.75,'M'],[1.1,'L'],[1.5,'XL']])}</div>
@@ -1082,6 +1107,7 @@ function pgSettings(){if(!PG)return;const p=prefs.p,l=PG.lang;const seg=(k,opts)
   sh.addEventListener('input',e=>{const r=e.target.closest('[data-rk]');if(!r)return;const k=r.dataset.rk;p[k]=+r.value;const f={psFs:v=>v,psMx:v=>v+'px',psDim:v=>Math.round((1-v)*100)+'%',psSp:v=>v}[r.dataset.fmt];$('#'+r.dataset.fmt+'V',sh).textContent=f(p[k]);pgApply();if(k==='speed')ascDraw()});
   sh.addEventListener('click',e=>{const b=e.target.closest('[data-pk] button');if(!b)return;const k=b.parentNode.dataset.pk;let v=b.dataset.v;v=v==='true'?true:v==='false'?false:isNaN(+v)?v:+v;p[k]=v;
     $$('button',b.parentNode).forEach(x=>x.setAttribute('aria-pressed',x===b));if(k==='bg'&&p.color!=='auto')p.color='auto';pgApply();if(k==='bg'){closeSheet();pgSettings()}});
+  $('#psNight',sh).onclick=()=>{Object.assign(p,{bg:'negro',color:'#FFFFFF',dim:Math.max(p.dim||0,.25)});pgApply();closeSheet();pgSettings()};
   $('#psReset',sh).onclick=()=>{PG.run=false;clearInterval(PG.int);PG.tSec=0;pgTimerDraw();pgSave()};
   $('#psCalm',sh).onclick=()=>{PG.calm=!PG.calm;pgApply();closeSheet()};
   const fs=$('#psFull',sh);if(fs)fs.onclick=()=>{(document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()).catch(()=>{});closeSheet()}}
@@ -1363,6 +1389,7 @@ const ACT={
   nNew:()=>noteSheet(null),nOpen:b=>noteSheet(b.dataset.id),trash:()=>trashSheet(),
   trRest:b=>{const arr=b.dataset.k==='n'?notes:sermons;const x=arr.find(y=>y.id===b.dataset.id);if(x){delete x.deleted;b.dataset.k==='n'?putNote(x):putSermon(x)}closeSheet();toast(t('restored'));trashSheet()},
   trKill:b=>{b.dataset.k==='n'?hardDelNote(b.dataset.id):hardDelSermon(b.dataset.id);closeSheet();trashSheet()},
+  fixTitle:()=>{const r=splitLongTitle();if(!r)return;snap();const h1=$('#ed h1');h1.textContent=r.title;if(r.rest){const p=document.createElement('p');p.textContent=r.rest;h1.after(p)}onEdInput();snap();drawEdMeta();toast(t('long_done'))},
   aiOpen:()=>aiSheet(),recE:()=>{if(E){edSave();trackRange();recSheet(E.s.id)}},recG:()=>recSheet(null),
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
@@ -1380,6 +1407,8 @@ const ACT={
   edCat:()=>pickCategory(c=>{E.s.category=c;delete E.s.series;drawEdMeta();edSave(true)},catOf(E.s)),
   edLang:()=>{E.s.lang=sLang(E.s)==='pt'?'es':'pt';drawEdMeta();$('#ed').lang=E.s.lang==='pt'?'pt-BR':'es';edSave(true);toast(t('lang_msg')+': '+(E.s.lang==='pt'?'Português':'Español'))},
   fmtB:()=>fmt('bold'),fmtI:()=>fmt('italic'),fmtU:()=>fmt('underline'),fmtOl:()=>fmt('insertOrderedList'),
+  fmtImp:()=>{let b=curBlock();while(b&&b.tagName!=='H2')b=b.previousElementSibling;if(!b){toast(t('imp_need'));return}snap();b.classList.toggle('imp');onEdInput();snap();toast(t(b.classList.contains('imp')?'imp_on':'imp_off'))},
+  pgIdx:()=>pgIndex(),
   fmtHead:()=>fmtHead(),fmtSize:()=>fmtSize(),fmtHl:()=>fmtHl(),fmtNote:()=>fmtNote(),edPoint:()=>edPoint(),edVerse:()=>edVerse(),vIns:()=>vInsert(),
   // predicar
   pgClose:()=>closePreach(),pgTimer:()=>pgTimer(),pgSet:()=>pgSettings(),pgPrev:()=>pgGo(-1),pgNext:()=>pgGo(1),
