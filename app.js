@@ -1221,7 +1221,7 @@ function evForm(id){const e=id?Object.assign({},agenda.find(x=>x.id===id)):{id:u
 function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button data-act="${act}" data-v="${v}" aria-pressed="${cur===v}">${esc(l)}</button>`).join('')}</div>`;
   return`<h1 class="h">${esc(t('nav_profile'))}</h1>
   <div class="card row" style="gap:14px"><button class="avatar avbtn" data-act="photo" aria-label="${esc(t(meta.photo?'photo':'photo_add'))}">${avatarIn()}<span class="avcam">${ic('cam')}</span></button>
-    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">${esc(meta.name||t('pastor'))}</b><span class="sub" style="overflow-wrap:anywhere">${esc(localMode?t('local_only'):authU?authU.email:'')}</span>${meta.photo?`<button class="linkbtn" data-act="photoRm">${esc(t('photo_rm'))}</button>`:''}</div></div>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">${esc(meta.name||t('pastor'))}</b><span class="sub" style="overflow-wrap:anywhere">${esc(localMode?t('local_only'):authU?authU.email:'')}</span>${localMode?`<button class="linkbtn" data-act="toLogin">${esc(t('login_btn'))}</button>`:''}${meta.photo?`<button class="linkbtn" data-act="photoRm">${esc(t('photo_rm'))}</button>`:''}</div></div>
   <div class="pgrp">
     <div class="prow"><label class="k" for="pName">${esc(t('your_name'))}</label><input class="inp" id="pName" value="${esc(meta.name||'')}" placeholder="${esc(t('pastor'))}" style="max-width:220px;height:42px" data-input="pName"></div>
     <div class="prow"><span class="k">${esc(t('language'))}</span>${seg('pUi',prefs.ui,[['es','Español'],['pt','Português']])}</div>
@@ -1236,7 +1236,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     <div class="prow"><span><label class="k" for="pMail">${esc(t('tr_mail'))}</label><span class="s">${esc(t('tr_mail_d'))}</span></span><input class="inp" id="pMail" type="email" value="${esc(prefs.mmEmail||'')}" placeholder="—" style="max-width:220px;height:42px" data-input="pMail"></div>
     <div class="prow"><span><span class="k">${esc(t('autobak'))}</span><span class="s">${esc(t('autobak_d'))}</span></span><button class="btn sm ghost" data-act="autoBak">${ic('undo')}${esc(t('restore_it'))}</button></div>
     <div class="prow"><span class="k">${esc(t('restore'))}</span><button class="btn sm ghost" data-act="impOpen">${ic('clip')}${esc(t('import'))}</button></div>
-    <div class="prow"><span class="sync" data-sync>${syncHtml()}</span>${localMode?(window.firebase&&firebase.apps&&firebase.apps.length?`<button class="btn sm dark" data-act="toLogin">${esc(t('login_btn'))}</button>`:''):`<button class="btn sm ghost" data-act="logout">${ic('out')}${esc(t('logout'))}</button>`}</div>
+    <div class="prow"><span class="sync" data-sync>${syncHtml()}</span>${localMode?`<button class="btn sm dark" data-act="toLogin">${esc(t('login_btn'))}</button>`:`<button class="btn sm ghost" data-act="logout">${ic('out')}${esc(t('logout'))}</button>`}</div>
   </div>
   <div class="pgrp">
     <div class="prow"><span><span class="k">${esc(t('lock'))}</span><span class="s">${esc(t('lock_d'))}</span></span>${seg('lockT',lockCfg()?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>
@@ -1461,7 +1461,7 @@ const ACT={
   lockT:b=>{if((b.dataset.v==='on')!==!!lockCfg())lockSetup()},
   bioT:b=>{const c=lockCfg();if(c&&(b.dataset.v==='on')!==!!c.bio)bioAvailable().then(ok=>ok?bioToggle():toast(t('bio_fail')))},
   logout:async()=>{unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;try{await firebase.auth().signOut()}catch(e){}authU=null;sermons=[];agenda=[];showLogin()},
-  toLogin:()=>{ls.set('pulpito.local',false);localMode=false;showLogin()}
+  toLogin:()=>{ls.set('pulpito.local',false);if(!(window.firebase&&firebase.apps&&firebase.apps.length)){location.reload();return}localMode=false;showLogin()}
 };
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-keep]');if(b&&E)e.preventDefault()});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const f=ACT[b.dataset.act];if(f){e.preventDefault();f(b,e)}});
