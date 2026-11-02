@@ -485,7 +485,16 @@ function subCol(ref,getL,setL,onAny){let first=true;
     else if(!first||remote.length)arr=remote;
     if(arr){setL(arr);cacheAll();onAny&&onAny(snap)}
   },err=>onAny&&onAny(null,err))}
-function startCloud(u){authU=u;localMode=false;loadLocal();const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;go(view.tab||'home');setSync(false,'sync_conn');
+function startCloud(u){authU=u;localMode=false;loadLocal();
+  // Recuerda de qué correo es cada copia guardada; al cambiar de proyecto, la misma persona recupera sus sermones de este celular
+  const em=(u.email||'').toLowerCase();if(em)ls.set('pulpito.acc.'+u.uid,em);
+  if(em&&!ls.get('pulpito.mig.'+u.uid,false)){ls.set('pulpito.mig.'+u.uid,true);
+    Object.keys(localStorage).filter(k=>k.startsWith('pulpito.acc.')&&k!=='pulpito.acc.'+u.uid&&ls.get(k,'')===em).map(k=>k.slice(12)).forEach(old=>{
+      const add=(arr,k)=>{(ls.get(K[k]+'.'+old,[])||[]).forEach(x=>{if(x&&x.id&&!arr.some(y=>y.id===x.id))arr.push(x)})};
+      add(sermons,'s');add(notes,'n');add(agenda,'a');
+      const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
+    cacheAll()}
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;go(view.tab||'home');setSync(false,'sync_conn');
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];

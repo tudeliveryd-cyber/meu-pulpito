@@ -1,2 +1,0 @@
-    // Meu Púlpito: cada pessoa lê e escreve só os próprios sermões
-    match /pulpito/{uid}/{rest=**} { allow read, write: if isMe(uid); }

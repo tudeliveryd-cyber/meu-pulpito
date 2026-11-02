@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Cada pastor lee y escribe solo sus propios sermones, agenda, biblioteca y preferencias
+    match /pulpito/{uid}/{rest=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+    // Plan de cada cuenta (gratis / completo): el pastor solo lo lee; solo el dueño lo cambia desde la consola
+    match /planos/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+  }
+}
