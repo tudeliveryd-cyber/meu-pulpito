@@ -373,6 +373,10 @@ html[data-mode="dark"] .bsel .book{background-color:#1C2638}
 .pg-text h2.imp{color:var(--pfg)}
 .pg-text h2 .star-i{width:.7em;height:.7em;fill:var(--gold);stroke:var(--gold);vertical-align:.05em}
 button.pg-where{background:none;padding:6px 4px;color:var(--pmut);font:inherit;font-size:13px;font-weight:700}
-.pg.clean .pg-top,.pg.clean .pg-bot,.pg.clean .pg-prog{opacity:0;pointer-events:none;transition:opacity .25s}
+.pg.clean .pg-bot,.pg.clean .pg-prog{opacity:0;pointer-events:none;transition:opacity .25s}
+.pg.clean .pg-top{pointer-events:none}
+.pg.clean .pg-top>*{opacity:0;transition:opacity .25s}
+.pg.clean .pg-top>[data-act=pgClose]{opacity:.55;pointer-events:auto}
+.pg.clean.show .pg-top>*,.pg.clean.tw .pg-top>*{opacity:1}
 .pg.clean.show .pg-top,.pg.clean.show .pg-bot,.pg.clean.show .pg-prog,.pg.clean.tw .pg-top{opacity:1;pointer-events:auto}
 .pg.clean .pg-scroll{touch-action:pan-y}

@@ -1012,7 +1012,7 @@ async function openPreach(id,{resume}={}){
   requestAnimationFrame(()=>{sc.scrollTop=PG.top});
   try{await loadBible(lang);if(PG){const top=sc.scrollTop;pgRender();sc.scrollTop=top}}catch(e){}
   if(PG&&PG.top)requestAnimationFrame(()=>{sc.scrollTop=PG.top});
-  if(prefs.p.tap&&!ls.get('mp.tip',false)){ls.set('mp.tip',true);toast(t('tip_tap',null,lang))}else if(prefs.p.clean&&!ls.get('mp.tipc',false)){ls.set('mp.tipc',true);toast(t('tip_clean',null,lang))}else if(PG&&PG.top>40)toast(t('cont',null,lang));
+  if(prefs.p.tap&&!ls.get('mp.tip',false)){ls.set('mp.tip',true);toast(t('tip_tap',null,lang))}else if(prefs.p.clean&&ls.get('mp.tipc2',0)<3){ls.set('mp.tipc2',ls.get('mp.tipc2',0)+1);toast(t('tip_clean',null,lang))}else if(PG&&PG.top>40)toast(t('cont',null,lang));
   try{PG.wake=await navigator.wakeLock?.request('screen')}catch(e){}
 }
 function pgRender(){if(!PG)return;const s=PG.s,l=PG.lang;const d=docOf(s);const out=[];let n=0,k=0;PG.secs=[];
