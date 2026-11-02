@@ -1476,6 +1476,12 @@ setTimeout(()=>{try{purgeTrash()}catch(e){}autoSnap()},8000);
 if(lockCfg())showLock();
 setTimeout(fallback,5000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+// Biblias sin internet: baja en segundo plano la de español y la de portugués (y la elegida) para que queden guardadas
+function offlineBibles(){if(!('caches' in window)||!navigator.onLine)return;
+  const want=[...new Set(['es','pt',vkey(prefs.bibleVer||prefs.ui)])].map(k=>new URL('biblia/'+VFILE[k]+'.json',location.href).href);
+  (async()=>{for(const u of want){try{if(await caches.match(u,{ignoreVary:true}))continue;const r=await fetch(u);if(r.ok)await r.blob()}catch(e){}}})()}
+if('serviceWorker' in navigator)navigator.serviceWorker.ready.then(()=>setTimeout(offlineBibles,4000)).catch(()=>{});
+window.addEventListener('online',()=>setTimeout(offlineBibles,4000));
 // para pruebas
 window.__mp={get notes(){return notes},get sermons(){return sermons},get agenda(){return agenda},get meta(){return meta},linesToHtml,cleanHtml,parseRef,bibleText,loadBible,derive,sermonText};
 })();
