@@ -75,6 +75,10 @@ bp_t:'Biblia',bp_ins:'Insertar',bp_ins_n:'Insertar ({n})',bp_pick:'Toca los vers
 pdf_print:'PDF para imprimir',pdf_study:'PDF para estudiar',pdf_preach:'PDF para predicar',pdf_points:'PDF solo puntos',pdf_print_d:'Limpio y completo.',pdf_study_d:'Con detalles, recordatorios y espacio para notas.',pdf_preach_d:'Letra grande y puntos destacados.',pdf_points_d:'Una hoja con el esquema.',notes_area:'Notas',
 security:'Seguridad',lock:'Bloquear con código',lock_d:'Pide el código al abrir la app.',lock_on:'Bloqueo activado',lock_off:'Bloqueo desactivado',pin_new:'Crea un código de 4 a 6 números',pin_again:'Repite el código',pin_diff:'Los códigos no coinciden. Intenta de nuevo.',pin_short:'Usa de 4 a 6 números.',pin_enter:'Escribe tu código',pin_wrong:'Código incorrecto',unlock:'Desbloquear',bio:'Usar Face ID o huella',bio_use:'Desbloquear con Face ID o huella',bio_on:'Face ID o huella activado',bio_fail:'No se pudo usar Face ID o huella. Usa el código.',forgot_pin:'Olvidé el código',forgot_pin_d:'Para quitar el bloqueo, sal de tu cuenta y entra de nuevo con tu correo y contraseña. Tus sermones siguen guardados en tu cuenta.',forgot_local:'Sin cuenta no es posible quitar el bloqueo sin el código. Por eso, en modo sin cuenta te recomendamos no activarlo.',sign_out_unlock:'Salir y entrar de nuevo',lock_local_warn:'Estás sin cuenta: si olvidas el código no podrás recuperarlo.',
 autobak:'Copias automáticas',autobak_d:'Una por día en este celular, últimos 7 días.',autobak_none:'Todavía no hay copias automáticas. La primera se hace hoy.',autobak_rest:'Recuperar de esta copia',autobak_rest_d:'Agrega los sermones, anotaciones y predicaciones que falten o estén en la papelera. No borra nada.',autobak_done:'{n} elementos recuperados',
+ai:'Meu Púlpito IA',ai_d:'Asistente para preparar el sermón. No sustituye tu estudio bíblico personal.',ai_key:'Clave de la IA',ai_key_d:'Se guarda solo en este celular. Créala en console.anthropic.com.',ai_test:'Probar',ai_ok:'La IA está lista',ai_nokey:'Para usar la IA, pon tu clave en Perfil → Meu Púlpito IA.',ai_err_key:'La clave no es válida. Revísala en Perfil.',ai_err_rate:'Demasiadas solicitudes. Espera un minuto.',ai_err_busy:'La IA está ocupada. Intenta en unos segundos.',ai_err_credit:'Tu cuenta de la IA no tiene saldo. Agrega créditos en console.anthropic.com.',ai_err:'No pude usar la IA ahora. Revisa la conexión.',
+ai_thinking:'Pensando…',ai_intro:'Crear introducción',ai_point:'Desarrollar el punto actual',ai_concl:'Mejorar la conclusión',ai_apps:'Aplicaciones prácticas',ai_ctx:'Contexto bíblico',ai_refs:'Referencias relacionadas',ai_gram:'Corregir gramática',ai_trans:'Traducir el sermón',ai_ask:'Pregunta libre',ai_ask_ph:'Ej.: ¿qué significa «propuso en su corazón»?',ai_send:'Enviar',ai_insert:'Insertar en el sermón',ai_replace:'Reemplazar el texto',ai_again:'Otra respuesta',ai_dropped:'{n} cita(s) no encontradas en la Biblia fueron quitadas.',ai_unver:'(cita no verificada)',ai_inserted:'Agregado al sermón',ai_replaced:'Texto corregido',ai_need_sel:'Coloca el cursor en el párrafo o selecciona el texto que quieres corregir.',ai_tr_ai:'Se usa la IA para traducir (mejor calidad).',
+rec:'Audio y dictado',rec_d:'Los audios quedan guardados en este celular.',rec_start:'Grabar',rec_stop:'Detener',rec_saved:'Audio guardado',rec_none:'Todavía no hay audios en este sermón.',rec_none_g:'Todavía no hay notas de voz.',rec_err:'No pude usar el micrófono. Revisa el permiso en Ajustes → Safari → Micrófono.',rec_to_note:'Convertir en anotación',rec_del:'Eliminar audio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
+dict:'Dictar (voz a texto)',dict_on:'Escuchando… habla con calma',dict_stop:'Terminar dictado',dict_none:'El dictado no está disponible aquí. Usa el micrófono del teclado del iPhone: es igual de rápido.',dict_ins:'Insertar en el sermón',dict_note:'Guardar como anotación',dict_ph:'El texto aparece aquí…',voice_notes:'Notas de voz',
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
@@ -127,6 +131,10 @@ bp_t:'Bíblia',bp_ins:'Inserir',bp_ins_n:'Inserir ({n})',bp_pick:'Toque nos vers
 pdf_print:'PDF para imprimir',pdf_study:'PDF para estudar',pdf_preach:'PDF para pregar',pdf_points:'PDF só os pontos',pdf_print_d:'Limpo e completo.',pdf_study_d:'Com detalhes, lembretes e espaço para anotações.',pdf_preach_d:'Letra grande e pontos em destaque.',pdf_points_d:'Uma folha com o esboço.',notes_area:'Anotações',
 security:'Segurança',lock:'Bloquear com código',lock_d:'Pede o código ao abrir o app.',lock_on:'Bloqueio ativado',lock_off:'Bloqueio desativado',pin_new:'Crie um código de 4 a 6 números',pin_again:'Repita o código',pin_diff:'Os códigos não conferem. Tente de novo.',pin_short:'Use de 4 a 6 números.',pin_enter:'Digite seu código',pin_wrong:'Código errado',unlock:'Desbloquear',bio:'Usar Face ID ou digital',bio_use:'Desbloquear com Face ID ou digital',bio_on:'Face ID ou digital ativado',bio_fail:'Não deu para usar Face ID ou digital. Use o código.',forgot_pin:'Esqueci o código',forgot_pin_d:'Para tirar o bloqueio, saia da conta e entre de novo com seu e-mail e senha. Seus sermões continuam guardados na conta.',forgot_local:'Sem conta não é possível tirar o bloqueio sem o código. Por isso, no modo sem conta recomendamos não ativar.',sign_out_unlock:'Sair e entrar de novo',lock_local_warn:'Você está sem conta: se esquecer o código, não dá para recuperar.',
 autobak:'Cópias automáticas',autobak_d:'Uma por dia neste celular, últimos 7 dias.',autobak_none:'Ainda não há cópias automáticas. A primeira é feita hoje.',autobak_rest:'Recuperar desta cópia',autobak_rest_d:'Adiciona os sermões, anotações e pregações que faltam ou estão na lixeira. Não apaga nada.',autobak_done:'{n} itens recuperados',
+ai:'Meu Púlpito IA',ai_d:'Assistente para preparar o sermão. Não substitui o seu estudo bíblico pessoal.',ai_key:'Chave da IA',ai_key_d:'Fica guardada só neste celular. Crie em console.anthropic.com.',ai_test:'Testar',ai_ok:'A IA está pronta',ai_nokey:'Para usar a IA, coloque sua chave em Perfil → Meu Púlpito IA.',ai_err_key:'A chave não é válida. Confira no Perfil.',ai_err_rate:'Muitos pedidos. Espere um minuto.',ai_err_busy:'A IA está ocupada. Tente em alguns segundos.',ai_err_credit:'Sua conta da IA está sem saldo. Adicione créditos em console.anthropic.com.',ai_err:'Não consegui usar a IA agora. Confira a conexão.',
+ai_thinking:'Pensando…',ai_intro:'Criar introdução',ai_point:'Desenvolver o ponto atual',ai_concl:'Melhorar a conclusão',ai_apps:'Aplicações práticas',ai_ctx:'Contexto bíblico',ai_refs:'Referências relacionadas',ai_gram:'Corrigir gramática',ai_trans:'Traduzir o sermão',ai_ask:'Pergunta livre',ai_ask_ph:'Ex.: o que significa «propôs no seu coração»?',ai_send:'Enviar',ai_insert:'Inserir no sermão',ai_replace:'Substituir o texto',ai_again:'Outra resposta',ai_dropped:'{n} referência(s) não encontradas na Bíblia foram retiradas.',ai_unver:'(referência não conferida)',ai_inserted:'Adicionado ao sermão',ai_replaced:'Texto corrigido',ai_need_sel:'Coloque o cursor no parágrafo ou selecione o texto que quer corrigir.',ai_tr_ai:'A IA é usada para traduzir (melhor qualidade).',
+rec:'Áudio e ditado',rec_d:'Os áudios ficam guardados neste celular.',rec_start:'Gravar',rec_stop:'Parar',rec_saved:'Áudio guardado',rec_none:'Ainda não há áudios neste sermão.',rec_none_g:'Ainda não há notas de voz.',rec_err:'Não consegui usar o microfone. Confira a permissão em Ajustes → Safari → Microfone.',rec_to_note:'Transformar em anotação',rec_del:'Excluir áudio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
+dict:'Ditar (voz para texto)',dict_on:'Ouvindo… fale com calma',dict_stop:'Terminar ditado',dict_none:'O ditado não está disponível aqui. Use o microfone do teclado do iPhone: é igualmente rápido.',dict_ins:'Inserir no sermão',dict_note:'Salvar como anotação',dict_ph:'O texto aparece aqui…',voice_notes:'Notas de voz',
 cats:['Santa Ceia','Culto de Ensino','Culto da Família','Jovens','Liderança','Evangelismo','Consagração','Mensagens especiais'],
 wd:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],months:['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
 books:['Gênesis','Êxodo','Levítico','Números','Deuteronômio','Josué','Juízes','Rute','1 Samuel','2 Samuel','1 Reis','2 Reis','1 Crônicas','2 Crônicas','Esdras','Neemias','Ester','Jó','Salmos','Provérbios','Eclesiastes','Cânticos','Isaías','Jeremias','Lamentações','Ezequiel','Daniel','Oseias','Joel','Amós','Obadias','Jonas','Miqueias','Naum','Habacuque','Sofonias','Ageu','Zacarias','Malaquias','Mateus','Marcos','Lucas','João','Atos','Romanos','1 Coríntios','2 Coríntios','Gálatas','Efésios','Filipenses','Colossenses','1 Tessalonicenses','2 Tessalonicenses','1 Timóteo','2 Timóteo','Tito','Filemom','Hebreus','Tiago','1 Pedro','2 Pedro','1 João','2 João','3 João','Judas','Apocalipse']}
@@ -239,15 +247,103 @@ async function mmTranslate(text,from,to){const pair=`${from==='pt'?'pt-BR':'es'}
     if(j.quotaFinished||/MYMEMORY WARNING|USED ALL AVAILABLE FREE/i.test(tx))throw{code:'quota'};
     if(+j.responseStatus!==200||!tx)throw{code:'net'};parts.push(tx)}
   return parts.join(' ')}
+/* =========================================================
+   Meu Púlpito IA (clave propia, guardada en el aparato)
+   ========================================================= */
+const AIM='claude-sonnet-5-5';
+const aiKey=()=>ls.get('mp.aikey','')||'';
+async function aiCall(system,msg,max=1600){const k=aiKey();if(!k)throw{code:'nokey'};let r;
+  try{r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:AIM,max_tokens:max,system,messages:[{role:'user',content:msg}]})})}catch(e){throw{code:'net'}}
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok){const m=(j.error&&j.error.message)||'';throw{code:r.status===401||r.status===403?'key':r.status===429?'rate':(r.status===529||r.status===503)?'busy':/credit|balance|billing/i.test(m)?'credit':'net'}}
+  return(j.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n').trim()}
+const aiErr=e=>t({nokey:'ai_nokey',key:'ai_err_key',rate:'ai_err_rate',busy:'ai_err_busy',credit:'ai_err_credit'}[e&&e.code]||'ai_err');
+function aiSystem(l){const es=l!=='pt';return es?
+`Eres el asistente "Meu Púlpito IA" de un pastor evangélico. Ayudas a preparar sermones en español. Respetas la teología y el estilo del pastor; eres un asistente de preparación y no reemplazas su estudio bíblico.
+REGLAS SOBRE LA BIBLIA (obligatorias):
+- Nunca inventes versículos ni referencias. Si no estás seguro de una referencia exacta, no la uses.
+- Para citar un versículo escribe una línea que empiece con "> " seguida SOLO de la referencia, por ejemplo: > Juan 3:16 . No escribas el texto del versículo: la aplicación lo coloca desde la Biblia.
+FORMATO: texto simple. Usa "# " al inicio de la línea para títulos de puntos y "! " para una frase destacada. No uses ** ni markdown. Sé claro y breve, en el tono de un pastor que predica.`
+:`Você é o assistente "Meu Púlpito IA" de um pastor evangélico. Ajuda a preparar sermões em português do Brasil. Respeita a teologia e o estilo do pastor; é um assistente de preparação e não substitui o estudo bíblico dele.
+REGRAS SOBRE A BÍBLIA (obrigatórias):
+- Nunca invente versículos nem referências. Se não tiver certeza de uma referência exata, não use.
+- Para citar um versículo escreva uma linha que comece com "> " seguida SÓ da referência, por exemplo: > João 3:16 . Não escreva o texto do versículo: o aplicativo coloca a partir da Bíblia.
+FORMATO: texto simples. Use "# " no começo da linha para títulos de pontos e "! " para uma frase de destaque. Não use ** nem markdown. Seja claro e breve, no tom de um pastor que prega.`}
+/* convierte la respuesta en bloques y verifica cada cita en la Biblia del app */
+function aiToHtml(txt,l){txt=String(txt||'').replace(/\*\*/g,'').replace(/^\s*[-•]\s+/gm,'');let dropped=0;
+  txt=txt.split('\n').filter(line=>{const m=line.match(/^\s*>\s*(.+)$/);if(m&&!bibleText(m[1],l)){dropped++;return false}return true}).join('\n');
+  const d=document.createElement('div');d.innerHTML=linesToHtml(txt,{}).html;
+  $$('blockquote[data-ref]',d).forEach(b=>{const r=b.getAttribute('data-ref');const v=bibleText(r,l);if(!v){b.remove();dropped++}else{const p=parseRef(r);b.setAttribute('data-ref',refName(p.b,p.ch,p.vs,l));b.textContent=v}});
+  $$('h2',d).forEach(h=>{const n=document.createElement('h3');n.textContent=h.textContent;h.replaceWith(n)});
+  $$('blockquote:not([data-ref])',d).forEach(b=>{b.replaceWith(Object.assign(document.createElement('p'),{textContent:b.textContent}))});
+  const RX=/((?:[1-3]\s?)?[A-ZÁÉÍÓÚ][a-záéíóúñçãõê]+\.?)\s(\d{1,3}):(\d{1,3}(?:\s?[-–]\s?\d{1,3})?)/g;
+  $$('p,li,h2,h3',d).forEach(el=>{if(!RX.test(el.textContent))return;RX.lastIndex=0;const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    nodes.forEach(n=>{n.nodeValue=n.nodeValue.replace(RX,(m)=>bibleText(m,l)?m:`${m} ${t('ai_unver',null,l)}`)})});
+  return{html:cleanHtml(d.innerHTML),dropped}}
+function sectionOf(node){const ed=$('#ed');if(!ed)return'';let b=node;while(b&&b.parentNode!==ed)b=b.parentNode;if(!b)return'';
+  let start=b;while(start&&start.tagName!=='H2'&&start.previousElementSibling)start=start.previousElementSibling;
+  const out=[];let x=start;while(x){if(x!==start&&x.tagName==='H2')break;out.push(x.textContent.trim());x=x.nextElementSibling}return out.filter(Boolean).join('\n')}
+function aiSheet(){if(!E)return;edSave();trackRange();closeSheet();const l=sLang(E.s);
+  if(!aiKey()){openSheet(`<h3>${esc(t('ai'))}</h3><p style="margin:0;line-height:1.5">${esc(t('ai_nokey'))}</p><button class="btn gold block" data-act="aiGoKey">${esc(t('nav_profile'))}</button>`);return}
+  const A=[['intro','ai_intro'],['point','ai_point'],['concl','ai_concl'],['apps','ai_apps'],['ctx','ai_ctx'],['refs','ai_refs'],['gram','ai_gram'],['trans','ai_trans']];
+  const sh=openSheet(`<h3>${esc(t('ai'))}</h3><p class="sub" style="margin:0">${esc(t('ai_d'))}</p>
+   <div class="acts">${A.map(([k,lb])=>`<button class="act" data-ai="${k}">${ic(k==='trans'?'lang':k==='gram'?'check':'spark')}${esc(t(lb))}</button>`).join('')}</div>
+   <div class="row"><input class="inp" id="aiQ" placeholder="${esc(t('ai_ask_ph'))}"><button class="btn dark" id="aiSend">${esc(t('ai_send'))}</button></div>`);
+  sh.addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(b)aiRun(b.dataset.ai)});
+  $('#aiSend',sh).onclick=()=>{const q=$('#aiQ',sh).value.trim();if(q)aiRun('ask',q)}}
+async function aiRun(kind,q){if(!E)return;const l=sLang(E.s);const ed=$('#ed');const dv=derive(Object.assign({},E.s,{html:cleanHtml(ed.innerHTML)}));
+  const full=ed.innerText.slice(0,12000);const sec=E.lastRange?sectionOf(E.lastRange.startContainer):'';
+  const sel=E.lastRange&&!E.lastRange.collapsed?E.lastRange.toString():'';
+  if(kind==='trans'){closeSheet();edSave(true);const id=E.s.id;closeEditor(()=>{render();translateSermon(id)});return}
+  let para='';if(kind==='gram'){if(sel)para=sel;else if(E.lastRange){let n=E.lastRange.startContainer;while(n&&n.parentNode!==ed)n=n.parentNode;para=n?n.textContent.trim():''}if(!para){toast(t('ai_need_sel'));return}}
+  const es=l!=='pt';const base=`${es?'Título':'Título'}: ${dv.title||'-'}\n${es?'Texto base':'Texto base'}: ${dv.passage||'-'}\n\n${es?'SERMÓN ACTUAL':'SERMÃO ATUAL'}:\n${full}`;
+  const P={intro:es?'Escribe una introducción (2 o 3 párrafos) que conecte con la congregación y lleve al texto base.':'Escreva uma introdução (2 ou 3 parágrafos) que conecte com a congregação e leve ao texto base.',
+    point:(es?'Desarrolla este punto del sermón con explicación, una ilustración breve y aplicación. Punto:\n':'Desenvolva este ponto do sermão com explicação, uma ilustração breve e aplicação. Ponto:\n')+(sec||dv.title),
+    concl:es?'Escribe una conclusión fuerte con resumen de los puntos y un llamado claro.':'Escreva uma conclusão forte com resumo dos pontos e um apelo claro.',
+    apps:es?'Sugiere de 3 a 5 aplicaciones prácticas para la vida diaria, cortas y concretas.':'Sugira de 3 a 5 aplicações práticas para a vida diária, curtas e concretas.',
+    ctx:(es?'Explica el contexto histórico, cultural y literario del texto base (autor, destinatarios, época, propósito). Texto: ':'Explique o contexto histórico, cultural e literário do texto base (autor, destinatários, época, propósito). Texto: ')+(sel||dv.passage||dv.title),
+    refs:es?'Sugiere de 4 a 6 referencias bíblicas relacionadas con el tema, cada una en su propia línea "> Referencia" y debajo una frase explicando la relación.':'Sugira de 4 a 6 referências bíblicas relacionadas com o tema, cada uma em sua própria linha "> Referência" e abaixo uma frase explicando a relação.',
+    gram:(es?'Corrige la ortografía y la gramática del texto sin cambiar el estilo ni el contenido. Responde SOLO con el texto corregido:\n':'Corrija a ortografia e a gramática do texto sem mudar o estilo nem o conteúdo. Responda SÓ com o texto corrigido:\n')+para,
+    ask:q||''};
+  const msg=kind==='gram'?P.gram:`${base}\n\n${es?'PEDIDO':'PEDIDO'}: ${P[kind]}`;
+  closeSheet();const sh=openSheet(`<h3>${esc(kind==='ask'?t('ai_ask'):t('ai_'+kind))}</h3><div id="aiOut" class="doc" style="padding:0;font-size:16.5px"><p class="sub">${esc(t('ai_thinking'))}</p></div><div id="aiBtns"></div>`);
+  try{await loadBible(l)}catch(e){}
+  let out;try{out=await aiCall(aiSystem(l),msg,kind==='gram'?1200:1800)}catch(e){$('#aiOut',sh).innerHTML=`<p class="err">${esc(aiErr(e))}</p>`;return}
+  if(!sh.isConnected)return;
+  if(kind==='gram'){$('#aiOut',sh).innerHTML=`<p>${esc(out)}</p>`;
+    $('#aiBtns',sh).innerHTML=`<div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn gold" id="aiRep">${esc(t('ai_replace'))}</button></div>`;
+    $('#aiRep',sh).onclick=()=>{closeSheet();const s2=getSelection();ed.focus();if(E.lastRange){s2.removeAllRanges();s2.addRange(E.lastRange)}
+      if(sel){document.execCommand('insertText',false,out)}else{let n=E.lastRange.startContainer;while(n&&n.parentNode!==ed)n=n.parentNode;if(n){snap();n.textContent=out}}onEdInput();toast(t('ai_replaced'))};return}
+  const r=aiToHtml(out,l);
+  $('#aiOut',sh).innerHTML=r.html+(r.dropped?`<p class="sub">${esc(t('ai_dropped',{n:r.dropped}))}</p>`:'');
+  $('#aiBtns',sh).innerHTML=`<div class="two"><button class="btn ghost" id="aiAg">${esc(t('ai_again'))}</button><button class="btn gold" id="aiIns">${esc(t('ai_insert'))}</button></div><button class="btn ghost block" id="aiCp">${ic('copy')}${esc(t('copy_txt'))}</button>`;
+  $('#aiAg',sh).onclick=()=>aiRun(kind,q);
+  $('#aiCp',sh).onclick=()=>copyText($('#aiOut',sh).innerText).then(()=>toast(t('copied')));
+  $('#aiIns',sh).onclick=()=>{closeSheet();insertHtmlAfterCaret(r.html);toast(t('ai_inserted'))}}
+function insertHtmlAfterCaret(html){const ed=$('#ed');ed.focus();if(E&&E.lastRange&&ed.contains(E.lastRange.startContainer)){const s2=getSelection();s2.removeAllRanges();s2.addRange(E.lastRange)}else placeCaret(ed.lastElementChild,1);
+  snap();const tmp=document.createElement('div');tmp.innerHTML=html;let b=curBlock();const nodes=[...tmp.children];if(!nodes.length)return;
+  if(!b)b=ed.lastElementChild;if(b.tagName==='H1'&&b.nextElementSibling)b=b.nextElementSibling;while(b.nextElementSibling&&b.nextElementSibling.tagName!=='H2')b=b.nextElementSibling;let ref=b;nodes.forEach(n=>{ref.after(n);ref=n});placeCaret(ref,1);onEdInput();snap()}
+async function aiTranslateBlocks(texts,from,to){const sys=to==='pt'?'Você traduz sermões do espanhol para o português do Brasil, mantendo o tom de pregação. Responda só com JSON.':'Traduces sermones del portugués al español, manteniendo el tono de predicación. Responde solo con JSON.';
+  const out=[];for(let i=0;i<texts.length;i+=40){const part=texts.slice(i,i+40);
+    const r=await aiCall(sys,`${to==='pt'?'Traduza cada item deste array JSON e devolva um array JSON com o mesmo número de itens, na mesma ordem. Mantenha MAIÚSCULAS onde houver.':'Traduce cada elemento de este array JSON y devuelve un array JSON con la misma cantidad de elementos, en el mismo orden. Mantén MAYÚSCULAS donde las haya.'}\n${JSON.stringify(part)}`,4000);
+    const m=r.match(/\[[\s\S]*\]/);const arr=m?JSON.parse(m[0]):null;if(!Array.isArray(arr)||arr.length!==part.length)throw{code:'net'};out.push(...arr.map(String))}
+  return out}
 async function translateSermon(id){const s=sermons.find(x=>x.id===id);if(!s)return;closeSheet();const from=sLang(s),to=from==='pt'?'es':'pt';
   const d=docOf(s);const chars=d.textContent.length;
-  const sh=openSheet(`<h3>${esc(t('tr_t'))}</h3><p style="margin:0;font-size:15px;line-height:1.5">${esc(t('tr_d'))}</p><p class="sub" style="margin:0">${esc(t('tr_lim',{n:chars.toLocaleString()}))}</p>
+  const sh=openSheet(`<h3>${esc(t('tr_t'))}</h3><p style="margin:0;font-size:15px;line-height:1.5">${esc(t('tr_d'))}</p><p class="sub" style="margin:0">${esc(aiKey()?t('ai_tr_ai'):t('tr_lim',{n:chars.toLocaleString()}))}</p>
     <div class="sub" id="trProg" hidden></div><div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn gold" id="trGo">${ic('lang')}${esc(t('tr_go'))}</button></div>`);
   $('#trGo',sh).onclick=async()=>{const go=$('#trGo',sh);go.disabled=true;const pr=$('#trProg',sh);pr.hidden=false;
     try{await loadBible(to)}catch(e){}
     const work=[];[...d.children].forEach(el=>{if(el.tagName==='OL'||el.tagName==='UL')$$('li',el).forEach(li=>work.push(li));else work.push(el)});
     const todo=work.filter(el=>el.textContent.trim()&&!(el.tagName==='BLOCKQUOTE'&&el.getAttribute('data-ref')&&(parseRef(el.getAttribute('data-ref'))||{}).vs));
     let i=0;
+    if(aiKey()){try{pr.textContent=t('ai_thinking');const items=work.filter(el=>!(el.tagName==='BLOCKQUOTE'&&el.getAttribute('data-ref')&&(parseRef(el.getAttribute('data-ref'))||{}).vs)&&el.textContent.trim());
+        const tr=await aiTranslateBlocks(items.map(el=>el.textContent.trim()),from,to);
+        items.forEach((el,k)=>{const tx=el.textContent.trim();const onlyMark=el.children.length===1&&el.firstElementChild.tagName==='MARK'&&el.firstElementChild.textContent.trim()===tx;el.innerHTML=onlyMark?`<mark>${esc(tr[k])}</mark>`:esc(tr[k])});
+        work.forEach(el=>{if(el.tagName==='BLOCKQUOTE'&&el.getAttribute('data-ref')){const p=parseRef(el.getAttribute('data-ref'));if(p&&p.vs){const nr=refName(p.b,p.ch,p.vs,to);el.setAttribute('data-ref',nr);if(el.textContent.trim())el.textContent=bibleText(nr,to)||el.textContent}}});
+        const c=JSON.parse(JSON.stringify(s));Object.assign(c,{id:uid(),html:cleanHtml(d.innerHTML),lang:to,fav:false,log:[],preached:{},created:Date.now(),v:2,translatedFrom:s.id});delete c.body;
+        putSermon(c,{silent:true});closeSheet();openEditor(c.id);toast(t('tr_done'));return}catch(e){pr.textContent=''}}
     try{for(const el of work){
         if(el.tagName==='BLOCKQUOTE'&&el.getAttribute('data-ref')){const p=parseRef(el.getAttribute('data-ref'));
           if(p&&p.vs){const nr=refName(p.b,p.ch,p.vs,to);el.setAttribute('data-ref',nr);if(el.textContent.trim())el.textContent=bibleText(nr,to)||el.textContent;continue}}
@@ -533,6 +629,7 @@ function notesHtml(){const q=norm(listState.q.trim());
   return`<div class="between"><h1 class="h">${esc(t('lib'))}</h1><button class="iconbtn gold" data-act="nNew" aria-label="${esc(t('n_new'))}">${ic('plus')}</button></div>
   ${modeSeg()}
   <label class="search">${ic('search')}<input id="lq" type="search" value="${esc(listState.q)}" placeholder="${esc(t('search_ph'))}" autocomplete="off" data-input="listQ"></label>
+  <button class="btn ghost" data-act="recG">${ic('mic')}${esc(t('voice_notes'))}</button>
   <div class="chips"><button class="chip" data-act="nt" data-t="" aria-pressed="${!listState.nt}">${esc(t('all'))}</button>${NTYPES.map(k=>`<button class="chip" data-act="nt" data-t="${k}" aria-pressed="${listState.nt===k}">${esc(t('nt_'+k))}</button>`).join('')}</div>
   <div class="list">${arr.length?arr.map(n=>`<button class="sm-card" data-act="nOpen" data-id="${esc(n.id)}" style="text-align:left">
      <span class="tags"><span class="tag">${esc(t('nt_'+(n.type||'nota')))}</span>${n.ref?`<span class="tag lang">${esc(n.ref)}</span>`:''}</span>
@@ -544,6 +641,7 @@ function noteSheet(id){let n=id?notes.find(x=>x.id===id):null;const isNew=!n;if(
     <input class="inp" id="nTi" placeholder="${esc(t('n_title'))}" value="${esc(w.title)}" style="font-family:var(--read);font-size:19px;font-weight:700">
     <textarea class="inp" id="nTx" rows="9" placeholder="${esc(t('n_text'))}" style="font-family:var(--read);font-size:17px">${esc(w.text)}</textarea>
     <input class="inp" id="nRf" placeholder="${esc(t('n_ref'))}" value="${esc(w.ref||'')}">
+    ${w.audioId?`<div id="nAud"></div>`:''}
     <div class="two"><button class="btn ghost" id="nConv">${ic('doc')}${esc(t('n_to_s'))}</button><button class="btn gold" id="nOk">${esc(t('save'))}</button></div>
     ${isNew?'':`<button class="btn ghost" id="nDel" style="color:var(--danger)">${ic('trash')}${esc(t('to_trash'))}</button>`}`,{onClose:()=>save(true)});
   let saved=false;
@@ -557,6 +655,7 @@ function noteSheet(id){let n=id?notes.find(x=>x.id===id):null;const isNew=!n;if(
     const s={id:uid(),html:cleanHtml(`<h1>${esc(w.title||r.title||'')}</h1>${ref}${r.html||'<p><br></p>'}`),lang:detectLang(w.text)||prefs.ui,fav:false,created:Date.now(),log:[],v:2,fromNote:w.id};
     putSermon(s,{silent:true});openEditor(s.id);toast(t('n_conv'))};
   const del=$('#nDel',sh);if(del)del.onclick=()=>{saved=true;const o=notes.find(x=>x.id===w.id);if(o){o.deleted=Date.now();putNote(o)}closeSheet();toast(t('moved_trash'))};
+  if(w.audioId)audList().then(L=>{const a=L.find(x=>x.id===w.audioId);const box=$('#nAud',sh);if(a&&box){const u=URL.createObjectURL(a.blob);box.innerHTML=`<audio controls src="${u}" style="width:100%"></audio>`}});
   if(isNew)setTimeout(()=>$('#nTx',sh).focus(),80)}
 function trashSheet(){const S=sermons.filter(s=>s.deleted),N=notes.filter(n=>n.deleted);
   const row=(kind,x,title)=>`<div class="between" style="border-top:1px solid var(--line);padding-top:10px;gap:8px"><span style="flex:1;min-width:0"><b class="serif">${esc(title||t('untitled'))}</b><span class="sub" style="display:block">${esc(kind)} · ${esc(fmtD(todayISO(new Date(x.deleted))))}</span></span>
@@ -612,6 +711,8 @@ function openEditor(id,fresh){
        <button data-act="fmtOl" data-keep aria-label="${esc(t('tb_list'))}">${ic('ol')}</button>
        <button data-act="fmtHl" data-keep aria-label="${esc(t('tb_hl'))}">${ic('hl')}</button>
        <button data-act="fmtNote" data-keep aria-label="${esc(t('tb_note'))}" style="font-size:18px">@</button>
+       <button data-act="aiOpen" data-keep aria-label="${esc(t('ai'))}" style="color:var(--gold-ink)">${ic('spark')}</button>
+       <button data-act="recE" data-keep aria-label="${esc(t('rec'))}">${ic('mic')}</button>
      </div>
      <div class="big"><button class="v" data-act="edVerse" data-keep>${ic('bible')}${esc(t('tb_verse'))}</button><button class="p" data-act="edPoint" data-keep>${ic('plus')}${esc(t('tb_point'))}</button></div>
    </div></div></div>`;
@@ -785,6 +886,8 @@ function edMenu(){if(!E)return;edSave();if(!sermons.find(x=>x.id===E.s.id)){toas
    <button class="act" data-act="share" data-id="${esc(id)}">${ic('share')}${esc(t('act_share'))}</button>
    <button class="act" data-act="edInfo">${ic('doc')}${esc(t('details_t'))}</button>
    <button class="act" data-act="edOrg">${ic('ol')}${esc(t('organize'))}</button>
+   <button class="act" data-act="aiOpen">${ic('spark')}${esc(t('ai'))}</button>
+   <button class="act" data-act="recE">${ic('mic')}${esc(t('rec'))}</button>
    <button class="act" data-act="vers">${ic('undo')}${esc(t('versions'))}</button>
    <button class="act" data-act="dup" data-id="${esc(id)}">${ic('copy')}${esc(t('act_dup'))}</button>
    <button class="act" data-act="trans" data-id="${esc(id)}">${ic('lang')}${esc(t('tr_to',{l:sLang(E.s)==='pt'?'Español':'Português'}))}</button>
@@ -1093,8 +1196,9 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     <div class="prow"><span><span class="k">${esc(t('lock'))}</span><span class="s">${esc(t('lock_d'))}</span></span>${seg('lockT',lockCfg()?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>
     ${lockCfg()&&window.PublicKeyCredential?`<div class="prow"><span class="k">${esc(t('bio'))}</span>${seg('bioT',lockCfg().bio?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>`:''}
   </div>
-  <span class="lbl" style="padding:4px 4px 0">${esc(t('soon'))}</span>
-  <div class="soon"><div>${ic('mic')}${esc(t('s_rec'))}</div><div>${ic('text')}${esc(t('s_tr'))}</div><div>${ic('spark')}${esc(t('s_ai'))}</div></div>
+  <div class="pgrp"><div class="prow" style="flex-direction:column;align-items:stretch;gap:8px"><span><span class="k">${ic('spark')} ${esc(t('ai'))}</span><span class="s">${esc(t('ai_d'))}</span></span>
+    <label class="s" for="pAi">${esc(t('ai_key'))} · ${esc(t('ai_key_d'))}</label>
+    <div class="row"><input class="inp" id="pAi" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="sk-ant-…" style="height:42px" data-input="pAi"><button class="btn sm dark" data-act="aiTest">${esc(t('ai_test'))}</button></div></div></div>
   <p class="sub" style="margin:0;text-align:center;font-size:12px">${esc(t('credits'))}</p>`}
 function importSheet(){const sh=openSheet(`<h3>${esc(t('restore'))}</h3><p class="sub" style="margin:0">${esc(t('restore_d'))}</p><textarea class="inp" id="impTa" rows="6"></textarea><button class="btn gold block" id="impGo">${esc(t('import'))}</button>`);
   $('#impGo',sh).onclick=()=>{let o;try{o=JSON.parse($('#impTa',sh).value.trim())}catch(e){toast(t('bad_paste'));return}
@@ -1152,7 +1256,7 @@ async function bioToggle(){const cfg=lockCfg();if(!cfg)return;if(cfg.bio){cfg.bi
 /* =========================================================
    Copias automáticas (IndexedDB, una por día)
    ========================================================= */
-function idb(){return new Promise((ok,ko)=>{if(!window.indexedDB)return ko();const r=indexedDB.open('meupulpito',1);r.onupgradeneeded=()=>r.result.createObjectStore('snaps',{keyPath:'day'});r.onsuccess=()=>ok(r.result);r.onerror=()=>ko(r.error)})}
+function idb(){return new Promise((ok,ko)=>{if(!window.indexedDB)return ko();const r=indexedDB.open('meupulpito',2);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains('snaps'))db.createObjectStore('snaps',{keyPath:'day'});if(!db.objectStoreNames.contains('audio'))db.createObjectStore('audio',{keyPath:'id'})};r.onsuccess=()=>ok(r.result);r.onerror=()=>ko(r.error)})}
 async function snapList(){try{const db=await idb();return await new Promise(ok=>{const q=db.transaction('snaps').objectStore('snaps').getAll();q.onsuccess=()=>ok((q.result||[]).filter(x=>x.who===(authU?authU.uid:'local')).sort((a,b)=>b.day.localeCompare(a.day)));q.onerror=()=>ok([])})}catch(e){return[]}}
 async function autoSnap(){if(!ready||(!sermons.length&&!notes.length))return;try{const day=todayISO()+'|'+(authU?authU.uid:'local');const db=await idb();const st=db.transaction('snaps','readwrite').objectStore('snaps');
   st.put({day,who:authU?authU.uid:'local',at:Date.now(),data:JSON.parse(JSON.stringify({sermons,notes,agenda,meta}))});
@@ -1169,6 +1273,50 @@ async function autoBakSheet(){const L=await snapList();
       (x.data.notes||[]).forEach(o=>{if(o.deleted)return;const cur=notes.find(s=>s.id===o.id);if(!cur){putNote(o,{silent:true});n++}else if(cur.deleted){delete cur.deleted;putNote(cur,{silent:true});n++}});
       (x.data.agenda||[]).forEach(o=>{if(!agenda.find(a=>a.id===o.id)){putEvent(o);n++}});
       closeSheet();toast(t('autobak_done',{n}));render()}})}
+
+/* =========================================================
+   Audio y dictado
+   ========================================================= */
+async function audList(owner){try{const db=await idb();return await new Promise(ok=>{const q=db.transaction('audio').objectStore('audio').getAll();q.onsuccess=()=>ok((q.result||[]).filter(a=>owner===undefined||a.owner===owner).sort((a,b)=>b.at-a.at));q.onerror=()=>ok([])})}catch(e){return[]}}
+async function audPut(a){const db=await idb();return new Promise((ok,ko)=>{const tx=db.transaction('audio','readwrite');tx.objectStore('audio').put(a);tx.oncomplete=ok;tx.onerror=()=>ko(tx.error)})}
+async function audDel(id){const db=await idb();db.transaction('audio','readwrite').objectStore('audio').delete(id)}
+let REC=null;const urls=[];
+function recSheet(owner){closeSheet();const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const sh=openSheet(`<h3>${esc(t('rec'))}</h3><p class="sub" style="margin:0">${esc(t('rec_d'))}</p>
+   <div class="row" style="justify-content:center;gap:14px;padding:6px 0"><button class="btn gold" id="rcGo" style="height:64px;padding:0 26px;font-size:17px">${ic('mic')}<span id="rcL">${esc(t('rec_start'))}</span></button><b id="rcT" style="font-size:22px;font-variant-numeric:tabular-nums;min-width:70px">00:00</b></div>
+   <button class="btn ghost block" id="dcGo">${ic('text')}${esc(t('dict'))}</button>
+   <div id="dcBox" hidden><textarea class="inp" id="dcTx" rows="5" placeholder="${esc(t('dict_ph'))}"></textarea><p class="sub" id="dcSt" style="margin:6px 0"></p>
+     <div class="two">${E?`<button class="btn dark" id="dcIns">${esc(t('dict_ins'))}</button>`:''}<button class="btn ghost" id="dcNote">${esc(t('dict_note'))}</button></div></div>
+   <div id="rcList" style="display:flex;flex-direction:column;gap:8px"></div>`,{onClose:()=>{recStop(true);dictStop();urls.splice(0).forEach(u=>URL.revokeObjectURL(u))}});
+  const drawList=async()=>{const L=await audList(owner);const box=$('#rcList',sh);if(!box)return;
+    box.innerHTML=L.length?L.map(a=>{const u=URL.createObjectURL(a.blob);urls.push(u);return`<div style="background:var(--bg);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:6px">
+      <b style="font-size:14px">${esc(a.title)} · ${fmtSec(Math.round(a.dur||0))}</b><audio controls preload="metadata" src="${u}" style="width:100%"></audio>
+      <div class="row"><button class="btn sm ghost" data-rn="${a.id}">${ic('doc')}${esc(t('rec_to_note'))}</button><button class="iconbtn" data-rd="${a.id}" aria-label="${esc(t('rec_del'))}" style="color:var(--danger);margin-left:auto">${ic('trash')}</button></div></div>`}).join(''):`<p class="sub" style="margin:0">${esc(t(owner?'rec_none':'rec_none_g'))}</p>`};
+  drawList();
+  $('#rcGo',sh).onclick=async()=>{if(REC&&REC.mr){recStop(false);return}
+    try{const st=await navigator.mediaDevices.getUserMedia({audio:true});const mime=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(m=>window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(m))||'';
+      const mr=new MediaRecorder(st,mime?{mimeType:mime}:undefined);const chunks=[];const t0=Date.now();
+      REC={mr,st,t0,int:setInterval(()=>{const e=$('#rcT');if(e)e.textContent=fmtSec(Math.round((Date.now()-t0)/1000))},500)};
+      mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+      mr.onstop=async()=>{st.getTracks().forEach(x=>x.stop());clearInterval(REC&&REC.int);const discard=REC&&REC.discard;REC=null;
+        const L=$('#rcL');if(L)L.textContent=t('rec_start');if(discard||!chunks.length)return;
+        const blob=new Blob(chunks,{type:mr.mimeType||mime||'audio/mp4'});const d=new Date();
+        await audPut({id:uid(),owner:owner||null,blob,mime:blob.type,dur:(Date.now()-t0)/1000,at:Date.now(),title:t('rec_title',{d:`${fmtD(todayISO(d))} ${d.toTimeString().slice(0,5)}`})});toast(t('rec_saved'));drawList()};
+      mr.start(1000);$('#rcL').textContent=t('rec_stop')}
+    catch(e){toast(t('rec_err'))}};
+  $('#dcGo',sh).onclick=()=>{if(!SR){toast(t('dict_none'));return}$('#dcBox',sh).hidden=false;if(DICT){dictStop();return}dictStart(SR,$('#dcTx',sh),$('#dcSt',sh),$('#dcGo',sh))};
+  const di=$('#dcIns',sh);if(di)di.onclick=()=>{const tx=$('#dcTx',sh).value.trim();if(!tx)return;dictStop();closeSheet();insertHtmlAfterCaret(linesToHtml(tx,{}).html||`<p>${esc(tx)}</p>`);toast(t('ai_inserted'))};
+  $('#dcNote',sh).onclick=()=>{const tx=$('#dcTx',sh).value.trim();if(!tx)return;dictStop();const n={id:uid(),type:'idea',title:t('voice_note'),text:tx,ref:'',created:Date.now()};putNote(n,{silent:true});closeSheet();toast(t('saved'))};
+  sh.addEventListener('click',async e=>{const n=e.target.closest('[data-rn]'),d=e.target.closest('[data-rd]');
+    if(n){const a=(await audList()).find(x=>x.id===n.dataset.rn);if(!a)return;const no={id:uid(),type:'idea',title:a.title,text:'',ref:'',audioId:a.id,created:Date.now()};putNote(no,{silent:true});closeSheet();listState.mode='n';if(E)closeEditor(()=>{go('list');noteSheet(no.id)});else{go('list');noteSheet(no.id)}}
+    if(d){await audDel(d.dataset.rd);drawList()}})}
+function recStop(discard){if(REC&&REC.mr&&REC.mr.state!=='inactive'){REC.discard=discard;try{REC.mr.stop()}catch(e){}}}
+let DICT=null;
+function dictStart(SR,ta,st,btn){const r=new SR();r.lang=(E?sLang(E.s):prefs.ui)==='pt'?'pt-BR':'es-PY';r.continuous=true;r.interimResults=true;let base=ta.value?ta.value+' ':'';
+  r.onresult=e=>{let fin='',tmp='';for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)fin+=x[0].transcript;else tmp+=x[0].transcript}if(fin){base+=fin.trim()+' '}ta.value=base+tmp};
+  r.onerror=()=>{st.textContent=t('dict_none')};r.onend=()=>{if(DICT===r){DICT=null;btn.innerHTML=ic('text')+esc(t('dict'));st.textContent=''}};
+  try{r.start();DICT=r;st.textContent=t('dict_on');btn.innerHTML=ic('pause')+esc(t('dict_stop'))}catch(e){toast(t('dict_none'))}}
+function dictStop(){if(DICT){const r=DICT;DICT=null;try{r.stop()}catch(e){}}}
 
 /* =========================================================
    Entrada (login)
@@ -1215,6 +1363,9 @@ const ACT={
   nNew:()=>noteSheet(null),nOpen:b=>noteSheet(b.dataset.id),trash:()=>trashSheet(),
   trRest:b=>{const arr=b.dataset.k==='n'?notes:sermons;const x=arr.find(y=>y.id===b.dataset.id);if(x){delete x.deleted;b.dataset.k==='n'?putNote(x):putSermon(x)}closeSheet();toast(t('restored'));trashSheet()},
   trKill:b=>{b.dataset.k==='n'?hardDelNote(b.dataset.id):hardDelSermon(b.dataset.id);closeSheet();trashSheet()},
+  aiOpen:()=>aiSheet(),recE:()=>{if(E){edSave();trackRange();recSheet(E.s.id)}},recG:()=>recSheet(null),
+  aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
+  aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
   pgScr:()=>{PG&&(PG.asc?ascStop():ascStart())},agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
@@ -1268,6 +1419,7 @@ document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset
   if(k==='listQ'){listState.q=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(render,180)}
   if(k==='bQ'){BV.q=e.target.value;const p=parseRef(BV.q);clearTimeout(e.target._t);e.target._t=setTimeout(()=>{if(p){BV.b=p.b;BV.c=Math.max(1,p.ch);BV.sel=new Set(p.vs||[]);}render()},300)}
   if(k==='pMail'){prefs.mmEmail=e.target.value.trim();savePrefs()}
+  if(k==='pAi'){ls.set('mp.aikey',e.target.value.trim())}
   if(k==='pName'){meta.name=e.target.value.trim();clearTimeout(e.target._t);e.target._t=setTimeout(putMeta,600)}});
 document.addEventListener('submit',e=>{const f=e.target.dataset.form;if(!f)return;e.preventDefault();
   if(f==='homeSearch'){listState.q=$('#hq').value;listState.f='all';listState.cat='';go('list')}

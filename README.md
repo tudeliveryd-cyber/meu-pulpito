@@ -12,3 +12,7 @@ Bloc de notas para preparar sermones y predicar con ellos.
 - **Agenda** y **Perfil** (idioma ES/PT, tema claro/oscuro/auto, categorías, copia de seguridad).
 
 Datos en Firebase (proyecto de Tú Delivery): `pulpito/{uid}` o, si esa regla no existe, `empresa/pulpito/{uid}`. Los sermones antiguos se convierten al abrir; el texto original (`body`) se conserva.
+
+## Etapa 3
+- **Meu Púlpito IA**: el usuario pone su propia clave de Anthropic en Perfil (queda solo en el aparato, no se sincroniza ni entra en copias). Las llamadas van directo a la API desde el navegador. La IA nunca escribe el texto de los versículos: solo la referencia, y el app la verifica y completa desde la Biblia incluida; las citas que no existen se quitan o se marcan.
+- **Audio y dictado**: grabación con el micrófono, guardada en IndexedDB del aparato (no se sube a la nube); dictado con el reconocimiento de voz del navegador cuando está disponible.
