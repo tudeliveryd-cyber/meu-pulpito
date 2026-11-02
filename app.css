@@ -380,3 +380,7 @@ button.pg-where{background:none;padding:6px 4px;color:var(--pmut);font:inherit;f
 .pg.clean.show .pg-top>*,.pg.clean.tw .pg-top>*{opacity:1}
 .pg.clean.show .pg-top,.pg.clean.show .pg-bot,.pg.clean.show .pg-prog,.pg.clean.tw .pg-top{opacity:1;pointer-events:auto}
 .pg.clean .pg-scroll{touch-action:pan-y}
+
+/* iOS: la barra inferior queda fija; solo el contenido se desplaza */
+html.tabs,html.tabs body{overflow:hidden;height:100%;overscroll-behavior:none}
+html.tabs #app{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}

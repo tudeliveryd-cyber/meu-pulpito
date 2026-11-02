@@ -533,9 +533,9 @@ const view={tab:'home',overlay:null};
 let listState={q:'',f:'all',cat:'',mode:'s',nt:''};
 const TABS=[['home','home','nav_home'],['list','doc','nav_list'],['bible','bible','nav_bible'],['agenda','cal','nav_agenda'],['profile','user','nav_profile']];
 function drawNav(){$('#navIn').innerHTML=TABS.map(([k,i,l])=>`<button data-act="tab" data-k="${k}" ${view.tab===k?'aria-current="page"':''}>${ic(i)}${esc(t(l))}</button>`).join('')}
-function go(tab){view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0)}
+function go(tab){view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0);$('#app').scrollTop=0}
 function render(anim){
-  if(!ready)return;$('#nav').hidden=false;drawNav();
+  if(!ready)return;$('#nav').hidden=false;document.documentElement.classList.add('tabs');drawNav();
   const app=$('#app');const keep=app.querySelector('input:focus');const sel=keep?[keep.id,keep.selectionStart]:null;
   const html={home:homeHtml,list:listHtml,bible:bibleHtml,agenda:agendaHtml,profile:profileHtml}[view.tab]();
   app.innerHTML=`<section class="view ${anim?'enter':''}"><div class="wrap">${html}</div></section>`;
@@ -690,7 +690,7 @@ let E=null;
 function newSermon(){const s={id:uid(),html:'',lang:prefs.ui,category:listState.cat||'',fav:false,created:Date.now(),log:[],v:2};openEditor(null,s)}
 function openEditor(id,fresh){
   const s=fresh||sermons.find(x=>x.id===id);if(!s)return;closeSheet();while($('.ov'))closeSheet();
-  view.overlay='editor';$('#nav').hidden=true;
+  view.overlay='editor';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
   const html=s.html||(s.body!=null||s.title?bodyToHtml(s):'');
   E={s:JSON.parse(JSON.stringify(s)),isNew:!!fresh,U:[],R:[],saveT:0,snapT:0,dirty:false};
   const lang=sLang(E.s);
@@ -1347,7 +1347,7 @@ function dictStop(){if(DICT){const r=DICT;DICT=null;try{r.stop()}catch(e){}}}
 /* =========================================================
    Entrada (login)
    ========================================================= */
-function showLogin(){ready=false;view.overlay='login';$('#nav').hidden=true;
+function showLogin(){ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
   $('#app').innerHTML=`<div class="login"><img class="logo" src="logo.jpg" alt="Meu Púlpito"><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
    <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" placeholder="tu@correo.com"></div>
    <div class="fld"><label for="lgP">${esc(t('pass'))}</label><input class="inp" id="lgP" type="password" autocomplete="current-password" placeholder="${esc(t('pass_ph'))}"></div>
