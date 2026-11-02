@@ -77,6 +77,11 @@ svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stro
 .sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;padding:4px 0 0}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
 .dot.ok{background:#3c9a6b}
+.lbn{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px;margin:8px 0;font-size:14px;line-height:1.4}
+.lbn .tx{flex:1 1 200px;min-width:0}
+.lbn .tx b{font-family:var(--read)}
+.lbn .bt{display:flex;gap:8px;align-items:center}
+.lbn .x{color:var(--muted);font-weight:600;font-size:14px;padding:6px}
 .login{display:flex;flex-direction:column;gap:12px;padding-block:48px 40px;max-width:420px}
 .login h2{font-family:var(--read);font-size:24px;margin:8px 0 0;text-wrap:balance}
 .login .fld input{font-size:16px}
@@ -146,10 +151,12 @@ textarea.body{width:100%;min-height:60vh;border:1px solid var(--line);border-rad
 .ptop .ib{color:var(--pfg)}
 .timer{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700;font-size:20px;padding:6px 12px;border-radius:999px;display:flex;align-items:center;gap:6px;margin-right:auto}
 .timer.run{color:var(--pwarm)}
-.timer.over{background:var(--pwarm);color:var(--pbg)}
+.timer.warn{background:#f2c94c;color:#1a1406}
+.timer.over{background:#e2603f;color:#fff}
+.pul.calm.tw .ptop{opacity:1}
 .prog{height:3px;background:var(--pline)}
 .prog i{display:block;height:100%;width:0;background:var(--pwarm)}
-.pscroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.pscroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
 .ptext{max-width:760px;margin:0 auto;padding:24px max(20px,env(safe-area-inset-right,0px)) 50vh max(20px,env(safe-area-inset-left,0px));font-family:var(--read);font-size:var(--fs,26px);line-height:1.55}
 .ptext .ph{font-size:.62em;font-family:var(--ui);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pwarm);margin:0 0 .2em}
 .ptext h2{font-size:1.25em;margin:.2em 0 .6em;line-height:1.2;text-wrap:balance}
@@ -192,6 +199,8 @@ textarea.body{width:100%;min-height:60vh;border:1px solid var(--line);border-rad
 .ptext .ow b{color:var(--c-dev);font-weight:600}
 .ptext .ow i{color:var(--pmut)}
 .ptext .cnote{font-family:var(--ui);font-size:.5em;color:var(--pmut);font-style:normal}
+.ptext .nt{font-family:var(--ui);font-size:.6em;line-height:1.45;color:var(--pmut);border:1px dashed var(--pline);border-radius:8px;padding:.45em .75em;margin:0 0 .9em}
+.ptext .nt::before{content:attr(data-l);display:block;font-size:.8em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pwarm);margin-bottom:.1em}
 .ptext .il{color:var(--pmut);font-size:.9em;margin:0 0 .8em;padding-left:.8em;border-left:2px dashed var(--pline)}
 .ptext .il::before{content:attr(data-l) " · ";font-family:var(--ui);font-size:.7em;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .jump{display:flex;gap:6px;overflow-x:auto;padding:8px max(10px,env(safe-area-inset-left,0px)) calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--pline);scrollbar-width:none;transition:opacity .25s}
@@ -213,7 +222,7 @@ textarea.body{width:100%;min-height:60vh;border:1px solid var(--line);border-rad
 .asc .go{padding:0 12px}
 .asc .go.on{background:var(--pwarm);color:var(--pbg)}
 .pul.calm .asc{opacity:.25}
-.ptext.outline>p:not(.e),.ptext.outline .il{display:none}
+.ptext.outline>p:not(.e):not(.nt),.ptext.outline .il{display:none}
 .ptext.outline h3{margin-top:1em}
 .ptext.outline .v{margin-bottom:.5em}
 #outBtn[aria-pressed="true"]{background:var(--pfg);color:var(--pbg)}
@@ -303,6 +312,7 @@ textarea.body{width:100%;min-height:60vh;border:1px solid var(--line);border-rad
       <button class="chip" data-f="anexo" aria-pressed="false">Pregados no Anexo</button>
     </div>
     <div class="filters" id="series" hidden></div>
+    <div id="libBanner"></div>
     <div class="list" id="list"></div>
   </div>
   <button class="btn pri fab" id="newBtn"><svg class="i"><use href="#i-plus"/></svg>Novo sermão</button>
@@ -344,9 +354,10 @@ textarea.body{width:100%;min-height:60vh;border:1px solid var(--line);border-rad
       <button class="tool" data-ins="> "><span class="k">&gt;</span>Versículo</button>
       <button class="tool" data-ins="! "><span class="k">!</span>Ênfase</button>
       <button class="tool" data-ins="~ "><span class="k">~</span>Ilustração</button>
+      <button class="tool" data-ins="@ "><span class="k">@</span>Lembrete</button>
     </div>
     <textarea class="body" id="fBody" placeholder="Escreva sua mensagem aqui…"></textarea>
-    <p class="hint">Comece a linha com <b>#</b> para um ponto principal, <b>&gt;</b> para um versículo, <b>!</b> para uma frase de destaque e <b>~</b> para uma ilustração. Também reconheço sozinho as linhas <b>TEMA:</b>, <b>TEXTO BASE:</b>, <b>INTRODUÇÃO</b>, <b>1.</b> / <b>PUNTO 1</b>, <b>DESARROLLO</b> e <b>CONCLUSÃO</b>, cada uma com sua cor no modo Pregar.</p>
+    <p class="hint">Comece a linha com <b>#</b> para um ponto principal, <b>&gt;</b> para um versículo, <b>!</b> para uma frase de destaque , <b>~</b> para uma ilustração e <b>@</b> para um lembrete só seu (ex.: @ chamar o louvor para o apelo). Também reconheço sozinho as linhas <b>TEMA:</b>, <b>TEXTO BASE:</b>, <b>INTRODUÇÃO</b>, <b>1.</b> / <b>PUNTO 1</b>, <b>DESARROLLO</b> e <b>CONCLUSÃO</b>, cada uma com sua cor no modo Pregar.</p>
     <div class="trrow" id="trBtn" hidden><span class="lab" id="trTxt">Criar cópia traduzida</span><div class="seg2" id="trSeg"><button data-to="pt">Tudo em Português</button><button data-to="es">Todo en Español</button></div></div>
     <button class="danger" id="dupBtn" style="color:var(--accent)"><svg class="i"><use href="#i-note"/></svg>Duplicar sermão</button>
     <div id="delWrap"><button class="danger" id="delBtn"><svg class="i"><use href="#i-trash"/></svg>Excluir sermão</button></div>
@@ -377,6 +388,7 @@ textarea.body{width:100%;min-height:60vh;border:1px solid var(--line);border-rad
     <div class="r"><span class="lab">Cronômetro e tela</span>
       <button class="sbtn" id="tReset"><svg class="i"><use href="#i-reset"/></svg>Zerar cronômetro</button>
       <button class="sbtn" id="calmBtn" aria-pressed="false"><svg class="i"><use href="#i-eye"/></svg>Esconder barras</button>
+      <button class="sbtn" id="tapBtn" aria-pressed="true"><svg class="i"><use href="#i-chev"/></svg>Tocar nas laterais muda de parte</button>
     </div>
     <div class="r"><span class="lab">Tamanho da letra</span>
       <button class="ib" id="fsDown" aria-label="Diminuir letra" style="color:var(--pfg);font-family:var(--read);font-weight:700">A</button>
@@ -427,7 +439,7 @@ Conclusão e apelo: entregue hoje a direção da sua vida ao Bom Pastor.`};
 
 let sermons=[], db=null, col=null, cur=null, filter='all', saveT=null;
 let sampler=null;const openCmp=new Set();
-let prefs=Object.assign({fs:28,theme:'night',goal:30,bible:'es',speed:3,outline:false},ls.get(PREF,{}));
+let prefs=Object.assign({fs:28,theme:'night',goal:30,bible:'es',speed:3,outline:false,tap:true},ls.get(PREF,{}));
 
 function uid(){return 's'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -505,9 +517,7 @@ $('#impGo').onclick=()=>{let arr;try{arr=JSON.parse($('#impTa').value.trim());if
   let n=0;arr.forEach(x=>{if(!x||!x.id)return;const i=sermons.findIndex(s=>s.id===x.id);
     if(i<0||(x.updated||0)>(sermons[i].updated||0)){const c=Object.assign({},x);delete c.example;if(i<0)sermons.push(c);else sermons[i]=c;pushRemote(c);n++}});
   cacheLocal();renderList();$('#impTa').value='';$('#acc').hidden=true;toast(n?`${n} sermão(ões) importado(s)`:'Nenhum sermão novo para importar')};
-$('#bakBtn').onclick=()=>{const txt=JSON.stringify({app:'meu-pulpito',sermons});
-  const done=()=>toast('Cópia copiada. Cole no WhatsApp ou nas Notas para guardar.');
-  try{navigator.clipboard.writeText(txt).then(done,()=>{fallbackCopy(txt);done()})}catch(e){fallbackCopy(txt);done()}};
+$('#bakBtn').onclick=()=>{$('#acc').hidden=true;backupNow()};
 function fallbackCopy(t){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove()}
 function saveCur(){
   if(!cur||cur.example)return;
@@ -532,7 +542,23 @@ function renderSeries(){const S=allSeries();const el=$('#series');el.hidden=!S.l
 function hitLine(s,q){if(!q)return'';const lines=(s.body||'').split('\n');
   for(const raw of lines){const l=raw.replace(/^[#>!~]\s?/,'').trim();const n=norm(l);const i=n.indexOf(q);if(l&&i>=0){
     const start=Math.max(0,i-30);const pre=(start?'…':'')+l.slice(start,i);return `${esc(pre)}<mark>${esc(l.slice(i,i+q.length))}</mark>${esc(l.slice(i+q.length,i+q.length+70))}`}}return''}
-function renderList(){
+function copyText(txt,done){const fb=()=>{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove()};
+  try{navigator.clipboard.writeText(txt).then(done,()=>{fb();done()})}catch(e){fb();done()}}
+const BAK='pulpito.bak',WEEK=7*864e5;
+function backupNow(){copyText(JSON.stringify({app:'meu-pulpito',at:new Date().toISOString(),sermons}),()=>{ls.set(BAK,Date.now());renderBanners();
+  toast('Cópia copiada. Cole numa conversa sua no WhatsApp ou nas Notas.')})}
+function renderBanners(){const el=$('#libBanner');if(!el)return;let h='';
+  const r=getResume();const rs=r&&sermons.find(x=>x.id===r.id);
+  if(rs)h+=`<div class="lbn"><div class="tx">Continuar pregando<br><b>${esc(derive(rs).title||'Sem título')}</b>${r.tSec?` · ${fmtSec(r.tSec)}`:''}</div>
+    <div class="bt"><button class="x" id="resNo">Encerrar</button><button class="btn pri" id="resGo" style="padding:8px 14px"><svg class="i"><use href="#i-lectern"/></svg>Continuar</button></div></div>`;
+  if(ls.get(BAK,null)===null)ls.set(BAK,Date.now());
+  if(sermons.length&&Date.now()-ls.get(BAK,Date.now())>WEEK)h+=`<div class="lbn"><div class="tx"><b>Guarde uma cópia dos seus sermões.</b><br>Faz mais de uma semana desde a última.</div>
+    <div class="bt"><button class="x" id="bakNo">Depois</button><button class="btn ghost" id="bakGo" style="padding:8px 14px">Copiar agora</button></div></div>`;
+  el.innerHTML=h;
+  if(rs){$('#resGo').onclick=()=>{pendingLog=null;openEditor(rs);openPul()};$('#resNo').onclick=()=>{clearResume();renderBanners()}}
+  if($('#bakGo')){$('#bakGo').onclick=backupNow;$('#bakNo').onclick=()=>{ls.set(BAK,Date.now()-5*864e5);renderBanners()}}
+}
+function renderList(){renderBanners();
   renderSeries();
   const q=norm($('#q').value.trim());
   let arr=sermons.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.updated||0)-(a.updated||0));
@@ -603,7 +629,7 @@ async function translateSermon(to){
       $('#trTxt').textContent=`Traduzindo… ${c+1} de ${chunks.length}`;
       const res=await sampler.json(`Passe estas linhas de um sermão para ${toName}. O texto pode estar misturado (português e espanhol): toda linha que não estiver em ${toName} deve ser traduzida; linha que já estiver nessa língua fica igual. Regras:
 - Traduza cada linha separadamente, mantendo o sentido, o tom de pregação e as palavras fortes do pregador. Não resuma, não acrescente nada.
-- Mantenha no começo da linha os sinais #, >, ! e ~ exatamente como estão.
+- Mantenha no começo da linha os sinais #, >, !, ~ e @ exatamente como estão.
 - Traduza também rótulos como TEMA:, TEXTO BASE:, INTRODUÇÃO, CONCLUSÃO, PONTO, mantendo maiúsculas.
 - Citações bíblicas: use o texto da versão ${bible}. Traduza os nomes dos livros (ex.: João ↔ Juan, Mateus ↔ Mateo) e mantenha capítulo e versículo.
 - Linhas todas em maiúsculas continuam em maiúsculas.
@@ -661,7 +687,7 @@ $('#lfSave').onclick=()=>{
   const entry={id:editLogId||uid(),place:lfPlace,placeName:lfPlace==='outro'?$('#lfOther').value.trim():'',date:$('#lfDate').value||today(),
     min:+$('#lfMin').value||null,notes:$('#lfNotes').value.trim(),parts:JSON.parse($('#lfParts').dataset.p||'[]')};
   cur.log=(cur.log||[]).filter(l=>l.id!==entry.id).concat(entry);
-  if(!editLogId)pendingLog=null;
+  if(!editLogId){pendingLog=null;const r=getResume();if(r&&r.id===cur.id||openPul.sid===cur.id)clearResume()}
   syncPreached();saveCur();$('#logForm').hidden=true;renderLogs();toast('Pregação registrada');
 };
 $('#logList').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const id=b.closest('.log').dataset.id;const l=(cur.log||[]).find(x=>x.id===id);
@@ -674,7 +700,7 @@ $('#logList').addEventListener('click',e=>{const b=e.target.closest('button');if
   queueSave()}));
 $('#tools').addEventListener('click',e=>{const b=e.target.closest('.tool');if(!b)return;const ta=$('#fBody');
   const pos=ta.selectionStart,v=ta.value;const ls0=v.lastIndexOf('\n',pos-1)+1;
-  const line=v.slice(ls0).split('\n')[0];const clean=line.replace(/^[#>!~]\s?/,'');
+  const line=v.slice(ls0).split('\n')[0];const clean=line.replace(/^[#>!~@]\s?/,'');
   ta.value=v.slice(0,ls0)+b.dataset.ins+clean+v.slice(ls0+line.length);
   const np=ls0+b.dataset.ins.length+clean.length;ta.focus();ta.setSelectionRange(np,np);ta.dispatchEvent(new Event('input'))});
 $('#edBack').onclick=()=>{clearTimeout(saveT);if($('#saveState').textContent==='Salvando…')saveCur();renderList();show('#vLib')};
@@ -699,8 +725,8 @@ const RX_PT=/^((ponto|punto|t[oó]pico|tema)\s*(\d+|[ivx]+)\b|\d+[\.\)\-]\s+|[iv
 const RX_REF=/^((?:[1-3]|i{1,3})\s*)?[A-Za-zÀ-ÿ]{2,}\.?(?:\s+de\s+[A-Za-zÀ-ÿ]+)?\s+\d{1,3}\s*[:.]\s*\d{1,3}(?:\s*[-–,]\s*\d{1,3})*$/i;
 function cleanRef(t){return String(t||'').replace(/^[>“"«(\s]+|[”"»).;\s]+$/g,'').trim()}
 function isRef(t){return RX_REF.test(cleanRef(t))}
-const T={pt:{intro:'Introdução',dev:'Desenvolvimento',concl:'Conclusão',base:'Texto base',msg:'Mensagem',start:'Início',ilu:'Ilustração',cmp:'Comparar versões',close:'Fechar versões',orig:'No original',check:'Confira na sua Bíblia antes de citar no púlpito.',loadv:'Abrindo a Bíblia…',failv:'Não consegui carregar o versículo. Toque para tentar de novo.',busy:'Buscando versões…'},
-  es:{intro:'Introducción',dev:'Desarrollo',concl:'Conclusión',base:'Texto base',msg:'Mensaje',start:'Inicio',ilu:'Ilustración',cmp:'Comparar versiones',close:'Cerrar versiones',orig:'En el original',check:'Verifica en tu Biblia antes de citarlo en el púlpito.',loadv:'Abriendo la Biblia…',failv:'No pude cargar el versículo. Toca para intentar de nuevo.',busy:'Buscando versiones…'}};
+const T={pt:{intro:'Introdução',dev:'Desenvolvimento',concl:'Conclusão',base:'Texto base',msg:'Mensagem',start:'Início',ilu:'Ilustração',cmp:'Comparar versões',close:'Fechar versões',orig:'No original',note:'Lembrete',last:'Esta é a última parte',five:'Faltam 5 minutos',done:'Tempo encerrado',cont:'Continuando de onde você parou',check:'Confira na sua Bíblia antes de citar no púlpito.',loadv:'Abrindo a Bíblia…',failv:'Não consegui carregar o versículo. Toque para tentar de novo.',busy:'Buscando versões…'},
+  es:{intro:'Introducción',dev:'Desarrollo',concl:'Conclusión',base:'Texto base',msg:'Mensaje',start:'Inicio',ilu:'Ilustración',cmp:'Comparar versiones',close:'Cerrar versiones',orig:'En el original',note:'Recordatorio',last:'Es la última parte',five:'Faltan 5 minutos',done:'Tiempo cumplido',cont:'Continuando donde lo dejaste',check:'Verifica en tu Biblia antes de citarlo en el púlpito.',loadv:'Abriendo la Biblia…',failv:'No pude cargar el versículo. Toca para intentar de nuevo.',busy:'Buscando versiones…'}};
 function L(k){return (T[prefs.bible]||T.pt)[k]}
 function detectLang(t){t=' '+String(t||'').toLowerCase()+' ';
   const es=(t.match(/ñ|ción|\b(el|los|las|del|pero|muy|hoy|usted|nosotros|también|está|dios|señor)\b/g)||[]).length;
@@ -728,6 +754,7 @@ function parse(s){
   html+=`<h2>${esc(dv.title||L('msg'))}</h2>`;
   let sec='';
   (s.body||'').split('\n').forEach((raw,li)=>{const l=raw.trim();if(!l||li===skipI)return;
+    if(l.startsWith('@')){html+=`<p class="nt" data-l="${L('note')}">${esc(l.replace(/^@\s?/,''))}</p>`;return}
     if(RX_T.test(l)&&titleCase(l.replace(/^[^:]*:\s*/,''))===dv.title)return;
     if(/^texto(\s+base)?\s*:/i.test(l)&&l.replace(/^[^:]*:\s*/,'').trim()===dv.passage){sec='base';return}
     const letters=l.replace(/[^A-Za-zÀ-ÿ]/g,'');const caps=letters.length>2&&l===l.toUpperCase();
@@ -765,6 +792,7 @@ function applyPrefs(){const P=$('#vPul');P.classList.toggle('night',prefs.theme=
   document.querySelectorAll('#goalSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.g===prefs.goal));
   $('#tGoal').textContent=prefs.goal?` / ${prefs.goal}:00`:'';
   $('#pText').classList.toggle('outline',!!prefs.outline);$('#outBtn').setAttribute('aria-pressed',!!prefs.outline);
+  $('#tapBtn').setAttribute('aria-pressed',!!prefs.tap);
   drawAsc();ls.set(PREF,prefs);drawTimer()}
 function renderPul(){const s=cur;const {html,jumps}=parse(s);$('#pText').innerHTML=html;return jumps}
 /* Bíblias embutidas: RV1909 (es) e Bíblia Livre (pt) */
@@ -834,25 +862,50 @@ async function openPul(){
   prefs.bible=cur.lang||detectLang(cur.body);
   const jumps=renderPul();
   secLabels={top:L('start')};secOrder=['top'];jumps.forEach(j=>{secLabels[j.id]=j.t;secOrder.push(j.id)});
-  if(openPul.sid!==cur.id){openPul.sid=cur.id;partSec={};tSec=0;tRun=false;clearInterval(tInt)}
+  let restoreTop=0,fromSaved=false;
+  if(openPul.sid!==cur.id){openPul.sid=cur.id;partSec={};tSec=0;tRun=false;clearInterval(tInt);lastTop=0;
+    const r=getResume();if(r&&r.id===cur.id&&(r.top>40||r.tSec>0)){tSec=r.tSec||0;partSec=r.partSec||{};restoreTop=r.top||0;fromSaved=true}}
+  else restoreTop=lastTop;
   curSec='top';
   $('#jump').innerHTML=`<button data-j="top" class="on">${L('start')}</button>`+jumps.map(j=>`<button data-j="${j.id}" class="j-${j.k}">${esc(j.t)}</button>`).join('');
   $('#jump').hidden=!jumps.length;$('#asc').classList.toggle('nojump',!jumps.length);
-  $('#vPul').hidden=false;document.body.style.overflow='hidden';$('#pScroll').scrollTop=0;applyPrefs();loadVerses();
+  $('#vPul').hidden=false;document.body.style.overflow='hidden';$('#pScroll').scrollTop=0;applyPrefs();
+  const vp=loadVerses();
+  if(restoreTop){requestAnimationFrame(()=>{$('#pScroll').scrollTop=restoreTop});Promise.resolve(vp).finally(()=>requestAnimationFrame(()=>{if(Math.abs($('#pScroll').scrollTop-restoreTop)>4)$('#pScroll').scrollTop=restoreTop}))}
+  if(prefs.tap&&!ls.get('pulpito.tip1',false)){ls.set('pulpito.tip1',true);toast(prefs.bible==='es'?'Toca a la derecha para la próxima parte':'Toque na direita da tela para a próxima parte')}
+  else if(fromSaved)toast(L('cont'));
   try{wake=await navigator.wakeLock?.request('screen')}catch(e){wake=null}
 }
-function closePul(){stopAsc();
+function closePul(){stopAsc();saveResume(true);
   if(tSec>=60&&!cur.example){pendingLog={min:Math.round(tSec/60),parts:partsList(),place:'sede'};renderLogs()}
   $('#vPul').hidden=true;document.body.style.overflow='';$('#sheet').hidden=true;try{wake?.release()}catch(e){}wake=null}
+/* continuar de onde parou */
+const RES='pulpito.resume',RES_MS=6*3600e3;let lastTop=0,resT=0;
+function getResume(){const r=ls.get(RES,null);return r&&r.id&&Date.now()-(r.at||0)<RES_MS?r:null}
+function saveResume(now){if(!cur||cur.example||openPul.sid!==cur.id)return;clearTimeout(resT);
+  const f=()=>ls.set(RES,{id:cur.id,top:lastTop,tSec,partSec,at:Date.now()});if(now)f();else resT=setTimeout(f,700)}
+function clearResume(){ls.set(RES,null);openPul.sid=null;tRun=false;clearInterval(tInt);tSec=0;partSec={};lastTop=0}
+/* mudar de parte com toque ou controle */
+function goSec(dir){const sc=$('#pScroll');const els=[...document.querySelectorAll('#pText [id^=s]')];const y=sc.scrollTop;let t;
+  if(dir>0){const n=els.find(h=>h.offsetTop-12>y+8);if(!n){toast(L('last'));return}t=n.offsetTop-12}
+  else{const pv=els.filter(h=>h.offsetTop-12<y-8);t=pv.length?pv[pv.length-1].offsetTop-12:0}
+  if(ascOn)stopAsc();sc.scrollTo({top:Math.max(0,t),behavior:'smooth'})}
+$('#pScroll').addEventListener('click',e=>{if(!prefs.tap||e.target.closest('button,a,input,textarea,.cmp'))return;
+  if(String(window.getSelection?.()||'').length)return;
+  const r=$('#pScroll').getBoundingClientRect();const x=(e.clientX-r.left)/r.width;if(x>.62)goSec(1);else if(x<.38)goSec(-1)});
+document.addEventListener('keydown',e=>{if($('#vPul').hidden||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''))return;
+  if(['ArrowRight','PageDown',' ','ArrowDown'].includes(e.key)){e.preventDefault();goSec(1)}
+  else if(['ArrowLeft','PageUp','ArrowUp'].includes(e.key)){e.preventDefault();goSec(-1)}});
+$('#tapBtn').onclick=()=>{prefs.tap=!prefs.tap;applyPrefs();toast(prefs.tap?'Toque nas laterais ligado':'Toque nas laterais desligado')};
 function drawTimer(){const m=String(Math.floor(tSec/60)).padStart(2,'0'),s=String(tSec%60).padStart(2,'0');$('#tTxt').textContent=`${m}:${s}`;
-  const t=$('#timer');t.classList.toggle('run',tRun);t.classList.toggle('over',!!prefs.goal&&tSec>=prefs.goal*60);
+  const t=$('#timer');t.classList.toggle('run',tRun);const gs=prefs.goal*60,ov=!!prefs.goal&&tSec>=gs,wn=!!prefs.goal&&!ov&&gs>300&&tSec>=gs-300;t.classList.toggle('over',ov);t.classList.toggle('warn',wn);$('#vPul').classList.toggle('tw',ov||wn);
   $('#tIco').innerHTML=`<use href="#${tRun?'i-pause':'i-play'}"/>`}
 function partsList(){return secOrder.filter(k=>partSec[k]).map(k=>({t:secLabels[k]||k,sec:partSec[k]}))}
 function drawParts(){const L=partsList();
   $('#parts').innerHTML=L.length?secOrder.filter(k=>partSec[k]).map(k=>`<span class="${k===curSec?'cur':''}">${esc(secLabels[k])}</span><span class="${k===curSec?'cur':''}">${fmtSec(partSec[k])}</span>`).join('')
     :'<span class="muted">Inicie o cronômetro. O tempo de cada parte é contado conforme você avança no texto.</span>'}
-$('#timer').onclick=()=>{tRun=!tRun;clearInterval(tInt);if(tRun)tInt=setInterval(()=>{tSec++;partSec[curSec]=(partSec[curSec]||0)+1;drawTimer();if(!$('#sheet').hidden)drawParts()},1000);drawTimer()};
-$('#tReset').onclick=()=>{tRun=false;clearInterval(tInt);tSec=0;partSec={};drawTimer();drawParts()};
+$('#timer').onclick=()=>{tRun=!tRun;clearInterval(tInt);if(tRun)tInt=setInterval(()=>{tSec++;partSec[curSec]=(partSec[curSec]||0)+1;drawTimer();if(prefs.goal&&prefs.goal*60>300&&tSec===prefs.goal*60-300)toast(L('five'));if(prefs.goal&&tSec===prefs.goal*60)toast(L('done'));if(tSec%10===0)saveResume(true);if(!$('#sheet').hidden)drawParts()},1000);drawTimer()};
+$('#tReset').onclick=()=>{tRun=false;clearInterval(tInt);tSec=0;partSec={};drawTimer();drawParts();saveResume(true)};
 /* rolagem automática */
 function drawAsc(){$('#ascPlay').classList.toggle('on',ascOn);$('#ascIco').innerHTML=`<use href="#${ascOn?'i-pause':'i-down'}"/>`;
   $('#ascTxt').textContent=ascOn?`Vel. ${prefs.speed}`:'Rolar';$('#ascPlay').setAttribute('aria-pressed',ascOn)}
@@ -880,7 +933,7 @@ $('#pText').addEventListener('click',e=>{if(e.target.closest('.vfail'))loadVerse
 $('#goalSeg').onclick=e=>{const b=e.target.closest('button');if(b){prefs.goal=+b.dataset.g;applyPrefs()}};
 $('#jump').onclick=e=>{const b=e.target.closest('button');if(!b)return;const sc=$('#pScroll');
   if(b.dataset.j==='top')sc.scrollTo({top:0,behavior:'smooth'});else{const h=document.getElementById(b.dataset.j);sc.scrollTo({top:h.offsetTop-12,behavior:'smooth'})}};
-$('#pScroll').addEventListener('scroll',()=>{const sc=$('#pScroll');const max=sc.scrollHeight-sc.clientHeight;
+$('#pScroll').addEventListener('scroll',()=>{const sc=$('#pScroll');lastTop=sc.scrollTop;saveResume();const max=sc.scrollHeight-sc.clientHeight;
   const art=$('#pText');const end=art.scrollHeight-window.innerHeight*.5-sc.clientHeight;
   $('#prog').style.width=Math.min(100,Math.max(0,sc.scrollTop/Math.max(1,end)*100))+'%';
   let on='top';document.querySelectorAll('#pText [id^=s]').forEach(h=>{if(h.offsetTop-sc.clientHeight*.4<=sc.scrollTop)on=h.id});curSec=on;
