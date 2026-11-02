@@ -29,14 +29,14 @@ const I18N={
 es:{nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Perfil',
 greet_m:'Buenos días,',greet_a:'Buenas tardes,',greet_n:'Buenas noches,',pastor:'Pastor',
 search_ph:'Buscar sermón, versículo o palabra',prepare:'Preparar',new_sermon:'Nuevo sermón',new_desc:'Abre la hoja y empieza a escribir. Se guarda solo.',
-st_total:'Sermones',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recientes',my_sermons:'Mis sermones',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima predicación',
-today:'hoy',edited:'editado',f_all:'Todos',f_recent:'Recientes',f_fav:'Favoritos',f_done:'Predicados',f_todo:'Pendientes',
+st_total:'Sermones',st_done:'Predicados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recientes',my_sermons:'Mis sermones',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima predicación',
+today:'hoy',edited:'editado',edited_c:'Editado',no_prev:'Sin contenido todavía',f_all:'Todos',f_recent:'Recientes',f_fav:'Favoritos',f_done:'Predicados',f_todo:'Pendientes',
 category:'Categoría',no_cat:'Sin categoría',points:'puntos',point:'punto',preached:'Predicado',pending:'Pendiente',
 act_edit:'Editar',act_preach:'Predicar',act_fav:'Marcar como favorito',act_unfav:'Quitar de favoritos',act_dup:'Duplicar',act_share:'Compartir',act_del:'Eliminar',act_hist:'Predicaciones registradas',
 del_q:'¿Eliminar este sermón para siempre?',cancel:'Cancelar',deleted:'Sermón eliminado',duplicated:'Copia creada. Estás editando la copia.',copy_sfx:'(copia)',
 empty_t:'Tu biblioteca está vacía',empty_d:'Toca Nuevo sermón y escribe tu primera mensaje. Todo se guarda solo.',no_res:'Ningún sermón encontrado',
 saved:'Guardado',saving:'Guardando…',untitled:'Sin título',title_ph:'Título del sermón',body_ph:'Empieza a escribir…',
-undo:'Deshacer',redo:'Rehacer',preach:'Predicar',tb_size:'Tamaño del texto',tb_title:'Título o subtítulo',tb_bold:'Negrita',tb_italic:'Cursiva',tb_under:'Subrayado',tb_list:'Lista numerada',tb_hl:'Destacar frase',tb_note:'Recordatorio personal',tb_verse:'Versículo',tb_point:'Nuevo punto',
+undo:'Deshacer',redo:'Rehacer',preach:'Predicar',tb_size:'Tamaño del texto',tb_style:'Estilo del texto',sy_point:'Punto',sy_sub:'Subtítulo',sy_text:'Texto',sy_big:'Grande',tb_title:'Título o subtítulo',tb_bold:'Negrita',tb_italic:'Cursiva',tb_under:'Subrayado',tb_list:'Lista numerada',tb_hl:'Destacar frase',tb_note:'Recordatorio personal',tb_verse:'Versículo',tb_point:'Nuevo punto',
 sel_first:'Selecciona primero el texto que quieres destacar',
 ref_ph:'Ej.: Juan 3:16',insert:'Insertar',verse_nf:'No encontré ese versículo. Revisa la cita.',verse_t:'Insertar versículo',verse_hint:'Escribe la cita y aparece el texto (Reina-Valera 1909).',verse_hint_pt:'Escribe la cita y aparece el texto (Bíblia Livre).',
 lang_msg:'Idioma del mensaje',more:'Más opciones',
@@ -87,14 +87,14 @@ books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Juece
 pt:{nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Perfil',
 greet_m:'Bom dia,',greet_a:'Boa tarde,',greet_n:'Boa noite,',pastor:'Pastor',
 search_ph:'Buscar sermão, versículo ou palavra',prepare:'Preparar',new_sermon:'Novo sermão',new_desc:'Abra a folha e comece a escrever. Salva sozinho.',
-st_total:'Sermões',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recentes',my_sermons:'Meus sermões',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima pregação',
-today:'hoje',edited:'editado',f_all:'Todos',f_recent:'Recentes',f_fav:'Favoritos',f_done:'Pregados',f_todo:'Pendentes',
+st_total:'Sermões',st_done:'Pregados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recentes',my_sermons:'Meus sermões',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima pregação',
+today:'hoje',edited:'editado',edited_c:'Editado',no_prev:'Sem conteúdo ainda',f_all:'Todos',f_recent:'Recentes',f_fav:'Favoritos',f_done:'Pregados',f_todo:'Pendentes',
 category:'Categoria',no_cat:'Sem categoria',points:'pontos',point:'ponto',preached:'Pregado',pending:'Pendente',
 act_edit:'Editar',act_preach:'Pregar',act_fav:'Marcar como favorito',act_unfav:'Tirar dos favoritos',act_dup:'Duplicar',act_share:'Compartilhar',act_del:'Excluir',act_hist:'Pregações registradas',
 del_q:'Excluir este sermão para sempre?',cancel:'Cancelar',deleted:'Sermão excluído',duplicated:'Cópia criada. Você está editando a cópia.',copy_sfx:'(cópia)',
 empty_t:'Sua biblioteca está vazia',empty_d:'Toque em Novo sermão e escreva sua primeira mensagem. Tudo salva sozinho.',no_res:'Nenhum sermão encontrado',
 saved:'Salvo',saving:'Salvando…',untitled:'Sem título',title_ph:'Título do sermão',body_ph:'Comece a escrever…',
-undo:'Desfazer',redo:'Refazer',preach:'Pregar',tb_size:'Tamanho do texto',tb_title:'Título ou subtítulo',tb_bold:'Negrito',tb_italic:'Itálico',tb_under:'Sublinhado',tb_list:'Lista numerada',tb_hl:'Destacar frase',tb_note:'Lembrete pessoal',tb_verse:'Versículo',tb_point:'Novo ponto',
+undo:'Desfazer',redo:'Refazer',preach:'Pregar',tb_size:'Tamanho do texto',tb_style:'Estilo do texto',sy_point:'Ponto',sy_sub:'Subtítulo',sy_text:'Texto',sy_big:'Grande',tb_title:'Título ou subtítulo',tb_bold:'Negrito',tb_italic:'Itálico',tb_under:'Sublinhado',tb_list:'Lista numerada',tb_hl:'Destacar frase',tb_note:'Lembrete pessoal',tb_verse:'Versículo',tb_point:'Novo ponto',
 sel_first:'Selecione primeiro o texto que quer destacar',
 ref_ph:'Ex.: João 3:16',insert:'Inserir',verse_nf:'Não encontrei esse versículo. Confira a referência.',verse_t:'Inserir versículo',verse_hint:'Digite a referência e o texto aparece (Reina-Valera 1909).',verse_hint_pt:'Digite a referência e o texto aparece (Bíblia Livre).',
 lang_msg:'Idioma da mensagem',more:'Mais opções',
@@ -550,9 +550,14 @@ function greet(){const h=new Date().getHours();return t(h<12?'greet_m':h<19?'gre
 function sortedByUpd(){return liveS().sort((a,b)=>(b.updated||0)-(a.updated||0))}
 function upcoming(){const td=todayISO();return agenda.filter(e=>e.date>=td).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')))}
 function relDate(ts){if(!ts)return'';const d=todayISO(new Date(ts));return d===todayISO()?t('today'):fmtD(d)}
-function miniCard(s,right){const d=derive(s);const c=catOf(s);
-  return`<button class="mini" data-act="open" data-id="${esc(s.id)}"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
-    <span class="ti">${esc(d.title||t('untitled'))}</span><span class="sub">${esc([d.passage,c].filter(Boolean).join(' · ')||t('edited')+' '+relDate(s.updated))}</span></div>${right||''}</button>`}
+function previewOf(s,n){const d=docOf(s);$$('blockquote,h1',d).forEach(x=>x.remove());
+  const txt=$$('p,li',d).map(x=>x.textContent.trim()).filter(Boolean).join(' ').replace(/\s+/g,' ');return txt.length>n?txt.slice(0,n).replace(/\s+\S*$/,'')+'…':txt}
+function statusTag(s){const lp=lastPreach(s);return lp?`<span class="tag ok">${esc(t('preached'))} · ${esc(placeName(lp))} ${esc(fmtD(lp.date))}</span>`:`<span class="tag warn">${esc(t('pending'))}</span>`}
+function miniCard(s,right){const d=derive(s);
+  return`<button class="mini" data-act="open" data-id="${esc(s.id)}"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+    <span class="ti">${esc(d.title||t('untitled'))}</span>${d.passage?`<span class="ref">${esc(d.passage)}</span>`:''}
+    <span class="mt">${esc(t('edited_c'))} ${esc(relDate(s.updated))}<span class="sep">·</span>${isPreached(s)?`<span class="ok">${esc(t('preached'))}</span>`:`<span class="warn">${esc(t('pending'))}</span>`}</span></div>${right||''}</button>`}
+function favCard(s){const d=derive(s);return`<button class="favc" data-act="preach" data-id="${esc(s.id)}"><span class="st">${ic('star')}</span><span class="ti">${esc(d.title||t('untitled'))}</span>${d.passage?`<span class="ref">${esc(d.passage)}</span>`:''}<span class="go">${ic('lectern')}${esc(t('act_preach'))}</span></button>`}
 function avatarIn(){return meta.photo?`<img src="${esc(meta.photo)}" alt="">`:esc((meta.name||t('pastor')).trim().charAt(0).toUpperCase())}
 function pickPhoto(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.style.display='none';document.body.appendChild(inp);
   inp.onchange=()=>{const f=inp.files&&inp.files[0];inp.remove();if(!f)return;const url=URL.createObjectURL(f);const img=new Image();
@@ -575,15 +580,15 @@ function homeHtml(){
   <button class="hero" data-act="new"><span><span class="k">${esc(t('prepare'))}</span><span class="t" style="display:block">${esc(t('new_sermon'))}</span><span class="d">${esc(t('new_desc'))}</span></span><span class="plus">${ic('plus')}</span></button>
   <div class="stats">
     <button class="stat" data-act="list" data-f="all"><b>${NS}</b><span>${esc(t('st_total'))}</span></button>
+    <button class="stat" data-act="list" data-f="done"><b>${S.filter(isPreached).length}</b><span>${esc(t('st_done'))}</span></button>
     <button class="stat" data-act="list" data-f="fav"><b>${favs.length}</b><span>${esc(t('st_fav'))}</span></button>
-    <button class="stat" data-act="tab" data-k="agenda"><b>${wk}</b><span>${esc(t('st_week'))}</span></button>
   </div>
   ${S.length?`<div style="display:flex;flex-direction:column;gap:10px">
     <div class="between"><span class="sect">${esc(t('recent'))}</span><button class="lnk" data-act="tab" data-k="list">${esc(t('my_sermons'))}</button></div>
-    ${S.slice(0,3).map(s=>miniCard(s,s.fav?`<span class="star on">${ic('star')}</span>`:'')).join('')}</div>`:''}
+    ${S.slice(0,3).map(s=>miniCard(s,`<span class="chev">${ic('next')}</span>`)).join('')}</div>`:''}
   ${favs.length?`<div style="display:flex;flex-direction:column;gap:10px">
     <div class="between"><span class="sect">${esc(t('favorites'))}</span><button class="lnk" data-act="list" data-f="fav">${esc(t('see_all'))}</button></div>
-    ${favs.slice(0,3).map(s=>miniCard(s,`<span class="iconbtn gold" aria-hidden="true">${ic('lectern')}</span>`).replace('data-act="open"','data-act="preach"')).join('')}</div>`:''}
+    <div class="favrow">${favs.slice(0,8).map(favCard).join('')}</div></div>`:''}
   ${ev?`<div style="display:flex;flex-direction:column;gap:10px"><span class="sect">${esc(t('next_preach'))}</span>
     <button class="mini" data-act="tab" data-k="agenda">${dateBox(ev.date,true)}<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
     <b style="font-size:15px">${esc(evPlace(ev))}${ev.type?' · '+esc(ev.type):''}</b><span class="sub">${esc([ev.time,evS?derive(evS).title:(ev.theme||t('tbd'))].filter(Boolean).join(' · '))}</span></div></button></div>`:''}
@@ -613,14 +618,14 @@ function filtered(){const q=norm(listState.q.trim());const mon=Date.now()-30*864
     if(listState.f==='recent'&&(s.updated||0)<mon)return false;if(listState.cat&&catOf(s)!==listState.cat)return false;
     if(!q)return true;const d=derive(s);const inf=s.info||{};return norm([d.title,d.passage,catOf(s),inf.keys,inf.goal,inf.aud,inf.text,d.text,(s.html||'').match(/data-ref="[^"]*"/g)?.join(' ')].join(' ')).includes(q)});
   return arr}
-function sermonCard(s){const d=derive(s);const c=catOf(s);const lp=lastPreach(s);const q=norm(listState.q.trim());const hit=q&&!norm(d.title).includes(q)?hitLine(s,q):'';
+function sermonCard(s){const d=derive(s);const c=catOf(s);const q=norm(listState.q.trim());const hit=q&&!norm(d.title).includes(q)?hitLine(s,q):'';const pv=hit?'':previewOf(s,150);
   return`<div class="sm-card">
    <div class="top"><button class="open" data-act="open" data-id="${esc(s.id)}"><span class="ti">${esc(d.title||t('untitled'))}</span>
-     <span class="me">${esc([d.passage,d.points?`${d.points} ${t(d.points>1?'points':'point')}`:'',sLang(s).toUpperCase()].filter(Boolean).join(' · '))}</span></button>
+     ${d.passage?`<span class="ref">${esc(d.passage)}</span>`:''}</button>
      <button class="iconbtn star ${s.fav?'on':''}" data-act="fav" data-id="${esc(s.id)}" aria-label="${esc(t(s.fav?'act_unfav':'act_fav'))}" aria-pressed="${!!s.fav}">${ic('star')}</button>
      <button class="iconbtn" data-act="menu" data-id="${esc(s.id)}" aria-label="${esc(t('more'))}">${ic('more')}</button></div>
-   ${hit?`<div class="hit">${hit}</div>`:''}
-   <div class="tags">${c?`<span class="tag">${esc(c)}</span>`:''}${lp?`<span class="tag ok">${esc(t('preached'))} · ${esc(placeName(lp))} ${esc(fmtD(lp.date))}</span>`:`<span class="tag warn">${esc(t('pending'))}</span>`}</div>
+   ${hit?`<div class="hit">${hit}</div>`:`<button class="pv" data-act="open" data-id="${esc(s.id)}">${esc(pv||t('no_prev'))}</button>`}
+   <div class="ft"><span class="dt">${esc(t('edited_c'))} ${esc(relDate(s.updated))}${c?` · ${esc(c)}`:''}</span>${statusTag(s)}</div>
   </div>`}
 function listHtml(){if(listState.mode==='n')return notesHtml();
   const arr=filtered();const cats=[...new Set([...meta.cats,...liveS().map(catOf).filter(Boolean)])];const tr=sermons.filter(s=>s.deleted).length+notes.filter(n=>n.deleted).length;
@@ -709,14 +714,14 @@ function openEditor(id,fresh){
      <button class="iconbtn" data-act="undo" data-keep aria-label="${esc(t('undo'))}">${ic('undo')}</button>
      <button class="iconbtn" data-act="redo" data-keep aria-label="${esc(t('redo'))}">${ic('redo')}</button>
      <button class="iconbtn" data-act="edMenu" aria-label="${esc(t('more'))}">${ic('more')}</button>
-     <button class="btn sm gold" data-act="edPreach">${ic('lectern')}${esc(t('preach'))}</button>
+     <button class="btn sm gold" data-act="edPreach">${ic('lectern')}${esc(t('act_preach'))}</button>
    </div></div>
    <div class="ed-meta" id="edMeta"></div>
    <div class="doc" id="ed" contenteditable="true" spellcheck="true" autocapitalize="sentences" lang="${lang==='pt'?'pt-BR':'es'}" aria-label="${esc(t('new_sermon'))}"></div>
    <div class="tb" id="tb" role="toolbar" aria-label="Formato"><div class="in">
+     <div class="sty" id="tbSty" hidden>${[['h2','sy_point'],['h3','sy_sub'],['p','sy_text'],['lg','sy_big']].map(([k,l])=>`<button data-act="fmtSet" data-s="${k}" data-keep class="s-${k}">${esc(t(l))}</button>`).join('')}</div>
      <div class="fmt">
-       <button data-act="fmtSize" data-keep aria-label="${esc(t('tb_size'))}">Aa</button>
-       <button data-act="fmtHead" data-keep aria-label="${esc(t('tb_title'))}" id="tbH">T</button>
+       <button data-act="fmtStyle" data-keep aria-label="${esc(t('tb_style'))}" aria-expanded="false" id="tbH">Aa</button>
        <button data-act="fmtB" data-keep aria-label="${esc(t('tb_bold'))}" id="tbB">B</button>
        <button data-act="fmtI" data-keep aria-label="${esc(t('tb_italic'))}" id="tbI" style="font-family:var(--read);font-style:italic;font-weight:500">I</button>
        <button data-act="fmtU" data-keep aria-label="${esc(t('tb_under'))}" id="tbU" style="text-decoration:underline;font-weight:600">U</button>
@@ -792,10 +797,16 @@ function onPaste(e){e.preventDefault();const cd=e.clipboardData;if(!cd)return;
 function tbState(){if(!E)return;const set=(id,on)=>{const b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',on?'true':'false')};
   const hb=curBlock();const inH=hb&&/^H[123]$/.test(hb.tagName);
   try{set('tbB',!inH&&document.queryCommandState('bold'));set('tbI',document.queryCommandState('italic'));set('tbU',document.queryCommandState('underline'))}catch(e){}
-  const b=curBlock();set('tbH',b&&/^H[23]$/.test(b.tagName))}
+  const b=curBlock();const cur=!b?'':b.tagName==='H2'?'h2':b.tagName==='H3'?'h3':b.classList.contains('lg')?'lg':b.tagName==='P'?'p':'';
+  $$('#tbSty [data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.s===cur)))}
 function fmt(cmd){const ed=$('#ed');ed.focus();document.execCommand(cmd,false,null);onEdInput();tbState()}
 function fmtHead(){const b=curBlock();if(!b)return;if(b.tagName==='H1'){toast(t('tb_title')+': '+t('title_ph'));return}
   const next=b.tagName==='H2'?'<h3>':b.tagName==='H3'?'<p>':'<h2>';document.execCommand('formatBlock',false,next);onEdInput();tbState()}
+function fmtStyle(){const r=$('#tbSty'),b=$('#tbH');if(!r)return;r.hidden=!r.hidden;b.setAttribute('aria-expanded',String(!r.hidden));tbState();fitToolbar()}
+function fmtSet(k){const b=curBlock();if(!b)return;if(b.tagName==='H1'){toast(t('tb_title')+': '+t('title_ph'));return}
+  if(k==='lg'){if(b.tagName!=='P')document.execCommand('formatBlock',false,'<p>');const nb=curBlock();if(nb)nb.classList.toggle('lg')}
+  else{document.execCommand('formatBlock',false,'<'+k+'>');const nb=curBlock();if(nb)nb.classList.remove('lg')}
+  onEdInput();tbState()}
 function fmtSize(){const b=curBlock();if(!b||b.tagName==='H1')return;b.classList.toggle('lg');onEdInput()}
 function fmtNote(){const b=curBlock();if(!b||!/^(P|DIV)$/.test(b.tagName))return;b.classList.remove('il');b.classList.toggle('nt');onEdInput()}
 function fmtHl(){const sel=getSelection();if(!sel.rangeCount)return;const r=sel.getRangeAt(0);const ed=$('#ed');
@@ -1419,7 +1430,7 @@ const ACT={
   fmtB:()=>fmt('bold'),fmtI:()=>fmt('italic'),fmtU:()=>fmt('underline'),fmtOl:()=>fmt('insertOrderedList'),
   fmtImp:()=>{let b=curBlock();while(b&&b.tagName!=='H2')b=b.previousElementSibling;if(!b){toast(t('imp_need'));return}snap();b.classList.toggle('imp');onEdInput();snap();toast(t(b.classList.contains('imp')?'imp_on':'imp_off'))},
   pgIdx:()=>pgIndex(),
-  fmtHead:()=>fmtHead(),fmtSize:()=>fmtSize(),fmtHl:()=>fmtHl(),fmtNote:()=>fmtNote(),edPoint:()=>edPoint(),edVerse:()=>edVerse(),vIns:()=>vInsert(),
+  fmtHead:()=>fmtHead(),fmtSize:()=>fmtSize(),fmtStyle:()=>fmtStyle(),fmtSet:b=>fmtSet(b.dataset.s),fmtHl:()=>fmtHl(),fmtNote:()=>fmtNote(),edPoint:()=>edPoint(),edVerse:()=>edVerse(),vIns:()=>vInsert(),
   // predicar
   pgClose:()=>closePreach(),pgTimer:()=>pgTimer(),pgSet:()=>pgSettings(),pgPrev:()=>pgGo(-1),pgNext:()=>pgGo(1),
   // biblia

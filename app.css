@@ -391,3 +391,51 @@ html.tabs #app{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling
 .avcam svg{width:12px;height:12px;stroke:#fff}
 .iconbtn.hasph{padding:0;overflow:hidden}.iconbtn.hasph img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .linkbtn{background:none;border:0;padding:4px 0 0;color:var(--gold-ink);font:inherit;font-size:13px;font-weight:700;text-align:left;align-self:flex-start;cursor:pointer}
+
+/* ---------- v3 · Inicio y tarjetas ---------- */
+.hero{background:linear-gradient(135deg,#E4C277 0%,#D6AD55 55%,#C49A42 100%);color:#101827;box-shadow:0 14px 34px rgba(214,173,85,.22);align-items:center;padding:22px 22px 22px 24px}
+.hero .k{color:rgba(16,24,39,.7)}
+.hero .t{font-size:27px;margin:4px 0 6px}
+.hero .d{color:rgba(16,24,39,.78)}
+.hero .plus{width:58px;height:58px;border-radius:29px;background:#101827;color:#D6AD55;box-shadow:0 6px 16px rgba(16,24,39,.25)}
+.hero .plus svg{stroke-width:2.4}
+.hero:active{transform:scale(.99)}
+.stats{background:var(--surface);border-radius:var(--r);gap:0;padding:4px 0}
+.stat{background:none;border-radius:0;padding:10px 16px;gap:2px}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat b{font-size:21px}
+.mini .ref,.sm-card .ref,.favc .ref{font-size:13px;font-weight:700;color:var(--gold-ink);letter-spacing:.01em}
+.mini .mt{font-size:12.5px;color:var(--faint);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mini .mt .ok{color:var(--ok);font-weight:700}.mini .mt .warn{color:var(--warn);font-weight:700}
+.mini .chev{color:var(--faint);display:flex}.mini .chev svg{width:18px;height:18px}
+.mini .ti,.sm-card .ti{-webkit-line-clamp:2}
+.favrow{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;margin:0 -20px;padding:0 20px 4px;scrollbar-width:none}
+.favrow::-webkit-scrollbar{display:none}
+.favc{flex:0 0 min(64%,240px);scroll-snap-align:start;background:var(--surface);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px;text-align:left;min-height:150px;box-shadow:0 0 0 1px var(--gold-soft) inset}
+.favc .st{color:var(--gold);display:flex}.favc .st svg{width:16px;height:16px;fill:var(--gold);stroke:var(--gold)}
+.favc .ti{font-family:var(--read);font-size:16px;font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.favc .go{margin-top:auto;padding-top:6px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--fg)}
+.favc .go svg{width:16px;height:16px;stroke:var(--gold)}
+.sm-card{gap:8px;padding:16px 16px 14px}
+.sm-card .open{gap:4px}
+.sm-card .ti{font-size:18.5px}
+.sm-card .pv{font-family:var(--read);font-size:14.5px;line-height:1.5;color:var(--muted);text-align:left;padding:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sm-card .ft{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
+.sm-card .dt{font-size:12.5px;color:var(--faint);font-weight:600}
+.sm-card .ft .tag{font-size:12px}
+@media (min-width:760px){.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.favrow{margin:0;padding:0 0 4px}}
+@media (min-width:1100px){.list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Pregar limpio: anterior/siguiente quedan discretos (sin fondo) para avanzar sin mostrar todo */
+.pg.clean:not(.show) .pg-bot{opacity:1;pointer-events:auto}
+.pg.clean:not(.show) .pg-bot button{background:transparent!important;color:var(--pmut)!important;opacity:.55;font-weight:700}
+.pg.clean:not(.show) .pg-bot .scr{visibility:hidden}
+.pg.clean:not(.show) .pg-bot .next{justify-content:flex-end}
+.tb .sty{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tb .sty[hidden]{display:none}
+.tb .sty button{height:44px;border-radius:12px;background:var(--surface);box-shadow:0 0 0 1px var(--line) inset;color:var(--fg);font-size:13.5px;font-weight:700}
+.tb .sty .s-h2{font-family:var(--read);font-size:16px;font-weight:700}
+.tb .sty .s-h3{font-family:var(--read);font-size:14.5px;font-weight:700;color:var(--muted)}
+.tb .sty .s-p{font-family:var(--read);font-weight:400}
+.tb .sty .s-lg{font-family:var(--read);font-size:17px;font-weight:500}
+.tb .sty button[aria-pressed="true"]{box-shadow:0 0 0 1.5px var(--gold) inset;background:var(--gold-soft)}
+.tb .fmt #tbH[aria-expanded="true"]{background:var(--surface);box-shadow:0 0 0 1.5px var(--gold) inset}
