@@ -320,3 +320,48 @@ html[data-mode="dark"] .bsel .book{background-color:#1C2638}
 .pg-text[data-al=justify]{hyphens:auto;-webkit-hyphens:auto}
 .pg-text[data-al=justify] h1,.pg-text[data-al=justify] h2,.pg-text[data-al=justify] h3,.pg-text[data-al=justify] .vq{text-align:left;hyphens:manual}
 .pg-text[data-al=center] h2{justify-content:center}
+
+/* ---------- Biblia al lado del editor ---------- */
+.bp{position:fixed;left:0;right:0;bottom:0;height:58vh;height:58dvh;z-index:26;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -10px 30px rgba(8,13,22,.18);border-radius:22px 22px 0 0;
+  padding:12px max(14px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:8px;animation:up .2s ease-out}
+.bp-head{display:flex;align-items:center;gap:8px}
+.bp-head b{flex:1;font-size:17px;font-weight:800}
+.bp .inp{height:42px}
+.bp .bsel select{height:42px}
+.bp-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.bp .verses{background:var(--bg)}
+.with-bp .tb{display:none}
+.with-bp .doc{padding-bottom:62vh}
+@media (min-width:900px){
+  .bp{top:0;left:auto;width:400px;height:auto;border-radius:0;border-top:0;border-left:1px solid var(--line);box-shadow:none;padding-top:calc(env(safe-area-inset-top,0px) + 14px)}
+  .with-bp{padding-right:400px}
+  .with-bp .tb{display:block;right:400px}
+  .with-bp .doc{padding-bottom:200px}
+}
+
+/* ---------- bloqueo ---------- */
+.lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px max(24px,env(safe-area-inset-right,0px)) 24px max(24px,env(safe-area-inset-left,0px));max-width:100%}
+.lock>*{width:100%;max-width:340px}
+.lock .logo{width:84px;height:84px;border-radius:22px}
+.lock h2{margin:0;font-size:22px;font-weight:800;text-align:center}
+.lock .lnk{text-align:center}
+.inp.pin{text-align:center;font-size:28px;letter-spacing:.5em;height:58px;font-weight:800}
+
+/* ---------- PDF ---------- */
+@media print{
+  #printArea .pinfo{font-family:var(--ui);font-size:9.5pt;line-height:1.5;background:#F1F3F6;border-radius:6pt;padding:8pt 10pt;margin:0 0 14pt}
+  #printArea .pnotes{margin-top:18pt;font-family:var(--ui);font-size:10pt;break-inside:avoid}
+  #printArea .pnotes i{display:block;border-bottom:.5pt solid #C9CED8;height:22pt}
+  #printArea.pm-study{line-height:1.8}
+  #printArea.pm-study .nt{display:block;font-family:var(--ui);font-size:9.5pt;color:#4B5565;border:.5pt dashed #C9CED8;border-radius:4pt;padding:4pt 6pt}
+  #printArea.pm-preach{font-size:17pt;line-height:1.7}
+  #printArea.pm-preach h1{font-size:28pt}
+  #printArea.pm-preach h2{font-size:20pt;margin-top:22pt;padding-top:6pt;border-top:1pt solid #D6AD55}
+  #printArea.pm-preach blockquote{font-size:15pt}
+  #printArea.pm-preach mark{background:none;font-weight:700;text-decoration:underline;text-decoration-color:#D6AD55;text-decoration-thickness:2pt}
+  #printArea.pm-preach .nt{display:block;font-family:var(--ui);font-size:11pt;color:#4B5565}
+  #printArea.pm-points h2{font-size:16pt}
+  #printArea.pm-points blockquote{font-size:11pt}
+}
+.bsel select{appearance:none;-webkit-appearance:none;background-repeat:no-repeat;background-position:right 12px center;background-size:14px}
+.bsel .chap{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}

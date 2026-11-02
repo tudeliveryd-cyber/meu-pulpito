@@ -71,6 +71,10 @@ nt_estudio:'Estudio bíblico',nt_frase:'Frase',nt_reflexion:'Reflexión',nt_ilus
 hist_all:'Historial',hist_n:'{n} predicaciones registradas',hist_none:'Aquí aparecen las predicaciones que registras al salir del Modo Pregar o desde el menú del sermón.',next_tab:'Próximas',
 p_scroll:'Desplazamiento automático',p_speed:'Velocidad',p_font:'Tipo de letra',f_serif:'Clásica',f_sans:'Moderna',f_wide:'Muy legible',p_color:'Color del texto',c_auto:'Auto',p_align:'Alineación',a_left:'Izquierda',a_just:'Justificado',a_center:'Centro',p_margin:'Márgenes',p_pspace:'Espacio entre párrafos',p_dim:'Brillo',bg_sepia:'Sepia',scroll_pause:'Desplazamiento en pausa',scroll_end:'Fin del mensaje',g_read:'Lectura',g_screen:'Pantalla',g_nav:'Predicación',
 tp_exp:'Expositivo',tp_tem:'Temático',tp_cena:'Santa Cena',tp_evan:'Evangelístico',tp_est:'Estudio bíblico',
+bp_t:'Biblia',bp_ins:'Insertar',bp_ins_n:'Insertar ({n})',bp_pick:'Toca los versículos que quieres insertar',
+pdf_print:'PDF para imprimir',pdf_study:'PDF para estudiar',pdf_preach:'PDF para predicar',pdf_points:'PDF solo puntos',pdf_print_d:'Limpio y completo.',pdf_study_d:'Con detalles, recordatorios y espacio para notas.',pdf_preach_d:'Letra grande y puntos destacados.',pdf_points_d:'Una hoja con el esquema.',notes_area:'Notas',
+security:'Seguridad',lock:'Bloquear con código',lock_d:'Pide el código al abrir la app.',lock_on:'Bloqueo activado',lock_off:'Bloqueo desactivado',pin_new:'Crea un código de 4 a 6 números',pin_again:'Repite el código',pin_diff:'Los códigos no coinciden. Intenta de nuevo.',pin_short:'Usa de 4 a 6 números.',pin_enter:'Escribe tu código',pin_wrong:'Código incorrecto',unlock:'Desbloquear',bio:'Usar Face ID o huella',bio_use:'Desbloquear con Face ID o huella',bio_on:'Face ID o huella activado',bio_fail:'No se pudo usar Face ID o huella. Usa el código.',forgot_pin:'Olvidé el código',forgot_pin_d:'Para quitar el bloqueo, sal de tu cuenta y entra de nuevo con tu correo y contraseña. Tus sermones siguen guardados en tu cuenta.',forgot_local:'Sin cuenta no es posible quitar el bloqueo sin el código. Por eso, en modo sin cuenta te recomendamos no activarlo.',sign_out_unlock:'Salir y entrar de nuevo',lock_local_warn:'Estás sin cuenta: si olvidas el código no podrás recuperarlo.',
+autobak:'Copias automáticas',autobak_d:'Una por día en este celular, últimos 7 días.',autobak_none:'Todavía no hay copias automáticas. La primera se hace hoy.',autobak_rest:'Recuperar de esta copia',autobak_rest_d:'Agrega los sermones, anotaciones y predicaciones que falten o estén en la papelera. No borra nada.',autobak_done:'{n} elementos recuperados',
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
@@ -119,6 +123,10 @@ nt_estudio:'Estudo bíblico',nt_frase:'Frase',nt_reflexion:'Reflexão',nt_ilustr
 hist_all:'Histórico',hist_n:'{n} pregações registradas',hist_none:'Aqui aparecem as pregações que você registra ao sair do Modo Pregar ou pelo menu do sermão.',next_tab:'Próximas',
 p_scroll:'Rolagem automática',p_speed:'Velocidade',p_font:'Tipo de letra',f_serif:'Clássica',f_sans:'Moderna',f_wide:'Bem legível',p_color:'Cor do texto',c_auto:'Auto',p_align:'Alinhamento',a_left:'Esquerda',a_just:'Justificado',a_center:'Centro',p_margin:'Margens',p_pspace:'Espaço entre parágrafos',p_dim:'Brilho',bg_sepia:'Sépia',scroll_pause:'Rolagem pausada',scroll_end:'Fim da mensagem',g_read:'Leitura',g_screen:'Tela',g_nav:'Pregação',
 tp_exp:'Expositivo',tp_tem:'Temático',tp_cena:'Santa Ceia',tp_evan:'Evangelístico',tp_est:'Estudo bíblico',
+bp_t:'Bíblia',bp_ins:'Inserir',bp_ins_n:'Inserir ({n})',bp_pick:'Toque nos versículos que quer inserir',
+pdf_print:'PDF para imprimir',pdf_study:'PDF para estudar',pdf_preach:'PDF para pregar',pdf_points:'PDF só os pontos',pdf_print_d:'Limpo e completo.',pdf_study_d:'Com detalhes, lembretes e espaço para anotações.',pdf_preach_d:'Letra grande e pontos em destaque.',pdf_points_d:'Uma folha com o esboço.',notes_area:'Anotações',
+security:'Segurança',lock:'Bloquear com código',lock_d:'Pede o código ao abrir o app.',lock_on:'Bloqueio ativado',lock_off:'Bloqueio desativado',pin_new:'Crie um código de 4 a 6 números',pin_again:'Repita o código',pin_diff:'Os códigos não conferem. Tente de novo.',pin_short:'Use de 4 a 6 números.',pin_enter:'Digite seu código',pin_wrong:'Código errado',unlock:'Desbloquear',bio:'Usar Face ID ou digital',bio_use:'Desbloquear com Face ID ou digital',bio_on:'Face ID ou digital ativado',bio_fail:'Não deu para usar Face ID ou digital. Use o código.',forgot_pin:'Esqueci o código',forgot_pin_d:'Para tirar o bloqueio, saia da conta e entre de novo com seu e-mail e senha. Seus sermões continuam guardados na conta.',forgot_local:'Sem conta não é possível tirar o bloqueio sem o código. Por isso, no modo sem conta recomendamos não ativar.',sign_out_unlock:'Sair e entrar de novo',lock_local_warn:'Você está sem conta: se esquecer o código, não dá para recuperar.',
+autobak:'Cópias automáticas',autobak_d:'Uma por dia neste celular, últimos 7 dias.',autobak_none:'Ainda não há cópias automáticas. A primeira é feita hoje.',autobak_rest:'Recuperar desta cópia',autobak_rest_d:'Adiciona os sermões, anotações e pregações que faltam ou estão na lixeira. Não apaga nada.',autobak_done:'{n} itens recuperados',
 cats:['Santa Ceia','Culto de Ensino','Culto da Família','Jovens','Liderança','Evangelismo','Consagração','Mensagens especiais'],
 wd:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],months:['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
 books:['Gênesis','Êxodo','Levítico','Números','Deuteronômio','Josué','Juízes','Rute','1 Samuel','2 Samuel','1 Reis','2 Reis','1 Crônicas','2 Crônicas','Esdras','Neemias','Ester','Jó','Salmos','Provérbios','Eclesiastes','Cânticos','Isaías','Jeremias','Lamentações','Ezequiel','Daniel','Oseias','Joel','Amós','Obadias','Jonas','Miqueias','Naum','Habacuque','Sofonias','Ageu','Zacarias','Malaquias','Mateus','Marcos','Lucas','João','Atos','Romanos','1 Coríntios','2 Coríntios','Gálatas','Efésios','Filipenses','Colossenses','1 Tessalonicenses','2 Tessalonicenses','1 Timóteo','2 Timóteo','Tito','Filemom','Hebreus','Tiago','1 Pedro','2 Pedro','1 João','2 João','3 João','Judas','Apocalipse']}
@@ -612,7 +620,7 @@ function openEditor(id,fresh){
   placeholders();E.U=[ed.innerHTML];E.base=fresh?'':cleanHtml(html);E.baseAt=s.updated||Date.now();E.wasEmpty=!ed.textContent.trim();drawEdMeta();
   ed.addEventListener('input',onEdInput);ed.addEventListener('keydown',onEdKey);ed.addEventListener('paste',onPaste);
   ed.addEventListener('beforeinput',e=>{if(e.inputType==='historyUndo'){e.preventDefault();edUndo()}else if(e.inputType==='historyRedo'){e.preventDefault();edRedo()}});
-  document.addEventListener('selectionchange',tbState);
+  document.addEventListener('selectionchange',tbState);document.addEventListener('selectionchange',trackRange);
   window.scrollTo(0,0);fitToolbar();
   if(fresh){setTimeout(()=>{const h1=ed.querySelector('h1');placeCaret(h1,0);ed.focus()},60)}
 }
@@ -643,7 +651,7 @@ function edSave(force){if(!E)return;clearTimeout(E.saveT);if(!E.dirty&&!force&&!
   if(E.isNew&&!d.text.trim()){return}
   if(!E.s.lang)E.s.lang=detectLang(d.text);
   E.isNew=false;E.dirty=false;const cur=sermons.find(x=>x.id===E.s.id);if(cur&&cur.hist)E.s.hist=cur.hist;putSermon(E.s,{silent:true});updWc();if(E.wasEmpty!==!d.text.trim()){E.wasEmpty=!d.text.trim();drawEdMeta()}const sv=$('#edSaved');if(sv)sv.innerHTML=ic('check')+`<span class="st">${esc(t('saved'))}</span>`}
-function closeEditor(then){if(!E)return;edSave();commitHist();document.removeEventListener('selectionchange',tbState);E=null;view.overlay=null;then?then():render(true)}
+function closeEditor(then){if(!E)return;bpClose();edSave();commitHist();document.removeEventListener('selectionchange',tbState);document.removeEventListener('selectionchange',trackRange);E=null;view.overlay=null;then?then():render(true)}
 function curBlock(){const ed=$('#ed');const sel=getSelection();if(!ed||!sel.rangeCount)return null;let n=sel.anchorNode;if(!ed.contains(n))return null;
   while(n&&n.parentNode!==ed)n=n.parentNode;return n&&n.nodeType===1?n:null}
 function placeCaret(el,off){if(!el)return;const r=document.createRange();try{if(off===0){r.setStart(el,0)}else{r.selectNodeContents(el);r.collapse(false)}}catch(e){return}const s=getSelection();s.removeAllRanges();s.addRange(r)}
@@ -679,7 +687,37 @@ function insertBlockAfterCaret(node,focusNew){const ed=$('#ed');let b=curBlock()
   if(focusNew)placeCaret(node,0);else placeCaret(after,0);onEdInput()}
 function edPoint(){const h=document.createElement('h2');h.innerHTML='<br>';insertBlockAfterCaret(h,true)}
 let savedRange=null;
-function edVerse(){const sel=getSelection();savedRange=sel.rangeCount?sel.getRangeAt(0).cloneRange():null;const l=sLang(E.s);
+/* Biblia al lado del editor */
+const BP={b:null,c:1,sel:new Set(),q:'',ver:null};
+function trackRange(){if(!E)return;const sel=getSelection();const ed=$('#ed');if(sel.rangeCount&&ed&&ed.contains(sel.anchorNode))E.lastRange=sel.getRangeAt(0).cloneRange()}
+function bpOpen(){if(!E)return;trackRange();BP.ver=BP.ver||sLang(E.s);if(BP.b==null){const p=parseRef(derive(E.s).passage||'');BP.b=p?p.b:42;BP.c=p?p.ch:1}
+  BP.sel.clear();let el=$('#bp');if(!el){el=document.createElement('aside');el.id='bp';el.className='bp';el.setAttribute('aria-label',t('bp_t'));$('.ed-view').appendChild(el)}
+  $('.ed-view').classList.add('with-bp');if(document.activeElement)document.activeElement.blur();bpDraw();loadBible(BP.ver).then(bpDraw).catch(()=>{})}
+function bpClose(){const el=$('#bp');if(el)el.remove();const v=$('.ed-view');if(v)v.classList.remove('with-bp')}
+function bpDraw(){const el=$('#bp');if(!el)return;const l=BP.ver;const B=BIB[vkey(l)];const names=t('books',null,l);let body='';
+  if(!B)body=`<p class="sub">${esc(t('b_loading'))}</p>`;
+  else if(BP.q&&!parseRef(BP.q)&&BP.q.trim().length>=3){const hits=bibleSearch(BP.q,vkey(l));body=`<div class="res">${hits.slice(0,40).map(h=>`<button data-bpgo="${h.b},${h.c},${h.v}"><b>${esc(names[h.b])} ${h.c}:${h.v}</b><span>${h.html}</span></button>`).join('')||`<p class="sub">${esc(t('b_none'))}</p>`}</div>`}
+  else{const ch=(B[BP.b]||[])[BP.c-1]||[];body=`<p class="sub" style="margin:0 0 4px">${esc(t('bp_pick'))}</p><div class="verses" style="padding:6px;font-size:16px">${ch.map((v,i)=>v?`<button class="vs" data-bpv="${i+1}" aria-pressed="${BP.sel.has(i+1)}"><sup>${i+1}</sup>${esc(v)}</button>`:'').join('')}</div>`}
+  const chN=B?(B[BP.b]||[]).length:1;const scroll=el.querySelector('.bp-body')?.scrollTop||0;
+  el.innerHTML=`<div class="bp-head"><b>${esc(t('bp_t'))}</b><button class="btn sm ghost" data-bpver>${esc(VNAME[vkey(l)])}</button><button class="iconbtn" data-bpclose aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+   <input class="inp" id="bpQ" type="search" value="${esc(BP.q)}" placeholder="${esc(t('b_search'))}" autocomplete="off">
+   <div class="bsel"><select class="book" id="bpB">${names.map((n,i)=>`<option value="${i}" ${i===BP.b?'selected':''}>${esc(n)}</option>`).join('')}</select><select class="chap" id="bpC">${Array.from({length:chN},(_,i)=>`<option value="${i+1}" ${i+1===BP.c?'selected':''}>${esc(t('chap'))} ${i+1}</option>`).join('')}</select></div>
+   <div class="bp-body">${body}</div>
+   <button class="btn gold block" data-bpins ${BP.sel.size?'':'disabled style="opacity:.5"'}>${esc(BP.sel.size?t('bp_ins_n',{n:BP.sel.size}):t('bp_ins'))}</button>`;
+  const bd=el.querySelector('.bp-body');if(bd)bd.scrollTop=scroll;
+  $('#bpB').onchange=e=>{BP.b=+e.target.value;BP.c=1;BP.sel.clear();bpDraw()};$('#bpC').onchange=e=>{BP.c=+e.target.value;BP.sel.clear();bpDraw()};
+  const q=$('#bpQ');q.oninput=()=>{BP.q=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{const p=parseRef(BP.q);if(p){BP.b=p.b;BP.c=Math.max(1,p.ch);BP.sel=new Set(p.vs||[]);BP.q=''}bpDraw();const n=$('#bpQ');if(n&&BP.q){n.focus();n.setSelectionRange(n.value.length,n.value.length)}},350)}}
+document.addEventListener('click',e=>{const el=e.target.closest('#bp');if(!el)return;
+  if(e.target.closest('[data-bpclose]')){bpClose();return}
+  if(e.target.closest('[data-bpver]')){const order=['es','pt','es65','ptr','nva'];BP.ver=order[(order.indexOf(vkey(BP.ver))+1)%order.length];BP.sel.clear();bpDraw();loadBible(BP.ver).then(bpDraw).catch(()=>{});return}
+  const v=e.target.closest('[data-bpv]');if(v){const n=+v.dataset.bpv;BP.sel.has(n)?BP.sel.delete(n):BP.sel.add(n);bpDraw();return}
+  const g=e.target.closest('[data-bpgo]');if(g){const[b,c,vv]=g.dataset.bpgo.split(',').map(Number);BP.b=b;BP.c=c;BP.q='';BP.sel=new Set([vv]);bpDraw();return}
+  if(e.target.closest('[data-bpins]')&&BP.sel.size&&E){const l=BP.ver;const ch=BIB[vkey(l)][BP.b][BP.c-1];const vs=[...BP.sel].sort((a,b)=>a-b);
+    const ref=refName(BP.b,BP.c,vs,['pt','ptr','nva'].includes(vkey(l))?'pt':'es');const txt=vs.length===1?ch[vs[0]-1]:vs.map(x=>`${x} ${ch[x-1]}`).join(' ');
+    const ed=$('#ed');if(E.lastRange&&ed.contains(E.lastRange.startContainer)){const sl=getSelection();sl.removeAllRanges();sl.addRange(E.lastRange)}else{placeCaret(ed.lastElementChild,1)}
+    const bq=document.createElement('blockquote');bq.setAttribute('data-ref',ref);bq.textContent=txt;insertBlockAfterCaret(bq,false);trackRange();BP.sel.clear();bpDraw();toast(t('inserted'))}});
+function edVerse(){bpOpen()}
+function edVerseQuick(){const sel=getSelection();savedRange=sel.rangeCount?sel.getRangeAt(0).cloneRange():null;const l=sLang(E.s);
   const sh=openSheet(`<h3>${esc(t('verse_t'))}</h3><p class="sub" style="margin:0">${esc(t(l==='pt'?'verse_hint_pt':'verse_hint'))}</p>
    <input class="inp" id="vRef" placeholder="${esc(t('ref_ph'))}" autocomplete="off" autocapitalize="words" enterkeyhint="done">
    <div id="vPrev" class="serif" style="font-style:italic;font-size:16px;line-height:1.55;min-height:24px;color:var(--muted)"></div>
@@ -782,27 +820,29 @@ function shareSheet(id){const s=sermons.find(x=>x.id===id);if(!s)return;closeShe
    <div class="acts">
     <button class="act" id="shWa">${ic('chat')}${esc(t('wa'))}</button>
     <button class="act" id="shCp">${ic('copy')}${esc(t('copy_txt'))}</button>
-    <button class="act" id="shPdf">${ic('print')}${esc(t('pdf'))}</button>
+    ${['print','study','preach','points'].map(m=>`<button class="act" data-pdf="${m}">${ic('print')}<span style="display:flex;flex-direction:column"><span>${esc(t('pdf_'+m))}</span><span class="sub">${esc(t('pdf_'+m+'_d'))}</span></span></button>`).join('')}
     ${navigator.share?`<button class="act" id="shOt">${ic('share')}${esc(t('other_apps'))}</button>`:''}</div>`);
   loadBible(sLang(s)).catch(()=>{});
   $('#shSeg',sh).onclick=e=>{const b=e.target.closest('button');if(!b)return;only=b.dataset.o==='1';$$('#shSeg button',sh).forEach(x=>x.setAttribute('aria-pressed',x===b))};
   $('#shWa',sh).onclick=()=>{const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(sermonText(s,only));a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()};
   $('#shCp',sh).onclick=()=>copyText(sermonText(s,only)).then(()=>toast(t('txt_copied')));
-  $('#shPdf',sh).onclick=()=>{closeSheet();printSermon(s,only)};
+  sh.addEventListener('click',e=>{const b=e.target.closest('[data-pdf]');if(b){closeSheet();printSermon(s,b.dataset.pdf)}});
   const ot=$('#shOt',sh);if(ot)ot.onclick=()=>navigator.share({title:derive(s).title,text:sermonText(s,only)}).catch(()=>{})}
-async function printSermon(s,only){const l=sLang(s);try{await loadBible(l)}catch(e){}
-  const d=numberedDoc(s);const dv=derive(s);
+async function printSermon(s,mode){if(mode===true)mode='points';if(!mode||mode===false)mode='print';const l=sLang(s);try{await loadBible(l)}catch(e){}
+  const d=numberedDoc(s);const dv=derive(s);const inf=s.info||{};
   $$('blockquote[data-ref]',d).forEach(b=>{if(!b.textContent.trim())b.textContent=bibleText(b.getAttribute('data-ref'),l)});
+  $$('p',d).forEach(p=>{if(isRef(p.textContent.trim())){const r=cleanRef(p.textContent.trim());const bq=document.createElement('blockquote');bq.setAttribute('data-ref',r);bq.textContent=bibleText(r,l);p.replaceWith(bq)}});
   $$('h2',d).forEach(h=>{if(h.dataset.n)h.textContent=`${h.dataset.n}. ${h.textContent}`});
   const h1=d.querySelector('h1');if(h1)h1.remove();
-  if(only)[...d.children].forEach(x=>{if(!/^(H2|BLOCKQUOTE)$/.test(x.tagName))x.remove()});
+  if(mode==='points')[...d.children].forEach(x=>{if(!/^(H2|BLOCKQUOTE)$/.test(x.tagName))x.remove()});
+  if(mode!=='study'&&mode!=='preach')$$('.nt',d).forEach(x=>x.remove());
+  const L=(k,v)=>v?`<div><b>${esc(t(k))}:</b> ${esc(v)}</div>`:'';
+  const infoBox=mode==='study'?`<div class="pinfo">${L('i_goal',inf.goal)}${L('i_aud',inf.aud)}${L('i_keys',inf.keys)}${L('i_place',inf.place)}${L('i_pred',inf.pred&&fmtD(inf.pred))}${L('i_dur',inf.dur&&inf.dur+' min')}</div>`:'';
+  const notesArea=mode==='study'?`<div class="pnotes"><b>${esc(t('notes_area'))}</b>${'<i></i>'.repeat(12)}</div>`:'';
+  $('#printArea').className='pm-'+mode;
   $('#printArea').innerHTML=`<div class="ph"><span style="display:flex;align-items:center;gap:8pt"><img src="logo.jpg" alt="">Meu Púlpito</span><span>${esc(new Date().toLocaleDateString(l==='pt'?'pt-BR':'es'))}</span></div>
-   <h1>${esc(dv.title||t('untitled'))}</h1>${dv.passage?`<div class="ref">${esc(dv.passage)}</div>`:''}${d.innerHTML}<div class="pf">Meu Púlpito · ${esc(verLabel(l))}</div>`;
+   <h1>${esc(dv.title||t('untitled'))}</h1>${dv.passage&&!d.querySelector('blockquote[data-ref]')?`<div class="ref">${esc(dv.passage)}</div>`:''}${infoBox}<div class="pbody">${d.innerHTML}</div>${notesArea}<div class="pf">Meu Púlpito · ${esc(verLabel(l))}</div>`;
   toast(t('pdf_tip'));setTimeout(()=>window.print(),350)}
-
-/* =========================================================
-   Historial de predicaciones
-   ========================================================= */
 function histSheet(id,pre){const s=sermons.find(x=>x.id===id)||(E&&E.s.id===id?E.s:null);if(!s)return;closeSheet();
   const L=(s.log||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const sh=openSheet(`<h3>${esc(t('act_hist'))}</h3>
@@ -1045,8 +1085,13 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
   <div class="pgrp">
     <div class="prow"><span><span class="k">${esc(t('backup'))}</span><span class="s">${esc(t('last_bak',{d:lb?fmtD(todayISO(new Date(lb))):t('never')}))}</span></span><button class="btn sm ghost" data-act="bakGo">${esc(t('copy_now'))}</button></div>
     <div class="prow"><span><label class="k" for="pMail">${esc(t('tr_mail'))}</label><span class="s">${esc(t('tr_mail_d'))}</span></span><input class="inp" id="pMail" type="email" value="${esc(prefs.mmEmail||'')}" placeholder="—" style="max-width:220px;height:42px" data-input="pMail"></div>
+    <div class="prow"><span><span class="k">${esc(t('autobak'))}</span><span class="s">${esc(t('autobak_d'))}</span></span><button class="btn sm ghost" data-act="autoBak">${ic('undo')}${esc(t('restore_it'))}</button></div>
     <div class="prow"><span class="k">${esc(t('restore'))}</span><button class="btn sm ghost" data-act="impOpen">${ic('clip')}${esc(t('import'))}</button></div>
     <div class="prow"><span class="sync" data-sync>${syncHtml()}</span>${localMode?(window.firebase&&firebase.apps&&firebase.apps.length?`<button class="btn sm dark" data-act="toLogin">${esc(t('login_btn'))}</button>`:''):`<button class="btn sm ghost" data-act="logout">${ic('out')}${esc(t('logout'))}</button>`}</div>
+  </div>
+  <div class="pgrp">
+    <div class="prow"><span><span class="k">${esc(t('lock'))}</span><span class="s">${esc(t('lock_d'))}</span></span>${seg('lockT',lockCfg()?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>
+    ${lockCfg()&&window.PublicKeyCredential?`<div class="prow"><span class="k">${esc(t('bio'))}</span>${seg('bioT',lockCfg().bio?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>`:''}
   </div>
   <span class="lbl" style="padding:4px 4px 0">${esc(t('soon'))}</span>
   <div class="soon"><div>${ic('mic')}${esc(t('s_rec'))}</div><div>${ic('text')}${esc(t('s_tr'))}</div><div>${ic('spark')}${esc(t('s_ai'))}</div></div>
@@ -1059,6 +1104,71 @@ function importSheet(){const sh=openSheet(`<h3>${esc(t('restore'))}</h3><p class
     if(o&&Array.isArray(o.agenda))o.agenda.forEach(x=>{if(x&&x.id&&!agenda.find(a=>a.id===x.id))putEvent(x)});
     if(o&&o.meta&&Array.isArray(o.meta.cats)){o.meta.cats.forEach(c=>{if(!meta.cats.includes(c))meta.cats.push(c)});(o.meta.favVerses||[]).forEach(f=>{if(!meta.favVerses.find(x=>x.ref===f.ref&&x.v===f.v))meta.favVerses.push(f)});if(!meta.name&&o.meta.name)meta.name=o.meta.name;putMeta()}
     closeSheet();toast(n?t('imported',{n}):t('nothing_new'));render()}}
+
+/* =========================================================
+   Bloqueo (código + Face ID)
+   ========================================================= */
+const LK='mp.lock';let locked=false,hiddenAt=0;
+const b64=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))),unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function hashPin(pin,salt){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+'|'+pin));return b64(d)}
+const lockCfg=()=>ls.get(LK,null);
+async function bioAvailable(){try{return !!(window.PublicKeyCredential&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(e){return false}}
+async function bioRegister(){const rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+  const c=await navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'Meu Púlpito'},user:{id:rnd(16),name:'meu-pulpito',displayName:'Meu Púlpito'},
+    pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}});
+  return b64(c.rawId)}
+async function bioCheck(id){const c=await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:unb64(id)}],userVerification:'required',timeout:60000}});return !!c}
+function showLock(){const cfg=lockCfg();if(!cfg||locked)return;locked=true;const el=document.createElement('div');el.id='lock';el.className='lock';
+  el.innerHTML=`<img class="logo" src="logo.jpg" alt="Meu Púlpito"><h2>${esc(t('pin_enter'))}</h2>
+   <input class="inp pin" id="lkPin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" aria-label="${esc(t('pin_enter'))}">
+   <p class="err" id="lkErr" hidden></p>
+   <button class="btn gold block" id="lkGo">${esc(t('unlock'))}</button>
+   ${cfg.bio?`<button class="btn ghost block" id="lkBio">${esc(t('bio_use'))}</button>`:''}
+   <button class="lnk" id="lkForgot">${esc(t('forgot_pin'))}</button>`;
+  document.body.appendChild(el);document.body.style.overflow='hidden';
+  const go=async()=>{const v=$('#lkPin').value;if((await hashPin(v,cfg.salt))===cfg.hash)unlock();else{const e=$('#lkErr');e.textContent=t('pin_wrong');e.hidden=false;$('#lkPin').value=''}};
+  $('#lkGo').onclick=go;$('#lkPin').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+  $('#lkPin').addEventListener('input',async e=>{const v=e.target.value;if(v.length>=4&&(await hashPin(v,cfg.salt))===cfg.hash)unlock()});
+  const bb=$('#lkBio');if(bb)bb.onclick=async()=>{try{if(await bioCheck(cfg.bio))unlock()}catch(e){toast(t('bio_fail'))}};
+  $('#lkForgot').onclick=()=>{const cloud=!localMode&&authU;const sh=openSheet(`<h3>${esc(t('forgot_pin'))}</h3><p style="margin:0;line-height:1.5">${esc(t(cloud?'forgot_pin_d':'forgot_local'))}</p>
+    ${cloud?`<button class="btn gold block" id="fgOut">${esc(t('sign_out_unlock'))}</button>`:''}<button class="btn ghost block" data-act="sheetClose">${esc(t('close'))}</button>`,{host:el});
+    const o=$('#fgOut',sh);if(o)o.onclick=async()=>{ls.set(LK,null);el.remove();locked=false;document.body.style.overflow='';closeSheet();await ACT.logout()}};
+  setTimeout(()=>{if(!cfg.bio)$('#lkPin').focus()},200)}
+function unlock(){locked=false;const el=$('#lock');if(el)el.remove();if(!PG)document.body.style.overflow=''}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')hiddenAt=Date.now();else if(hiddenAt&&Date.now()-hiddenAt>60000&&lockCfg()&&!PG)showLock()});
+async function lockSetup(){const cfg=lockCfg();if(cfg){ls.set(LK,null);toast(t('lock_off'));render();return}
+  let first='';const sh=openSheet(`<h3>${esc(t('lock'))}</h3>${localMode?`<p class="err" style="margin:0">${esc(t('lock_local_warn'))}</p>`:''}<p class="sub" style="margin:0" id="lsMsg">${esc(t('pin_new'))}</p>
+    <input class="inp pin" id="lsPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off"><p class="err" id="lsErr" hidden></p>
+    <button class="btn gold block" id="lsOk">${esc(t('save'))}</button>`);
+  const err=m=>{const e=$('#lsErr',sh);e.textContent=m;e.hidden=!m};
+  $('#lsOk',sh).onclick=async()=>{const v=$('#lsPin',sh).value.trim();if(!/^\d{4,6}$/.test(v)){err(t('pin_short'));return}
+    if(!first){first=v;$('#lsPin',sh).value='';$('#lsMsg',sh).textContent=t('pin_again');err('');return}
+    if(v!==first){first='';$('#lsPin',sh).value='';$('#lsMsg',sh).textContent=t('pin_new');err(t('pin_diff'));return}
+    const salt=b64(crypto.getRandomValues(new Uint8Array(16)));ls.set(LK,{hash:await hashPin(v,salt),salt,bio:null});closeSheet();toast(t('lock_on'));render()};
+  setTimeout(()=>$('#lsPin',sh).focus(),100)}
+async function bioToggle(){const cfg=lockCfg();if(!cfg)return;if(cfg.bio){cfg.bio=null;ls.set(LK,cfg);render();return}
+  try{cfg.bio=await bioRegister();ls.set(LK,cfg);toast(t('bio_on'));render()}catch(e){toast(t('bio_fail'))}}
+
+/* =========================================================
+   Copias automáticas (IndexedDB, una por día)
+   ========================================================= */
+function idb(){return new Promise((ok,ko)=>{if(!window.indexedDB)return ko();const r=indexedDB.open('meupulpito',1);r.onupgradeneeded=()=>r.result.createObjectStore('snaps',{keyPath:'day'});r.onsuccess=()=>ok(r.result);r.onerror=()=>ko(r.error)})}
+async function snapList(){try{const db=await idb();return await new Promise(ok=>{const q=db.transaction('snaps').objectStore('snaps').getAll();q.onsuccess=()=>ok((q.result||[]).filter(x=>x.who===(authU?authU.uid:'local')).sort((a,b)=>b.day.localeCompare(a.day)));q.onerror=()=>ok([])})}catch(e){return[]}}
+async function autoSnap(){if(!ready||(!sermons.length&&!notes.length))return;try{const day=todayISO()+'|'+(authU?authU.uid:'local');const db=await idb();const st=db.transaction('snaps','readwrite').objectStore('snaps');
+  st.put({day,who:authU?authU.uid:'local',at:Date.now(),data:JSON.parse(JSON.stringify({sermons,notes,agenda,meta}))});
+  const all=await snapList();all.slice(7).forEach(x=>{try{db.transaction('snaps','readwrite').objectStore('snaps').delete(x.day)}catch(e){}})}catch(e){}}
+async function autoBakSheet(){const L=await snapList();
+  const sh=openSheet(`<h3>${esc(t('autobak'))}</h3><p class="sub" style="margin:0">${esc(t('autobak_d'))}</p>
+   ${L.length?`<div class="acts">${L.map((x,i)=>`<button class="act" data-sn="${i}" style="flex-direction:column;align-items:flex-start;gap:2px;padding:10px 0"><b>${esc(new Date(x.at).toLocaleString(prefs.ui==='pt'?'pt-BR':'es'))}</b><span class="sub">${(x.data.sermons||[]).filter(s=>!s.deleted).length} ${esc(t('nav_list').toLowerCase())} · ${(x.data.notes||[]).length} ${esc(t('lib').toLowerCase())}</span></button>`).join('')}</div>`:`<p class="sub">${esc(t('autobak_none'))}</p>`}`);
+  sh.addEventListener('click',e=>{const b=e.target.closest('[data-sn]');if(!b)return;const x=L[+b.dataset.sn];closeSheet();
+    const c=openSheet(`<h3>${esc(t('autobak_rest'))}</h3><p style="margin:0;line-height:1.5">${esc(t('autobak_rest_d'))}</p><div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn gold" id="snGo">${esc(t('restore_it'))}</button></div>`);
+    $('#snGo',c).onclick=()=>{let n=0;
+      (x.data.sermons||[]).forEach(o=>{if(o.deleted)return;const cur=sermons.find(s=>s.id===o.id);
+        if(!cur){putSermon(o,{silent:true});n++}else if(cur.deleted){delete cur.deleted;putSermon(cur,{silent:true});n++}
+        else{const ids=new Set((cur.log||[]).map(l=>l.id));const add=(o.log||[]).filter(l=>!ids.has(l.id));if(add.length){cur.log=(cur.log||[]).concat(add);putSermon(cur,{silent:true});n+=add.length}}});
+      (x.data.notes||[]).forEach(o=>{if(o.deleted)return;const cur=notes.find(s=>s.id===o.id);if(!cur){putNote(o,{silent:true});n++}else if(cur.deleted){delete cur.deleted;putNote(cur,{silent:true});n++}});
+      (x.data.agenda||[]).forEach(o=>{if(!agenda.find(a=>a.id===o.id)){putEvent(o);n++}});
+      closeSheet();toast(t('autobak_done',{n}));render()}})}
 
 /* =========================================================
    Entrada (login)
@@ -1146,7 +1256,9 @@ const ACT={
   pTheme:b=>{prefs.theme=b.dataset.v;savePrefs();applyTheme();render()},
   pBible:b=>{prefs.bibleVer=b.dataset.v;BV.ver=null;savePrefs();render()},
   catRm:b=>{meta.cats.splice(+b.dataset.i,1);putMeta();render()},
-  impOpen:()=>importSheet(),
+  impOpen:()=>importSheet(),autoBak:()=>autoBakSheet(),
+  lockT:b=>{if((b.dataset.v==='on')!==!!lockCfg())lockSetup()},
+  bioT:b=>{const c=lockCfg();if(c&&(b.dataset.v==='on')!==!!c.bio)bioAvailable().then(ok=>ok?bioToggle():toast(t('bio_fail')))},
   logout:async()=>{unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;try{await firebase.auth().signOut()}catch(e){}authU=null;sermons=[];agenda=[];showLogin()},
   toLogin:()=>{ls.set('pulpito.local',false);localMode=false;showLogin()}
 };
@@ -1169,7 +1281,8 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
    ========================================================= */
 window.addEventListener('error',()=>setTimeout(fallback,300));
 try{initStore()}catch(e){startLocal()}
-setTimeout(()=>{try{purgeTrash()}catch(e){}},8000);
+setTimeout(()=>{try{purgeTrash()}catch(e){}autoSnap()},8000);
+if(lockCfg())showLock();
 setTimeout(fallback,5000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 // para pruebas
