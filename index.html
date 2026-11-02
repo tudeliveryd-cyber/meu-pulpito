@@ -458,13 +458,26 @@ function cacheLocal(){ls.set(lsKey(),sermons)}
 function startLocal(){localMode=true;ls.set('pulpito.local',true);if(unsub){unsub();unsub=null}col=null;
   sermons=ls.get(LS,[]);showApp();sync(false,'Salvo só neste celular')}
 function startCloud(u){authU=u;localMode=false;sermons=ls.get(lsKey(),[]);showApp();sync(false,'Conectando…');
-  col=firebase.firestore().collection('pulpito').doc(u.uid).collection('sermoes');
-  if(unsub)unsub();
-  unsub=col.onSnapshot({includeMetadataChanges:true},snap=>{
-    sermons=snap.docs.map(d=>Object.assign({},d.data(),{id:d.id}));cacheLocal();
-    if(!$('#vLib').hidden)renderList();
-    sync(!snap.metadata.hasPendingWrites&&!snap.metadata.fromCache,snap.metadata.hasPendingWrites?'Salvando… (guarda quando tiver sinal)':snap.metadata.fromCache?'Sem sinal: usando a cópia do celular':'Guardado na sua conta');
-  },err=>sync(false,'Não consegui ler a conta agora. Está salvo no celular.'));
+  const db=firebase.firestore();
+  // onde guardar: área própria "pulpito"; se as regras ainda não liberaram, usa a área da empresa (só dono e sócios)
+  const paths=[()=>db.collection('pulpito').doc(u.uid).collection('sermoes'),()=>db.collection('empresa').doc('pulpito').collection(u.uid)];
+  const PK='pulpito.path.'+u.uid;
+  const listen=i=>{
+    if(unsub){unsub();unsub=null}
+    if(i>=paths.length){col=null;sync(false,'Sua conta ainda não pode guardar na nuvem. Os sermões ficam salvos neste celular.');return}
+    col=paths[i]();let first=true;
+    unsub=col.onSnapshot({includeMetadataChanges:true},snap=>{
+      ls.set(PK,i);
+      const remote=snap.docs.map(d=>Object.assign({},d.data(),{id:d.id}));
+      if(first&&!snap.metadata.fromCache){first=false;const map=new Map(remote.map(x=>[x.id,x]));
+        sermons.forEach(x=>{const r=map.get(x.id);if(!r||(x.updated||0)>(r.updated||0)){map.set(x.id,x);pushRemote(x)}});
+        sermons=[...map.values()]}
+      else if(!first||remote.length)sermons=remote;
+      cacheLocal();if(!$('#vLib').hidden)renderList();
+      sync(!snap.metadata.hasPendingWrites&&!snap.metadata.fromCache,snap.metadata.hasPendingWrites?'Salvando… (guarda quando tiver sinal)':snap.metadata.fromCache?'Sem sinal: usando a cópia do celular':'Guardado na sua conta');
+    },err=>{if(err&&err.code==='permission-denied')listen(i+1);else sync(false,'Não consegui ler a conta agora. Está salvo no celular.')});
+  };
+  listen(+ls.get(PK,0)||0);
 }
 function showApp(){$('#vLogin').hidden=true;$('#vLib').hidden=false;$('#vEd').hidden=true;renderList()}
 function showLogin(){$('#vLogin').hidden=false;$('#vLib').hidden=true;$('#vEd').hidden=true}
