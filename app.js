@@ -47,7 +47,7 @@ p_timer:'Cronómetro',show:'Mostrar',hide:'Ocultar',p_goal:'Tiempo del mensaje',
 five:'Faltan 5 minutos',done_t:'Tiempo cumplido',cont:'Continuando donde lo dejaste',tip_tap:'Toca la derecha de la pantalla para la próxima parte',start:'Inicio',note:'Recordatorio',ilu:'Ilustración',base:'Texto base',intro:'Introducción',dev:'Desarrollo',concl:'Conclusión',close:'Cerrar',exit:'Salir',
 cont_preach:'Continuar predicando',end:'Terminar',go_on:'Continuar',
 bak_t:'Guarda una copia de tus sermones.',bak_d:'Hace más de una semana desde la última.',copy_now:'Copiar ahora',bak_done:'Copia copiada. Pégala en un chat tuyo de WhatsApp o en Notas.',
-b_search:'Buscar libro, cita o palabra',chap:'Cap.',copied:'Copiado',fav_add:'Guardado en favoritos',fav_rm:'Quitado de favoritos',ins_s:'Insertar en sermón',choose_s:'¿En qué sermón?',inserted:'Versículo insertado',
+b_search:'Buscar libro, cita o palabra',chap:'Cap.',vers:'Vers.',copied:'Copiado',fav_add:'Guardado en favoritos',fav_rm:'Quitado de favoritos',ins_s:'Insertar en sermón',choose_s:'¿En qué sermón?',inserted:'Versículo insertado',
 b_res:'{n} resultados',b_none:'Sin resultados',b_loading:'Abriendo la Biblia…',b_err:'No pude abrir la Biblia. Revisa la conexión e intenta de nuevo.',b_nofav:'Aún no guardaste versículos. Toca un versículo y la estrella.',b_favs:'Versículos favoritos',
 schedule:'Programar',upcoming:'Próximas predicaciones',past:'Anteriores',no_ev:'Nada programado. Toca Programar para agregar una predicación.',ev_new:'Nueva predicación',ev_edit:'Editar predicación',
 cult:'Tipo de culto',theme:'Tema del mensaje',sermon:'Sermón',later_pick:'Elegir después',pick_s:'Elegir sermón',tbd:'tema por definir',ev_saved:'Predicación programada',ev_del:'Predicación eliminada',
@@ -105,7 +105,7 @@ p_timer:'Cronômetro',show:'Mostrar',hide:'Esconder',p_goal:'Tempo da mensagem',
 five:'Faltam 5 minutos',done_t:'Tempo encerrado',cont:'Continuando de onde você parou',tip_tap:'Toque na direita da tela para a próxima parte',start:'Início',note:'Lembrete',ilu:'Ilustração',base:'Texto base',intro:'Introdução',dev:'Desenvolvimento',concl:'Conclusão',close:'Fechar',exit:'Sair',
 cont_preach:'Continuar pregando',end:'Encerrar',go_on:'Continuar',
 bak_t:'Guarde uma cópia dos seus sermões.',bak_d:'Faz mais de uma semana desde a última.',copy_now:'Copiar agora',bak_done:'Cópia copiada. Cole numa conversa sua no WhatsApp ou nas Notas.',
-b_search:'Buscar livro, referência ou palavra',chap:'Cap.',copied:'Copiado',fav_add:'Salvo nos favoritos',fav_rm:'Removido dos favoritos',ins_s:'Inserir no sermão',choose_s:'Em qual sermão?',inserted:'Versículo inserido',
+b_search:'Buscar livro, referência ou palavra',chap:'Cap.',vers:'Vers.',copied:'Copiado',fav_add:'Salvo nos favoritos',fav_rm:'Removido dos favoritos',ins_s:'Inserir no sermão',choose_s:'Em qual sermão?',inserted:'Versículo inserido',
 b_res:'{n} resultados',b_none:'Nenhum resultado',b_loading:'Abrindo a Bíblia…',b_err:'Não consegui abrir a Bíblia. Confira a conexão e tente de novo.',b_nofav:'Você ainda não salvou versículos. Toque num versículo e na estrela.',b_favs:'Versículos favoritos',
 schedule:'Agendar',upcoming:'Próximas pregações',past:'Anteriores',no_ev:'Nada agendado. Toque em Agendar para adicionar uma pregação.',ev_new:'Nova pregação',ev_edit:'Editar pregação',
 cult:'Tipo de culto',theme:'Tema da mensagem',sermon:'Sermão',later_pick:'Escolher depois',pick_s:'Escolher sermão',tbd:'tema a definir',ev_saved:'Pregação agendada',ev_del:'Pregação excluída',
@@ -816,11 +816,11 @@ function bpDraw(){const el=$('#bp');if(!el)return;const l=BP.ver;const B=BIB[vke
   const chN=B?(B[BP.b]||[]).length:1;const scroll=el.querySelector('.bp-body')?.scrollTop||0;
   el.innerHTML=`<div class="bp-head"><b>${esc(t('bp_t'))}</b><button class="btn sm ghost" data-bpver>${esc(VNAME[vkey(l)])}</button><button class="iconbtn" data-bpclose aria-label="${esc(t('close'))}">${ic('x')}</button></div>
    <input class="inp" id="bpQ" type="search" value="${esc(BP.q)}" placeholder="${esc(t('b_search'))}" autocomplete="off">
-   <div class="bsel"><select class="book" id="bpB">${names.map((n,i)=>`<option value="${i}" ${i===BP.b?'selected':''}>${esc(n)}</option>`).join('')}</select><select class="chap" id="bpC">${Array.from({length:chN},(_,i)=>`<option value="${i+1}" ${i+1===BP.c?'selected':''}>${esc(t('chap'))} ${i+1}</option>`).join('')}</select></div>
+   <div class="bsel"><select class="book" id="bpB">${names.map((n,i)=>`<option value="${i}" ${i===BP.b?'selected':''}>${esc(n)}</option>`).join('')}</select><select class="chap" id="bpC">${Array.from({length:chN},(_,i)=>`<option value="${i+1}" ${i+1===BP.c?'selected':''}>${esc(t('chap'))} ${i+1}</option>`).join('')}</select><select class="chap" id="bpV" aria-label="${esc(t('vers'))}"><option value="">${esc(t('vers'))}</option>${Array.from({length:B?((B[BP.b]||[])[BP.c-1]||[]).length:0},(_,i)=>`<option value="${i+1}">${esc(t('vers'))} ${i+1}</option>`).join('')}</select></div>
    <div class="bp-body">${body}</div>
    <button class="btn gold block" data-bpins ${BP.sel.size?'':'disabled style="opacity:.5"'}>${esc(BP.sel.size?t('bp_ins_n',{n:BP.sel.size}):t('bp_ins'))}</button>`;
   const bd=el.querySelector('.bp-body');if(bd)bd.scrollTop=scroll;
-  $('#bpB').onchange=e=>{BP.b=+e.target.value;BP.c=1;BP.sel.clear();bpDraw()};$('#bpC').onchange=e=>{BP.c=+e.target.value;BP.sel.clear();bpDraw()};
+  $('#bpB').onchange=e=>{BP.b=+e.target.value;BP.c=1;BP.sel.clear();bpDraw()};$('#bpC').onchange=e=>{BP.c=+e.target.value;BP.sel.clear();bpDraw()};$('#bpV').onchange=e=>{const v=+e.target.value;if(!v)return;BP.sel.add(v);bpDraw();const n=$(`#bp [data-bpv="${v}"]`);n&&n.scrollIntoView({block:'center',behavior:'smooth'})};
   const q=$('#bpQ');q.oninput=()=>{BP.q=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{const p=parseRef(BP.q);if(p){BP.b=p.b;BP.c=Math.max(1,p.ch);BP.sel=new Set(p.vs||[]);BP.q=''}bpDraw();const n=$('#bpQ');if(n&&BP.q){n.focus();n.setSelectionRange(n.value.length,n.value.length)}},350)}}
 document.addEventListener('click',e=>{const el=e.target.closest('#bp');if(!el)return;
   if(e.target.closest('[data-bpclose]')){bpClose();return}
@@ -1135,7 +1135,8 @@ function bibleHtml(){const l=bver();const B=BIB[l];const names=t('books',null,l)
    <form class="search" data-form="bSearch" role="search">${ic('search')}<input id="bq" type="search" value="${esc(BV.q)}" placeholder="${esc(t('b_search'))}" autocomplete="off" enterkeyhint="search" data-input="bQ"></form>
    <div class="chips"><button class="chip" data-act="bMode" data-f="0" aria-pressed="${!BV.fav}">${esc(verLabel(l))}</button><button class="chip" data-act="bMode" data-f="1" aria-pressed="${BV.fav}">${ic('star')}${esc(t('b_favs'))}</button></div>
    ${!BV.fav?`<div class="bsel"><select class="book" id="bBook" aria-label="Libro">${names.map((n,i)=>`<option value="${i}" ${i===BV.b?'selected':''}>${esc(n)}</option>`).join('')}</select>
-     <select class="chap" id="bChap" aria-label="${esc(t('chap'))}">${Array.from({length:chN},(_,i)=>`<option value="${i+1}" ${i+1===BV.c?'selected':''}>${esc(t('chap'))} ${i+1}</option>`).join('')}</select></div>`:''}
+     <select class="chap" id="bChap" aria-label="${esc(t('chap'))}">${Array.from({length:chN},(_,i)=>`<option value="${i+1}" ${i+1===BV.c?'selected':''}>${esc(t('chap'))} ${i+1}</option>`).join('')}</select>
+     <select class="chap" id="bVers" aria-label="${esc(t('vers'))}"><option value="">${esc(t('vers'))}</option>${Array.from({length:B?((B[BV.b]||[])[BV.c-1]||[]).length:0},(_,i)=>`<option value="${i+1}" ${BV.sel.size===1&&BV.sel.has(i+1)?'selected':''}>${esc(t('vers'))} ${i+1}</option>`).join('')}</select></div>`:''}
    ${body}
    ${sel.length&&!BV.fav?`<div class="vbar"><span class="ref">${esc(refName(BV.b,BV.c,sel,l))}</span>
      <button class="iconbtn" data-act="bCopy" aria-label="${esc(t('copy_txt'))}">${ic('copy')}</button>
@@ -1143,7 +1144,7 @@ function bibleHtml(){const l=bver();const B=BIB[l];const names=t('books',null,l)
      <button class="iconbtn" data-act="bCmp" aria-label="${esc(t('cmp'))}">${ic('lang')}</button>
      <button class="btn sm gold" data-act="bIns">${esc(t('ins_s'))}</button></div>`:''}`}
 function bibleAfter(){const l=bver();if(!BIB[l]&&!BV.err)loadBible(l).then(()=>{if(view.tab==='bible'&&!view.overlay)render()}).catch(()=>{BV.err=true;if(view.tab==='bible')render()});
-  const bb=$('#bBook'),bc=$('#bChap');if(bb)bb.onchange=()=>{BV.b=+bb.value;BV.c=1;BV.sel.clear();render()};if(bc)bc.onchange=()=>{BV.c=+bc.value;BV.sel.clear();render()}}
+  const bb=$('#bBook'),bc=$('#bChap');if(bb)bb.onchange=()=>{BV.b=+bb.value;BV.c=1;BV.sel.clear();render()};if(bc)bc.onchange=()=>{BV.c=+bc.value;BV.sel.clear();render()};const bv=$('#bVers');if(bv)bv.onchange=()=>{const v=+bv.value;if(!v)return;BV.sel=new Set([v]);render();setTimeout(()=>{const el=$(`.vs[data-v="${v}"]`);el&&el.scrollIntoView({block:'center',behavior:'smooth'})},60)}}
 let BIDX={};
 function bibleSearch(q,l){const B=BIB[l];if(!B)return[];if(!BIDX[l]){const idx=[];B.forEach((bk,b)=>bk.forEach((ch,c)=>ch.forEach((v,i)=>{if(v)idx.push([b,c+1,i+1,norm(v),v])})));BIDX[l]=idx}
   const nq=norm(q.trim());const out=[];for(const r of BIDX[l]){const i=r[3].indexOf(nq);if(i>=0){out.push({b:r[0],c:r[1],v:r[2],html:`${esc(r[4].slice(0,i))}<mark>${esc(r[4].slice(i,i+nq.length))}</mark>${esc(r[4].slice(i+nq.length))}`});if(out.length>=80)break}}return out}

@@ -384,3 +384,4 @@ button.pg-where{background:none;padding:6px 4px;color:var(--pmut);font:inherit;f
 /* iOS: la barra inferior queda fija; solo el contenido se desplaza */
 html.tabs,html.tabs body{overflow:hidden;height:100%;overscroll-behavior:none}
 html.tabs #app{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+.bsel{flex-wrap:wrap}.bsel .book{flex:1 1 100%}.bsel .chap{flex:1 1 0;width:auto;min-width:0}
