@@ -80,7 +80,7 @@ ai_thinking:'Pensando…',ai_intro:'Crear introducción',ai_point:'Desarrollar e
 rec:'Audio y dictado',rec_d:'Los audios quedan guardados en este celular.',rec_start:'Grabar',rec_stop:'Detener',rec_saved:'Audio guardado',rec_none:'Todavía no hay audios en este sermón.',rec_none_g:'Todavía no hay notas de voz.',rec_err:'No pude usar el micrófono. Revisa el permiso en Ajustes → Safari → Micrófono.',rec_to_note:'Convertir en anotación',rec_del:'Eliminar audio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
 dict:'Dictar (voz a texto)',dict_on:'Escuchando… habla con calma',dict_stop:'Terminar dictado',dict_none:'El dictado no está disponible aquí. Usa el micrófono del teclado del iPhone: es igual de rápido.',dict_ins:'Insertar en el sermón',dict_note:'Guardar como anotación',dict_ph:'El texto aparece aquí…',voice_notes:'Notas de voz',
 long_t:'El título quedó muy largo. ¿Usar «{t}» como título y pasar el resto al texto?',long_fix:'Arreglar título',long_done:'Título arreglado. El resto quedó debajo; puedes moverlo con Organizar.',
-night:'Lectura nocturna',night_d:'Fondo negro, letras blancas y brillo más bajo.',clean:'Interfaz limpia',clean_d:'Esconde los botones. Toca el centro de la pantalla para verlos.',tip_clean:'Toca el centro de la pantalla para ver los controles',index:'Índice',imp:'Punto importante',imp_on:'Marcado como importante',imp_off:'Ya no es importante',imp_need:'Coloca el cursor en un punto (título) para marcarlo',from_start:'Desde el inicio',pinch:'Junta o separa dos dedos para cambiar el tamaño de la letra',
+night:'Lectura nocturna',night_d:'Fondo negro, letras blancas y brillo más bajo.',clean:'Interfaz limpia',clean_d:'Esconde los botones. Toca el centro de la pantalla para verlos.',tip_clean:'Toca el centro de la pantalla para ver los controles',index:'Índice',imp:'Punto importante',imp_on:'Marcado como importante',imp_off:'Ya no es importante',imp_need:'Coloca el cursor en un punto (título) para marcarlo',from_start:'Desde el inicio',pinch:'Junta o separa dos dedos para cambiar el tamaño de la letra',photo:'Cambiar foto',photo_add:'Agregar foto',photo_rm:'Quitar foto',photo_ok:'Foto actualizada',photo_err:'No se pudo usar esa imagen',
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
@@ -138,7 +138,7 @@ ai_thinking:'Pensando…',ai_intro:'Criar introdução',ai_point:'Desenvolver o 
 rec:'Áudio e ditado',rec_d:'Os áudios ficam guardados neste celular.',rec_start:'Gravar',rec_stop:'Parar',rec_saved:'Áudio guardado',rec_none:'Ainda não há áudios neste sermão.',rec_none_g:'Ainda não há notas de voz.',rec_err:'Não consegui usar o microfone. Confira a permissão em Ajustes → Safari → Microfone.',rec_to_note:'Transformar em anotação',rec_del:'Excluir áudio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
 dict:'Ditar (voz para texto)',dict_on:'Ouvindo… fale com calma',dict_stop:'Terminar ditado',dict_none:'O ditado não está disponível aqui. Use o microfone do teclado do iPhone: é igualmente rápido.',dict_ins:'Inserir no sermão',dict_note:'Salvar como anotação',dict_ph:'O texto aparece aqui…',voice_notes:'Notas de voz',
 long_t:'O título ficou muito longo. Usar «{t}» como título e passar o resto para o texto?',long_fix:'Arrumar título',long_done:'Título arrumado. O resto ficou embaixo; você pode mover com Organizar.',
-night:'Leitura noturna',night_d:'Fundo preto, letras brancas e brilho mais baixo.',clean:'Interface limpa',clean_d:'Esconde os botões. Toque no centro da tela para vê-los.',tip_clean:'Toque no centro da tela para ver os controles',index:'Índice',imp:'Ponto importante',imp_on:'Marcado como importante',imp_off:'Não é mais importante',imp_need:'Coloque o cursor num ponto (título) para marcar',from_start:'Do início',pinch:'Junte ou afaste dois dedos para mudar o tamanho da letra',
+night:'Leitura noturna',night_d:'Fundo preto, letras brancas e brilho mais baixo.',clean:'Interface limpa',clean_d:'Esconde os botões. Toque no centro da tela para vê-los.',tip_clean:'Toque no centro da tela para ver os controles',index:'Índice',imp:'Ponto importante',imp_on:'Marcado como importante',imp_off:'Não é mais importante',imp_need:'Coloque o cursor num ponto (título) para marcar',from_start:'Do início',pinch:'Junte ou afaste dois dedos para mudar o tamanho da letra',photo:'Trocar foto',photo_add:'Adicionar foto',photo_rm:'Remover foto',photo_ok:'Foto atualizada',photo_err:'Não foi possível usar essa imagem',
 cats:['Santa Ceia','Culto de Ensino','Culto da Família','Jovens','Liderança','Evangelismo','Consagração','Mensagens especiais'],
 wd:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],months:['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
 books:['Gênesis','Êxodo','Levítico','Números','Deuteronômio','Josué','Juízes','Rute','1 Samuel','2 Samuel','1 Reis','2 Reis','1 Crônicas','2 Crônicas','Esdras','Neemias','Ester','Jó','Salmos','Provérbios','Eclesiastes','Cânticos','Isaías','Jeremias','Lamentações','Ezequiel','Daniel','Oseias','Joel','Amós','Obadias','Jonas','Miqueias','Naum','Habacuque','Sofonias','Ageu','Zacarias','Malaquias','Mateus','Marcos','Lucas','João','Atos','Romanos','1 Coríntios','2 Coríntios','Gálatas','Efésios','Filipenses','Colossenses','1 Tessalonicenses','2 Tessalonicenses','1 Timóteo','2 Timóteo','Tito','Filemom','Hebreus','Tiago','1 Pedro','2 Pedro','1 João','2 João','3 João','Judas','Apocalipse']}
@@ -553,6 +553,14 @@ function relDate(ts){if(!ts)return'';const d=todayISO(new Date(ts));return d===t
 function miniCard(s,right){const d=derive(s);const c=catOf(s);
   return`<button class="mini" data-act="open" data-id="${esc(s.id)}"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
     <span class="ti">${esc(d.title||t('untitled'))}</span><span class="sub">${esc([d.passage,c].filter(Boolean).join(' · ')||t('edited')+' '+relDate(s.updated))}</span></div>${right||''}</button>`}
+function avatarIn(){return meta.photo?`<img src="${esc(meta.photo)}" alt="">`:esc((meta.name||t('pastor')).trim().charAt(0).toUpperCase())}
+function pickPhoto(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.style.display='none';document.body.appendChild(inp);
+  inp.onchange=()=>{const f=inp.files&&inp.files[0];inp.remove();if(!f)return;const url=URL.createObjectURL(f);const img=new Image();
+    img.onload=()=>{try{const S=320,m=Math.min(img.naturalWidth,img.naturalHeight);const c=document.createElement('canvas');c.width=c.height=S;
+      c.getContext('2d').drawImage(img,(img.naturalWidth-m)/2,(img.naturalHeight-m)/2,m,m,0,0,S,S);URL.revokeObjectURL(url);
+      meta.photo=c.toDataURL('image/jpeg',.82);putMeta();render();toast(t('photo_ok'))}catch(e){toast(t('photo_err'))}};
+    img.onerror=()=>{URL.revokeObjectURL(url);toast(t('photo_err'))};img.src=url};
+  inp.click()}
 function homeHtml(){
   const S=sortedByUpd();const favs=S.filter(s=>s.fav);const NS=S.length;const up=upcoming();const wk=up.filter(e=>e.date<=addDays(todayISO(),6)).length;
   const ev=up[0];const evS=ev&&sermons.find(s=>s.id===ev.sermonId);
@@ -560,7 +568,7 @@ function homeHtml(){
   <div class="row">
     <img class="logo" src="logo.jpg" alt="Meu Púlpito">
     <div class="hello" style="flex:1;min-width:0"><span class="sub">${esc(greet())}</span><b>${esc(meta.name||t('pastor'))}</b></div>
-    <button class="iconbtn bg" data-act="tab" data-k="profile" aria-label="${esc(t('nav_profile'))}">${ic('user')}</button>
+    <button class="iconbtn bg${meta.photo?' hasph':''}" data-act="tab" data-k="profile" aria-label="${esc(t('nav_profile'))}">${meta.photo?`<img src="${esc(meta.photo)}" alt="">`:ic('user')}</button>
   </div>
   <form class="search" data-form="homeSearch" role="search">${ic('search')}<input id="hq" name="q" type="search" placeholder="${esc(t('search_ph'))}" autocomplete="off" enterkeyhint="search"></form>
   ${bannersHtml()}
@@ -1201,8 +1209,8 @@ function evForm(id){const e=id?Object.assign({},agenda.find(x=>x.id===id)):{id:u
    ========================================================= */
 function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button data-act="${act}" data-v="${v}" aria-pressed="${cur===v}">${esc(l)}</button>`).join('')}</div>`;
   return`<h1 class="h">${esc(t('nav_profile'))}</h1>
-  <div class="card row" style="gap:14px"><div class="avatar">${esc((meta.name||t('pastor')).trim().charAt(0).toUpperCase())}</div>
-    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">${esc(meta.name||t('pastor'))}</b><span class="sub" style="overflow-wrap:anywhere">${esc(localMode?t('local_only'):authU?authU.email:'')}</span></div></div>
+  <div class="card row" style="gap:14px"><button class="avatar avbtn" data-act="photo" aria-label="${esc(t(meta.photo?'photo':'photo_add'))}">${avatarIn()}<span class="avcam">${ic('cam')}</span></button>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">${esc(meta.name||t('pastor'))}</b><span class="sub" style="overflow-wrap:anywhere">${esc(localMode?t('local_only'):authU?authU.email:'')}</span>${meta.photo?`<button class="linkbtn" data-act="photoRm">${esc(t('photo_rm'))}</button>`:''}</div></div>
   <div class="pgrp">
     <div class="prow"><label class="k" for="pName">${esc(t('your_name'))}</label><input class="inp" id="pName" value="${esc(meta.name||'')}" placeholder="${esc(t('pastor'))}" style="max-width:220px;height:42px" data-input="pName"></div>
     <div class="prow"><span class="k">${esc(t('language'))}</span>${seg('pUi',prefs.ui,[['es','Español'],['pt','Português']])}</div>
@@ -1370,6 +1378,7 @@ function showLogin(){ready=false;view.overlay='login';$('#nav').hidden=true;docu
    Acciones (un solo manejador de toques)
    ========================================================= */
 const ACT={
+  photo:()=>pickPhoto(),photoRm:()=>{delete meta.photo;meta.photo=null;putMeta();render()},
   tab:b=>{if(b.dataset.k==='list'){listState.f='all';listState.cat=''}go(b.dataset.k)},
   list:b=>{listState.f=b.dataset.f||'all';listState.cat='';listState.q='';go('list')},
   new:()=>newSermon(),

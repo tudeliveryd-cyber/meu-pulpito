@@ -385,3 +385,9 @@ button.pg-where{background:none;padding:6px 4px;color:var(--pmut);font:inherit;f
 html.tabs,html.tabs body{overflow:hidden;height:100%;overscroll-behavior:none}
 html.tabs #app{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 .bsel{flex-wrap:wrap}.bsel .book{flex:1 1 100%}.bsel .chap{flex:1 1 0;width:auto;min-width:0}
+.avbtn{position:relative;padding:0;border:0;cursor:pointer;overflow:visible}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.avcam{position:absolute;right:-3px;bottom:-3px;width:22px;height:22px;border-radius:11px;background:var(--navy);border:2px solid var(--surface);display:flex;align-items:center;justify-content:center}
+.avcam svg{width:12px;height:12px;stroke:#fff}
+.iconbtn.hasph{padding:0;overflow:hidden}.iconbtn.hasph img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.linkbtn{background:none;border:0;padding:4px 0 0;color:var(--gold-ink);font:inherit;font-size:13px;font-weight:700;text-align:left;align-self:flex-start;cursor:pointer}
