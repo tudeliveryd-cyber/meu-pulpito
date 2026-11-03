@@ -718,3 +718,12 @@ details.credits{text-align:center}details.credits summary{list-style:none;cursor
 .bq-note{margin:0;font-size:12px;color:var(--faint);line-height:1.45}
 .bq-v .cu-q small{display:block;font-family:var(--read);font-size:15px;line-height:1.5;color:var(--fg);margin-top:3px;white-space:normal}
 .bq-v mark{background:var(--gold-soft);color:inherit;border-radius:3px;padding:0 2px}
+/* novedades y ayuda */
+.nw-list{display:flex;flex-direction:column;gap:14px}
+.nw-i{display:flex;gap:12px;align-items:flex-start}.nw-i>span:last-child{display:flex;flex-direction:column;gap:3px;font-size:14.5px;line-height:1.45;color:var(--muted)}.nw-i b{color:var(--fg);font-family:var(--head);font-size:15.5px}
+.nw-dot{width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold-ink);display:grid;place-items:center;flex:none}.nw-dot svg{width:16px;height:16px}
+.hp-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.hp-i{border-bottom:1px solid var(--line)}
+.hp-i summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 2px;font-family:var(--head);font-weight:700;font-size:15.5px;cursor:pointer}
+.hp-i summary::-webkit-details-marker{display:none}.hp-i summary svg{width:18px;height:18px;color:var(--faint);transition:transform .2s;flex:none}.hp-i[open] summary svg{transform:rotate(180deg)}
+.hp-i p{margin:0 2px 16px;font-size:15px;line-height:1.6;color:var(--muted)}

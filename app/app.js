@@ -937,7 +937,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v72';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v73';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1189,7 +1189,7 @@ function startCloud(u){authU=u;localMode=false;loadLocal();
       add(sermons,'s');add(notes,'n');add(agenda,'a');
       const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
     cacheAll()}
-const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin)setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin)setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -1365,6 +1365,40 @@ function admPendCheck(force){if(!isAdmin()||localMode||ADMP.busy)return;if(!forc
     const ch=n!==ADMP.n;ADMP.n=n;ADMP.at=Date.now();if(ch&&view.tab==='home'&&!view.overlay)refreshBg()}).catch(()=>{}).finally(()=>{ADMP.busy=false})}
 setInterval(()=>{if(document.visibilityState==='visible')admPendCheck()},90000);
 /* ---------- relatar un problema (WhatsApp o correo del administrador) ---------- */
+/* ---------- Novedades de la versión y Ayuda ---------- */
+const NEWS_VER='v72';
+const NEWS={es:[['Pregunte cualquier cosa de la Biblia','En Curiosidades: «¿cuántas veces aparece el número 40?» muestra el total, los libros y los versículos.'],['Busque en los tres diccionarios a la vez','En Diccionarios, una sola búsqueda en el Bíblico, el Hebreo y el Griego.'],['Aviso de su próxima predicación','Si tiene un culto en la Agenda esta semana, aparece arriba en el Inicio con «Predicar».'],['Búsqueda más inteligente en sus sermones','Por título, versículo o cualquier palabra del texto, sin importar acentos ni el orden.'],['Nueva pantalla de apertura','El app instalado abre con el logo de Meu Púlpito.']],
+  pt:[['Pergunte qualquer coisa da Bíblia','Em Curiosidades: «quantas vezes aparece o número 40?» mostra o total, os livros e os versículos.'],['Busque nos três dicionários de uma vez','Em Dicionários, uma só busca no Bíblico, no Hebraico e no Grego.'],['Aviso da sua próxima pregação','Se você tem um culto na Agenda nesta semana, ele aparece no topo do Início com «Pregar».'],['Busca mais inteligente nos seus sermões','Por título, versículo ou qualquer palavra do texto, sem se importar com acentos nem com a ordem.'],['Nova tela de abertura','O app instalado abre com o logo do Meu Púlpito.']]};
+function newsSheet(){const L=lxLang();ls.set('mp.news',NEWS_VER);
+  openSheet(`<div class="between"><h3>${esc(t('nw_t'))}</h3><button class="iconbtn" data-act="sheetClose" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+   <div class="nw-list">${NEWS[L].map(([a,b])=>`<div class="nw-i"><span class="nw-dot">${ic('check')}</span><span><b>${esc(a)}</b><span>${esc(b)}</span></span></div>`).join('')}</div>
+   <button class="btn gold block" data-act="sheetClose">${esc(t('got_it'))}</button>`)}
+function newsCheck(){const s=ls.get('mp.news',null);if(!ls.get('mp.onb',0)){ls.set('mp.news',NEWS_VER);return}if(s!==NEWS_VER)setTimeout(()=>{if(!blocked&&!$('.ov'))newsSheet();else ls.set('mp.news',NEWS_VER)},1600)}
+const HELP={es:[['Instalar en el celular','En la pantalla de acceso toque «Instalar la aplicación». En iPhone use Safari: Compartir → «Agregar a pantalla de inicio». Queda como cualquier aplicación y abre más rápido.'],
+  ['Escribir un sermón','Toque «Nuevo sermón». La primera línea es el título. Con «Versículo» escriba la cita (ej.: Juan 3:16) y el texto bíblico se coloca solo. Con «Nuevo punto» organiza el bosquejo. En «Modelos» hay estructuras listas. Todo se guarda solo.'],
+  ['Predicar desde el celular','En el sermón toque «Predicar». Ajuste el tamaño de letra con «Aa», use el cronómetro y avance por partes. El botón ES/PT muestra el mismo sermón en el otro idioma sin crear una copia; revise la traducción antes.'],
+  ['Programar dónde va a predicar','En Agenda toque «Programar», elija fecha, hora, lugar y el sermón. En la semana del culto aparece un aviso en el Inicio. Al predicar, queda en el historial.'],
+  ['Estudiar con los diccionarios','En Diccionarios busque en español, en portugués, en hebreo o griego, o por número de Strong. Desde el editor, toque el libro para consultar e insertar en el sermón sin cerrar lo que escribe.'],
+  ['Contar palabras y números en la Biblia','En Curiosidades escriba, por ejemplo, «¿cuántas veces aparece el número 40?» o «Golias». Verá el total, los libros y los versículos.'],
+  ['Copia de seguridad','Sus sermones quedan guardados en su cuenta y aparecen en cualquier celular donde entre. En Configuración → «Copiar ahora» puede guardar además una copia propia.'],
+  ['Cambiar idioma y apariencia','En Configuración elija Español o Português, y el tema Claro, Oscuro o Automático.'],
+  ['Planes y pago','En Configuración → «Mi suscripción» elija un plan y envíe el pedido por WhatsApp. El plan no se renueva solo: le avisamos antes del vencimiento.']],
+ pt:[['Instalar no celular','Na tela de acesso toque em «Instalar o aplicativo». No iPhone use o Safari: Compartilhar → «Adicionar à Tela de Início». Fica como qualquer aplicativo e abre mais rápido.'],
+  ['Escrever um sermão','Toque em «Novo sermão». A primeira linha é o título. Com «Versículo» escreva a referência (ex.: João 3:16) e o texto bíblico é colocado sozinho. Com «Novo ponto» você organiza o esboço. Em «Modelos» há estruturas prontas. Tudo é salvo sozinho.'],
+  ['Pregar pelo celular','No sermão toque em «Pregar». Ajuste o tamanho da letra em «Aa», use o cronômetro e avance por partes. O botão PT/ES mostra o mesmo sermão no outro idioma sem criar uma cópia; revise a tradução antes.'],
+  ['Agendar onde vai pregar','Na Agenda toque em «Agendar», escolha data, hora, lugar e o sermão. Na semana do culto aparece um aviso no Início. Ao pregar, fica no histórico.'],
+  ['Estudar com os dicionários','Em Dicionários busque em português, em espanhol, em hebraico ou grego, ou pelo número de Strong. No editor, toque no livro para consultar e inserir no sermão sem fechar o que está escrevendo.'],
+  ['Contar palavras e números na Bíblia','Em Curiosidades escreva, por exemplo, «quantas vezes aparece o número 40?» ou «Golias». Você verá o total, os livros e os versículos.'],
+  ['Cópia de segurança','Seus sermões ficam guardados na sua conta e aparecem em qualquer celular em que você entrar. Em Configurações → «Copiar agora» você pode guardar também uma cópia sua.'],
+  ['Trocar idioma e aparência','Em Configurações escolha Español ou Português, e o tema Claro, Escuro ou Automático.'],
+  ['Planos e pagamento','Em Configurações → «Minha assinatura» escolha um plano e envie o pedido pelo WhatsApp. O plano não renova sozinho: avisamos antes do vencimento.']]};
+function helpSheet(){const L=lxLang();
+  openSheet(`<div class="between"><h3>${esc(t('hp_t'))}</h3><button class="iconbtn" data-act="sheetClose" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+   <div class="hp-list">${HELP[L].map(([q,a])=>`<details class="hp-i"><summary>${esc(q)}${ic('down')}</summary><p>${esc(a)}</p></details>`).join('')}</div>
+   <p class="sub" style="margin:4px 0 0;font-size:13.5px">${esc(t('hp_more'))}</p>
+   <div class="two"><button class="btn ghost" data-act="report">${ic('chat')}${esc(t('hp_contact'))}</button><button class="btn ghost" data-act="onb">${ic('play')}${esc(t('ob_btn'))}</button></div>`,{cls:'big ns'})}
+Object.assign(I18N.es,{nw_t:'Novedades de Meu Púlpito',hp_t:'Ayuda',hp_d:'Cómo usar cada función',hp_more:'¿No encontró lo que buscaba? Escríbanos y le respondemos.',hp_contact:'Hablar con nosotros',nw_btn:'Novedades'});
+Object.assign(I18N.pt,{nw_t:'Novidades do Meu Púlpito',hp_t:'Ajuda',hp_d:'Como usar cada função',hp_more:'Não encontrou o que procurava? Escreva para nós que respondemos.',hp_contact:'Falar com a gente',nw_btn:'Novidades'});
 function reportSheet(){const wa=String(PCFG.wa||'').replace(/\D/g,'');
   const sh=openSheet(`<h3>${esc(t('rp_t'))}</h3><p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('rp_d'))}</p>
     <textarea class="inp" id="rpTx" rows="5" placeholder="${esc(t('rp_ph'))}" style="height:auto;padding:12px;line-height:1.45;resize:vertical"></textarea>
@@ -2097,7 +2131,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     ${!localMode&&authU?`<button class="prow plink" data-act="delAcc"><span><span class="k" style="color:var(--danger)">${esc(t('del_acc'))}</span><span class="s">${esc(t('del_acc_d'))}</span></span>${ic('next')}</button>`:''}
   </div>
   <details class="credits"><summary>${esc(t('src_t'))}</summary><p class="sub" style="margin:8px 0 0;font-size:12px;line-height:1.5">${esc(t('credits'))}</p></details>
-  <div class="pgrp"><button class="prow plink" data-act="report"><span><span class="k">${ic('chat')} ${esc(t('rp_btn'))}</span></span>${ic('next')}</button><button class="prow plink" data-act="onb"><span><span class="k">${ic('play')} ${esc(t('ob_btn'))}</span></span>${ic('next')}</button></div>
+  <div class="pgrp"><button class="prow plink" data-act="help"><span><span class="k">${ic('doc')} ${esc(t('hp_t'))}</span><span class="s">${esc(t('hp_d'))}</span></span>${ic('next')}</button><button class="prow plink" data-act="news"><span><span class="k">${ic('spark')} ${esc(t('nw_btn'))}</span></span>${ic('next')}</button><button class="prow plink" data-act="report"><span><span class="k">${ic('chat')} ${esc(t('rp_btn'))}</span></span>${ic('next')}</button><button class="prow plink" data-act="onb"><span><span class="k">${ic('play')} ${esc(t('ob_btn'))}</span></span>${ic('next')}</button></div>
   ${!localMode&&authU?`<button class="btn ghost block" data-act="logout" style="color:var(--danger)">${ic('out')}${esc(t('logout'))}</button>`:''}
   <div class="foot-brand"><span class="mark sm"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
     <b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>${esc(t('tagline'))}</small>
@@ -2355,7 +2389,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{ls.set('mp.pvx.'+b.dataset.u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),onb:()=>onboarding(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{ls.set('mp.pvx.'+b.dataset.u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),onb:()=>{closeSheet();onboarding()},help:()=>helpSheet(),news:()=>newsSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},
