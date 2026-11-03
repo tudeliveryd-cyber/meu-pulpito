@@ -534,6 +534,60 @@ async function dxOpenPreg(i){try{await loadPreg()}catch(e){toast(t('dx_err'));re
     html:()=>`<p><b>${esc(pt?wpt:wes)}</b>: ${esc(pt?mpt:mes)}</p>`+o.map(([n,lem,tr,xpt,xes])=>`<p><b>${esc(lem)}</b> <i>(${esc(tr)}, ${n})</i> — ${esc(pt?xpt:xes)}</p>`).join('')});
   loadBible(L).then(()=>$$('.dx-ext',sh).forEach(p=>{p.textContent=bibleText(p.dataset.ref,L)||''})).catch(()=>{})}
 
+/* =========================================================
+   Curiosidades bíblicas: preguntas y respuestas guardadas en el app (sin IA y sin conexión)
+   ========================================================= */
+Object.assign(I18N.es,{cu_t:'Curiosidades bíblicas',cu_d:'Preguntas y respuestas sobre la Biblia, con referencias.',cu_n:'{n} preguntas',cu_ph:'Escriba una pregunta o palabra…',cu_all:'Todas',cu_fav:'Favoritas',cu_none:'No hay una respuesta guardada para esa pregunta.',cu_ans:'Respuesta',cu_exp:'Explicación',cu_refs:'Referencias bíblicas',cu_more:'¿Sabía que…?',cu_crit:'Criterio',cu_ok:'Respuesta verificada · Meu Púlpito',cu_share:'Compartir',cu_ai:'Preguntar a la IA',cu_ai_lbl:'Respuesta generada por IA. No está verificada: confirme las referencias en la Biblia.',cu_ai_need:'Para preguntas nuevas con IA, agregue su clave en Configuración.',cu_back:'Inicio',cu_nofav:'Todavía no guardó preguntas. Abra una y toque la estrella.'});
+Object.assign(I18N.pt,{cu_t:'Curiosidades bíblicas',cu_d:'Perguntas e respostas sobre a Bíblia, com referências.',cu_n:'{n} perguntas',cu_ph:'Escreva uma pergunta ou palavra…',cu_all:'Todas',cu_fav:'Favoritas',cu_none:'Não há uma resposta guardada para essa pergunta.',cu_ans:'Resposta',cu_exp:'Explicação',cu_refs:'Referências bíblicas',cu_more:'Você sabia?',cu_crit:'Critério',cu_ok:'Resposta verificada · Meu Púlpito',cu_share:'Compartilhar',cu_ai:'Perguntar à IA',cu_ai_lbl:'Resposta gerada por IA. Não é verificada: confira as referências na Bíblia.',cu_ai_need:'Para perguntas novas com IA, coloque sua chave em Configurações.',cu_back:'Início',cu_nofav:'Você ainda não salvou perguntas. Abra uma e toque na estrela.'});
+let CUR=null,CURP=null;const CV={cat:'',q:''};
+function loadCur(){if(CUR)return Promise.resolve(CUR);if(!CURP)CURP=fetch('biblia/curiosidades.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
+    d.ix=d.e.map(e=>[nWords(e.q[0]+' '+(e.k?e.k[0]:'')),nWords(e.q[1]+' '+(e.k?e.k[1]:'')),nWords(e.a[0]+' '+e.x[0]),nWords(e.a[1]+' '+e.x[1])]);d.by={};d.e.forEach(e=>d.by[e.id]=e);return CUR=d}).catch(e=>{CURP=null;throw e});return CURP}
+const cuL=()=>lxLang()==='pt'?1:0;
+const cuFavs=()=>Array.isArray(meta.curFav)?meta.curFav:(meta.curFav=[]);
+const CU_STOP=new Set('el la los las de del y o a en un una que cual cuales quien quienes cuanto cuantos cuantas como donde es son se su sus por para con al lo le the o os as do da dos das e um uma qual quem quanto quantos quantas onde foi era no na nos nas pelo pela tem tiene biblia mas más mais muy muito'.split(' '));
+function curSearch(q){const d=CUR;const l=cuL();const tk=norm(q).replace(/[^a-z0-9]+/g,' ').trim().split(' ').filter(w=>w.length>1&&!CU_STOP.has(w));if(!tk.length)return d.e.slice();
+  const out=[];d.ix.forEach((ix,i)=>{let s=0;for(const w of tk){const hq=Math.max(ix[l].includes(' '+w+' ')?3:ix[l].includes(' '+w)?2:0,ix[1-l].includes(' '+w)?1:0);const ha=ix[2+l].includes(' '+w)?1:0;s+=hq||ha}if(s)out.push([i,s])});
+  const top=out.length?Math.max(...out.map(x=>x[1])):0;return out.filter(x=>x[1]>=Math.max(1,top*0.5)).sort((a,b)=>b[1]-a[1]).map(x=>d.e[x[0]])}
+function curHtml(){const l=cuL();
+  const head=`<button class="lnk dx-back" data-act="tab" data-k="home">${ic('back')}${esc(t('cu_back'))}</button><h1 class="h">${esc(t('cu_t'))}</h1>
+   <label class="search cu-search">${ic('search')}<input id="cuQ" type="search" value="${esc(CV.q)}" placeholder="${esc(t('cu_ph'))}" autocomplete="off" enterkeyhint="search"></label>`;
+  if(!CUR)return head+`<div class="empty"><p style="margin:0">${esc(t('dx_load'))}</p></div>`;
+  const chips=`<div class="chips">${[['',t('cu_all')],['fav',t('cu_fav')],...Object.entries(CUR.cats).map(([k,v])=>[k,v[l]])].map(([k,v])=>`<button class="chip" data-cu="cat" data-k="${k}" aria-pressed="${CV.cat===k}">${k==='fav'?ic('star'):''}${esc(v)}</button>`).join('')}</div>`;
+  return head+chips+`<div id="cuRes">${curResHtml()}</div>`}
+function curResHtml(){const l=cuL();let list=CV.q.trim()?curSearch(CV.q):CUR.e.slice();const F=cuFavs();
+  if(CV.cat==='fav')list=list.filter(e=>F.includes(e.id));else if(CV.cat)list=list.filter(e=>e.cat===CV.cat);
+  if(!list.length)return`<div class="empty"><p style="margin:0">${esc(t(CV.cat==='fav'&&!CV.q?'cu_nofav':'cu_none'))}</p>${CV.q.trim().length>4?(aiKey()?`<button class="btn gold" data-cu="ai">${ic('spark')}${esc(t('cu_ai'))}</button>`:`<p class="dx-sm">${esc(t('cu_ai_need'))}</p>`):''}</div>`;
+  const groups=CV.q.trim()||CV.cat?[[null,list]]:Object.keys(CUR.cats).map(k=>[k,list.filter(e=>e.cat===k)]);
+  return groups.map(([k,items])=>`${k?`<span class="sect cu-sect">${esc(CUR.cats[k][l])}</span>`:''}<div class="cu-list">${items.map(e=>`<button class="cu-item" data-cu="open" data-id="${e.id}"><span class="cu-q">${esc(e.q[l])}</span>${F.includes(e.id)?`<span class="cu-st">${ic('star')}</span>`:''}${ic('next')}</button>`).join('')}</div>`).join('')}
+function curAfter(){if(!CUR){loadCur().then(()=>{if(view.tab==='cur')render()}).catch(()=>{});return}
+  const i=$('#cuQ');if(i){i.oninput=()=>{CV.q=i.value;clearTimeout(i._t);i._t=setTimeout(()=>{const r=$('#cuRes');if(r)r.innerHTML=curResHtml()},180)};i.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();i.blur()}}}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cu]');if(!b||view.tab!=='cur')return;const a=b.dataset.cu;
+  if(a==='cat'){CV.cat=b.dataset.k;$$('[data-cu=cat]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const r=$('#cuRes');if(r)r.innerHTML=curResHtml()}
+  else if(a==='open')curOpen(+b.dataset.id);else if(a==='ai')curAi(CV.q.trim())});
+function curText(e,l){return[e.q[l],'',e.a[l],'',e.x[l],e.r.length?'\n'+(l?'Referências: ':'Referencias: ')+(l?e.r:(e.r_es||e.r)).map(r=>refStr(r,l?'pt':'es')).join('; '):'',e.c?'\n'+t('cu_more')+' '+e.c[l]:'','\n— Meu Púlpito'].filter(x=>x!=='').join('\n')}
+function curOpen(id){const e=CUR.by[id];if(!e)return;const l=cuL(),L=l?'pt':'es';const refs=(l?e.r:(e.r_es||e.r));const fav=cuFavs().includes(id);
+  const sh=openSheet(`<div class="dx-entry"><div class="sd-head"><span class="sd-num">${esc(CUR.cats[e.cat][l])}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+    <h3 class="cu-h">${esc(e.q[l])}</h3>
+    <div class="cu-ans"><span class="lbl">${esc(t('cu_ans'))}</span><p>${esc(e.a[l])}</p></div>
+    <div class="dx-acts"><button class="btn sm ghost dx-fav" data-x="fav" aria-pressed="${fav}">${ic('star')}${esc(t('dx_fav'))}</button><button class="btn sm ghost" data-x="share">${ic('share')}${esc(t('cu_share'))}</button><button class="btn sm ghost" data-x="copy">${ic('copy')}${esc(t('dx_copy'))}</button></div>
+    ${dxSec(t('cu_exp'),`<p class="sd-p">${esc(e.x[l])}</p>`)}
+    ${refs.length?dxSec(t('cu_refs'),refTags(refs,L)+`<div class="dx-exi" style="margin-top:4px"><p class="sd-p dx-ext" id="cuV" data-ref="${esc(refStr(refs[0],L))}">…</p><span class="dx-sm">${esc(refStr(refs[0],L))} · ${esc(verLabel(L))}</span></div>`):''}
+    ${e.c?dxSec(t('cu_more'),`<p class="sd-p">${esc(e.c[l])}</p>`,'cu-more'):''}
+    ${e.crit?dxSec(t('cu_crit'),`<p class="dx-sm" style="font-size:13.5px">${esc(e.crit[l])}</p>`):''}
+    <p class="cu-ok">${ic('check')}${esc(t('cu_ok'))}</p></div>`,{cls:'tall'});
+  sh.addEventListener('click',ev=>{const r=ev.target.closest('[data-eref]');if(r){compareRef(r.dataset.eref,null,L);return}const x=ev.target.closest('[data-x]');if(!x)return;const a=x.dataset.x;
+    if(a==='close')closeSheet();
+    else if(a==='fav'){const F=cuFavs();const i=F.indexOf(id);if(i>=0){F.splice(i,1);toast(t('dx_unfav'))}else{F.unshift(id);toast(t('dx_faved'))}x.setAttribute('aria-pressed',String(i<0));putMeta();const rr=$('#cuRes');if(rr)rr.innerHTML=curResHtml()}
+    else if(a==='copy')copyText(curText(e,l)).then(()=>toast(t('copied')));
+    else if(a==='share'){const txt=curText(e,l);if(navigator.share)navigator.share({title:e.q[l],text:txt}).catch(()=>{});else copyText(txt).then(()=>toast(t('copied')))}});
+  loadBible(L).then(()=>{const p=$('#cuV',sh);if(p)p.textContent=bibleText(p.dataset.ref,L)||''}).catch(()=>{})}
+async function curAi(q){const l=cuL(),L=l?'pt':'es';const sh=openSheet(`<div class="dx-entry"><div class="sd-head"><span class="sd-num">${esc(t('cu_t'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div><h3 class="cu-h">${esc(q)}</h3><p class="dx-ailbl">${ic('spark')}${esc(t('cu_ai_lbl'))}</p><div id="cuAi"><p class="sub">${esc(t('ai_thinking'))}</p></div></div>`,{cls:'tall'});
+  sh.addEventListener('click',ev=>{if(ev.target.closest('[data-x=close]'))closeSheet();const r=ev.target.closest('[data-eref]');if(r)compareRef(r.dataset.eref,null,L)});
+  const sys=l?'Você responde curiosidades bíblicas para pastores, em português do Brasil, em no máximo 120 palavras, texto simples. Use a Bíblia protestante. Dê a resposta direta primeiro. Se o número depender da tradução ou do critério de contagem, diga isso e não dê um número inventado. Cite no máximo 3 referências, cada uma numa linha própria começando com "> " seguida só da referência (ex.: > João 3:16). Se não souber com certeza, diga que não tem certeza.':'Respondes curiosidades bíblicas para pastores, en español, en máximo 120 palabras, texto simple. Usa la Biblia protestante. Da primero la respuesta directa. Si el número depende de la traducción o del criterio de conteo, dilo y no inventes un número. Cita como máximo 3 referencias, cada una en una línea propia que empiece con "> " seguida solo de la referencia (ej.: > Juan 3:16). Si no estás seguro, dilo.';
+  try{const r=await aiCall(sys,q,600);if(!sh.isConnected)return;const lines=r.replace(/\*\*/g,'').split('\n').filter(x=>x.trim());
+    $('#cuAi',sh).innerHTML=lines.map(x=>{const m=x.match(/^\s*>\s*(.+)$/);if(m){const ok=bibleText(m[1],L);return ok?`<button class="tag eref" data-eref="${esc(m[1].trim())}">${esc(m[1].trim())}</button>`:''}return`<p class="sd-p">${esc(x)}</p>`}).join('')}
+  catch(err){if(sh.isConnected)$('#cuAi',sh).innerHTML=`<p class="dx-na">${esc(aiErr(err))}</p>`}}
+
 /* comparar versiones */
 function compareRef(ref,host,lang){const p=parseRef(ref);if(!p||!p.vs){toast(t('verse_nf'));return}
   const first=lang==='pt'?['pt','ptr','nva','es','es65']:['es','es65','pt','ptr','nva'];const og=p.b>=39?'grc':'hbo';const keys=[...first,og];
@@ -765,7 +819,7 @@ const K={s:'pulpito.v1',a:'pulpito.agenda',m:'pulpito.meta',n:'pulpito.notas'};
 let sermons=[],agenda=[],notes=[],meta={},authU=null,localMode=false,cols=null,unsubs=[],sync={ok:false,msg:'sync_conn'},ready=false;
 const keyOf=k=>localMode||!authU?K[k]:K[k]+'.'+authU.uid;
 function loadLocal(){sermons=ls.get(keyOf('s'),[])||[];notes=ls.get(keyOf('n'),[])||[];agenda=ls.get(keyOf('a'),[])||[];meta=ls.get(keyOf('m'),{})||{};fixMeta()}
-function fixMeta(){if(meta.read&&typeof meta.read==='object')prefs.p=Object.assign({},prefs.p,meta.read);if(!Array.isArray(meta.cats))meta.cats=t('cats').slice();if(!Array.isArray(meta.favVerses))meta.favVerses=[];if(!Array.isArray(meta.dicFav))meta.dicFav=[];if(!Array.isArray(meta.dicHist))meta.dicHist=[];if(typeof meta.name!=='string')meta.name=''}
+function fixMeta(){if(meta.read&&typeof meta.read==='object')prefs.p=Object.assign({},prefs.p,meta.read);if(!Array.isArray(meta.cats))meta.cats=t('cats').slice();if(!Array.isArray(meta.favVerses))meta.favVerses=[];if(!Array.isArray(meta.dicFav))meta.dicFav=[];if(!Array.isArray(meta.dicHist))meta.dicHist=[];if(!Array.isArray(meta.curFav))meta.curFav=[];if(typeof meta.name!=='string')meta.name=''}
 function cacheAll(){ls.set(keyOf('n'),notes);ls.set(keyOf('s'),sermons);ls.set(keyOf('a'),agenda);ls.set(keyOf('m'),meta)}
 const strip=x=>{const c=JSON.parse(JSON.stringify(x));delete c.id;return c};
 function setSync(ok,msg){sync={ok,msg};$$('[data-sync]').forEach(el=>{el.innerHTML=syncHtml()})}
@@ -784,7 +838,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v35';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v36';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -909,11 +963,12 @@ function go(tab){view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0
 function render(anim){
   if(!ready)return;if(blocked){showBlocked();return}$('#nav').hidden=false;document.documentElement.classList.add('tabs');drawNav();
   const app=$('#app');const keep=app.querySelector('input:focus');const sel=keep?[keep.id,keep.selectionStart]:null;
-  const html={home:homeHtml,list:listHtml,bible:bibleHtml,dic:dxTabHtml,agenda:agendaHtml,profile:profileHtml}[view.tab]();
+  const html={home:homeHtml,list:listHtml,bible:bibleHtml,dic:dxTabHtml,cur:curHtml,agenda:agendaHtml,profile:profileHtml}[view.tab]();
   app.innerHTML=`<section class="view ${anim?'enter':''}"><div class="wrap">${html}</div></section>`;
   if(sel&&sel[0]){const el=document.getElementById(sel[0]);if(el){el.focus();try{el.setSelectionRange(sel[1],sel[1])}catch(e){}}}
   if(view.tab==='bible')bibleAfter();
   if(view.tab==='dic')dxAfter();
+  if(view.tab==='cur')curAfter();
 }
 
 /* =========================================================
@@ -977,6 +1032,7 @@ function homeHtml(){
     <button class="stat" data-act="list" data-f="done"><b>${S.filter(isPreached).length}</b><span>${esc(t('st_done'))}</span></button>
     <button class="stat" data-act="list" data-f="fav"><b>${favs.length}</b><span>${esc(t('st_fav'))}</span></button>
   </div>
+  <button class="cu-card" data-act="tab" data-k="cur"><span class="dx-gl sm">${ic('chat')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('cu_t'))}</b><span>${esc(t('cu_d'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
   ${S.length?`<div style="display:flex;flex-direction:column;gap:10px">
     <div class="between"><span class="sect">${esc(t('recent'))}</span><button class="lnk" data-act="tab" data-k="list">${esc(t('my_sermons'))}</button></div>
     ${S.slice(0,3).map(s=>miniCard(s,`<span class="chev">${ic('next')}</span>`)).join('')}</div>`:''}
