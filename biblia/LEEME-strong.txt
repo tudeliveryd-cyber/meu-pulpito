@@ -4,3 +4,9 @@ strong-gr.json / strong-he.json
   Estos archivos derivados se comparten bajo la misma licencia CC BY-SA 4.0.
 - Formas de palabras, números y glosas en español: STEPBible.org, Tyndale House Cambridge
   (TAGNT / TAHOT, https://github.com/STEPBible/STEPBible-Data), licencia CC BY 4.0.
+
+dic-easton.json
+- Easton's Bible Dictionary (M. G. Easton, 1897), dominio público.
+  Datos: NEUU bible-dictionary-dataset (https://github.com/neuu-org/bible-dictionary-dataset), CC BY 4.0, a partir de CCEL.
+dic-alias.json
+- Nombres en español/portugués → entrada en inglés, preparado para Meu Púlpito.
