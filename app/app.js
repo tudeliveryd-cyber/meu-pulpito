@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v64';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v65';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -903,7 +903,7 @@ const isPremium=()=>planNow().premium;
 const money=(n,c)=>c==='brl'?'R$ '+n.toLocaleString('pt-BR'):'₲ '+n.toLocaleString('es-PY');
 const fmtDay=ts=>ts?new Date(ts).toLocaleDateString(prefs.ui==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'short',year:'numeric'}):'—';
 const addMonths=(ts,n)=>{const d=new Date(ts);d.setMonth(d.getMonth()+n);return d.getTime()};
-Object.assign(I18N.es,{pl_choose:'Elige tu plan',pl_sub:'Use Meu Púlpito gratis o desbloquee todas las herramientas con Premium.',pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MEJOR PRECIO · AHORRA CON EL PLAN ANUAL',
+Object.assign(I18N.es,{pl_choose:'Elige tu plan',pl_terms:'Términos de uso',pl_sub:'Use Meu Púlpito gratis o desbloquee todas las herramientas con Premium.',pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MEJOR PRECIO · AHORRA CON EL PLAN ANUAL',
   pl_per_m:'por mes',pl_per_t:'cada 3 meses',pl_per_a:'por año',pl_save:'Ahorra {n}% frente al mensual',pl_eq:'equivale a {v} por mes',
   pl_go_free:'Continuar gratis',pl_go_m:'Elegir Premium Mensual',pl_go_t:'Elegir Premium Trimestral',pl_go_a:'Elegir Premium Anual',
   pl_f1:'Hasta {n} sermones',pl_f2:'Editor, Biblia y Agenda completos',pl_f3:'Modo Predicar básico',pl_f4:'Diccionarios: {n} artículos completos por día',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e historial',
@@ -913,7 +913,7 @@ Object.assign(I18N.es,{pl_choose:'Elige tu plan',pl_sub:'Use Meu Púlpito gratis
   pl_test:'Período de pruebas: todas las funciones están liberadas.',pl_lock_s:'El plan gratis permite hasta {n} sermones. Sus sermones no se pierden; para crear más, pase a Premium.',pl_lock_d:'El plan gratis permite {n} artículos completos por día en los diccionarios. Mañana se liberan de nuevo, o pase a Premium.',pl_lock_c:'Esta curiosidad es del plan Premium.',pl_lock_p:'Esta función del Modo Predicar es del plan Premium.',pl_see:'Ver planes',
   sub_t:'Mi suscripción',sub_plan:'Plan actual',sub_state:'Estado',sub_on:'Activa',sub_exp:'Vencida',sub_freeS:'Gratis',sub_since:'Contratado el',sub_until:'Vence el',sub_pays:'Pagos',sub_nopay:'Sin pagos registrados.',sub_change:'Cambiar de plan',sub_cancel:'Cancelar renovación',sub_cancel_d:'Su plan no se renueva solo: no hay nada que cancelar. Al vencer, vuelve al plan gratis y conserva sus datos.',sub_left:'{n} días restantes',
   ad_plan:'Plan',ad_cfg:'Precios y pruebas',ad_cfg_d:'Precios, límites del plan gratis, contacto y período de pruebas',ad_test:'Período de pruebas (todo liberado)',ad_wa:'WhatsApp para pagos (con código de país)',ad_save:'Guardar',ad_saved:'Guardado',ad_setp:'Plan de {u}',ad_from:'Desde',ad_to:'Hasta',ad_amt:'Monto pagado',ad_note:'Nota (ej.: transferencia Itaú)',ad_act:'Activar',ad_free:'Pasar a gratis',ad_cnt:'{f} gratis · {p} premium · {v} vencidas',ad_lim:'Límites del plan gratis: sermones · artículos por día · curiosidades',ad_done:'Plan actualizado',ad_gate:'Acceso solo con mi liberación',ad_days:'Días de aviso antes del vencimiento · días de gracia después',ad_soon:'Vence el {d}',ad_nsoon:'{n} plan(es) venciendo o en período de gracia: hable con ellos para renovar.',pv_renew:'Renovar',pv_soon:'Su plan Premium vence en {n} días',pv_today:'Su plan Premium vence hoy',pv_soon_d:'Vence el {d}. Renueve para seguir con todas las funciones.',pv_exp:'Su plan venció el {d}',pv_grace:'Le quedan {n} día(s) de gracia con Premium. Después vuelve al plan gratis; sus sermones no se pierden.',pv_free:'Volvió al plan gratis',pv_free_d:'Su Premium terminó. Sus sermones están todos guardados. Renueve cuando quiera para liberar todo de nuevo.',sub_grace:'En período de gracia',ad_gate_d:'Quien cree una cuenta queda esperando hasta que usted la libere en este panel.',ad_gate_on:'Acceso con liberación',ad_pend:'Esperando liberación',ad_npend:'{n} cuenta(s) esperando liberación. Toque «Activo» para liberar o «Bloqueado» para negar.',wt_t:'Su cuenta está esperando liberación',wt_d:'Meu Púlpito está en período de pruebas con acceso por invitación. Su cuenta ya fue creada; en cuanto el administrador la libere, se abre sola.',wt_acc:'Cuenta',wt_wa:'Pedir liberación por WhatsApp',wt_msg:'Hola, creé mi cuenta en Meu Púlpito y quiero pedir la liberación. Mi cuenta: {e}'});
-Object.assign(I18N.pt,{pl_choose:'Escolha seu plano',pl_sub:'Use o Meu Púlpito grátis ou libere todas as ferramentas com o Premium.',pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MELHOR PREÇO · ECONOMIZE COM O PLANO ANUAL',
+Object.assign(I18N.pt,{pl_choose:'Escolha seu plano',pl_terms:'Termos de uso',pl_sub:'Use o Meu Púlpito grátis ou libere todas as ferramentas com o Premium.',pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MELHOR PREÇO · ECONOMIZE COM O PLANO ANUAL',
   pl_per_m:'por mês',pl_per_t:'a cada 3 meses',pl_per_a:'por ano',pl_save:'Economize {n}% em relação ao mensal',pl_eq:'equivale a {v} por mês',
   pl_go_free:'Continuar grátis',pl_go_m:'Escolher Premium Mensal',pl_go_t:'Escolher Premium Trimestral',pl_go_a:'Escolher Premium Anual',
   pl_f1:'Até {n} sermões',pl_f2:'Editor, Bíblia e Agenda completos',pl_f3:'Modo Pregar básico',pl_f4:'Dicionários: {n} artigos completos por dia',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e histórico',
@@ -946,7 +946,7 @@ function plansSheet(reason){const N=planNow();const F=PCFG.free;const c=curOrder
       ${feat([t('pl_f1',{n:F.serm}),t('pl_f2'),t('pl_f3'),t('pl_f4',{n:F.dic}),t('pl_f5',{n:F.cur}),t('pl_f6')])}
       <button class="btn ghost block" data-pl-x>${esc(t('pl_go_free'))}</button></div>
     ${card('m')}${card('t')}${card('a')}</div>
-    <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_cond'))}</p></div>`,{cls:'tall'});
+    <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_cond'))} <a href="/legal.html#terminos" target="_blank" rel="noopener" style="text-decoration:underline">${esc(t('pl_terms'))}</a></p></div>`,{cls:'tall'});
   sh.addEventListener('click',e=>{if(e.target.closest('[data-pl-x]')){closeSheet();return}const b=e.target.closest('[data-pl-go]');if(b)planContact(b.dataset.plGo)})}
 function planContact(k){const c=curOrder()[0];const v=money(PCFG.p[k][c],c)+' '+t('pl_per_'+k);const em=(authU&&authU.email)||'';
   const msg=t('pl_pay_msg',{p:planName(k),v,e:em});const wa=String(PCFG.wa||'').replace(/\D/g,'');
@@ -1953,7 +1953,7 @@ const PRIV={es:[['Tus sermones son tuyos','Todo lo que escribes en Meu Púlpito 
   ['Quién puede verlo','Solo tú, con tu cuenta. Las reglas de seguridad impiden que otro usuario vea tus datos. El responsable técnico de la app tiene acceso al sistema para mantenerlo, pero se compromete a no leer tu contenido, salvo que tú lo pidas para recibir ayuda o que la ley lo exija.'],
   ['Lo que no hacemos','No vendemos tus datos, no mostramos publicidad y no usamos tus sermones para nada que no sea la app.'],
   ['Servicios externos','Traducción automática (MyMemory): solo se envía el texto que tú pides traducir. Asistente de IA (Anthropic): solo si tú pones tu propia clave, y solo el texto que tú envías; la clave queda únicamente en tu celular.'],
-  ['Borrar tu cuenta','Puedes borrar tu cuenta y todos tus datos cuando quieras, en Perfil → Borrar mi cuenta. Se borran de la nube y de este celular, y no se pueden recuperar.'],
+  ['Borrar tu cuenta','Puedes borrar tu cuenta y todos tus datos cuando quieras, en Configuración → Borrar mi cuenta. Se borran de la nube y de este celular, y no se pueden recuperar.'],
   ['Cambios','Si esta política cambia, te avisaremos en la app.']],
  pt:[['Seus sermões são seus','Tudo o que você escreve no Meu Púlpito (sermões, agenda, biblioteca e notas) pertence a você. É usado só para o app funcionar e para você ver em qualquer celular em que entrar com sua conta.'],
   ['O que guardamos','Seu e-mail, seu nome e sua foto (se você colocar), seus sermões, agenda, biblioteca, notas e suas preferências de leitura.'],

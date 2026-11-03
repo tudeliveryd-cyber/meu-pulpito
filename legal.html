@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Meu Púlpito · Términos y privacidad</title>
+<meta name="description" content="Términos de uso y política de privacidad de Meu Púlpito.">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--navy:#0B1220;--ink:#0F172A;--text:#334155;--muted:#64748B;--line:#E6E8EE;--gold:#C9A24E;--gold-2:#B8913F;--head:'Manrope','Inter',system-ui,sans-serif;--body:'Inter',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);font-size:16.5px;line-height:1.7;color:var(--text);background:#fff;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+header{background:var(--navy);padding:calc(env(safe-area-inset-top,0px) + 14px) 24px 14px}
+header .in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:var(--head);font-weight:800;font-size:16px}
+.brand img{height:34px}.brand span{color:var(--gold)}
+.lang{margin-left:auto;display:flex;gap:2px;padding:3px;border-radius:18px;box-shadow:0 0 0 1px rgba(255,255,255,.2) inset}
+.lang button{border:0;background:none;color:rgba(255,255,255,.65);font-family:var(--head);font-weight:700;font-size:12px;height:28px;padding:0 10px;border-radius:14px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--navy)}
+main{max-width:820px;margin:0 auto;padding:48px 24px 80px}
+h1{font-family:var(--head);color:var(--ink);font-size:clamp(30px,4vw,40px);line-height:1.15;letter-spacing:-.02em;margin:0 0 10px}
+.upd{color:var(--muted);font-size:14px;margin:0 0 28px}
+.toc{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+.toc a{font-family:var(--head);font-weight:700;font-size:14px;text-decoration:none;color:var(--ink);box-shadow:0 0 0 1px var(--line) inset;border-radius:20px;padding:8px 16px}
+h2{font-family:var(--head);color:var(--ink);font-size:26px;letter-spacing:-.015em;margin:56px 0 8px;scroll-margin-top:20px}
+h3{font-family:var(--head);color:var(--ink);font-size:17px;margin:26px 0 4px}
+p{margin:0 0 10px}
+.note{background:#F5F6F8;border-radius:14px;padding:14px 18px;font-size:15px;margin-top:20px}
+footer{border-top:1px solid var(--line);max-width:820px;margin:0 auto;padding:24px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+footer a{text-decoration:none}footer a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<header><div class="in"><a class="brand" href="/"><img src="app/mark.png" alt="">MEU <span>PÚLPITO</span></a><div class="lang"><button data-l="es">ES</button><button data-l="pt">PT</button></div></div></header>
+<main id="m"></main>
+<footer><span>© <span id="yr"></span> Meu Púlpito</span><span><a href="mailto:contato@meupulpito.com">contato@meupulpito.com</a> · <a href="/" id="back"></a></span></footer>
+<script>
+(function(){
+var D={es:{title:'Términos y privacidad',upd:'Última actualización: noviembre de 2026',tt:'Términos de uso',pt:'Política de privacidad',back:'Volver al sitio',
+ terms:[
+ ['1. Quiénes somos','Meu Púlpito es una plataforma para preparar, organizar y predicar sermones, disponible en meupulpito.com. Para cualquier consulta puede escribir a contato@meupulpito.com.'],
+ ['2. Su cuenta','Para usar Meu Púlpito necesita una cuenta con correo y contraseña. Usted es responsable de mantener su contraseña en secreto y de lo que se haga con su cuenta. La cuenta es personal: no la comparta con otras personas.'],
+ ['3. Su contenido','Los sermones, notas, agenda y demás contenido que usted crea le pertenecen. Meu Púlpito solo los guarda y los muestra para que el servicio funcione. Usted es responsable de lo que escribe.'],
+ ['4. Planes','Meu Púlpito ofrece un plan gratuito con funciones limitadas y planes Premium (mensual, trimestral y anual) con acceso completo. Los precios y beneficios vigentes se muestran en meupulpito.com y dentro de la aplicación.'],
+ ['5. Pago y activación','Por ahora el pago se coordina directamente con nosotros (WhatsApp o correo) por transferencia, Pix u otros medios acordados. El plan Premium se activa cuando confirmamos el pago, y su duración se cuenta desde la fecha de activación.'],
+ ['6. Renovación y vencimiento','La renovación no es automática. Antes del vencimiento le avisamos dentro de la aplicación. Si no renueva, después de un breve período de gracia su cuenta vuelve al plan gratuito. Sus sermones y datos no se borran: puede seguir viéndolos y predicándolos; solo se aplican los límites del plan gratuito.'],
+ ['7. Cancelación y reembolsos','Puede dejar de renovar cuando quiera. Los períodos ya pagados no se reembolsan, salvo que no haya podido usar el servicio por una falla nuestra; en ese caso, escríbanos y lo resolvemos.'],
+ ['8. Uso adecuado','No está permitido usar Meu Púlpito para actividades ilegales, intentar acceder a cuentas de otras personas, alterar el funcionamiento del sistema ni revender el acceso. Podemos suspender cuentas que incumplan estos términos.'],
+ ['9. Contenido de referencia','Las Biblias, diccionarios y curiosidades provienen de fuentes indicadas dentro de la aplicación. Las traducciones automáticas y las explicaciones generadas por inteligencia artificial se identifican como tales y deben revisarse antes de usarlas.'],
+ ['10. Disponibilidad','Trabajamos para que el servicio funcione siempre, pero puede haber interrupciones por mantenimiento o fallas de terceros. Recomendamos guardar copias de seguridad de sus sermones más importantes (la aplicación permite exportarlos).'],
+ ['11. Cambios','Podemos actualizar estos términos. Si el cambio es importante, le avisaremos en la aplicación antes de que entre en vigencia.'],
+ ['12. Ley aplicable','Estos términos se rigen por las leyes de la República del Paraguay.']],
+ priv:[]},
+ pt:{title:'Termos e privacidade',upd:'Última atualização: novembro de 2026',tt:'Termos de uso',pt:'Política de privacidade',back:'Voltar ao site',
+ terms:[
+ ['1. Quem somos','O Meu Púlpito é uma plataforma para preparar, organizar e pregar sermões, disponível em meupulpito.com. Para qualquer dúvida, escreva para contato@meupulpito.com.'],
+ ['2. Sua conta','Para usar o Meu Púlpito você precisa de uma conta com e-mail e senha. Você é responsável por manter sua senha em segredo e pelo que é feito com sua conta. A conta é pessoal: não compartilhe com outras pessoas.'],
+ ['3. Seu conteúdo','Os sermões, notas, agenda e demais conteúdos que você cria pertencem a você. O Meu Púlpito apenas guarda e mostra esses dados para o serviço funcionar. Você é responsável pelo que escreve.'],
+ ['4. Planos','O Meu Púlpito oferece um plano grátis com funções limitadas e planos Premium (mensal, trimestral e anual) com acesso completo. Os preços e benefícios vigentes aparecem em meupulpito.com e dentro do aplicativo.'],
+ ['5. Pagamento e ativação','Por enquanto o pagamento é combinado diretamente conosco (WhatsApp ou e-mail) por Pix, transferência ou outros meios acordados. O plano Premium é ativado quando confirmamos o pagamento, e a duração é contada a partir da data de ativação.'],
+ ['6. Renovação e vencimento','A renovação não é automática. Antes do vencimento avisamos dentro do aplicativo. Se não renovar, depois de um breve período de carência sua conta volta ao plano grátis. Seus sermões e dados não são apagados: você continua podendo vê-los e pregá-los; apenas valem os limites do plano grátis.'],
+ ['7. Cancelamento e reembolsos','Você pode deixar de renovar quando quiser. Períodos já pagos não são reembolsados, exceto se você não conseguiu usar o serviço por uma falha nossa; nesse caso, escreva para nós e resolvemos.'],
+ ['8. Uso adequado','Não é permitido usar o Meu Púlpito para atividades ilegais, tentar acessar contas de outras pessoas, alterar o funcionamento do sistema ou revender o acesso. Podemos suspender contas que descumpram estes termos.'],
+ ['9. Conteúdo de referência','As Bíblias, dicionários e curiosidades vêm de fontes indicadas dentro do aplicativo. As traduções automáticas e as explicações geradas por inteligência artificial são identificadas como tais e devem ser revisadas antes de usar.'],
+ ['10. Disponibilidade','Trabalhamos para que o serviço funcione sempre, mas pode haver interrupções por manutenção ou falhas de terceiros. Recomendamos guardar cópias de segurança dos seus sermões mais importantes (o aplicativo permite exportá-los).'],
+ ['11. Mudanças','Podemos atualizar estes termos. Se a mudança for importante, avisaremos no aplicativo antes de entrar em vigor.'],
+ ['12. Lei aplicável','Estes termos são regidos pelas leis da República do Paraguai.']],
+ priv:[]}};
+D.es.priv=[['Sus sermones son suyos','Todo lo que escribe en Meu Púlpito (sermones, agenda, biblioteca y notas) le pertenece. Se usa solo para que la aplicación funcione y para que usted lo vea en cualquier dispositivo donde entre con su cuenta.'],
+ ['Qué guardamos','Su correo, su nombre y su foto (si los agrega), sus sermones, agenda, biblioteca, notas y preferencias de lectura, el plan contratado y su historial de pagos. También guardamos estadísticas de uso sin contenido (por ejemplo, cuántos sermones tiene), para mejorar el servicio.'],
+ ['Dónde se guarda','En los servidores de Google Firebase, protegidos por su contraseña. Además queda una copia en su celular para que funcione sin internet.'],
+ ['Quién puede verlo','Solo usted, con su cuenta. Las reglas de seguridad impiden que otros usuarios, y también el administrador desde la aplicación, lean el contenido de sus sermones. El responsable técnico se compromete a no acceder a su contenido, salvo que usted lo pida para recibir ayuda o que la ley lo exija.'],
+ ['Lo que no hacemos','No vendemos sus datos, no mostramos publicidad y no usamos sus sermones para nada que no sea la aplicación.'],
+ ['Servicios externos','Traducción automática (MyMemory): solo se envía el texto que usted pide traducir. Asistente de inteligencia artificial (Anthropic): solo si usted coloca su propia clave, y solo el texto que usted envía; la clave queda únicamente en su celular.'],
+ ['Borrar su cuenta','Puede borrar su cuenta y todos sus datos cuando quiera, en Configuración → Borrar mi cuenta. Se eliminan de la nube y del celular y no se pueden recuperar.'],
+ ['Contacto','Para cualquier consulta sobre sus datos, escriba a contato@meupulpito.com.']];
+D.pt.priv=[['Seus sermões são seus','Tudo o que você escreve no Meu Púlpito (sermões, agenda, biblioteca e notas) pertence a você. É usado só para o aplicativo funcionar e para você ver em qualquer aparelho em que entrar com sua conta.'],
+ ['O que guardamos','Seu e-mail, seu nome e sua foto (se você colocar), seus sermões, agenda, biblioteca, notas e preferências de leitura, o plano contratado e seu histórico de pagamentos. Também guardamos estatísticas de uso sem conteúdo (por exemplo, quantos sermões você tem), para melhorar o serviço.'],
+ ['Onde fica guardado','Nos servidores do Google Firebase, protegidos pela sua senha. Também fica uma cópia no seu celular para funcionar sem internet.'],
+ ['Quem pode ver','Só você, com a sua conta. As regras de segurança impedem que outros usuários, e também o administrador pelo aplicativo, leiam o conteúdo dos seus sermões. O responsável técnico se compromete a não acessar o seu conteúdo, a não ser que você peça para receber ajuda ou que a lei exija.'],
+ ['O que não fazemos','Não vendemos seus dados, não mostramos propaganda e não usamos seus sermões para nada além do aplicativo.'],
+ ['Serviços externos','Tradução automática (MyMemory): só é enviado o texto que você pede para traduzir. Assistente de inteligência artificial (Anthropic): só se você colocar sua própria chave, e só o texto que você envia; a chave fica apenas no seu celular.'],
+ ['Apagar sua conta','Você pode apagar sua conta e todos os seus dados quando quiser, em Configurações → Apagar minha conta. Eles são apagados da nuvem e do celular e não podem ser recuperados.'],
+ ['Contato','Para qualquer dúvida sobre seus dados, escreva para contato@meupulpito.com.']];
+var L='es';try{L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es')}catch(e){}
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+function sec(a){return a.map(function(x){return'<h3>'+esc(x[0])+'</h3><p>'+esc(x[1])+'</p>'}).join('')}
+function paint(){var d=D[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';document.title='Meu Púlpito · '+d.title;
+ document.getElementById('m').innerHTML='<h1>'+esc(d.title)+'</h1><p class="upd">'+esc(d.upd)+'</p><nav class="toc"><a href="#terminos">'+esc(d.tt)+'</a><a href="#privacidad">'+esc(d.pt)+'</a></nav><h2 id="terminos">'+esc(d.tt)+'</h2>'+sec(d.terms)+'<h2 id="privacidad">'+esc(d.pt)+'</h2>'+sec(d.priv);
+ document.getElementById('back').textContent=d.back;
+ document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-l')===L))});
+ if(location.hash){var t=document.querySelector(location.hash);t&&t.scrollIntoView()}}
+paint();document.getElementById('yr').textContent=new Date().getFullYear();
+document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){L=b.getAttribute('data-l');try{localStorage.setItem('mp.site.l',L)}catch(e){}paint()})});
+})();
+</script>
+</body>
+</html>
