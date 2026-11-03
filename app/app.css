@@ -676,3 +676,16 @@ html.subp .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px)}
 .inst-st li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5}
 .inst-st .n{width:28px;height:28px;border-radius:9px;background:var(--navy);color:#D6AD55;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;flex:none}
 .inst-btn svg{width:19px;height:19px}.banner.inst-bn{box-shadow:0 0 0 1px var(--line) inset}
+.res-n{margin:2px 2px -2px;font-size:13px;color:var(--muted);font-weight:500}
+/* recordatorio de la próxima predicación */
+.nextp{background:var(--surface);border-radius:var(--r);padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 3px 0 0 var(--gold)}
+.nextp .sn-hd{display:flex;align-items:center;gap:7px;font-family:var(--head);font-weight:700;font-size:12.5px;letter-spacing:.02em;color:var(--gold-ink)}
+.nextp .sn-hd svg{width:16px;height:16px}
+.nextp .sn-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
+.nextp .sn-tx b{font-size:15px}
+.nextp .sn-tx span{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nextp .sn-tx span.serif{color:var(--fg);font-size:15.5px}
+.nextp .row{display:flex;gap:8px;justify-content:flex-end}
+.nextp .row .btn{flex:0 0 auto}
+.nextp .row .btn.gold svg{stroke:currentColor}
+.nextp.now{box-shadow:inset 3px 0 0 var(--gold),0 0 0 1px color-mix(in srgb,var(--gold) 35%,transparent)}

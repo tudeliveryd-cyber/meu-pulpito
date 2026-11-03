@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /app/biblia/
+Disallow: /tools/
+
+Sitemap: https://meupulpito.com/sitemap.xml

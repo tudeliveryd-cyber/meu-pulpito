@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Página no encontrada · Meu Púlpito</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500&display=swap">
+<style>
+:root{--navy:#0B1220;--gold:#C9A24E;--muted:#9AA4B6}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--navy);color:#fff;font-family:'Inter',system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;padding:max(24px,env(safe-area-inset-top)) 16px max(24px,env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased}
+main{max-width:440px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px}
+img{width:200px;height:auto;margin-bottom:10px}
+.code{font-family:'Manrope',sans-serif;font-weight:800;font-size:13px;letter-spacing:.16em;color:var(--gold)}
+h1{font-family:'Manrope',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em;margin:0;line-height:1.2}
+p{margin:0;color:var(--muted);font-size:16px;line-height:1.6}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px}
+a.btn{display:inline-flex;align-items:center;justify-content:center;height:50px;padding:0 24px;border-radius:25px;font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none}
+.gold{background:var(--gold);color:var(--navy)}
+.line{color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.3) inset}
+</style>
+</head>
+<body>
+<main>
+  <img src="/app/logo-name.png" alt="Meu Púlpito">
+  <span class="code">404</span>
+  <h1 id="t">Página no encontrada</h1>
+  <p id="d">La dirección que abrió no existe o cambió de lugar.</p>
+  <div class="row">
+    <a class="btn gold" href="/app/" id="b1">Acceder a la plataforma</a>
+    <a class="btn line" href="/" id="b2">Ir al inicio</a>
+  </div>
+</main>
+<script>
+try{var L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es');
+if(L==='pt'){document.documentElement.lang='pt-BR';document.title='Página não encontrada · Meu Púlpito';
+document.getElementById('t').textContent='Página não encontrada';document.getElementById('d').textContent='O endereço que você abriu não existe ou mudou de lugar.';
+document.getElementById('b1').textContent='Acessar a plataforma';document.getElementById('b2').textContent='Ir para o início'}}catch(e){}
+</script>
+</body>
+</html>

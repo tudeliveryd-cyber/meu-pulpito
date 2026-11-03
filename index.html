@@ -18,7 +18,26 @@ try{if((window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||na
 <meta property="og:image" content="https://meupulpito.com/img/og.jpg">
 <meta property="og:url" content="https://meupulpito.com/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Meu Púlpito">
+<meta property="og:locale" content="es_PY">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Meu Púlpito, plataforma para preparar y predicar sermones">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meu Púlpito">
+<meta name="twitter:description" content="Prepare y organice sus mensajes en un solo lugar.">
+<meta name="twitter:image" content="https://meupulpito.com/img/og.jpg">
+<link rel="canonical" href="https://meupulpito.com/">
+<meta name="keywords" content="sermones, bosquejos, predicación, pastores, Biblia, diccionario bíblico, hebreo, griego, sermões, esboços, pregação, pastor">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Organization","@id":"https://meupulpito.com/#org","name":"Meu Púlpito","url":"https://meupulpito.com/","logo":"https://meupulpito.com/app/icon-512.png","email":"contato@meupulpito.com","sameAs":["https://www.instagram.com/meupulpito"]},
+{"@type":"WebSite","@id":"https://meupulpito.com/#site","url":"https://meupulpito.com/","name":"Meu Púlpito","inLanguage":["es","pt-BR"],"publisher":{"@id":"https://meupulpito.com/#org"}},
+{"@type":"SoftwareApplication","name":"Meu Púlpito","applicationCategory":"LifestyleApplication","operatingSystem":"iOS, Android, Web","url":"https://meupulpito.com/app/","inLanguage":["es","pt-BR"],"description":"Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras con la Biblia y los diccionarios bíblico, hebreo y griego, y predique desde el celular.","publisher":{"@id":"https://meupulpito.com/#org"},
+ "offers":[{"@type":"Offer","name":"Gratis","price":"0","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Mensual","price":"45000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Trimestral","price":"120000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Anual","price":"350000","priceCurrency":"PYG"}]}
+]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
@@ -167,6 +186,17 @@ section{scroll-margin-top:72px}
 @media (max-width:1060px){.plans{grid-template-columns:repeat(2,1fr);max-width:720px;margin:0 auto}}
 @media (max-width:560px){.plans{grid-template-columns:1fr;gap:26px}}
 
+/* testimonios */
+.testi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tq{margin:0;display:flex;flex-direction:column;gap:18px;padding:28px 26px;border-radius:var(--r);background:#fff;box-shadow:0 0 0 1px var(--line) inset}
+.tq svg{width:26px;height:26px;color:var(--gold)}
+.tq blockquote{margin:0;font-size:16.5px;line-height:1.6;color:var(--ink);flex:1;text-wrap:pretty}
+.tq figcaption{display:flex;align-items:center;gap:12px}
+.tq .av{width:42px;height:42px;border-radius:50%;background:var(--gold-soft);color:var(--gold-2);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:15px;flex:none}
+.tq b{display:block;font-family:var(--head);font-weight:700;color:var(--ink);font-size:15px}
+.tq small{display:block;color:var(--muted);font-size:13.5px}
+@media (max-width:900px){.testi{grid-template-columns:1fr;max-width:620px;margin:0 auto}}
+
 /* preguntas */
 .faq{max-width:780px;margin:0 auto;border-top:1px solid var(--line)}
 .faq details{border-bottom:1px solid var(--line)}
@@ -204,6 +234,7 @@ footer .soc svg{width:18px;height:18px}
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="qt" viewBox="0 0 24 24"><path d="M9.5 7C6.5 7.8 5 10 5 13v4h5v-5H7.3c.2-1.7 1.1-2.8 2.7-3.4zM18.5 7c-3 .8-4.5 3-4.5 6v4h5v-5h-2.7c.2-1.7 1.1-2.8 2.7-3.4z"/></symbol>
   <symbol id="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="ar" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="pl" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -296,6 +327,13 @@ footer .soc svg{width:18px;height:18px}
     </div>
   </section>
 
+  <section class="sec" id="testimonios" hidden>
+    <div class="wrap">
+      <div class="sec-h rv"><span class="eyebrow" data-t="t_eye"></span><h2 data-t="t_t"></h2></div>
+      <div class="testi rv" id="testi"></div>
+    </div>
+  </section>
+
   <section class="sec" id="planes">
     <div class="wrap">
       <div class="sec-h rv"><span class="eyebrow" data-t="p_eye"></span><h2 data-t="p_t"></h2><p data-t="p_d"></p></div>
@@ -341,6 +379,9 @@ footer .soc svg{width:18px;height:18px}
 (function(){
 // Precios actuales (los mismos que se configuran en el panel del app)
 var PRICE={m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},MON={m:1,t:3,a:12};
+// Testimonios REALES de pastores que usan Meu Púlpito (con su autorización).
+// Formato: {q:'texto tal como lo dijo', n:'Nombre', r:'Iglesia · Ciudad'}. La sección aparece sola cuando hay al menos uno.
+var TESTI=[];
 var T={es:{
   tag:'PREPARA. ORGANIZA. PREDICA.',n_feat:'Funciones',n_plans:'Planes',n_faq:'Preguntas',n_go:'Acceder',
   h_eye:'Para pastores y predicadores',h_t:'Prepare y organice sus mensajes en <em>un solo lugar.</em>',
@@ -362,7 +403,7 @@ var T={es:{
   h2_t:'Biblioteca personal',h2_d:'Guarde estudios, ilustraciones, frases e ideas, también por voz, para usar en sus próximos sermones.',
   s_eye:'Cómo empezar',s_t:'Comience en pocos minutos.',
   s1_t:'Cree su cuenta',s1_d:'Solo necesita un correo y una contraseña. Sus sermones quedan guardados en su cuenta.',
-  s2_t:'Instálelo en su celular',s2_d:'En el iPhone, toque Compartir y luego «Agregar a pantalla de inicio». En Android, use el menú del navegador.',
+  s2_t:'Instálelo en su celular',s2_d:'En la pantalla de acceso, toque «Instalar la aplicación» y siga los pasos. Queda en su pantalla de inicio y se abre como una aplicación.',
   s3_t:'Prepare y predique',s3_d:'Escriba su mensaje, estúdielo con la Biblia y los diccionarios, y predíquelo desde la misma pantalla.',
   p_eye:'Planes',p_t:'Elija el plan que mejor se adapta a su ministerio.',p_d:'Comience gratis. Cuando quiera todas las herramientas, pase a Premium.',
   pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para siempre',per_m:'por mes',per_t:'cada 3 meses',per_a:'por año',eq:'equivale a {v} por mes',save:'Ahorre {n}%',best:'Mejor precio · ahorre con el plan anual',
@@ -371,6 +412,7 @@ var T={es:{
   fp:['Sermones sin límite','Diccionarios completos','Todas las curiosidades bíblicas','Modo Predicar avanzado','Traducción del sermón ES/PT'],
   fp2:'Los mismos beneficios del Premium Mensual',
   p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
+  t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',
   q_eye:'Preguntas frecuentes',q_t:'Lo que más nos preguntan.',
   faq:[['¿En qué dispositivos funciona?','En iPhone, Android y computadora, desde el navegador. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
    ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones y las Biblias quedan guardados en el celular, de modo que puede predicar aunque no tenga señal.'],
@@ -402,7 +444,7 @@ var T={es:{
   h2_t:'Biblioteca pessoal',h2_d:'Guarde estudos, ilustrações, frases e ideias, também por voz, para usar nos próximos sermões.',
   s_eye:'Como começar',s_t:'Comece em poucos minutos.',
   s1_t:'Crie sua conta',s1_d:'Você só precisa de um e-mail e uma senha. Seus sermões ficam guardados na sua conta.',
-  s2_t:'Instale no celular',s2_d:'No iPhone, toque em Compartilhar e depois em «Adicionar à Tela de Início». No Android, use o menu do navegador.',
+  s2_t:'Instale no celular',s2_d:'Na tela de acesso, toque em «Instalar o aplicativo» e siga os passos. Ele fica na sua tela de início e abre como um aplicativo.',
   s3_t:'Prepare e pregue',s3_d:'Escreva sua mensagem, estude com a Bíblia e os dicionários, e pregue na mesma tela.',
   p_eye:'Planos',p_t:'Escolha o plano que combina com o seu ministério.',p_d:'Comece grátis. Quando quiser todas as ferramentas, passe para o Premium.',
   pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para sempre',per_m:'por mês',per_t:'a cada 3 meses',per_a:'por ano',eq:'equivale a {v} por mês',save:'Economize {n}%',best:'Melhor preço · economize com o plano anual',
@@ -411,6 +453,7 @@ var T={es:{
   fp:['Sermões sem limite','Dicionários completos','Todas as curiosidades bíblicas','Modo Pregar avançado','Tradução do sermão PT/ES'],
   fp2:'Os mesmos benefícios do Premium Mensal',
   p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
+  t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',
   q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No iPhone, Android e computador, pelo navegador. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
    ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões e as Bíblias ficam guardados no celular, então você pode pregar mesmo sem sinal.'],
@@ -443,6 +486,9 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
       '<ul>'+(k==='m'?D.fp.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join(''):'<li>'+ck+'<span>'+esc(D.fp2)+'</span></li>')+'</ul>'+
       '<a class="btn '+(k==='a'?'gold':'dark')+'" href="https://wa.me/595983879344?text='+encodeURIComponent(msg)+'" target="_blank" rel="noopener">'+esc(D['go_'+k])+'</a></div>'};
   document.getElementById('plans').innerHTML='<div class="plan"><h3>'+esc(D.pl_free)+'</h3><div><div class="price">'+esc(money(0,c))+'</div><div class="per">'+esc(D.per_f)+'</div></div><ul>'+D.ff.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join('')+'</ul><a class="btn out" href="app/" data-go>'+esc(D.go_f)+'</a></div>'+card('m')+card('t')+card('a');
+  var ts=document.getElementById('testimonios');ts.hidden=!TESTI.length;
+  if(TESTI.length)document.getElementById('testi').innerHTML=TESTI.map(function(t){var ini=t.n.replace(/^(Pr|Pra|Pb|Ev|Rev)\.?\s+/i,'').split(/\s+/).map(function(w){return w[0]}).slice(0,2).join('').toUpperCase();
+    return'<figure class="tq"><svg class="i" style="fill:currentColor;stroke:none"><use href="#qt"/></svg><blockquote>'+esc(t.q)+'</blockquote><figcaption><span class="av">'+esc(ini)+'</span><span><b>'+esc(t.n)+'</b><small>'+esc(t.r||'')+'</small></span></figcaption></figure>'}).join('');
   document.getElementById('faq').innerHTML=D.faq.map(function(q){return'<details><summary>'+esc(q[0])+'<svg class="i"><use href="#pl"/></svg></summary><p>'+esc(q[1])+'</p></details>'}).join('');
 }
 apply();
