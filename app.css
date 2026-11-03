@@ -462,3 +462,5 @@ html[data-mode="dark"] .sd-num{background:#1C2638}
 .sd-p{margin:0;font-family:var(--read);font-size:16px;line-height:1.55}
 .sref{display:inline;padding:0;font-weight:800}
 .res em{font-style:normal;color:var(--gold-ink);font-weight:700}
+.sd-en summary{cursor:pointer;color:var(--faint);font-size:13px;font-weight:700;padding:4px 0}
+.sd-en .sd-p{font-size:14.5px;margin-top:6px}
