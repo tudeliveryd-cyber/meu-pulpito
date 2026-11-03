@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v48';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v49';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1343,6 +1343,7 @@ function openEditor(id,fresh){
    </div></div></div>`;
   const ed=$('#ed');ed.innerHTML=html?cleanHtml(html):'<h1></h1><p class="ph"></p>';
   if(!ed.querySelector('h1')){const h=document.createElement('h1');ed.prepend(h)}
+  {const et=$('.ed-top');if(et)document.documentElement.style.setProperty('--edTop',et.offsetHeight+'px')}
   placeholders();E.U=[ed.innerHTML];E.base=fresh?'':cleanHtml(html);E.baseAt=s.updated||Date.now();E.wasEmpty=!ed.textContent.trim();drawEdMeta();
   ed.addEventListener('input',onEdInput);ed.addEventListener('keydown',onEdKey);ed.addEventListener('paste',onPaste);
   ed.addEventListener('beforeinput',e=>{if(e.inputType==='historyUndo'){e.preventDefault();edUndo()}else if(e.inputType==='historyRedo'){e.preventDefault();edRedo()}});
