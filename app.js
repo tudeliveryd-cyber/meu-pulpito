@@ -754,6 +754,12 @@ function detectLang(txt){txt=' '+norm(txt).slice(0,4000)+' ';const raw=' '+Strin
   const es=(raw.match(/ñ|ción|\b(el|los|las|del|pero|muy|hoy|usted|nosotros|también|dios|señor|que no|en su)\b/g)||[]).length;
   const pt=(raw.match(/ção|ções|ã|õ|\b(não|os|as|do|da|mas|muito|hoje|você|nós|deus|senhor|em seu|que não)\b/g)||[]).length;
   return es>pt?'es':'pt'}
+/* idioma con seguridad: solo cuando el texto lo deja claro */
+function detectSure(txt){const raw=' '+String(txt||'').toLowerCase().slice(0,6000)+' ';
+  const es=(raw.match(/ñ|ción|\b(el|los|las|del|pero|muy|hoy|usted|nosotros|también|dios|señor|hacia|nos|una|con|está|para|cuando|porque|pueblo)\b/g)||[]).length;
+  const pt=(raw.match(/ção|ções|ã|õ|\b(não|os|do|da|dos|das|mas|muito|hoje|você|nós|deus|senhor|para|um|uma|com|está|quando|porque|povo)\b/g)||[]).length;
+  if(es+pt<6)return null;if(es>=pt*1.6)return'es';if(pt>=es*1.6)return'pt';return null}
+const LDC=new Map();
 
 /* texto antiguo (bloc de notas con marcas) → documento */
 function linesToHtml(text,opts={}){
@@ -831,7 +837,7 @@ function lastPreach(s){let best=null;(s.log||[]).forEach(l=>{if(!best||l.date>be
   if(!best){const p=s.preached||{};Object.keys(p).forEach(k=>{if(!best||p[k]>best.date)best={place:k,date:p[k]}})}return best}
 const placeName=l=>l?(l.place==='sede'?t('sede'):l.place==='anexo'?t('anexo'):(l.placeName||t('other'))):'';
 const catOf=s=>(s.category??s.series??'').trim();
-const sLang=s=>s.lang||detectLang(derive(s).text);
+const sLang=s=>{if(s.langSet&&s.lang)return s.lang;const k=s.id+'|'+(s.updated||0)+'|'+(s.html||'').length;if(!LDC.has(k)){const d=derive(s);LDC.set(k,detectSure(d.title+' '+d.text))}return LDC.get(k)||s.lang||detectLang(derive(s).text)};
 
 /* =========================================================
    Datos y sincronización
@@ -859,7 +865,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v41';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v42';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1171,7 +1177,7 @@ function duplicate(id){const s=sermons.find(x=>x.id===id);if(!s)return;const c=J
    EDITOR
    ========================================================= */
 let E=null;
-function newSermon(){const s={id:uid(),html:'',lang:prefs.ui,category:listState.cat||'',fav:false,created:Date.now(),log:[],v:2};openEditor(null,s)}
+function newSermon(){const s={id:uid(),html:'',lang:'',category:listState.cat||'',fav:false,created:Date.now(),log:[],v:2};openEditor(null,s)}
 function openEditor(id,fresh){
   const s=fresh||sermons.find(x=>x.id===id);if(!s)return;closeSheet();while($('.ov'))closeSheet();
   view.overlay='editor';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
@@ -1245,7 +1251,7 @@ function commitHist(){if(!E||!E.base||!E.s.html||E.base===E.s.html)return;const 
 function edSave(force){if(!E)return;clearTimeout(E.saveT);if(!E.dirty&&!force&&!E.isNew)return;const ed=$('#ed');if(!ed)return;
   const html=cleanHtml(ed.innerHTML);E.s.html=html;E.s.v=2;const d=derive(E.s);E.s.title=d.title;E.s.passage=d.passage;
   if(E.isNew&&!d.text.trim()){return}
-  if(!E.s.lang)E.s.lang=detectLang(d.text);
+  if(!E.s.langSet){const dl=detectSure(d.title+' '+d.text);if(dl)E.s.lang=dl;else if(!E.s.lang)E.s.lang=detectLang(d.text)}
   E.isNew=false;E.dirty=false;const cur=sermons.find(x=>x.id===E.s.id);if(cur&&cur.hist)E.s.hist=cur.hist;putSermon(E.s,{silent:true});updWc();if(E.wasEmpty!==!d.text.trim()){E.wasEmpty=!d.text.trim();drawEdMeta()}const sv=$('#edSaved');if(sv)sv.innerHTML=ic('check')+`<span class="st">${esc(t('saved'))}</span>`}
 function closeEditor(then){if(!E)return;bpClose();edSave();commitHist();document.removeEventListener('selectionchange',tbState);document.removeEventListener('selectionchange',trackRange);E=null;view.overlay=null;then?then():render(true)}
 function curBlock(){const ed=$('#ed');const sel=getSelection();if(!ed||!sel.rangeCount)return null;let n=sel.anchorNode;if(!ed.contains(n))return null;
@@ -1984,7 +1990,7 @@ const ACT={
   edPreach:()=>{edSave();if(!sermons.find(x=>x.id===E.s.id)){toast(t('body_ph'));return}openPreach(E.s.id)},
   edFav:()=>{E.s.fav=!E.s.fav;drawEdMeta();edSave(true)},
   edCat:()=>pickCategory(c=>{E.s.category=c;delete E.s.series;drawEdMeta();edSave(true)},catOf(E.s)),
-  edLang:()=>{E.s.lang=sLang(E.s)==='pt'?'es':'pt';drawEdMeta();$('#ed').lang=E.s.lang==='pt'?'pt-BR':'es';edSave(true);toast(t('lang_msg')+': '+(E.s.lang==='pt'?'Português':'Español'))},
+  edLang:()=>{E.s.lang=sLang(E.s)==='pt'?'es':'pt';E.s.langSet=true;drawEdMeta();$('#ed').lang=E.s.lang==='pt'?'pt-BR':'es';edSave(true);toast(t('lang_msg')+': '+(E.s.lang==='pt'?'Português':'Español'))},
   fmtB:()=>fmt('bold'),fmtI:()=>fmt('italic'),fmtU:()=>fmt('underline'),fmtOl:()=>fmt('insertOrderedList'),
   fmtImp:()=>{let b=curBlock();while(b&&b.tagName!=='H2')b=b.previousElementSibling;if(!b){toast(t('imp_need'));return}snap();b.classList.toggle('imp');onEdInput();snap();toast(t(b.classList.contains('imp')?'imp_on':'imp_off'))},
   pgIdx:()=>pgIndex(),pgLang:()=>pgLang(),
