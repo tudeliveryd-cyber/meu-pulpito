@@ -26,7 +26,7 @@ function copyText(txt){return new Promise(ok=>{const fb=()=>{const ta=document.c
    Idiomas
    ========================================================= */
 const I18N={
-es:{tagline:'PREPARA. ORGANIZA. PREDICA.',nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Configuración',nav_dic:'Diccionarios',
+es:{ver_l:'Versión',tagline:'PREPARA. ORGANIZA. PREDICA.',nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Configuración',nav_dic:'Diccionarios',
 greet_m:'Buenos días,',greet_a:'Buenas tardes,',greet_n:'Buenas noches,',pastor:'Pastor',
 search_ph:'Buscar sermón, versículo o palabra',prepare:'Preparar',new_sermon:'Nuevo sermón',new_desc:'Abre la hoja y empieza a escribir. Se guarda solo.',
 st_total:'Sermones',st_done:'Predicados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recientes',my_sermons:'Mis sermones',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima predicación',
@@ -84,7 +84,7 @@ night:'Lectura nocturna',night_d:'Fondo negro, letras blancas y brillo más bajo
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
-pt:{tagline:'PREPARE. ORGANIZE. PREGUE.',nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Configurações',nav_dic:'Dicionários',
+pt:{ver_l:'Versão',tagline:'PREPARE. ORGANIZE. PREGUE.',nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Configurações',nav_dic:'Dicionários',
 greet_m:'Bom dia,',greet_a:'Boa tarde,',greet_n:'Boa noite,',pastor:'Pastor',
 search_ph:'Buscar sermão, versículo ou palavra',prepare:'Preparar',new_sermon:'Novo sermão',new_desc:'Abra a folha e comece a escrever. Salva sozinho.',
 st_total:'Sermões',st_done:'Pregados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recentes',my_sermons:'Meus sermões',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima pregação',
@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v54';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v55';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1932,7 +1932,9 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
   <p class="sub" style="margin:0;text-align:center;font-size:12px">${esc(t('credits'))}</p>
   <div class="pgrp"><button class="prow plink" data-act="report"><span><span class="k">${ic('chat')} ${esc(t('rp_btn'))}</span></span>${ic('next')}</button><button class="prow plink" data-act="onb"><span><span class="k">${ic('play')} ${esc(t('ob_btn'))}</span></span>${ic('next')}</button></div>
   ${!localMode&&authU?`<button class="btn ghost block" data-act="logout" style="color:var(--danger)">${ic('out')}${esc(t('logout'))}</button>`:''}
-  <p class="sub" style="text-align:center;margin:4px 0 0;font-size:12px">Meu Púlpito · ${APP_VER}</p>`}
+  <div class="foot-brand"><span class="mark sm"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
+    <b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>${esc(t('tagline'))}</small>
+    <span class="fb-v">${esc(t('ver_l'))} 1.0 (${APP_VER.replace('v','')}) · © ${new Date().getFullYear()}</span></div>`}
 const PRIV={es:[['Tus sermones son tuyos','Todo lo que escribes en Meu Púlpito (sermones, agenda, biblioteca y notas) pertenece a ti. Se usa solo para que la app funcione y para que lo veas en cualquier celular donde entres con tu cuenta.'],
   ['Qué guardamos','Tu correo, tu nombre y tu foto (si los pones), tus sermones, agenda, biblioteca, notas y tus preferencias de lectura.'],
   ['Dónde se guarda','En los servidores de Google Firebase, protegidos con tu contraseña. Además queda una copia en tu celular para que funcione sin internet, y una copia de seguridad diaria solo en este celular.'],
