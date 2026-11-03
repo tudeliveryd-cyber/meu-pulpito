@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v45';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v46';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -881,18 +881,20 @@ function pushStats(force){if(!cols||!authU||localMode||!window.firebase)return;c
     preached:liveS().filter(isPreached).length,notes:liveN().length,events:agenda.length,
     uses:ls.get('mp.uses',{}),seen:now,created,ver:APP_VER};
   try{firebase.firestore().collection('stats').doc(authU.uid).set(d,{merge:true}).catch(()=>{})}catch(e){}}
-function applyPlan(){const b=!!(planState&&planState.blocked);if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
-function watchPlan(u){try{firebase.firestore().collection('planos').doc(u.uid).onSnapshot(d=>{planState=d.exists?d.data():null;applyPlan()},()=>{})}catch(e){}}
-function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
-  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t('blk_d'))}</p><button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
+let planLoaded=false;
+const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planState.ok||PMON[planState.plan])));
+function applyPlan(){const b=!!(planState&&planState.blocked)||waitingOk();if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
+function watchPlan(u){try{firebase.firestore().collection('planos').doc(u.uid).onSnapshot(d=>{planState=d.exists?d.data():null;planLoaded=true;applyPlan()},()=>{})}catch(e){}}
+function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.remove('tabs');const w=!(planState&&planState.blocked);const wa=String(PCFG.wa||'').replace(/\D/g,'');const em=(authU&&authU.email)||'';
+  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t(w?'wt_t':'blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t(w?'wt_d':'blk_d'))}</p>${w&&em?`<p class="sub" style="margin:0;font-size:14px">${esc(t('wt_acc'))}: <b>${esc(em)}</b></p>`:''}${w&&wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(t('wt_msg',{e:em}))}" target="_blank" rel="noopener">${ic('chat')}${esc(t('wt_wa'))}</a>`:''}<button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
 /* =========================================================
    Planes: Gratis · Premium mensual · trimestral · anual
    El plan de cada cuenta está en planos/{uid} y SOLO el administrador puede cambiarlo (reglas de Firestore).
    Precios, límites y el «período de pruebas» están en config/app, editables desde el panel.
    ========================================================= */
-const PCFG_DEF={test:true,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:5,dic:5,cur:15}};
+const PCFG_DEF={test:true,gate:false,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:5,dic:5,cur:15}};
 let PCFG=Object.assign({},PCFG_DEF,ls.get('mp.pcfg',{}));
-function watchCfg(){try{firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);if(ready&&!view.overlay)refreshBg()}},()=>{})}catch(e){}}
+function watchCfg(){try{firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);applyPlan();if(ready&&!view.overlay&&!blocked)refreshBg()}},()=>{})}catch(e){}}
 const PMON={m:1,t:3,a:12};
 function planNow(){const p=planState||{};const until=p.until||0;const paid=PMON[p.plan]&&until>Date.now();
   return{plan:paid?p.plan:'free',paid,test:!!PCFG.test,premium:paid||!!PCFG.test||isAdmin(),until,since:p.since||0,expired:!!(PMON[p.plan]&&until&&until<=Date.now()),last:p.plan,pays:Array.isArray(p.pays)?p.pays:[]}}
@@ -909,7 +911,7 @@ Object.assign(I18N.es,{pl_choose:'Elige tu plan',pl_sub:'Use Meu Púlpito gratis
   pl_pay_t:'Contratar {p}',pl_pay_d:'Envíe un mensaje al administrador para pagar por transferencia, Pix o billetera. Cuando el administrador confirme el pago, su cuenta pasa a Premium.',pl_pay_wa:'Enviar mensaje por WhatsApp',pl_pay_mail:'Enviar correo',pl_pay_msg:'Hola, quiero contratar {p} de Meu Púlpito ({v}). Mi cuenta: {e}',
   pl_test:'Período de pruebas: todas las funciones están liberadas.',pl_lock_s:'El plan gratis permite hasta {n} sermones. Sus sermones no se pierden; para crear más, pase a Premium.',pl_lock_d:'El plan gratis permite {n} artículos completos por día en los diccionarios. Mañana se liberan de nuevo, o pase a Premium.',pl_lock_c:'Esta curiosidad es del plan Premium.',pl_lock_p:'Esta función del Modo Predicar es del plan Premium.',pl_see:'Ver planes',
   sub_t:'Mi suscripción',sub_plan:'Plan actual',sub_state:'Estado',sub_on:'Activa',sub_exp:'Vencida',sub_freeS:'Gratis',sub_since:'Contratado el',sub_until:'Vence el',sub_pays:'Pagos',sub_nopay:'Sin pagos registrados.',sub_change:'Cambiar de plan',sub_cancel:'Cancelar renovación',sub_cancel_d:'Su plan no se renueva solo: no hay nada que cancelar. Al vencer, vuelve al plan gratis y conserva sus datos.',sub_left:'{n} días restantes',
-  ad_plan:'Plan',ad_cfg:'Precios y pruebas',ad_cfg_d:'Precios, límites del plan gratis, contacto y período de pruebas',ad_test:'Período de pruebas (todo liberado)',ad_wa:'WhatsApp para pagos (con código de país)',ad_save:'Guardar',ad_saved:'Guardado',ad_setp:'Plan de {u}',ad_from:'Desde',ad_to:'Hasta',ad_amt:'Monto pagado',ad_note:'Nota (ej.: transferencia Itaú)',ad_act:'Activar',ad_free:'Pasar a gratis',ad_cnt:'{f} gratis · {p} premium · {v} vencidas',ad_lim:'Límites del plan gratis: sermones · artículos por día · curiosidades',ad_done:'Plan actualizado'});
+  ad_plan:'Plan',ad_cfg:'Precios y pruebas',ad_cfg_d:'Precios, límites del plan gratis, contacto y período de pruebas',ad_test:'Período de pruebas (todo liberado)',ad_wa:'WhatsApp para pagos (con código de país)',ad_save:'Guardar',ad_saved:'Guardado',ad_setp:'Plan de {u}',ad_from:'Desde',ad_to:'Hasta',ad_amt:'Monto pagado',ad_note:'Nota (ej.: transferencia Itaú)',ad_act:'Activar',ad_free:'Pasar a gratis',ad_cnt:'{f} gratis · {p} premium · {v} vencidas',ad_lim:'Límites del plan gratis: sermones · artículos por día · curiosidades',ad_done:'Plan actualizado',ad_gate:'Acceso solo con mi liberación',ad_gate_d:'Quien cree una cuenta queda esperando hasta que usted la libere en este panel.',ad_gate_on:'Acceso con liberación',ad_pend:'Esperando liberación',ad_npend:'{n} cuenta(s) esperando liberación. Toque «Activo» para liberar o «Bloqueado» para negar.',wt_t:'Su cuenta está esperando liberación',wt_d:'Meu Púlpito está en período de pruebas con acceso por invitación. Su cuenta ya fue creada; en cuanto el administrador la libere, se abre sola.',wt_acc:'Cuenta',wt_wa:'Pedir liberación por WhatsApp',wt_msg:'Hola, creé mi cuenta en Meu Púlpito y quiero pedir la liberación. Mi cuenta: {e}'});
 Object.assign(I18N.pt,{pl_choose:'Escolha seu plano',pl_sub:'Use o Meu Púlpito grátis ou libere todas as ferramentas com o Premium.',pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MELHOR PREÇO · ECONOMIZE COM O PLANO ANUAL',
   pl_per_m:'por mês',pl_per_t:'a cada 3 meses',pl_per_a:'por ano',pl_save:'Economize {n}% em relação ao mensal',pl_eq:'equivale a {v} por mês',
   pl_go_free:'Continuar grátis',pl_go_m:'Escolher Premium Mensal',pl_go_t:'Escolher Premium Trimestral',pl_go_a:'Escolher Premium Anual',
@@ -919,7 +921,7 @@ Object.assign(I18N.pt,{pl_choose:'Escolha seu plano',pl_sub:'Use o Meu Púlpito 
   pl_pay_t:'Contratar {p}',pl_pay_d:'Envie uma mensagem ao administrador para pagar por Pix, transferência ou carteira. Quando o administrador confirmar o pagamento, sua conta passa a Premium.',pl_pay_wa:'Enviar mensagem no WhatsApp',pl_pay_mail:'Enviar e-mail',pl_pay_msg:'Olá, quero contratar o {p} do Meu Púlpito ({v}). Minha conta: {e}',
   pl_test:'Período de testes: todas as funções estão liberadas.',pl_lock_s:'O plano grátis permite até {n} sermões. Seus sermões não se perdem; para criar mais, passe para o Premium.',pl_lock_d:'O plano grátis permite {n} artigos completos por dia nos dicionários. Amanhã libera de novo, ou passe para o Premium.',pl_lock_c:'Esta curiosidade é do plano Premium.',pl_lock_p:'Esta função do Modo Pregar é do plano Premium.',pl_see:'Ver planos',
   sub_t:'Minha assinatura',sub_plan:'Plano atual',sub_state:'Situação',sub_on:'Ativa',sub_exp:'Vencida',sub_freeS:'Grátis',sub_since:'Contratado em',sub_until:'Vence em',sub_pays:'Pagamentos',sub_nopay:'Nenhum pagamento registrado.',sub_change:'Mudar de plano',sub_cancel:'Cancelar renovação',sub_cancel_d:'Seu plano não renova sozinho: não há nada para cancelar. Ao vencer, volta ao plano grátis e mantém seus dados.',sub_left:'{n} dias restantes',
-  ad_plan:'Plano',ad_cfg:'Preços e testes',ad_cfg_d:'Preços, limites do plano grátis, contato e período de testes',ad_test:'Período de testes (tudo liberado)',ad_wa:'WhatsApp para pagamentos (com código do país)',ad_save:'Salvar',ad_saved:'Salvo',ad_setp:'Plano de {u}',ad_from:'De',ad_to:'Até',ad_amt:'Valor pago',ad_note:'Nota (ex.: Pix, transferência Itaú)',ad_act:'Ativar',ad_free:'Passar para grátis',ad_cnt:'{f} grátis · {p} premium · {v} vencidas',ad_lim:'Limites do plano grátis: sermões · artigos por dia · curiosidades',ad_done:'Plano atualizado'});
+  ad_plan:'Plano',ad_cfg:'Preços e testes',ad_cfg_d:'Preços, limites do plano grátis, contato e período de testes',ad_test:'Período de testes (tudo liberado)',ad_wa:'WhatsApp para pagamentos (com código do país)',ad_save:'Salvar',ad_saved:'Salvo',ad_setp:'Plano de {u}',ad_from:'De',ad_to:'Até',ad_amt:'Valor pago',ad_note:'Nota (ex.: Pix, transferência Itaú)',ad_act:'Ativar',ad_free:'Passar para grátis',ad_cnt:'{f} grátis · {p} premium · {v} vencidas',ad_lim:'Limites do plano grátis: sermões · artigos por dia · curiosidades',ad_done:'Plano atualizado',ad_gate:'Acesso só com a minha liberação',ad_gate_d:'Quem criar uma conta fica aguardando até você liberar neste painel.',ad_gate_on:'Acesso com liberação',ad_pend:'Aguardando liberação',ad_npend:'{n} conta(s) aguardando liberação. Toque em «Ativo» para liberar ou «Bloqueado» para negar.',wt_t:'Sua conta está aguardando liberação',wt_d:'O Meu Púlpito está em período de testes com acesso por convite. Sua conta já foi criada; assim que o administrador liberar, o app abre sozinho.',wt_acc:'Conta',wt_wa:'Pedir liberação no WhatsApp',wt_msg:'Olá, criei minha conta no Meu Púlpito e quero pedir a liberação. Minha conta: {e}'});
 const planName=k=>t(k==='free'?'pl_free':'pl_'+k);
 const curOrder=()=>prefs.ui==='pt'?['brl','pyg']:['pyg','brl'];
 function priceLine(k){return curOrder().map(c=>money(PCFG.p[k][c],c)).join(' · ')}
@@ -991,13 +993,14 @@ async function admPlan(uid,label){const db=firebase.firestore();let cur={};try{c
   const fr=$('#apFree',sh);if(fr)fr.onclick=async()=>{try{await db.collection('planos').doc(uid).set({plan:'free',until:0,status:'free',updated:Date.now()},{merge:true});closeSheet();toast(t('ad_done'));closeSheet();adminPanel()}catch(e){toast(t('adm_err'))}}}
 function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><b>${esc(planName(k).replace('Premium ',''))}</b><input class="inp" data-p="${k}.pyg" value="${P[k].pyg}" inputmode="numeric" aria-label="₲"><input class="inp" data-p="${k}.brl" value="${P[k].brl}" inputmode="numeric" aria-label="R$"></div>`;
   const sh=openSheet(`<h3>${esc(t('ad_cfg'))}</h3>
+    <label class="prow" style="padding:0;gap:12px"><span><span class="k">${esc(t('ad_gate'))}</span><span class="s">${esc(t('ad_gate_d'))}</span></span><input type="checkbox" id="acG" ${PCFG.gate?'checked':''} style="width:24px;height:24px;flex:none"></label>
     <label class="prow" style="padding:0"><span class="k">${esc(t('ad_test'))}</span><input type="checkbox" id="acT" ${PCFG.test?'checked':''} style="width:24px;height:24px"></label>
     <div class="ac-row ac-h"><span></span><span>₲ PYG</span><span>R$ BRL</span></div>${row('m')}${row('t')}${row('a')}
     <span class="lbl">${esc(t('ad_lim'))}</span><div class="ac-row ac3"><input class="inp" id="acS" value="${F.serm}" inputmode="numeric"><input class="inp" id="acD" value="${F.dic}" inputmode="numeric"><input class="inp" id="acC" value="${F.cur}" inputmode="numeric"></div>
     <label class="fld"><span class="lb">${esc(t('ad_wa'))}</span><input class="inp" id="acW" value="${esc(PCFG.wa||'')}" placeholder="595981234567" inputmode="tel"></label>
     <button class="btn gold block" id="acGo">${esc(t('ad_save'))}</button>`);
   $('#acGo',sh).onclick=async()=>{const n=v=>Math.max(0,parseInt(String(v).replace(/\D/g,''),10)||0);const p={m:{},t:{},a:{}};$$('[data-p]',sh).forEach(i=>{const [k,c]=i.dataset.p.split('.');p[k][c]=n(i.value)});
-    const cfg={test:$('#acT',sh).checked,wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},updated:Date.now()};
+    const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},updated:Date.now()};
     try{await firebase.firestore().collection('config').doc('app').set(cfg);PCFG=Object.assign({},PCFG_DEF,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 
 async function adminPanel(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
@@ -1011,15 +1014,18 @@ async function adminPanel(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t
   const uTop=Object.entries(uses).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${uNames[k]||k}: ${v}`).join(' · ');
   const pst=r=>{const p=r.plan||{};return PMON[p.plan]&&p.until>Date.now()?'p':PMON[p.plan]&&p.until?'v':'f'};
   const cnt={f:0,p:0,v:0};rows.forEach(r=>cnt[pst(r)]++);
+  const pend=r=>r.email!==ADMIN_EMAIL&&!(r.plan&&(r.plan.ok||r.plan.blocked||PMON[r.plan.plan]));const np=rows.filter(pend).length;
+  rows.sort((a,b)=>(pend(b)?1:0)-(pend(a)?1:0));
   const row=r=>{const nm=r.name||r.email||r.uid.slice(0,6);const bl=!!(r.plan&&r.plan.blocked);const ps=pst(r);const pl=r.plan||{};
     return`<div class="adm-row"><div style="flex:1;min-width:0"><b>${esc(nm)}</b><span class="sub" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(r.email||'')}</span>
       <span class="sub" style="font-size:12.5px">${esc(t('adm_n_serm',{n:r.sermons||0}))} · ${esc(t('adm_seen',{d:r.seen?relDate(r.seen):'—'}))} · ${esc((r.lang||'').toUpperCase())}</span>
-      <span style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">${ps==='p'?`<span class="tag ok">${esc(planName(pl.plan))} · ${esc(fmtDay(pl.until))}</span>`:ps==='v'?`<span class="tag warn">${esc(t('sub_exp'))} · ${esc(fmtDay(pl.until))}</span>`:`<span class="tag">${esc(t('pl_free'))}</span>`}<button class="lnk" data-act="admPlan" data-uid="${esc(r.uid)}" data-l="${esc(nm)}">${esc(t('ad_plan'))}</button></span></div>
-      <div class="seg sm adm-seg" data-uid="${esc(r.uid)}"><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="0" aria-pressed="${!bl}">${esc(t('adm_on'))}</button><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="1" aria-pressed="${bl}">${esc(t('adm_off'))}</button></div></div>`};
+      <span style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">${pend(r)?`<span class="tag warn adm-pend">${esc(t('ad_pend'))}</span>`:''}${ps==='p'?`<span class="tag ok">${esc(planName(pl.plan))} · ${esc(fmtDay(pl.until))}</span>`:ps==='v'?`<span class="tag warn">${esc(t('sub_exp'))} · ${esc(fmtDay(pl.until))}</span>`:`<span class="tag">${esc(t('pl_free'))}</span>`}<button class="lnk" data-act="admPlan" data-uid="${esc(r.uid)}" data-l="${esc(nm)}">${esc(t('ad_plan'))}</button></span></div>
+      <div class="seg sm adm-seg" data-uid="${esc(r.uid)}"><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="0" aria-pressed="${!bl&&!pend(r)}">${esc(t('adm_on'))}</button><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="1" aria-pressed="${bl}">${esc(t('adm_off'))}</button></div></div>`};
   const el=$('#admBody',sh);if(!el)return;
   el.innerHTML=`<div class="stats"><div class="stat"><b>${tot}</b><span>${esc(t('adm_users'))}</span></div><div class="stat"><b>${a7}</b><span>${esc(t('adm_act7'))}</span></div><div class="stat"><b>${totS}</b><span>${esc(t('adm_serms'))}</span></div></div>
     ${uTop?`<p class="sub" style="margin:0;font-size:12.5px">${esc(t('adm_uses'))}: ${esc(uTop)}</p>`:''}
-    <p class="sub" style="margin:0;font-size:13px;font-weight:600">${esc(t('ad_cnt',cnt))}${PCFG.test?' · '+esc(t('ad_test')):''}</p>
+    ${np?`<p class="pl-why" style="margin:0">${esc(t('ad_npend',{n:np}))}</p>`:''}
+    <p class="sub" style="margin:0;font-size:13px;font-weight:600">${PCFG.gate?esc(t('ad_gate_on'))+' · ':''}${esc(t('ad_cnt',cnt))}${PCFG.test?' · '+esc(t('ad_test')):''}</p>
     <button class="btn ghost block" data-act="admCfg">${ic('sliders')}${esc(t('ad_cfg'))}</button>
     <div class="adm-list">${rows.length?rows.map(row).join(''):`<p class="sub">${esc(t('adm_none'))}</p>`}</div>
     <p class="sub" style="font-size:11.5px;margin:0">${esc(t('adm_note'))}</p>`}
@@ -2074,7 +2080,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
 const ACT={
   privacy:()=>privacySheet(),delAcc:()=>deleteAccount(),admin:()=>adminPanel(),
   admBlock:async b=>{if(!isAdmin())return;const uid=b.dataset.uid,blk=b.dataset.b==='1';const seg=b.closest('.adm-seg');
-    try{await firebase.firestore().collection('planos').doc(uid).set({blocked:blk,plan:blk?'blocked':'test',updated:Date.now(),by:(authU.email||'')},{merge:true});
+    try{await firebase.firestore().collection('planos').doc(uid).set({blocked:blk,ok:!blk,updated:Date.now(),by:(authU.email||'')},{merge:true});const pe=b.closest('.adm-row');if(pe){const tg=pe.querySelector('.adm-pend');if(tg)tg.remove()}
       if(seg)$$('button',seg).forEach(x=>x.setAttribute('aria-pressed',String((x.dataset.b==='1')===blk)));toast(t(blk?'adm_blocked':'adm_active'))}
     catch(e){toast(t('adm_err'))}},
   photo:()=>pickPhoto(),photoRm:()=>{delete meta.photo;meta.photo=null;putMeta();render()},
