@@ -549,7 +549,7 @@ function curSearch(q){const d=CUR;const l=cuL();const tk=norm(q).replace(/[^a-z0
   const out=[];d.ix.forEach((ix,i)=>{let s=0;for(const w of tk){const hq=Math.max(ix[l].includes(' '+w+' ')?3:ix[l].includes(' '+w)?2:0,ix[1-l].includes(' '+w)?1:0);const ha=ix[2+l].includes(' '+w)?1:0;s+=hq||ha}if(s)out.push([i,s])});
   const top=out.length?Math.max(...out.map(x=>x[1])):0;return out.filter(x=>x[1]>=Math.max(1,top*0.5)).sort((a,b)=>b[1]-a[1]).map(x=>d.e[x[0]])}
 function curHtml(){const l=cuL();
-  const head=`<button class="lnk dx-back" data-act="tab" data-k="home">${ic('back')}${esc(t('cu_back'))}</button><h1 class="h">${esc(t('cu_t'))}</h1>
+  const head=`<div class="subhead"><button class="iconbtn" data-act="back" aria-label="${esc(t('close'))}">${ic('back')}</button><h1 class="h">${esc(t('cu_t'))}</h1></div>
    <label class="search cu-search">${ic('search')}<input id="cuQ" type="search" value="${esc(CV.q)}" placeholder="${esc(t('cu_ph'))}" autocomplete="off" enterkeyhint="search"></label>`;
   if(!CUR)return head+`<div class="empty"><p style="margin:0">${esc(t('dx_load'))}</p></div>`;
   const chips=`<div class="chips">${[['',t('cu_all')],['fav',t('cu_fav')],...Object.entries(CUR.cats).map(([k,v])=>[k,v[l]])].map(([k,v])=>`<button class="chip" data-cu="cat" data-k="${k}" aria-pressed="${CV.cat===k}">${k==='fav'?ic('star'):''}${esc(v)}</button>`).join('')}</div>`;
@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v55';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v56';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1115,9 +1115,10 @@ const view={tab:'home',overlay:null};
 let listState={q:'',f:'all',cat:'',mode:'s',nt:''};
 const TABS=[['home','home','nav_home'],['list','doc','nav_list'],['bible','bible','nav_bible'],['dic','dict','nav_dic'],['agenda','cal','nav_agenda']];
 function drawNav(){$('#navIn').innerHTML=TABS.map(([k,i,l])=>`<button data-act="tab" data-k="${k}" ${view.tab===k?'aria-current="page"':''}>${ic(i)}${esc(t(l))}</button>`).join('')}
-function go(tab){view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0);$('#app').scrollTop=0}
+const SUBP=['profile','cur'];
+function go(tab){if(SUBP.includes(tab)&&!SUBP.includes(view.tab))view.prev=view.tab;view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0);$('#app').scrollTop=0}
 function render(anim){
-  if(!ready)return;if(blocked){showBlocked();return}$('#nav').hidden=false;document.documentElement.classList.add('tabs');drawNav();
+  if(!ready)return;if(blocked){showBlocked();return}const sub=SUBP.includes(view.tab);$('#nav').hidden=sub;document.documentElement.classList.toggle('tabs',!sub);document.documentElement.classList.toggle('subp',sub);drawNav();
   const app=$('#app');const keep=app.querySelector('input:focus');const sel=keep?[keep.id,keep.selectionStart]:null;
   const html={home:homeHtml,list:listHtml,bible:bibleHtml,dic:dxTabHtml,cur:curHtml,agenda:agendaHtml,profile:profileHtml}[view.tab]();
   app.innerHTML=`<section class="view ${anim?'enter':''}"><div class="wrap">${html}</div></section>`;
@@ -1897,7 +1898,7 @@ function evForm(id){const e=id?Object.assign({},agenda.find(x=>x.id===id)):{id:u
    PERFIL
    ========================================================= */
 function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button data-act="${act}" data-v="${v}" aria-pressed="${cur===v}">${esc(l)}</button>`).join('')}</div>`;
-  return`<h1 class="h">${esc(t('nav_profile'))}</h1>
+  return`<div class="subhead"><button class="iconbtn" data-act="back" aria-label="${esc(t('close'))}">${ic('back')}</button><h1 class="h">${esc(t('nav_profile'))}</h1></div>
   <div class="card row" style="gap:14px"><button class="avatar avbtn" data-act="photo" aria-label="${esc(t(meta.photo?'photo':'photo_add'))}">${avatarIn()}<span class="avcam">${ic('cam')}</span></button>
     <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">${esc(meta.name||t('pastor'))}</b><span class="sub" style="overflow-wrap:anywhere">${esc(localMode?t('local_only'):authU?authU.email:'')}</span>${localMode?`<button class="linkbtn" data-act="toLogin">${esc(t('login_btn'))}</button>`:''}${meta.photo?`<button class="linkbtn" data-act="photoRm">${esc(t('photo_rm'))}</button>`:''}</div></div>
   <div class="pgrp">
@@ -2161,7 +2162,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),report:()=>reportSheet(),onb:()=>onboarding(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),onb:()=>onboarding(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},
