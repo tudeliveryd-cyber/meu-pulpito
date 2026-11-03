@@ -710,7 +710,10 @@ async function translateHtml(s,to,prog){const from=sLang(s);const d=docOf(s);try
   const put=(el,tr)=>{const tx=el.textContent.trim();const onlyMark=el.children.length===1&&el.firstElementChild.tagName==='MARK'&&el.firstElementChild.textContent.trim()===tx;el.innerHTML=onlyMark?`<mark>${esc(tr)}</mark>`:esc(tr)};
   let done=false;
   if(aiKey()){try{prog&&prog(t('ai_thinking'));const tr=await aiTranslateBlocks(items.map(el=>el.textContent.trim()),from,to);items.forEach((el,k)=>put(el,tr[k]));done=true}catch(e){}}
-  if(!done){let i=0;for(const el of items){i++;prog&&prog(t('tr_prog',{i,n:items.length}));put(el,await mmTranslate(el.textContent.trim(),from,to))}}
+  if(!done){let i=0,next=0;const res=new Array(items.length);
+    // varios párrafos a la vez (3) para que sea más rápido
+    const worker=async()=>{while(next<items.length){const k=next++;res[k]=await mmTranslate(items[k].textContent.trim(),from,to);i++;prog&&prog(t('tr_prog',{i,n:items.length}))}};
+    await Promise.all([worker(),worker(),worker()]);items.forEach((el,k)=>put(el,res[k]))}
   work.forEach(el=>{if(isRef(el)){const p=parseRef(el.getAttribute('data-ref'));const nr=refName(p.b,p.ch,p.vs,to);el.setAttribute('data-ref',nr);if(el.textContent.trim())el.textContent=bibleText(nr,to)||el.textContent}});
   return cleanHtml(d.innerHTML)}
 const hashStr=x=>{let h=5381;for(let i=0;i<x.length;i++)h=((h<<5)+h+x.charCodeAt(i))|0;return(h>>>0).toString(36)+x.length};
@@ -865,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v42';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v43';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
