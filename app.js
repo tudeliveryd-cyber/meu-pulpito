@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v50';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v51';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1521,7 +1521,13 @@ function versSheet(){if(!E)return;closeSheet();edSave();commitHist();const s=ser
     $('#vRest',pv).onclick=()=>{const ed=$('#ed');snap();ed.innerHTML=cleanHtml(v.html);placeholders();onEdInput();snap();edSave(true);commitHist();closeSheet();toast(t('ver_restored'));drawEdMeta()}})}
 function fitToolbar(){const tb=$('#tb');if(!tb||!window.visualViewport)return;const vv=visualViewport;
   const off=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);tb.style.bottom=off+'px';tb.style.paddingBottom=off>0?'8px':''}
-if(window.visualViewport){visualViewport.addEventListener('resize',fitToolbar);visualViewport.addEventListener('scroll',fitToolbar)}
+/* el cursor nunca queda escondido detrás de las barras fijas de arriba (iPhone mueve la página al abrir el teclado) */
+let edVisT=0;function edCaretVis(){if(!E||edVisT)return;edVisT=requestAnimationFrame(()=>{edVisT=0;const ed=$('#ed'),em=$('#edMeta');if(!ed||!em)return;const sel=getSelection();if(!sel.rangeCount||!ed.contains(sel.anchorNode))return;
+  let n=sel.anchorNode;while(n&&n.parentNode!==ed)n=n.parentNode;if(n&&n===ed.firstElementChild){if(window.scrollY>0)window.scrollTo(0,0);return}
+  let r=sel.getRangeAt(0).getBoundingClientRect();if(!r.height&&n&&n.getBoundingClientRect)r=n.getBoundingClientRect();
+  const top=em.getBoundingClientRect().bottom+(window.visualViewport?visualViewport.offsetTop:0)+8;if(r.height&&r.top<top)window.scrollBy(0,r.top-top)})}
+document.addEventListener('selectionchange',()=>{if(E)edCaretVis()});
+if(window.visualViewport){visualViewport.addEventListener('resize',fitToolbar);visualViewport.addEventListener('resize',()=>{if(E)setTimeout(edCaretVis,60)});visualViewport.addEventListener('scroll',fitToolbar)}
 function edMenu(){if(!E)return;edSave();if(!sermons.find(x=>x.id===E.s.id)){toast(t('body_ph'));return}const id=E.s.id;
   openSheet(`<div class="acts">
    <button class="act" data-act="share" data-id="${esc(id)}">${ic('share')}${esc(t('act_share'))}</button>
