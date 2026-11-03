@@ -237,7 +237,7 @@ function loadStrong(k){if(STR[k])return Promise.resolve(STR[k]);
   return STRP[k]}
 function normG(w){return (w||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ς/g,'σ').replace(/[^\u0370-\u03ff]/g,'')}
 function normH(w){return (w||'').normalize('NFC').replace(/[\/\\]/g,'').replace(/[\u0591-\u05AF\u05BD\u05BF\u05C0\u05C3-\u05C6\u05F3\u05F4\u200D\u034F\u05BE]/g,'').replace(/[^\u0590-\u05FF]/g,'')}
-function origWords(tx,k){return tx.split(k==='h'?/([\s\u05be]+)/:/(\s+)/).map(w=>/^[\s\u05be]*$/.test(w)?esc(w):`<button class="ow" data-ow="${esc(w)}" data-k="${k}">${esc(w)}</button>`).join('')}
+function origWords(tx,k){return tx.split((k==='h'||k==='a')?/([\s\u05be]+)/:/(\s+)/).map(w=>/^[\s\u05be]*$/.test(w)?esc(w):`<button class="ow" data-ow="${esc(w)}" data-k="${k}">${esc(w)}</button>`).join('')}
 function strongFind(k,w){const d=STR[k];if(!d)return null;const f=d.f[k==='g'?normG(w):normH(w)];if(f==null)return null;return Array.isArray(f)?{n:f[0],ctx:f[1]}:{n:f}}
 const sRef=(k,n)=>(k==='g'?'G':'H')+n;
 function strongLinks(txt){return esc(txt).replace(/\b([GH])0*(\d{1,4})\b/g,(m,a,n)=>`<button class="lnk sref" data-sref="${a}${n}">${a}${n}</button>`)}
@@ -304,20 +304,21 @@ const DXT={es:{
 }};
 Object.keys(DXT).forEach(l=>Object.assign(I18N[l],DXT[l]));
 
-const DX={k:null,view:'hub',q:{b:'',h:'',g:''},en:{},busy:false,err:{},ctx:null};
-const lxFile=k=>k==='h'?'he':'gr';
+const DX={k:null,view:'hub',q:{b:'',h:'',a:'',g:''},en:{},busy:false,err:{},ctx:null};
+const isHe=k=>k==='h'||k==='a';
+const lxFile=k=>isHe(k)?'he':'gr';
 const nWords=x=>' '+norm(x).replace(/[^a-z0-9]+/g,' ').trim()+' ';
 const LXI={},LXIP={},LXC={},LXCP={};
 function lxIdx(k){if(LXI[k])return Promise.resolve(LXI[k]);
-  if(!LXIP[k])LXIP[k]=fetch('biblia/lex/'+lxFile(k)+'-idx.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{d.by={};
-    d.ix=d.e.map(r=>{d.by[r[0]]=r;return{o:k==='h'?normH(r[1]):normG(r[1]),tr:norm(r[2]).replace(/[^a-z]/g,''),en:nWords(r[4]),es:nWords(r[5]),pt:nWords(r[6]),kw:nWords(r[8])}});return LXI[k]=d}).catch(e=>{LXIP[k]=null;throw e});
+  if(!LXIP[k])LXIP[k]=fetch('biblia/lex/'+lxFile(k)+'-idx.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{const all=d.e;if(k==='a')d=Object.assign({},d,{e:d.e.filter(r=>/^A:/.test(r[3]))});d.by={};all.forEach(r=>d.by[r[0]]=r);
+    d.ix=d.e.map(r=>{d.by[r[0]]=r;return{o:isHe(k)?normH(r[1]):normG(r[1]),tr:norm(r[2]).replace(/[^a-z]/g,''),en:nWords(r[4]),es:nWords(r[5]),pt:nWords(r[6]),kw:nWords(r[8])}});return LXI[k]=d}).catch(e=>{LXIP[k]=null;throw e});
   return LXIP[k]}
 function lxChunk(k,n){const c=lxFile(k)+'-'+Math.floor(n/500);if(LXC[c])return Promise.resolve(LXC[c]);
   if(!LXCP[c])LXCP[c]=fetch('biblia/lex/'+c+'.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>LXC[c]=d).catch(e=>{LXCP[c]=null;throw e});return LXCP[c]}
 function lxSearch(k,q){const d=LXI[k];if(!d)return[];q=q.trim();if(!q)return[];
   const m=q.match(/^[GHgh]?\s*0*(\d{1,4})[a-z]?$/);if(m){const r=d.by[+m[1]];return r?[r]:[]}
   const out=[];const L=lxLang();
-  if(/[֐-׿Ͱ-Ͽἀ-῿]/.test(q)){const o=k==='h'?normH(q):normG(q);if(!o)return[];
+  if(/[֐-׿Ͱ-Ͽἀ-῿]/.test(q)){const o=isHe(k)?normH(q):normG(q);if(!o)return[];
     d.ix.forEach((x,i)=>{if(x.o===o)out.push([i,9]);else if(o.length>1&&x.o.startsWith(o))out.push([i,5])})}
   else{const qn=norm(q).replace(/[^a-z0-9]+/g,' ').trim();if(qn.length<2)return[];const en=DX.en[k+'|'+qn]||'';const tq=qn.replace(/ /g,'');
     const W=(f,full,pre)=>f.includes(' '+qn+' ')?full:(qn.length>2&&f.includes(' '+qn))?pre:0;
@@ -369,8 +370,8 @@ function dxFavToggle(it){const F=dxFavs();const i=F.findIndex(f=>f.k===it.k&&Str
 function dxHistAdd(k,q){q=String(q||'').trim();if(q.length<2)return;const H=dxHists();const i=H.findIndex(x=>x.k===k&&norm(x.q)===norm(q));if(i>=0)H.splice(i,1);H.unshift({k,q,at:Date.now()});if(H.length>60)H.length=60;putMeta()}
 
 /* ---------- pantalla ---------- */
-const DXK=[['b','dx_b','dx_bd'],['h','dx_h','dx_hd'],['g','dx_g','dx_gd']];
-const dxGlyph={b:ic('bible'),h:'<span lang="he">א</span>',g:'<span lang="grc">Ω</span>'};
+const DXK=[['b','dx_b','dx_bd'],['h','dx_h','dx_hd'],['a','dx_ar','dx_ard'],['g','dx_g','dx_gd']];
+const dxGlyph={b:ic('bible'),h:'<span lang="he">א</span>',a:'<span lang="arc">ד</span>',g:'<span lang="grc">Ω</span>'};
 function dxHtml(){const inEd=DX.ctx==='ed';
   if(DX.view==='dic'&&DX.k)return dxDicHtml(DX.k);
   const head=inEd?`<div class="between"><h3>${esc(t('dx_ed'))}</h3><button class="iconbtn" data-dx="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>`:`<h1 class="h">${esc(t('dx_t'))}</h1>`;
@@ -379,15 +380,15 @@ function dxHtml(){const inEd=DX.ctx==='ed';
   return`${head}<label class="search">${ic('search')}<input class="dx-qa" type="search" value="${esc(DX.qa||'')}" placeholder="${esc(t('dx_all_ph'))}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
    <div class="dx-allres">${(DX.qa||'').trim()?dxAllHtml():''}</div><div class="dx-tiles">${DXK.map(([k,tl,d])=>`<button class="dx-tile" data-dx="go" data-k="${k}"><span class="dx-gl dx-gl-${k}">${dxGlyph[k]}</span><span class="dx-tt">${esc(t(tl))}</span><span class="dx-td">${esc(t(d))}</span><span class="dx-go">${ic('next')}</span></button>`).join('')}</div>
    <div class="dx-two"><button class="dx-mini" data-dx="view" data-v="fav">${ic('star')}<span>${esc(t('dx_fav'))}</span><b>${F.length}</b></button><button class="dx-mini" data-dx="view" data-v="hist">${ic('undo')}<span>${esc(t('dx_hist'))}</span><b>${H.length}</b></button></div>
-   ${H.length?`<div class="sd-es">${H.slice(0,8).map((h,i)=>`<span class="dx-hc"><button data-dx="hq" data-i="${i}"><small>${esc(h.k==='b'?'B':h.k==='h'?'H':'G')}</small>${esc(h.q)}</button><button data-dx="hdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('x')}</button></span>`).join('')}</div>`:''}`}
+   ${H.length?`<div class="sd-es">${H.slice(0,8).map((h,i)=>`<span class="dx-hc"><button data-dx="hq" data-i="${i}"><small>${esc(h.k==='b'?'B':h.k==='h'?'H':h.k==='a'?'A':'G')}</small>${esc(h.q)}</button><button data-dx="hdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('x')}</button></span>`).join('')}</div>`:''}`}
 // Búsqueda en los tres diccionarios a la vez (desde la pantalla principal de Diccionarios)
 function dxAllHtml(){return DXK.map(([k,tl])=>`<div class="dx-allsec"><div class="between"><span class="sect">${esc(t(tl))}</span><button class="lnk" data-dx="seeall" data-k="${k}">${esc(t('see_all'))}</button></div>${dxResHtml(k)}</div>`).join('')}
 async function dxAll(host,q){DX.qa=q;DXK.forEach(([k])=>DX.q[k]=q);const paint=()=>{const el=$('.dx-allres',host);if(el)el.innerHTML=q.trim()?dxAllHtml():''};paint();
   if(!q.trim())return;const miss=DXK.map(x=>x[0]).filter(k=>!(k==='b'?BIX:LXI[k]));if(miss.length){await Promise.all(miss.map(dxLoad));if(DX.qa===q)paint()}}
 function dxListHtml(v){const L=dxHists(),F=dxFavs();const back=`<button class="lnk dx-back" data-dx="hub">${ic('back')}${esc(t('dx_back'))}</button>`;
-  if(v==='fav')return back+`<h2 class="dx-h2">${esc(t('dx_fav'))}</h2>`+(F.length?`<div class="res">${F.map((f,i)=>`<div class="dx-row"><button data-dx="open" data-k="${f.k}" data-id="${esc(f.id)}"><b>${esc(t(f.k==='h'?'dx_h':f.k==='g'?'dx_g':'dx_b'))}</b><span ${f.k==='h'?'':''}>${esc(f.t)}</span>${f.s?`<small>${esc(f.s)}</small>`:''}</button><button class="iconbtn" data-dx="fdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('trash')}</button></div>`).join('')}</div>`:`<div class="empty"><p style="margin:0">${esc(t('dx_nofav'))}</p></div>`);
-  return back+`<div class="between"><h2 class="dx-h2">${esc(t('dx_hist'))}</h2>${L.length?`<button class="lnk" data-dx="hclr">${esc(t('dx_hclr'))}</button>`:''}</div>`+(L.length?`<div class="res">${L.map((h,i)=>`<div class="dx-row"><button data-dx="hq" data-i="${i}"><b>${esc(t(h.k==='h'?'dx_h':h.k==='g'?'dx_g':'dx_b'))}</b><span>${esc(h.q)}</span><small>${esc(relDate(h.at))}</small></button><button class="iconbtn" data-dx="hdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('x')}</button></div>`).join('')}</div>`:`<div class="empty"><p style="margin:0">${esc(t('dx_nohist'))}</p></div>`)}
-function dxDicHtml(k){const tl=k==='b'?'dx_b':k==='h'?'dx_h':'dx_g';
+  if(v==='fav')return back+`<h2 class="dx-h2">${esc(t('dx_fav'))}</h2>`+(F.length?`<div class="res">${F.map((f,i)=>`<div class="dx-row"><button data-dx="open" data-k="${f.k}" data-id="${esc(f.id)}"><b>${esc(t(f.k==='h'?'dx_h':f.k==='a'?'dx_ar':f.k==='g'?'dx_g':'dx_b'))}</b><span ${f.k==='h'?'':''}>${esc(f.t)}</span>${f.s?`<small>${esc(f.s)}</small>`:''}</button><button class="iconbtn" data-dx="fdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('trash')}</button></div>`).join('')}</div>`:`<div class="empty"><p style="margin:0">${esc(t('dx_nofav'))}</p></div>`);
+  return back+`<div class="between"><h2 class="dx-h2">${esc(t('dx_hist'))}</h2>${L.length?`<button class="lnk" data-dx="hclr">${esc(t('dx_hclr'))}</button>`:''}</div>`+(L.length?`<div class="res">${L.map((h,i)=>`<div class="dx-row"><button data-dx="hq" data-i="${i}"><b>${esc(t(h.k==='h'?'dx_h':h.k==='a'?'dx_ar':h.k==='g'?'dx_g':'dx_b'))}</b><span>${esc(h.q)}</span><small>${esc(relDate(h.at))}</small></button><button class="iconbtn" data-dx="hdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('x')}</button></div>`).join('')}</div>`:`<div class="empty"><p style="margin:0">${esc(t('dx_nohist'))}</p></div>`)}
+function dxDicHtml(k){const tl=k==='b'?'dx_b':k==='h'?'dx_h':k==='a'?'dx_ar':'dx_g';
   return`<button class="lnk dx-back" data-dx="hub">${ic('back')}${esc(t('dx_back'))}</button>
    <div class="row"><span class="dx-gl dx-gl-${k} sm">${dxGlyph[k]}</span><h2 class="dx-h2" style="flex:1">${esc(t(tl))}</h2></div>
    <label class="search">${ic('search')}<input class="dx-q" type="search" value="${esc(DX.q[k])}" placeholder="${esc(t('dx_ph_'+k))}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
@@ -405,7 +406,7 @@ function dxResHtml(k){const ready=k==='b'?!!BIX:!!LXI[k];const q=DX.q[k];const L
     if(!ph&&!bh)return`<div class="empty"><p style="margin:0">${esc(DX.busy?t('dx_more'):t('dx_none'))}</p></div>`;
     return`<div class="res">${ph}${bh}</div>`}
   const r=lxSearch(k,q);if(!r.length)return`<div class="empty"><p style="margin:0">${esc(DX.busy?t('dx_more'):t('dx_none'))}</p></div>`;
-  return`<div class="res">${r.map(e=>{const g=(L==='pt'?e[6]:e[5])||'';return`<button data-dx="open" data-k="${k}" data-id="${e[0]}"><b><span class="sd-num sm">${k==='h'?'H':'G'}${e[0]}</span> ${esc(lxCat(e[3],L))}</b><span class="dx-lrow"><span class="dx-lem" ${k==='h'?'dir="rtl" lang="he"':'lang="grc"'}>${esc(e[1])}</span><span class="dx-trl">${esc(e[2].replace(/\./g,''))}</span></span><span>${g?esc(g):`<span class="sub">${esc(e[4])} (en)</span>`}${e[7]?` <small>· ${esc(t('dx_x_times',{n:e[7]}))}</small>`:''}</span></button>`}).join('')}</div>`}
+  return`<div class="res">${r.map(e=>{const g=(L==='pt'?e[6]:e[5])||'';return`<button data-dx="open" data-k="${k}" data-id="${e[0]}"><b><span class="sd-num sm">${isHe(k)?'H':'G'}${e[0]}</span> ${esc(lxCat(e[3],L))}</b><span class="dx-lrow"><span class="dx-lem" ${isHe(k)?'dir="rtl" lang="he"':'lang="grc"'}>${esc(e[1])}</span><span class="dx-trl">${esc(e[2].replace(/\./g,''))}</span></span><span>${g?esc(g):`<span class="sub">${esc(e[4])} (en)</span>`}${e[7]?` <small>· ${esc(t('dx_x_times',{n:e[7]}))}</small>`:''}</span></button>`}).join('')}</div>`}
 async function dxQuery(host,k,q){DX.q[k]=q;DX.busy=false;const paint=()=>{const el=$('.dx-res',host);if(el)el.innerHTML=dxResHtml(k)};paint();
   const qq=q.trim();if(qq.length<3||/^[GHgh]?\s*\d/.test(qq)||/[Ͱ-Ͽ֐-׿ἀ-῿]/.test(qq)||!navigator.onLine)return;
   const qn=norm(qq).replace(/[^a-z0-9]+/g,' ').trim();if(DX.en[k+'|'+qn]!==undefined)return;
@@ -458,13 +459,13 @@ function dxOpen(k,id){if(k==='p')return dxOpenPreg(+id);if(k==='b')return dxOpen
 async function dxOpenLex(k,n){if(!dicQuota())return;const L=lxLang();let d,ch;try{[d,ch]=await Promise.all([lxIdx(k),lxChunk(k,n)])}catch(e){toast(t('dx_err'));return}
   const e=d.by[n];if(!e){toast(t('dict_nf'));return}const x=ch[n]||{me:'',s:[],r:[],rn:0,mr:[]};
   let S=null;try{S=(await loadStrong(k)).d[n]||null}catch(err){}
-  let P=[];try{P=((await loadPreg()).byN[(k==='h'?'H':'G')+n]||[])}catch(err){}
-  const [num,lem,tr,mo,gEN,gES,gPT,cnt]=e;const g=L==='pt'?gPT:gES;const id=(k==='h'?'H':'G')+num;const he=k==='h';
+  let P=[];try{P=((await loadPreg()).byN[(isHe(k)?'H':'G')+n]||[])}catch(err){}
+  const [num,lem,tr,mo,gEN,gES,gPT,cnt]=e;const g=L==='pt'?gPT:gES;const id=(isHe(k)?'H':'G')+num;const he=isHe(k);
   const pron=he?lxPron(k,tr,S&&S[5]):(S&&S[1])||'';
   const cat=lxCat(mo,L);
   const senses=x.s||[];const sl=s=>L==='pt'?s[2]:s[1];
   const ex=senses.filter(s=>s[4]&&s[4].length).slice(0,3);
-  const sh=dxSheet(`<div class="sd-head"><span class="sd-num">${id}</span><span class="sub">${esc(t(he?'dx_h':'dx_g'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+  const sh=dxSheet(`<div class="sd-head"><span class="sd-num">${id}</span><span class="sub">${esc(t(/^A:/.test(mo||'')?'dx_ar':he?'dx_h':'dx_g'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
     <div class="sd-lemma" ${he?'dir="rtl" lang="he"':'lang="grc"'}>${esc(lem)}</div>
     <div class="sd-tr">${esc(tr.replace(/\./g,''))}${S&&S[1]&&norm(S[1])!==norm(tr.replace(/\./g,''))?` <span class="sub">· ${esc(S[1])}</span>`:''}</div>
     ${dxActs(dxIsFav(k,num))}
@@ -937,7 +938,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v73';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v74';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -976,7 +977,7 @@ Object.assign(I18N.es,{pl_choose:'Elige tu plan',pl_terms:'Términos de uso',pl_
   pl_per_m:'por mes',pl_per_t:'cada 3 meses',pl_per_a:'por año',pl_save:'Ahorra {n}% frente al mensual',pl_eq:'equivale a {v} por mes',
   pl_go_free:'Continuar gratis',pl_go_m:'Elegir Premium Mensual',pl_go_t:'Elegir Premium Trimestral',pl_go_a:'Elegir Premium Anual',
   pl_f1:'Hasta {n} sermones',pl_f2:'Editor, Biblia y Agenda completos',pl_f3:'Modo Predicar básico',pl_f4:'Diccionarios: {n} artículos completos por día',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e historial',
-  pl_p1:'Sermones sin límite',pl_p2:'Diccionarios Bíblico, Hebreo y Griego completos',pl_p3:'Todas las curiosidades bíblicas',pl_p4:'Modo Predicar avanzado: traducción ES/PT y desplazamiento automático',pl_p5:'Sincronización y respaldo en su cuenta',pl_p6:'Todo lo del plan gratis',
+  pl_p1:'Sermones sin límite',pl_p2:'Diccionarios Bíblico, Hebreo, Arameo y Griego completos',pl_p3:'Todas las curiosidades bíblicas',pl_p4:'Modo Predicar avanzado: traducción ES/PT y desplazamiento automático',pl_p5:'Sincronización y respaldo en su cuenta',pl_p6:'Todo lo del plan gratis',
   pl_cond:'Condiciones: el acceso dura el período pagado. Por ahora la renovación no es automática: antes del vencimiento le avisamos para renovar. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
   pl_pay_t:'Contratar {p}',pl_pay_d:'Envíe un mensaje al administrador para pagar por transferencia, Pix o billetera. Cuando el administrador confirme el pago, su cuenta pasa a Premium.',pl_pay_wa:'Enviar mensaje por WhatsApp',pl_pay_mail:'Enviar correo',pl_pay_msg:'Hola, quiero contratar {p} de Meu Púlpito ({v}). Mi cuenta: {e}',
   pl_test:'Período de pruebas: todas las funciones están liberadas.',pl_lock_s:'El plan gratis permite hasta {n} sermones. Sus sermones no se pierden; para crear más, pase a Premium.',pl_lock_d:'El plan gratis permite {n} artículos completos por día en los diccionarios. Mañana se liberan de nuevo, o pase a Premium.',pl_lock_c:'Esta curiosidad es del plan Premium.',pl_lock_p:'Esta función del Modo Predicar es del plan Premium.',pl_see:'Ver planes',
@@ -986,7 +987,7 @@ Object.assign(I18N.pt,{pl_choose:'Escolha seu plano',pl_terms:'Termos de uso',pl
   pl_per_m:'por mês',pl_per_t:'a cada 3 meses',pl_per_a:'por ano',pl_save:'Economize {n}% em relação ao mensal',pl_eq:'equivale a {v} por mês',
   pl_go_free:'Continuar grátis',pl_go_m:'Escolher Premium Mensal',pl_go_t:'Escolher Premium Trimestral',pl_go_a:'Escolher Premium Anual',
   pl_f1:'Até {n} sermões',pl_f2:'Editor, Bíblia e Agenda completos',pl_f3:'Modo Pregar básico',pl_f4:'Dicionários: {n} artigos completos por dia',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e histórico',
-  pl_p1:'Sermões sem limite',pl_p2:'Dicionários Bíblico, Hebraico e Grego completos',pl_p3:'Todas as curiosidades bíblicas',pl_p4:'Modo Pregar avançado: tradução ES/PT e rolagem automática',pl_p5:'Sincronização e backup na sua conta',pl_p6:'Tudo do plano grátis',
+  pl_p1:'Sermões sem limite',pl_p2:'Dicionários Bíblico, Hebraico, Aramaico e Grego completos',pl_p3:'Todas as curiosidades bíblicas',pl_p4:'Modo Pregar avançado: tradução ES/PT e rolagem automática',pl_p5:'Sincronização e backup na sua conta',pl_p6:'Tudo do plano grátis',
   pl_cond:'Condições: o acesso dura o período pago. Por enquanto a renovação não é automática: antes do vencimento avisamos para renovar. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
   pl_pay_t:'Contratar {p}',pl_pay_d:'Envie uma mensagem ao administrador para pagar por Pix, transferência ou carteira. Quando o administrador confirmar o pagamento, sua conta passa a Premium.',pl_pay_wa:'Enviar mensagem no WhatsApp',pl_pay_mail:'Enviar e-mail',pl_pay_msg:'Olá, quero contratar o {p} do Meu Púlpito ({v}). Minha conta: {e}',
   pl_test:'Período de testes: todas as funções estão liberadas.',pl_lock_s:'O plano grátis permite até {n} sermões. Seus sermões não se perdem; para criar mais, passe para o Premium.',pl_lock_d:'O plano grátis permite {n} artigos completos por dia nos dicionários. Amanhã libera de novo, ou passe para o Premium.',pl_lock_c:'Esta curiosidade é do plano Premium.',pl_lock_p:'Esta função do Modo Pregar é do plano Premium.',pl_see:'Ver planos',
@@ -1352,8 +1353,8 @@ function soonHtml(ev,s){const k=soonDays(ev);if(!k)return'';const n=k-1;
    <div class="sn-tx"><b>${esc(evPlace(ev))}${ev.type?' · '+esc(ev.type):''}</b>${s?`<span class="serif">${esc(ti)}</span>`:`<span>${esc(t('sn_none'))}</span>`}</div>
    <div class="row">${s?`<button class="btn sm ghost" data-act="open" data-id="${esc(s.id)}">${ic('doc')}${esc(t('sn_rev'))}</button><button class="btn sm gold" data-act="preach" data-id="${esc(s.id)}">${ic('lectern')}${esc(t('sn_go'))}</button>`
      :`<button class="btn sm ghost" data-act="tab" data-k="agenda">${esc(t('sn_ag'))}</button><button class="btn sm gold" data-act="evPick" data-id="${esc(ev.id)}">${esc(t('pick_s'))}</button>`}</div></div>`}
-Object.assign(I18N.es,{lib_ph:'Buscar en tu biblioteca',dx_all_ph:'Buscar en los tres diccionarios',sn_today:'Hoy predicas',sn_tom:'Mañana predicas',sn_in:'Predicas en {n} días',sn_none:'Todavía no elegiste el sermón para este culto.',sn_rev:'Revisar',sn_go:'Predicar',sn_ag:'Ver agenda'});
-Object.assign(I18N.pt,{lib_ph:'Buscar na sua biblioteca',dx_all_ph:'Buscar nos três dicionários',sn_today:'Hoje você prega',sn_tom:'Amanhã você prega',sn_in:'Você prega em {n} dias',sn_none:'Você ainda não escolheu o sermão para este culto.',sn_rev:'Revisar',sn_go:'Pregar',sn_ag:'Ver agenda'});
+Object.assign(I18N.es,{dx_ar:'Diccionario Arameo',dx_ard:'Las palabras en arameo del Antiguo Testamento: partes de Daniel y Esdras, y algunos versículos más.',dx_ph_a:'Palabra en español, portugués, arameo o H2',lib_ph:'Buscar en tu biblioteca',dx_all_ph:'Buscar en todos los diccionarios',sn_today:'Hoy predicas',sn_tom:'Mañana predicas',sn_in:'Predicas en {n} días',sn_none:'Todavía no elegiste el sermón para este culto.',sn_rev:'Revisar',sn_go:'Predicar',sn_ag:'Ver agenda'});
+Object.assign(I18N.pt,{dx_ar:'Dicionário Aramaico',dx_ard:'As palavras em aramaico do Antigo Testamento: partes de Daniel e Esdras, e alguns versículos a mais.',dx_ph_a:'Palavra em português, espanhol, aramaico ou H2',lib_ph:'Buscar na sua biblioteca',dx_all_ph:'Buscar em todos os dicionários',sn_today:'Hoje você prega',sn_tom:'Amanhã você prega',sn_in:'Você prega em {n} dias',sn_none:'Você ainda não escolheu o sermão para este culto.',sn_rev:'Revisar',sn_go:'Pregar',sn_ag:'Ver agenda'});
 const RES='mp.resume',RES_MS=6*3600e3,BAK='pulpito.bak',WEEK=7*864e5;
 function getResume(){const r=ls.get(RES,null);return r&&r.id&&Date.now()-(r.at||0)<RES_MS?r:null}
 
@@ -1366,9 +1367,9 @@ function admPendCheck(force){if(!isAdmin()||localMode||ADMP.busy)return;if(!forc
 setInterval(()=>{if(document.visibilityState==='visible')admPendCheck()},90000);
 /* ---------- relatar un problema (WhatsApp o correo del administrador) ---------- */
 /* ---------- Novedades de la versión y Ayuda ---------- */
-const NEWS_VER='v72';
-const NEWS={es:[['Pregunte cualquier cosa de la Biblia','En Curiosidades: «¿cuántas veces aparece el número 40?» muestra el total, los libros y los versículos.'],['Busque en los tres diccionarios a la vez','En Diccionarios, una sola búsqueda en el Bíblico, el Hebreo y el Griego.'],['Aviso de su próxima predicación','Si tiene un culto en la Agenda esta semana, aparece arriba en el Inicio con «Predicar».'],['Búsqueda más inteligente en sus sermones','Por título, versículo o cualquier palabra del texto, sin importar acentos ni el orden.'],['Nueva pantalla de apertura','El app instalado abre con el logo de Meu Púlpito.']],
-  pt:[['Pergunte qualquer coisa da Bíblia','Em Curiosidades: «quantas vezes aparece o número 40?» mostra o total, os livros e os versículos.'],['Busque nos três dicionários de uma vez','Em Dicionários, uma só busca no Bíblico, no Hebraico e no Grego.'],['Aviso da sua próxima pregação','Se você tem um culto na Agenda nesta semana, ele aparece no topo do Início com «Pregar».'],['Busca mais inteligente nos seus sermões','Por título, versículo ou qualquer palavra do texto, sem se importar com acentos nem com a ordem.'],['Nova tela de abertura','O app instalado abre com o logo do Meu Púlpito.']]};
+const NEWS_VER='v74';
+const NEWS={es:[['Nuevo Diccionario Arameo','Las palabras en arameo del Antiguo Testamento (partes de Daniel y Esdras), con su sentido, pronunciación y versículos.'],['Pregunte cualquier cosa de la Biblia','En Curiosidades: «¿cuántas veces aparece el número 40?» muestra el total, los libros y los versículos.'],['Busque en todos los diccionarios a la vez','En Diccionarios, una sola búsqueda en el Bíblico, el Hebreo, el Arameo y el Griego.'],['Aviso de su próxima predicación','Si tiene un culto en la Agenda esta semana, aparece arriba en el Inicio con «Predicar».'],['Búsqueda más inteligente en sus sermones','Por título, versículo o cualquier palabra del texto, sin importar acentos ni el orden.'],['Nueva pantalla de apertura','El app instalado abre con el logo de Meu Púlpito.']],
+  pt:[['Novo Dicionário Aramaico','As palavras em aramaico do Antigo Testamento (partes de Daniel e Esdras), com sentido, pronúncia e versículos.'],['Pergunte qualquer coisa da Bíblia','Em Curiosidades: «quantas vezes aparece o número 40?» mostra o total, os livros e os versículos.'],['Busque em todos os dicionários de uma vez','Em Dicionários, uma só busca no Bíblico, no Hebraico, no Aramaico e no Grego.'],['Aviso da sua próxima pregação','Se você tem um culto na Agenda nesta semana, ele aparece no topo do Início com «Pregar».'],['Busca mais inteligente nos seus sermões','Por título, versículo ou qualquer palavra do texto, sem se importar com acentos nem com a ordem.'],['Nova tela de abertura','O app instalado abre com o logo do Meu Púlpito.']]};
 function newsSheet(){const L=lxLang();ls.set('mp.news',NEWS_VER);
   openSheet(`<div class="between"><h3>${esc(t('nw_t'))}</h3><button class="iconbtn" data-act="sheetClose" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
    <div class="nw-list">${NEWS[L].map(([a,b])=>`<div class="nw-i"><span class="nw-dot">${ic('check')}</span><span><b>${esc(a)}</b><span>${esc(b)}</span></span></div>`).join('')}</div>
@@ -1378,7 +1379,7 @@ const HELP={es:[['Instalar en el celular','En la pantalla de acceso toque «Inst
   ['Escribir un sermón','Toque «Nuevo sermón». La primera línea es el título. Con «Versículo» escriba la cita (ej.: Juan 3:16) y el texto bíblico se coloca solo. Con «Nuevo punto» organiza el bosquejo. En «Modelos» hay estructuras listas. Todo se guarda solo.'],
   ['Predicar desde el celular','En el sermón toque «Predicar». Ajuste el tamaño de letra con «Aa», use el cronómetro y avance por partes. El botón ES/PT muestra el mismo sermón en el otro idioma sin crear una copia; revise la traducción antes.'],
   ['Programar dónde va a predicar','En Agenda toque «Programar», elija fecha, hora, lugar y el sermón. En la semana del culto aparece un aviso en el Inicio. Al predicar, queda en el historial.'],
-  ['Estudiar con los diccionarios','En Diccionarios busque en español, en portugués, en hebreo o griego, o por número de Strong. Desde el editor, toque el libro para consultar e insertar en el sermón sin cerrar lo que escribe.'],
+  ['Estudiar con los diccionarios','En Diccionarios busque en español, en portugués, en hebreo, arameo o griego, o por número de Strong. Desde el editor, toque el libro para consultar e insertar en el sermón sin cerrar lo que escribe.'],
   ['Contar palabras y números en la Biblia','En Curiosidades escriba, por ejemplo, «¿cuántas veces aparece el número 40?» o «Golias». Verá el total, los libros y los versículos.'],
   ['Copia de seguridad','Sus sermones quedan guardados en su cuenta y aparecen en cualquier celular donde entre. En Configuración → «Copiar ahora» puede guardar además una copia propia.'],
   ['Cambiar idioma y apariencia','En Configuración elija Español o Português, y el tema Claro, Oscuro o Automático.'],
@@ -1387,7 +1388,7 @@ const HELP={es:[['Instalar en el celular','En la pantalla de acceso toque «Inst
   ['Escrever um sermão','Toque em «Novo sermão». A primeira linha é o título. Com «Versículo» escreva a referência (ex.: João 3:16) e o texto bíblico é colocado sozinho. Com «Novo ponto» você organiza o esboço. Em «Modelos» há estruturas prontas. Tudo é salvo sozinho.'],
   ['Pregar pelo celular','No sermão toque em «Pregar». Ajuste o tamanho da letra em «Aa», use o cronômetro e avance por partes. O botão PT/ES mostra o mesmo sermão no outro idioma sem criar uma cópia; revise a tradução antes.'],
   ['Agendar onde vai pregar','Na Agenda toque em «Agendar», escolha data, hora, lugar e o sermão. Na semana do culto aparece um aviso no Início. Ao pregar, fica no histórico.'],
-  ['Estudar com os dicionários','Em Dicionários busque em português, em espanhol, em hebraico ou grego, ou pelo número de Strong. No editor, toque no livro para consultar e inserir no sermão sem fechar o que está escrevendo.'],
+  ['Estudar com os dicionários','Em Dicionários busque em português, em espanhol, em hebraico, aramaico ou grego, ou pelo número de Strong. No editor, toque no livro para consultar e inserir no sermão sem fechar o que está escrevendo.'],
   ['Contar palavras e números na Bíblia','Em Curiosidades escreva, por exemplo, «quantas vezes aparece o número 40?» ou «Golias». Você verá o total, os livros e os versículos.'],
   ['Cópia de segurança','Seus sermões ficam guardados na sua conta e aparecem em qualquer celular em que você entrar. Em Configurações → «Copiar agora» você pode guardar também uma cópia sua.'],
   ['Trocar idioma e aparência','Em Configurações escolha Español ou Português, e o tema Claro, Escuro ou Automático.'],
@@ -1420,12 +1421,12 @@ function onboarding(){let i=0;const sh=openSheet(`<div class="ob"><div id="obIn"
 Object.assign(I18N.es,{adp_t:'{n} cuenta(s) esperando liberación',adp_d:'Toque para ver y liberar.',rp_t:'Relatar un problema',rp_d:'Cuéntenos qué pasó y qué estaba haciendo. El mensaje va con la versión del app y el tipo de celular, para corregirlo más rápido.',rp_ph:'Ej.: toqué Predicar y la pantalla quedó en blanco…',rp_tip:'Si puede, después envíe también una captura de pantalla en la misma conversación.',rp_wa:'Enviar por WhatsApp',rp_mail:'Enviar por correo',rp_hd:'Problema en Meu Púlpito:',rp_btn:'Relatar un problema',ob_btn:'Ver la presentación',
   ob0t:'¡Bienvenido a Meu Púlpito{n}!',ob0d:'Su lugar para preparar, organizar y predicar la Palabra. En cuatro pasos le mostramos lo principal.',wb_back:'¡Bienvenido de nuevo, {n}!',ob1t:'Escriba su sermón',ob1d:'Toque «Nuevo sermón». Escriba el título y el texto; con «Versículo» el app coloca el texto bíblico y con «Nuevo punto» organiza el bosquejo. Todo se guarda solo.',
   ob2t:'Predique desde el celular',ob2d:'Toque «Predicar»: letra grande, cronómetro y avance por partes. Puede cambiar el sermón entre español y portugués sin crear una copia.',
-  ob3t:'Estudie la Palabra',ob3d:'Biblia en español y portugués, diccionarios Bíblico, Hebreo y Griego, y curiosidades bíblicas. Desde el editor, toque el libro para consultar e insertar en el sermón.',
+  ob3t:'Estudie la Palabra',ob3d:'Biblia en español y portugués, diccionarios Bíblico, Hebreo, Arameo y Griego, y curiosidades bíblicas. Desde el editor, toque el libro para consultar e insertar en el sermón.',
   ob4t:'Organice su ministerio',ob4d:'Agenda de predicaciones, categorías y favoritos. Sus sermones quedan en su cuenta y aparecen en cualquier celular donde entre.',ob_next:'Siguiente',ob_go:'Comenzar',ob_skip:'Saltar'});
 Object.assign(I18N.pt,{adp_t:'{n} conta(s) aguardando liberação',adp_d:'Toque para ver e liberar.',rp_t:'Relatar um problema',rp_d:'Conte o que aconteceu e o que você estava fazendo. A mensagem vai com a versão do app e o tipo de celular, para corrigir mais rápido.',rp_ph:'Ex.: toquei em Pregar e a tela ficou em branco…',rp_tip:'Se puder, depois mande também um print da tela na mesma conversa.',rp_wa:'Enviar pelo WhatsApp',rp_mail:'Enviar por e-mail',rp_hd:'Problema no Meu Púlpito:',rp_btn:'Relatar um problema',ob_btn:'Ver a apresentação',
   ob0t:'Bem-vindo ao Meu Púlpito{n}!',ob0d:'Seu lugar para preparar, organizar e pregar a Palavra. Em quatro passos mostramos o principal.',wb_back:'Bem-vindo de volta, {n}!',ob1t:'Escreva seu sermão',ob1d:'Toque em «Novo sermão». Escreva o título e o texto; com «Versículo» o app coloca o texto bíblico e com «Novo ponto» organiza o esboço. Tudo é salvo sozinho.',
   ob2t:'Pregue pelo celular',ob2d:'Toque em «Pregar»: letra grande, cronômetro e avanço por partes. Você pode trocar o sermão entre português e espanhol sem criar uma cópia.',
-  ob3t:'Estude a Palavra',ob3d:'Bíblia em português e espanhol, dicionários Bíblico, Hebraico e Grego, e curiosidades bíblicas. No editor, toque no livro para consultar e inserir no sermão.',
+  ob3t:'Estude a Palavra',ob3d:'Bíblia em português e espanhol, dicionários Bíblico, Hebraico, Aramaico e Grego, e curiosidades bíblicas. No editor, toque no livro para consultar e inserir no sermão.',
   ob4t:'Organize seu ministério',ob4d:'Agenda de pregações, categorias e favoritos. Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',ob_next:'Próximo',ob_go:'Começar',ob_skip:'Pular'});
 
 function planBanner(){const N=planNow();if(N.test&&!N.paid)return'';const k=N.plan!=='free'?N.plan:N.last;
