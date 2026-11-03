@@ -600,3 +600,11 @@ html[data-mode="dark"] .cu-ans{background:var(--black);box-shadow:0 0 0 1px rgba
 .view{padding-bottom:calc(64px + var(--navpb) + 28px)}
 .toast{bottom:calc(64px + var(--navpb) + 16px)}
 .vbar{bottom:calc(64px + var(--navpb) + 12px)}
+/* v39: íconos centrados en toda la barra, incluida la franja del iPhone */
+.nav{padding-top:0;padding-bottom:0}
+.nav .in{height:calc(60px + env(safe-area-inset-bottom,0px));align-items:center;padding-bottom:calc(env(safe-area-inset-bottom,0px) * .35)}
+.nav .in button{height:56px}
+:root{--navpb:env(safe-area-inset-bottom,0px)}
+.view{padding-bottom:calc(60px + var(--navpb) + 28px)}
+.toast{bottom:calc(60px + var(--navpb) + 16px)}
+.vbar{bottom:calc(60px + var(--navpb) + 12px)}
