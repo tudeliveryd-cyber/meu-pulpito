@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v67';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v68';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1005,6 +1005,68 @@ function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><
     const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,warn:n($('#acWn',sh).value),grace:n($('#acGr',sh).value),wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},updated:Date.now()};
     try{await firebase.firestore().collection('config').doc('app').set(cfg);PCFG=Object.assign({},PCFG_DEF,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 
+/* ---------- Panel del sitio meupulpito.com (solo administrador) ---------- */
+async function admSite(){if(!isAdmin())return;let S={};try{const d=await firebase.firestore().collection('config').doc('site').get();S=d.exists?d.data():{}}catch(e){toast(t('adm_err'));return}
+  const B=S.bar||{},H=S.hero||{};let TS=(Array.isArray(S.testi)?S.testi:[]).map(x=>Object.assign({q:'',n:'',r:'',on:true},x));
+  const tRow=(x,i)=>`<div class="as-t" data-i="${i}"><div class="between"><b style="font-size:14px">${esc(t('as_t_n',{n:i+1}))}</b><span class="row" style="gap:6px"><label class="as-on"><input type="checkbox" data-k="on" ${x.on!==false?'checked':''}>${esc(t('as_show'))}</label><button class="iconbtn sm" data-del="${i}" aria-label="${esc(t('del_forever'))}">${ic('trash')}</button></span></div>
+    <textarea class="inp" rows="3" data-k="q" placeholder="${esc(t('as_q_ph'))}">${esc(x.q)}</textarea>
+    <input class="inp" data-k="n" value="${esc(x.n)}" placeholder="${esc(t('as_n_ph'))}"><input class="inp" data-k="r" value="${esc(x.r)}" placeholder="${esc(t('as_r_ph'))}"></div>`;
+  const sh=openSheet(`<h3>${esc(t('as_btn'))}</h3>
+    <span class="lbl">${esc(t('as_bar'))}</span>
+    <label class="prow" style="padding:0;gap:12px"><span><span class="k">${esc(t('as_bar_on'))}</span><span class="s">${esc(t('as_bar_d'))}</span></span><input type="checkbox" id="asB" ${B.on?'checked':''} style="width:24px;height:24px;flex:none"></label>
+    <input class="inp" id="asBes" value="${esc(B.es||'')}" placeholder="ES · ${esc(t('as_bar_ph_es'))}"><input class="inp" id="asBpt" value="${esc(B.pt||'')}" placeholder="PT · ${esc(t('as_bar_ph_pt'))}">
+    <input class="inp" id="asBu" value="${esc(B.url||'')}" placeholder="${esc(t('as_bar_url'))}" inputmode="url" autocapitalize="off">
+    <span class="lbl" style="margin-top:6px">${esc(t('as_hero'))}</span><p class="sub" style="margin:-4px 0 0;font-size:12.5px">${esc(t('as_hero_d'))}</p>
+    <input class="inp" id="asHes" value="${esc((H.es||{}).t||'')}" placeholder="ES · Prepare y organice sus mensajes en un solo lugar."><textarea class="inp" rows="2" id="asDes" placeholder="ES · ${esc(t('as_sub'))}">${esc((H.es||{}).d||'')}</textarea>
+    <input class="inp" id="asHpt" value="${esc((H.pt||{}).t||'')}" placeholder="PT · Prepare e organize suas mensagens em um só lugar."><textarea class="inp" rows="2" id="asDpt" placeholder="PT · ${esc(t('as_sub'))}">${esc((H.pt||{}).d||'')}</textarea>
+    <span class="lbl" style="margin-top:6px">${esc(t('as_testi'))}</span><p class="sub" style="margin:-4px 0 0;font-size:12.5px">${esc(t('as_testi_d'))}</p>
+    <div id="asTL" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button class="btn ghost block" id="asAdd">${ic('plus')}${esc(t('as_add'))}</button>
+    <button class="btn gold block" id="asGo">${esc(t('ad_save'))}</button>
+    <a class="lnk" href="/" target="_blank" rel="noopener" style="align-self:center;padding:8px">${esc(t('as_view'))}</a>`,{cls:'big ns'});
+  const read=()=>{TS=$$('.as-t',sh).map(el=>({q:$('[data-k=q]',el).value.trim(),n:$('[data-k=n]',el).value.trim(),r:$('[data-k=r]',el).value.trim(),on:$('[data-k=on]',el).checked}))};
+  const draw=()=>{$('#asTL',sh).innerHTML=TS.length?TS.map(tRow).join(''):`<p class="sub" style="margin:0;font-size:13px">${esc(t('as_none'))}</p>`};draw();
+  $('#asAdd',sh).onclick=()=>{read();TS.push({q:'',n:'',r:'',on:true});draw();const l=$$('.as-t textarea',sh).pop();if(l)l.focus()};
+  $('#asTL',sh).onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;read();TS.splice(+b.dataset.del,1);draw()};
+  $('#asGo',sh).onclick=async()=>{read();const v=id=>$(id,sh).value.trim();let url=v('#asBu');if(url&&!/^https?:\/\//.test(url))url='https://'+url;
+    const site={bar:{on:$('#asB',sh).checked,es:v('#asBes'),pt:v('#asBpt'),url},hero:{es:{t:v('#asHes'),d:v('#asDes')},pt:{t:v('#asHpt'),d:v('#asDpt')}},
+      testi:TS.filter(x=>x.q&&x.n).map(x=>({q:x.q.slice(0,600),n:x.n.slice(0,80),r:x.r.slice(0,120),on:x.on})),updated:Date.now()};
+    if(site.bar.on&&!site.bar.es&&!site.bar.pt){toast(t('as_bar_need'));return}
+    try{await firebase.firestore().collection('config').doc('site').set(site);closeSheet();toast(t('as_saved'))}catch(e){toast(t('adm_err'))}}}
+const VK={c:[['cPY','Paraguay'],['cBR','Brasil'],['cAR','Argentina'],['cBO','Bolivia'],['cUS','EE. UU.'],['cOT','other']],r:[['rIG','Instagram'],['rWA','WhatsApp'],['rGG','Google'],['rFB','Facebook'],['rDI','direct']],l:[['es','Español'],['pt','Português']],d:[['mob','mobile'],['dsk','desktop']]};
+let visDays=30;
+async function admVisits(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t('av_btn'))}</h3><div id="avBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big ns'});
+  let rows={};try{const q=await firebase.firestore().collection('siteStats').get();q.docs.forEach(d=>rows[d.id]=d.data())}catch(e){const el=$('#avBody',sh);if(el)el.innerHTML=`<p class="sub" style="margin:0">${esc(t('av_err'))}</p>`;return}
+  const dayStr=n=>{const d=new Date(Date.now()-n*864e5);return d.toLocaleDateString('en-CA',{timeZone:'America/Asuncion'})};
+  const draw=()=>{const el=$('#avBody',sh);if(!el)return;const N=visDays;const days=Array.from({length:N},(_,i)=>dayStr(N-1-i));
+    const sum=(k,ds=days)=>ds.reduce((a,d)=>a+((rows[d]||{})[k]||0),0);const td=rows[dayStr(0)]||{};
+    const mx=Math.max(1,...days.map(d=>(rows[d]||{}).v||0));const lab=k=>t('av_'+k)!=='av_'+k?t('av_'+k):k;
+    const bars=(list)=>{const tot=list.reduce((a,[k])=>a+sum(k),0)||1;return list.map(([k,nm])=>{const n=sum(k);return n?`<div class="av-b"><span>${esc(['other','direct','mobile','desktop'].includes(nm)?t('av_'+nm):nm)}</span><i style="--w:${Math.round(n/tot*100)}%"></i><b>${n}</b></div>`:''}).join('')||`<p class="sub" style="margin:0;font-size:13px">—</p>`};
+    const v=sum('v'),go=sum('go'),wa=sum('wa');
+    el.innerHTML=`<div class="seg sm"><button data-n="7" aria-pressed="${N===7}">${esc(t('av_7'))}</button><button data-n="30" aria-pressed="${N===30}">${esc(t('av_30'))}</button></div>
+      <div class="stats"><div class="stat"><b>${td.v||0}</b><span>${esc(t('av_today'))}</span></div><div class="stat"><b>${v}</b><span>${esc(t('av_visits'))}</span></div><div class="stat"><b>${sum('u')}</b><span>${esc(t('av_people'))}</span></div></div>
+      <div class="stats"><div class="stat"><b>${go}</b><span>${esc(t('av_go'))}</span></div><div class="stat"><b>${wa}</b><span>${esc(t('av_wa'))}</span></div><div class="stat"><b>${v?Math.round(go/v*100):0}%</b><span>${esc(t('av_conv'))}</span></div></div>
+      <span class="lbl">${esc(t('av_per_day'))}</span>
+      <div class="av-ch" role="img" aria-label="${esc(t('av_per_day'))}">${days.map(d=>{const n=(rows[d]||{}).v||0;return`<div class="av-c" title="${d}: ${n}"><i style="--h:${Math.round(n/mx*100)}%"></i>${N===7?`<span>${d.slice(8)}</span>`:''}</div>`}).join('')}</div>
+      ${N===30?`<div class="between" style="margin-top:-6px"><span class="sub" style="font-size:11.5px">${fmtDay(new Date(days[0]+'T12:00:00').getTime())}</span><span class="sub" style="font-size:11.5px">${esc(t('av_today'))}</span></div>`:''}
+      <span class="lbl">${esc(t('av_country'))}</span>${bars(VK.c)}
+      <span class="lbl">${esc(t('av_from'))}</span>${bars(VK.r)}
+      <span class="lbl">${esc(t('av_lang'))} · ${esc(t('av_dev'))}</span>${bars(VK.l)}${bars(VK.d)}
+      <p class="sub" style="font-size:11.5px;margin:0">${esc(t('av_note'))}</p>`;
+    $$('.seg button',el).forEach(b=>b.onclick=()=>{visDays=+b.dataset.n;draw()})};draw()}
+Object.assign(I18N.es,{as_sec:'Sitio meupulpito.com',as_btn:'Textos y testimonios',av_btn:'Visitas del sitio',as_note:'Precios, límites del plan gratis y WhatsApp de «Precios y pruebas» también aparecen en el sitio.',
+  as_bar:'Aviso en la parte de arriba',as_bar_on:'Mostrar aviso',as_bar_d:'Una franja dorada arriba del sitio, por ejemplo para una promoción.',as_bar_ph_es:'Ej.: Promoción de lanzamiento: 20% en el plan anual',as_bar_ph_pt:'Ex.: Promoção de lançamento: 20% no plano anual',as_bar_url:'Enlace al tocar (opcional)',as_bar_need:'Escribe el texto del aviso',
+  as_hero:'Título principal',as_hero_d:'Deja en blanco para usar el texto original.',as_sub:'Subtítulo',as_testi:'Testimonios',as_testi_d:'Solo testimonios reales, con autorización de la persona. Aparecen en el sitio cuando hay al menos uno marcado.',
+  as_t_n:'Testimonio {n}',as_show:'Mostrar',as_q_ph:'Lo que dijo, con sus palabras',as_n_ph:'Nombre (ej.: Pr. Luis Gómez)',as_r_ph:'Iglesia · Ciudad',as_add:'Agregar testimonio',as_none:'Todavía no hay testimonios.',as_saved:'Sitio actualizado',as_view:'Ver el sitio',
+  av_7:'7 días',av_30:'30 días',av_today:'Hoy',av_visits:'Visitas',av_people:'Personas',av_go:'Tocaron Acceder',av_wa:'Tocaron WhatsApp',av_conv:'Fueron al app',av_per_day:'Visitas por día',av_country:'País',av_from:'De dónde vinieron',av_lang:'Idioma',av_dev:'Aparato',
+  av_other:'Otros',av_direct:'Directo / otro',av_mobile:'Celular',av_desktop:'Computadora',av_err:'No se pudo cargar. Verifique que publicó las reglas nuevas de Firebase.',av_note:'Solo números, sin datos de las personas. No cuenta sus propias visitas desde este celular. «Personas» cuenta cada aparato una vez por día.'});
+Object.assign(I18N.pt,{as_sec:'Site meupulpito.com',as_btn:'Textos e depoimentos',av_btn:'Visitas do site',as_note:'Preços, limites do plano grátis e WhatsApp de «Preços e testes» também aparecem no site.',
+  as_bar:'Aviso no topo',as_bar_on:'Mostrar aviso',as_bar_d:'Uma faixa dourada no topo do site, por exemplo para uma promoção.',as_bar_ph_es:'Ej.: Promoción de lanzamiento: 20% en el plan anual',as_bar_ph_pt:'Ex.: Promoção de lançamento: 20% no plano anual',as_bar_url:'Link ao tocar (opcional)',as_bar_need:'Escreva o texto do aviso',
+  as_hero:'Título principal',as_hero_d:'Deixe em branco para usar o texto original.',as_sub:'Subtítulo',as_testi:'Depoimentos',as_testi_d:'Só depoimentos reais, com autorização da pessoa. Aparecem no site quando há pelo menos um marcado.',
+  as_t_n:'Depoimento {n}',as_show:'Mostrar',as_q_ph:'O que a pessoa disse, com as palavras dela',as_n_ph:'Nome (ex.: Pr. Luis Gómez)',as_r_ph:'Igreja · Cidade',as_add:'Adicionar depoimento',as_none:'Ainda não há depoimentos.',as_saved:'Site atualizado',as_view:'Ver o site',
+  av_7:'7 dias',av_30:'30 dias',av_today:'Hoje',av_visits:'Visitas',av_people:'Pessoas',av_go:'Tocaram Acessar',av_wa:'Tocaram WhatsApp',av_conv:'Foram ao app',av_per_day:'Visitas por dia',av_country:'País',av_from:'De onde vieram',av_lang:'Idioma',av_dev:'Aparelho',
+  av_other:'Outros',av_direct:'Direto / outro',av_mobile:'Celular',av_desktop:'Computador',av_err:'Não foi possível carregar. Confira se publicou as regras novas do Firebase.',av_note:'Só números, sem dados das pessoas. Não conta as suas próprias visitas deste celular. «Pessoas» conta cada aparelho uma vez por dia.'});
+
 async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
   let rows=[];try{const db=firebase.firestore();const[q,pq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get()]);
     const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
@@ -1031,6 +1093,9 @@ async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<
     ${np?`<p class="pl-why" style="margin:0">${esc(t('ad_npend',{n:np}))}</p>`:''}${nSoon?`<p class="pl-why" style="margin:0">${esc(t('ad_nsoon',{n:nSoon}))}</p>`:''}
     <p class="sub" style="margin:0;font-size:13px;font-weight:600">${PCFG.gate?esc(t('ad_gate_on'))+' · ':''}${esc(t('ad_cnt',cnt))}${PCFG.test?' · '+esc(t('ad_test')):''}</p>
     <button class="btn ghost block" data-act="admCfg">${ic('sliders')}${esc(t('ad_cfg'))}</button>
+    <span class="lbl" style="margin-top:4px">${esc(t('as_sec'))}</span>
+    <div class="adm-site"><button class="btn ghost" data-act="admSite">${ic('pen')}${esc(t('as_btn'))}</button><button class="btn ghost" data-act="admVis">${ic('user')}${esc(t('av_btn'))}</button></div>
+    <p class="sub" style="margin:0;font-size:12.5px">${esc(t('as_note'))}</p>
     <div class="adm-list">${rows.length?rows.map(row).join(''):`<p class="sub">${esc(t('adm_none'))}</p>`}</div>
     <p class="sub" style="font-size:11.5px;margin:0">${esc(t('adm_note'))}</p>`}
 let bgT=0;function refreshBg(){clearTimeout(bgT);bgT=setTimeout(()=>{if(!view.tab||view.overlay)return;
@@ -1263,7 +1328,7 @@ function planBanner(){const N=planNow();if(N.test&&!N.paid)return'';const k=N.pl
   if(N.grace){const g=Math.max(1,Math.ceil((N.graceEnd-Date.now())/864e5));return`<div class="banner pv warn"><div class="tx"><b>${esc(t('pv_exp',{d:fmtDay(N.until)}))}</b><br>${esc(t('pv_grace',{n:g}))}</div><div class="row">${btn}</div></div>`}
   if(N.expired&&!N.paid&&!ls.get('mp.pvx.'+N.until,0))return`<div class="banner pv"><div class="tx"><b>${esc(t('pv_free'))}</b><br>${esc(t('pv_free_d'))}</div><div class="row"><button class="btn sm ghost" data-act="pvHide" data-u="${N.until}">${esc(t('later'))}</button>${btn}</div></div>`;
   return''}
-function bannersHtml(){let h=planBanner();if(canShowInstall()&&!ls.get('mp.instx',0))h+=`<div class="banner inst-bn"><div class="tx"><b>${esc(t('in_t'))}</b><br>${esc(t('in_d'))}</div><div class="row"><button class="btn sm ghost" data-act="instHide">${esc(t('later'))}</button><button class="btn sm gold" data-act="install">${ic('dl')}${esc(t('in_btn').split(' ')[0])}</button></div></div>`;if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<button class="banner adp" data-act="admin"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</button>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
+function bannersHtml(){let h=planBanner();if(isAdmin()&&ls.get('mp.adm',0)!==1)ls.set('mp.adm',1);if(canShowInstall()&&!ls.get('mp.instx',0))h+=`<div class="banner inst-bn"><div class="tx"><b>${esc(t('in_t'))}</b><br>${esc(t('in_d'))}</div><div class="row"><button class="btn sm ghost" data-act="instHide">${esc(t('later'))}</button><button class="btn sm gold" data-act="install">${ic('dl')}${esc(t('in_btn').split(' ')[0])}</button></div></div>`;if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<button class="banner adp" data-act="admin"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</button>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
   if(rs)h+=`<div class="banner"><div class="tx">${esc(t('cont_preach'))}<br><b class="serif">${esc(derive(rs).title||t('untitled'))}</b>${r.tSec?' · '+fmtSec(r.tSec):''}</div>
     <div class="row"><button class="btn sm ghost" data-act="resNo">${esc(t('end'))}</button><button class="btn sm gold" data-act="resGo">${ic('lectern')}${esc(t('go_on'))}</button></div></div>`;
   if(ls.get(BAK,null)===null)ls.set(BAK,Date.now());
@@ -2186,6 +2251,7 @@ function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;vie
    Acciones (un solo manejador de toques)
    ========================================================= */
 const ACT={
+  admSite:()=>admSite(),admVis:()=>admVisits(),
   privacy:()=>privacySheet(),delAcc:()=>deleteAccount(),admin:()=>adminPanel(),
   admBlock:async b=>{if(!isAdmin())return;const uid=b.dataset.uid,blk=b.dataset.b==='1';const seg=b.closest('.adm-seg');
     try{await firebase.firestore().collection('planos').doc(uid).set({blocked:blk,ok:!blk,updated:Date.now(),by:(authU.email||'')},{merge:true});const pe=b.closest('.adm-row');if(pe){const tg=pe.querySelector('.adm-pend');if(tg)tg.remove()}
