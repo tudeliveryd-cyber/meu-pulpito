@@ -593,3 +593,10 @@ html[data-mode="dark"] .wordmark .w2{color:var(--gold)}
 .cu-ans p{font-size:17.5px}
 html[data-mode="dark"] .cu-ans{background:var(--black);box-shadow:0 0 0 1px rgba(214,173,85,.45) inset}
 .cu-q b{display:block;font-family:var(--head);font-weight:700}.cu-q small{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+/* barra de abajo: íconos centrados en la franja (menos espacio vacío bajo los íconos) */
+:root{--navpb:max(6px,calc(env(safe-area-inset-bottom,0px) - 16px))}
+.nav{padding-top:6px;padding-bottom:var(--navpb)}
+.nav .in{height:58px}
+.view{padding-bottom:calc(64px + var(--navpb) + 28px)}
+.toast{bottom:calc(64px + var(--navpb) + 16px)}
+.vbar{bottom:calc(64px + var(--navpb) + 12px)}
