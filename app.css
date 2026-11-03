@@ -559,3 +559,6 @@ h1.h{font-weight:800;letter-spacing:-.025em}
 .dx-po{text-align:left;width:100%}
 .sd-lemma[dir="rtl"]{text-align:right}
 .res .sd-num{font-family:var(--head)}
+
+.login .logo.full,.lock .logo.full{width:min(220px,56vw);height:auto;aspect-ratio:1;border-radius:28px;box-shadow:0 14px 36px rgba(8,13,22,.28)}
+.login h2{font-family:var(--head);font-weight:800;letter-spacing:-.02em}
