@@ -755,3 +755,8 @@ details.credits{text-align:center}details.credits summary{list-style:none;cursor
 .rp-row.ok .rp-tx span{color:var(--muted)}
 .pg.clean .pg-top>.pg-rec{opacity:.55;pointer-events:auto}.pg.clean .pg-top>.pg-rec.on{opacity:1}
 .tag.tr{background:color-mix(in srgb,#3B82F6 16%,transparent);color:#3B82F6}
+/* interruptores del panel (en lugar de casillas) */
+label.prow{flex-wrap:nowrap}label.prow>span{flex:1;min-width:0}
+label.prow input[type=checkbox]{appearance:none;-webkit-appearance:none;width:50px!important;height:30px!important;border-radius:15px;background:var(--line);position:relative;flex:none;cursor:pointer;transition:background .2s;margin:0}
+label.prow input[type=checkbox]::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[type=checkbox]:checked::after{transform:translateX(20px)}
