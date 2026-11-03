@@ -194,6 +194,12 @@ section{scroll-margin-top:72px}
 @media (max-width:1060px){.plans{grid-template-columns:repeat(2,1fr);max-width:720px;margin:0 auto}}
 @media (max-width:560px){.plans{grid-template-columns:1fr;gap:26px}}
 
+/* sobre */
+.about{background:var(--navy);color:#C5CCDA}
+.ab{max-width:760px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+.ab h2{color:#fff;font-size:clamp(28px,4.6vw,42px);line-height:1.15;text-wrap:balance}
+.ab p{font-size:16.5px;line-height:1.7;text-wrap:pretty;margin:0}
+.ab .sig{display:flex;flex-direction:column;gap:2px;margin-top:6px;font-size:15px}.ab .sig b{color:#fff;font-family:var(--head);font-size:16px}.ab .sig span{color:#8E99AE}
 /* testimonios */
 .testi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .tq{margin:0;display:flex;flex-direction:column;gap:18px;padding:28px 26px;border-radius:var(--r);background:#fff;box-shadow:0 0 0 1px var(--line) inset}
@@ -336,6 +342,18 @@ footer .soc svg{width:18px;height:18px}
     </div>
   </section>
 
+  <section class="sec about" id="sobre">
+    <div class="wrap">
+      <div class="ab rv">
+        <img src="app/mark.png" alt="" width="94" height="76">
+        <span class="eyebrow" data-t="ab_eye"></span>
+        <h2 data-t="ab_t"></h2>
+        <p data-t="ab_d"></p>
+        <p class="sig"><b>Pr. Jean Carlos</b><span data-t="ab_r"></span></p>
+      </div>
+    </div>
+  </section>
+
   <section class="sec" id="testimonios" hidden>
     <div class="wrap">
       <div class="sec-h rv"><span class="eyebrow" data-t="t_eye"></span><h2 data-t="t_t"></h2></div>
@@ -424,6 +442,7 @@ var T={es:{
   fp:['Sermones sin límite','Diccionarios completos','Todas las curiosidades bíblicas','Modo Predicar avanzado','Traducción del sermón ES/PT'],
   fp2:'Los mismos beneficios del Premium Mensual',
   p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
+  ab_eye:'Quiénes somos',ab_t:'Hecho por un pastor, para pastores.',ab_d:'Meu Púlpito nació de la rutina de un pastor que prepara mensajes cada semana y predica en español y en portugués, a veces el mismo mensaje en los dos idiomas. Cada función fue pensada para lo que pasa de verdad entre el estudio y el púlpito: escribir con calma, estudiar el texto original y predicar con la mente libre.',ab_r:'Fundador de Meu Púlpito · Paraguay',
   t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',
   q_eye:'Preguntas frecuentes',q_t:'Lo que más nos preguntan.',
   faq:[['¿En qué dispositivos funciona?','En iPhone, Android y computadora, desde el navegador. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
@@ -465,6 +484,7 @@ var T={es:{
   fp:['Sermões sem limite','Dicionários completos','Todas as curiosidades bíblicas','Modo Pregar avançado','Tradução do sermão PT/ES'],
   fp2:'Os mesmos benefícios do Premium Mensal',
   p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
+  ab_eye:'Quem somos',ab_t:'Feito por um pastor, para pastores.',ab_d:'O Meu Púlpito nasceu da rotina de um pastor que prepara mensagens toda semana e prega em português e em espanhol, às vezes a mesma mensagem nos dois idiomas. Cada função foi pensada para o que acontece de verdade entre o estudo e o púlpito: escrever com calma, estudar o texto original e pregar com a mente livre.',ab_r:'Fundador do Meu Púlpito · Paraguai',
   t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',
   q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No iPhone, Android e computador, pelo navegador. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],

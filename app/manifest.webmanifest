@@ -1,17 +1,25 @@
 {
+  "id": "/app/",
   "name": "Meu Púlpito",
   "short_name": "Meu Púlpito",
-  "description": "Bloco de notas para escrever e pregar seus sermões",
+  "description": "Prepare, organize e pregue seus sermões. Bíblia, dicionários bíblico, hebraico e grego, em português e espanhol.",
   "lang": "pt-BR",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#00163f",
-  "theme_color": "#00163f",
+  "background_color": "#080D16",
+  "theme_color": "#080D16",
+  "categories": ["education", "productivity", "books"],
   "icons": [
     {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
     {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
     {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Novo sermão · Nuevo sermón", "short_name": "Novo sermão", "url": "./#new", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Bíblia · Biblia", "short_name": "Bíblia", "url": "./#bible", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Agenda", "short_name": "Agenda", "url": "./#agenda", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
   ]
 }
