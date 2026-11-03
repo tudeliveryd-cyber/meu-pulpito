@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v56';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v57';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1935,7 +1935,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
   ${!localMode&&authU?`<button class="btn ghost block" data-act="logout" style="color:var(--danger)">${ic('out')}${esc(t('logout'))}</button>`:''}
   <div class="foot-brand"><span class="mark sm"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
     <b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>${esc(t('tagline'))}</small>
-    <span class="fb-v">${esc(t('ver_l'))} 1.0 (${APP_VER.replace('v','')}) · © ${new Date().getFullYear()}</span></div>`}
+    <span class="fb-v">${esc(t('ver_l'))} 1.0 · © ${new Date().getFullYear()}</span></div>`}
 const PRIV={es:[['Tus sermones son tuyos','Todo lo que escribes en Meu Púlpito (sermones, agenda, biblioteca y notas) pertenece a ti. Se usa solo para que la app funcione y para que lo veas en cualquier celular donde entres con tu cuenta.'],
   ['Qué guardamos','Tu correo, tu nombre y tu foto (si los pones), tus sermones, agenda, biblioteca, notas y tus preferencias de lectura.'],
   ['Dónde se guarda','En los servidores de Google Firebase, protegidos con tu contraseña. Además queda una copia en tu celular para que funcione sin internet, y una copia de seguridad diaria solo en este celular.'],
