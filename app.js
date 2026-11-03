@@ -31,7 +31,7 @@ greet_m:'Buenos días,',greet_a:'Buenas tardes,',greet_n:'Buenas noches,',pastor
 search_ph:'Buscar sermón, versículo o palabra',prepare:'Preparar',new_sermon:'Nuevo sermón',new_desc:'Abre la hoja y empieza a escribir. Se guarda solo.',
 st_total:'Sermones',st_done:'Predicados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recientes',my_sermons:'Mis sermones',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima predicación',
 today:'hoy',edited:'editado',edited_c:'Editado',no_prev:'Sin contenido todavía',f_all:'Todos',f_recent:'Recientes',f_fav:'Favoritos',f_done:'Predicados',f_todo:'Pendientes',
-category:'Categoría',no_cat:'Sin categoría',points:'puntos',point:'punto',preached:'Predicado',pending:'Pendiente',
+category:'Categoría',no_cat:'Sin categoría',points:'puntos',point:'punto',preached:'Predicado',pending:'Sin predicar',
 act_edit:'Editar',act_preach:'Predicar',act_fav:'Marcar como favorito',act_unfav:'Quitar de favoritos',act_dup:'Duplicar',act_share:'Compartir',act_del:'Eliminar',act_hist:'Predicaciones registradas',
 del_q:'¿Eliminar este sermón para siempre?',cancel:'Cancelar',deleted:'Sermón eliminado',duplicated:'Copia creada. Estás editando la copia.',copy_sfx:'(copia)',
 empty_t:'Tu biblioteca está vacía',empty_d:'Toca Nuevo sermón y escribe tu primera mensaje. Todo se guarda solo.',no_res:'Ningún sermón encontrado',
@@ -89,7 +89,7 @@ greet_m:'Bom dia,',greet_a:'Boa tarde,',greet_n:'Boa noite,',pastor:'Pastor',
 search_ph:'Buscar sermão, versículo ou palavra',prepare:'Preparar',new_sermon:'Novo sermão',new_desc:'Abra a folha e comece a escrever. Salva sozinho.',
 st_total:'Sermões',st_done:'Pregados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recentes',my_sermons:'Meus sermões',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima pregação',
 today:'hoje',edited:'editado',edited_c:'Editado',no_prev:'Sem conteúdo ainda',f_all:'Todos',f_recent:'Recentes',f_fav:'Favoritos',f_done:'Pregados',f_todo:'Pendentes',
-category:'Categoria',no_cat:'Sem categoria',points:'pontos',point:'ponto',preached:'Pregado',pending:'Pendente',
+category:'Categoria',no_cat:'Sem categoria',points:'pontos',point:'ponto',preached:'Pregado',pending:'Não pregado',
 act_edit:'Editar',act_preach:'Pregar',act_fav:'Marcar como favorito',act_unfav:'Tirar dos favoritos',act_dup:'Duplicar',act_share:'Compartilhar',act_del:'Excluir',act_hist:'Pregações registradas',
 del_q:'Excluir este sermão para sempre?',cancel:'Cancelar',deleted:'Sermão excluído',duplicated:'Cópia criada. Você está editando a cópia.',copy_sfx:'(cópia)',
 empty_t:'Sua biblioteca está vazia',empty_d:'Toque em Novo sermão e escreva sua primeira mensagem. Tudo salva sozinho.',no_res:'Nenhum sermão encontrado',
@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v61';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v62';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
