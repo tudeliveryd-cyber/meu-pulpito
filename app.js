@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v59';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v60';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1051,7 +1051,7 @@ function startCloud(u){authU=u;localMode=false;loadLocal();
       add(sermons,'s');add(notes,'n');add(agenda,'a');
       const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
     cacheAll()}
-const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin)setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -1224,19 +1224,19 @@ function reportSheet(){const wa=String(PCFG.wa||'').replace(/\D/g,'');
     const msg=t('rp_hd')+'\n'+tx+info;closeSheet();
     if(wa)window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');else location.href=`mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent('Meu Púlpito · '+t('rp_t'))}&body=${encodeURIComponent(msg)}`}}
 /* ---------- bienvenida (primera vez) ---------- */
-const ONB=[['plus','ob1t','ob1d'],['lectern','ob2t','ob2d'],['dict','ob3t','ob3d'],['cal','ob4t','ob4d']];
+const ONB=[['__logo','ob0t','ob0d'],['plus','ob1t','ob1d'],['lectern','ob2t','ob2d'],['dict','ob3t','ob3d'],['cal','ob4t','ob4d']];
 function onboarding(){let i=0;const sh=openSheet(`<div class="ob"><div id="obIn"></div><div class="ob-dots">${ONB.map((_,k)=>`<i data-k="${k}"></i>`).join('')}</div>
     <div class="two"><button class="btn ghost" id="obSkip">${esc(t('ob_skip'))}</button><button class="btn gold" id="obNext"></button></div></div>`,{onClose:()=>ls.set('mp.onb',1)});
-  const paint=()=>{const [icn,tt,dd]=ONB[i];$('#obIn',sh).innerHTML=`<span class="ob-ic">${ic(icn)}</span><h3 class="ob-t">${esc(t(tt))}</h3><p class="ob-d">${esc(t(dd))}</p>`;
+  const paint=()=>{const [icn,tt,dd]=ONB[i];const nm=(meta.name||'').trim();$('#obIn',sh).innerHTML=`${icn==='__logo'?`<span class="ob-logo"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>`:`<span class="ob-ic">${ic(icn)}</span>`}<h3 class="ob-t">${esc(t(tt,{n:nm?', '+nm:''}))}</h3><p class="ob-d">${esc(t(dd))}</p>`;
     $$('.ob-dots i',sh).forEach((d,k)=>d.classList.toggle('on',k===i));$('#obNext',sh).textContent=t(i<ONB.length-1?'ob_next':'ob_go');$('#obSkip',sh).style.visibility=i<ONB.length-1?'visible':'hidden'};
   $('#obNext',sh).onclick=()=>{if(i<ONB.length-1){i++;paint()}else closeSheet()};$('#obSkip',sh).onclick=()=>closeSheet();paint()}
 Object.assign(I18N.es,{adp_t:'{n} cuenta(s) esperando liberación',adp_d:'Toque para ver y liberar.',rp_t:'Relatar un problema',rp_d:'Cuéntenos qué pasó y qué estaba haciendo. El mensaje va con la versión del app y el tipo de celular, para corregirlo más rápido.',rp_ph:'Ej.: toqué Predicar y la pantalla quedó en blanco…',rp_tip:'Si puede, después envíe también una captura de pantalla en la misma conversación.',rp_wa:'Enviar por WhatsApp',rp_mail:'Enviar por correo',rp_hd:'Problema en Meu Púlpito:',rp_btn:'Relatar un problema',ob_btn:'Ver la presentación',
-  ob1t:'Escriba su sermón',ob1d:'Toque «Nuevo sermón». Escriba el título y el texto; con «Versículo» el app coloca el texto bíblico y con «Nuevo punto» organiza el bosquejo. Todo se guarda solo.',
+  ob0t:'¡Bienvenido a Meu Púlpito{n}!',ob0d:'Su lugar para preparar, organizar y predicar la Palabra. En cuatro pasos le mostramos lo principal.',wb_back:'¡Bienvenido de nuevo, {n}!',ob1t:'Escriba su sermón',ob1d:'Toque «Nuevo sermón». Escriba el título y el texto; con «Versículo» el app coloca el texto bíblico y con «Nuevo punto» organiza el bosquejo. Todo se guarda solo.',
   ob2t:'Predique desde el celular',ob2d:'Toque «Predicar»: letra grande, cronómetro y avance por partes. Puede cambiar el sermón entre español y portugués sin crear una copia.',
   ob3t:'Estudie la Palabra',ob3d:'Biblia en español y portugués, diccionarios Bíblico, Hebreo y Griego, y curiosidades bíblicas. Desde el editor, toque el libro para consultar e insertar en el sermón.',
   ob4t:'Organice su ministerio',ob4d:'Agenda de predicaciones, categorías y favoritos. Sus sermones quedan en su cuenta y aparecen en cualquier celular donde entre.',ob_next:'Siguiente',ob_go:'Comenzar',ob_skip:'Saltar'});
 Object.assign(I18N.pt,{adp_t:'{n} conta(s) aguardando liberação',adp_d:'Toque para ver e liberar.',rp_t:'Relatar um problema',rp_d:'Conte o que aconteceu e o que você estava fazendo. A mensagem vai com a versão do app e o tipo de celular, para corrigir mais rápido.',rp_ph:'Ex.: toquei em Pregar e a tela ficou em branco…',rp_tip:'Se puder, depois mande também um print da tela na mesma conversa.',rp_wa:'Enviar pelo WhatsApp',rp_mail:'Enviar por e-mail',rp_hd:'Problema no Meu Púlpito:',rp_btn:'Relatar um problema',ob_btn:'Ver a apresentação',
-  ob1t:'Escreva seu sermão',ob1d:'Toque em «Novo sermão». Escreva o título e o texto; com «Versículo» o app coloca o texto bíblico e com «Novo ponto» organiza o esboço. Tudo é salvo sozinho.',
+  ob0t:'Bem-vindo ao Meu Púlpito{n}!',ob0d:'Seu lugar para preparar, organizar e pregar a Palavra. Em quatro passos mostramos o principal.',wb_back:'Bem-vindo de volta, {n}!',ob1t:'Escreva seu sermão',ob1d:'Toque em «Novo sermão». Escreva o título e o texto; com «Versículo» o app coloca o texto bíblico e com «Novo ponto» organiza o esboço. Tudo é salvo sozinho.',
   ob2t:'Pregue pelo celular',ob2d:'Toque em «Pregar»: letra grande, cronômetro e avanço por partes. Você pode trocar o sermão entre português e espanhol sem criar uma cópia.',
   ob3t:'Estude a Palavra',ob3d:'Bíblia em português e espanhol, dicionários Bíblico, Hebraico e Grego, e curiosidades bíblicas. No editor, toque no livro para consultar e inserir no sermão.',
   ob4t:'Organize seu ministério',ob4d:'Agenda de pregações, categorias e favoritos. Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',ob_next:'Próximo',ob_go:'Começar',ob_skip:'Pular'});
@@ -2088,7 +2088,7 @@ function dictStop(){if(DICT){const r=DICT;DICT=null;try{r.stop()}catch(e){}}}
 /* =========================================================
    Entrada (login)
    ========================================================= */
-function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
+function showLogin(mode){window.__fromLogin=true;ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
   const langSeg=`<div class="seg" style="margin-top:6px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div>`;
   const keepE=(($('#lgE')||{}).value||showLogin._e||'').trim();
   if(mode==='rec'||mode==='sent'){
