@@ -609,3 +609,6 @@ html[data-mode="dark"] .cu-ans{background:var(--black);box-shadow:0 0 0 1px rgba
 .toast{bottom:calc(60px + var(--navpb) + 16px)}
 .vbar{bottom:calc(60px + var(--navpb) + 12px)}
 .pg-lang{height:34px;min-width:44px;padding:0 10px;border-radius:17px;border:1.5px solid var(--c-base,#D6AD55);color:var(--pfg);font-family:var(--head);font-weight:800;font-size:13px;letter-spacing:.06em}
+/* el botón de idioma queda siempre visible (discreto) como el de salir */
+.pg.clean .pg-top>#pgLang{opacity:.6;pointer-events:auto}
+.pg.clean.show .pg-top>#pgLang{opacity:1}
