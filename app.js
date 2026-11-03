@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v57';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v58';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1935,6 +1935,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
   ${!localMode&&authU?`<button class="btn ghost block" data-act="logout" style="color:var(--danger)">${ic('out')}${esc(t('logout'))}</button>`:''}
   <div class="foot-brand"><span class="mark sm"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
     <b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>${esc(t('tagline'))}</small>
+    <a class="ig-link" href="https://instagram.com/meupulpito" target="_blank" rel="noopener">${ic('ig')}<span>@meupulpito</span></a>
     <span class="fb-v">${esc(t('ver_l'))} 1.0 · © ${new Date().getFullYear()}</span></div>`}
 const PRIV={es:[['Tus sermones son tuyos','Todo lo que escribes en Meu Púlpito (sermones, agenda, biblioteca y notas) pertenece a ti. Se usa solo para que la app funcione y para que lo veas en cualquier celular donde entres con tu cuenta.'],
   ['Qué guardamos','Tu correo, tu nombre y tu foto (si los pones), tus sermones, agenda, biblioteca, notas y tus preferencias de lectura.'],
@@ -2114,7 +2115,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
    <button class="lnk" id="lgF" style="align-self:flex-end;margin-top:-6px">${esc(t('forgot'))}</button>
    <p class="err" id="lgErr" hidden></p>
    <button class="btn gold block" id="lgIn">${esc(t('enter'))}</button><button class="btn ghost block" id="lgUp">${esc(t('create'))}</button>
-   ${langSeg}</div>`;
+   ${langSeg}<a class="ig-link" style="align-self:center" href="https://instagram.com/meupulpito" target="_blank" rel="noopener">${ic('ig')}<span>@meupulpito</span></a></div>`;
   const err=m=>{const e=$('#lgErr');e.textContent=m;e.hidden=!m};
   const msg=e=>{const c=e&&e.code||'';return t(c.includes('invalid-email')?'e_email':c.includes('missing-password')?'e_pass':c.includes('weak-password')?'e_weak':c.includes('email-already-in-use')?'e_used':(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))?'e_cred':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen')};
   const doAuth=async create=>{err('');const em=$('#lgE').value.trim(),pw=$('#lgP').value;const b=create?$('#lgUp'):$('#lgIn');const tx=b.textContent;b.disabled=true;b.textContent=t(create?'creating':'entering');
