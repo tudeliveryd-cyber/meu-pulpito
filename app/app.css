@@ -671,3 +671,8 @@ html.subp .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px)}
 .ig-link svg{width:18px;height:18px;color:var(--gold-ink)}html[data-mode="dark"] .ig-link svg{color:var(--gold)}
 .ob-logo,.ob-logo img{height:96px}.ob-logo .b-d{display:none}html[data-mode="dark"] .ob-logo .b-d{display:block}html[data-mode="dark"] .ob-logo .b-l{display:none}
 .banner.pv{box-shadow:0 0 0 1.5px var(--gold) inset}.banner.pv.warn{box-shadow:0 0 0 1.5px var(--danger) inset}
+.inst{display:flex;flex-direction:column;align-items:center;gap:14px;padding:4px 0}
+.inst-st{list-style:none;margin:4px 0;padding:0;display:flex;flex-direction:column;gap:12px;align-self:stretch}
+.inst-st li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5}
+.inst-st .n{width:28px;height:28px;border-radius:9px;background:var(--navy);color:#D6AD55;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;flex:none}
+.inst-btn svg{width:19px;height:19px}.banner.inst-bn{box-shadow:0 0 0 1px var(--line) inset}

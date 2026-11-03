@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v65';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v66';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1251,7 +1251,7 @@ function planBanner(){const N=planNow();if(N.test&&!N.paid)return'';const k=N.pl
   if(N.grace){const g=Math.max(1,Math.ceil((N.graceEnd-Date.now())/864e5));return`<div class="banner pv warn"><div class="tx"><b>${esc(t('pv_exp',{d:fmtDay(N.until)}))}</b><br>${esc(t('pv_grace',{n:g}))}</div><div class="row">${btn}</div></div>`}
   if(N.expired&&!N.paid&&!ls.get('mp.pvx.'+N.until,0))return`<div class="banner pv"><div class="tx"><b>${esc(t('pv_free'))}</b><br>${esc(t('pv_free_d'))}</div><div class="row"><button class="btn sm ghost" data-act="pvHide" data-u="${N.until}">${esc(t('later'))}</button>${btn}</div></div>`;
   return''}
-function bannersHtml(){let h=planBanner();if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<button class="banner adp" data-act="admin"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</button>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
+function bannersHtml(){let h=planBanner();if(canShowInstall()&&!ls.get('mp.instx',0))h+=`<div class="banner inst-bn"><div class="tx"><b>${esc(t('in_t'))}</b><br>${esc(t('in_d'))}</div><div class="row"><button class="btn sm ghost" data-act="instHide">${esc(t('later'))}</button><button class="btn sm gold" data-act="install">${ic('dl')}${esc(t('in_btn').split(' ')[0])}</button></div></div>`;if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<button class="banner adp" data-act="admin"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</button>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
   if(rs)h+=`<div class="banner"><div class="tx">${esc(t('cont_preach'))}<br><b class="serif">${esc(derive(rs).title||t('untitled'))}</b>${r.tSec?' · '+fmtSec(r.tSec):''}</div>
     <div class="row"><button class="btn sm ghost" data-act="resNo">${esc(t('end'))}</button><button class="btn sm gold" data-act="resGo">${ic('lectern')}${esc(t('go_on'))}</button></div></div>`;
   if(ls.get(BAK,null)===null)ls.set(BAK,Date.now());
@@ -2098,6 +2098,31 @@ function dictStop(){if(DICT){const r=DICT;DICT=null;try{r.stop()}catch(e){}}}
 /* =========================================================
    Entrada (login)
    ========================================================= */
+
+/* ---------- instalar el app en el celular ---------- */
+let INSTP=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();INSTP=e;$$('.inst-btn').forEach(b=>b.hidden=false)});
+window.addEventListener('appinstalled',()=>{INSTP=null;$$('.inst-btn').forEach(b=>b.hidden=true);toast(t('in_ok'))});
+const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+const isIOS=()=>/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const canShowInstall=()=>!isStandalone()&&(INSTP||isIOS()||/Android/.test(navigator.userAgent));
+function instBtn(cls=''){return canShowInstall()?`<button class="btn ghost block inst-btn ${cls}" data-act="install">${ic('dl')}${esc(t('in_btn'))}</button>`:''}
+async function installApp(){if(INSTP){INSTP.prompt();try{await INSTP.userChoice}catch(e){}INSTP=null;return}
+  const ios=isIOS();const safari=ios&&/Safari/.test(navigator.userAgent)&&!/CriOS|FxiOS|EdgiOS|OPiOS|GSA/.test(navigator.userAgent);
+  const steps=ios?[t('in_i1'),t('in_i2'),t('in_i3')]:[t('in_a1'),t('in_a2'),t('in_a3')];
+  openSheet(`<div class="inst"><span class="ob-logo"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span><h3 class="ob-t">${esc(t('in_t'))}</h3>
+    <p class="sub" style="margin:0;text-align:center;font-size:14.5px;line-height:1.5">${esc(t('in_d'))}</p>
+    ${ios&&!safari?`<p class="pl-why" style="margin:0">${esc(t('in_saf'))}</p>`:''}
+    <ol class="inst-st">${steps.map((x,i)=>`<li><span class="n">${i+1}</span><span>${x}</span></li>`).join('')}</ol>
+    <button class="btn gold block" data-act="sheetClose">${esc(t('got_it'))}</button></div>`)}
+Object.assign(I18N.es,{in_btn:'Instalar la aplicación',in_t:'Instale Meu Púlpito',in_d:'Queda en la pantalla de inicio como cualquier aplicación, abre más rápido y funciona sin conexión.',in_ok:'Aplicación instalada',
+  in_saf:'En el iPhone, la instalación se hace desde Safari. Abra meupulpito.com/app en Safari y siga los pasos.',
+  in_i1:'Toque el botón <b>Compartir</b> <svg class="i" style="width:18px;height:18px;vertical-align:-3px"><use href="#i-share"/></svg> en la barra de Safari.',in_i2:'Elija <b>«Agregar a pantalla de inicio»</b>. Si no aparece, deslice la lista hacia abajo.',in_i3:'Toque <b>Agregar</b>. Meu Púlpito aparece en su pantalla de inicio.',
+  in_a1:'Toque el menú <b>⋮</b> del navegador, arriba a la derecha.',in_a2:'Elija <b>«Instalar aplicación»</b> o <b>«Agregar a pantalla principal»</b>.',in_a3:'Confirme. Meu Púlpito aparece en su pantalla de inicio.'});
+Object.assign(I18N.pt,{in_btn:'Instalar o aplicativo',in_t:'Instale o Meu Púlpito',in_d:'Fica na tela de início como qualquer aplicativo, abre mais rápido e funciona sem internet.',in_ok:'Aplicativo instalado',
+  in_saf:'No iPhone, a instalação é feita pelo Safari. Abra meupulpito.com/app no Safari e siga os passos.',
+  in_i1:'Toque no botão <b>Compartilhar</b> <svg class="i" style="width:18px;height:18px;vertical-align:-3px"><use href="#i-share"/></svg> na barra do Safari.',in_i2:'Escolha <b>«Adicionar à Tela de Início»</b>. Se não aparecer, deslize a lista para baixo.',in_i3:'Toque em <b>Adicionar</b>. O Meu Púlpito aparece na sua tela de início.',
+  in_a1:'Toque no menu <b>⋮</b> do navegador, no canto de cima.',in_a2:'Escolha <b>«Instalar aplicativo»</b> ou <b>«Adicionar à tela inicial»</b>.',in_a3:'Confirme. O Meu Púlpito aparece na sua tela de início.'});
+
 function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
   const langSeg=`<div class="seg" style="margin-top:6px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div>`;
   const keepE=(($('#lgE')||{}).value||showLogin._e||'').trim();
@@ -2125,7 +2150,7 @@ function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;vie
    <button class="lnk" id="lgF" style="align-self:flex-end;margin-top:-6px">${esc(t('forgot'))}</button>
    <p class="err" id="lgErr" hidden></p>
    <button class="btn gold block" id="lgIn">${esc(t('enter'))}</button><button class="btn ghost block" id="lgUp">${esc(t('create'))}</button>
-   ${langSeg}<a class="ig-link" style="align-self:center" href="https://instagram.com/meupulpito" target="_blank" rel="noopener">${ic('ig')}<span>@meupulpito</span></a></div>`;
+   ${instBtn()}${langSeg}<a class="ig-link" style="align-self:center" href="https://instagram.com/meupulpito" target="_blank" rel="noopener">${ic('ig')}<span>@meupulpito</span></a></div>`;
   const err=m=>{const e=$('#lgErr');e.textContent=m;e.hidden=!m};
   const msg=e=>{const c=e&&e.code||'';return t(c.includes('invalid-email')?'e_email':c.includes('missing-password')?'e_pass':c.includes('weak-password')?'e_weak':c.includes('email-already-in-use')?'e_used':(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))?'e_cred':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen')};
   const doAuth=async create=>{err('');const em=$('#lgE').value.trim(),pw=$('#lgP').value;const b=create?$('#lgUp'):$('#lgIn');const tx=b.textContent;b.disabled=true;b.textContent=t(create?'creating':'entering');
@@ -2173,7 +2198,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),planRenew:b=>planContact(b.dataset.k),pvHide:b=>{ls.set('mp.pvx.'+b.dataset.u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),onb:()=>onboarding(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{ls.set('mp.pvx.'+b.dataset.u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),onb:()=>onboarding(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},
