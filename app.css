@@ -592,3 +592,4 @@ html[data-mode="dark"] .wordmark .w2{color:var(--gold)}
 .cu-ok{display:flex;align-items:center;gap:6px;margin:0;font-size:12.5px;font-weight:700;color:var(--ok)}.cu-ok svg{width:16px;height:16px}
 .cu-ans p{font-size:17.5px}
 html[data-mode="dark"] .cu-ans{background:var(--black);box-shadow:0 0 0 1px rgba(214,173,85,.45) inset}
+.cu-q b{display:block;font-family:var(--head);font-weight:700}.cu-q small{display:block;font-size:13px;color:var(--muted);margin-top:2px}
