@@ -637,3 +637,6 @@ a.btn{text-decoration:none}
 .brand .tagline{justify-content:center}.brand .tagline i{flex:0 0 20px}
 /* editor: la fila de categoría, idioma, detalles y modelos queda fija bajo la barra de arriba */
 .ed-meta{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--edTop,61px));z-index:9;background:var(--surface);padding-bottom:10px;max-width:none;padding-left:max(22px,calc((100% - 716px)/2));padding-right:max(22px,calc((100% - 716px)/2))}
+/* que el cursor nunca quede escondido detrás de las barras fijas */
+html:has(.ed-view){scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--edTop,61px) + 56px + 12px)}
+.doc>*{scroll-margin-top:calc(env(safe-area-inset-top,0px) + var(--edTop,61px) + 56px + 12px)}
