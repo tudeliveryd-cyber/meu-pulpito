@@ -937,7 +937,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v70';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v71';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1005,7 +1005,7 @@ function plansSheet(reason){const N=planNow();const F=PCFG.free;const c=curOrder
       <div class="pl-price">${esc(money(x[c],c))} <small>${esc(t('pl_per_'+k))}</small></div>
       <span class="sub">${esc(money(x[c==='brl'?'pyg':'brl'],c==='brl'?'pyg':'brl'))} ${esc(t('pl_per_'+k))}${k!=='m'?' · '+esc(t('pl_eq',{v:money(Math.round(x[c]/PMON[k]),c)})):''}</span>
       ${sv>0?`<span class="pl-save">${esc(t('pl_save',{n:sv}))}</span>`:''}
-      ${k==='m'?feat([t('pl_p1'),t('pl_p2'),t('pl_p3'),t('pl_p4'),t('pl_p5'),t('pl_p6')]):''}
+      ${k==='m'?feat([t('pl_p1'),t('pl_p2'),t('pl_p3'),t('pl_p4'),t('pl_p6')]):''}
       <button class="btn ${k==='a'?'gold':'dark'} block" data-pl-go="${k}">${esc(t('pl_go_'+k))}</button></div>`};
   const sh=openSheet(`<div class="pl-wrap"><div class="between"><h3 class="pl-t">${esc(t('pl_choose'))}</h3><button class="iconbtn" data-pl-x aria-label="${esc(t('close'))}">${ic('x')}</button></div>
     ${reason?`<p class="pl-why">${esc(reason)}</p>`:`<p class="sub" style="margin:0;font-size:14.5px">${esc(t('pl_sub'))}</p>`}
@@ -1349,8 +1349,8 @@ function soonHtml(ev,s){const k=soonDays(ev);if(!k)return'';const n=k-1;
    <div class="sn-tx"><b>${esc(evPlace(ev))}${ev.type?' · '+esc(ev.type):''}</b>${s?`<span class="serif">${esc(ti)}</span>`:`<span>${esc(t('sn_none'))}</span>`}</div>
    <div class="row">${s?`<button class="btn sm ghost" data-act="open" data-id="${esc(s.id)}">${ic('doc')}${esc(t('sn_rev'))}</button><button class="btn sm gold" data-act="preach" data-id="${esc(s.id)}">${ic('lectern')}${esc(t('sn_go'))}</button>`
      :`<button class="btn sm ghost" data-act="tab" data-k="agenda">${esc(t('sn_ag'))}</button><button class="btn sm gold" data-act="evPick" data-id="${esc(ev.id)}">${esc(t('pick_s'))}</button>`}</div></div>`}
-Object.assign(I18N.es,{dx_all_ph:'Buscar en los tres diccionarios',sn_today:'Hoy predicas',sn_tom:'Mañana predicas',sn_in:'Predicas en {n} días',sn_none:'Todavía no elegiste el sermón para este culto.',sn_rev:'Revisar',sn_go:'Predicar',sn_ag:'Ver agenda'});
-Object.assign(I18N.pt,{dx_all_ph:'Buscar nos três dicionários',sn_today:'Hoje você prega',sn_tom:'Amanhã você prega',sn_in:'Você prega em {n} dias',sn_none:'Você ainda não escolheu o sermão para este culto.',sn_rev:'Revisar',sn_go:'Pregar',sn_ag:'Ver agenda'});
+Object.assign(I18N.es,{lib_ph:'Buscar en tu biblioteca',dx_all_ph:'Buscar en los tres diccionarios',sn_today:'Hoy predicas',sn_tom:'Mañana predicas',sn_in:'Predicas en {n} días',sn_none:'Todavía no elegiste el sermón para este culto.',sn_rev:'Revisar',sn_go:'Predicar',sn_ag:'Ver agenda'});
+Object.assign(I18N.pt,{lib_ph:'Buscar na sua biblioteca',dx_all_ph:'Buscar nos três dicionários',sn_today:'Hoje você prega',sn_tom:'Amanhã você prega',sn_in:'Você prega em {n} dias',sn_none:'Você ainda não escolheu o sermão para este culto.',sn_rev:'Revisar',sn_go:'Pregar',sn_ag:'Ver agenda'});
 const RES='mp.resume',RES_MS=6*3600e3,BAK='pulpito.bak',WEEK=7*864e5;
 function getResume(){const r=ls.get(RES,null);return r&&r.id&&Date.now()-(r.at||0)<RES_MS?r:null}
 
@@ -1453,7 +1453,7 @@ function notesHtml(){const q=norm(listState.q.trim());
   let arr=liveN().sort((a,b)=>(b.updated||0)-(a.updated||0)).filter(n=>(!listState.nt||n.type===listState.nt)&&(!q||norm([n.title,n.text,n.ref].join(' ')).includes(q)));
   return`<div class="between"><h1 class="h">${esc(t('lib'))}</h1><button class="iconbtn gold" data-act="nNew" aria-label="${esc(t('n_new'))}">${ic('plus')}</button></div>
   ${modeSeg()}
-  <label class="search">${ic('search')}<input id="lq" type="search" value="${esc(listState.q)}" placeholder="${esc(t('search_ph'))}" autocomplete="off" data-input="listQ"></label>
+  <label class="search">${ic('search')}<input id="lq" type="search" value="${esc(listState.q)}" placeholder="${esc(t('lib_ph'))}" autocomplete="off" data-input="listQ"></label>
   <button class="btn ghost" data-act="recG">${ic('mic')}${esc(t('voice_notes'))}</button>
   <div class="chips"><button class="chip" data-act="nt" data-t="" aria-pressed="${!listState.nt}">${esc(t('all'))}</button>${NTYPES.map(k=>`<button class="chip" data-act="nt" data-t="${k}" aria-pressed="${listState.nt===k}">${esc(t('nt_'+k))}</button>`).join('')}</div>
   <div class="list">${arr.length?arr.map(n=>`<button class="sm-card" data-act="nOpen" data-id="${esc(n.id)}" style="text-align:left">
