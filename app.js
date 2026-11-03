@@ -26,7 +26,7 @@ function copyText(txt){return new Promise(ok=>{const fb=()=>{const ta=document.c
    Idiomas
    ========================================================= */
 const I18N={
-es:{nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Configuración',nav_dic:'Diccionarios',
+es:{tagline:'PREPARA. ORGANIZA. PREDICA.',nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Configuración',nav_dic:'Diccionarios',
 greet_m:'Buenos días,',greet_a:'Buenas tardes,',greet_n:'Buenas noches,',pastor:'Pastor',
 search_ph:'Buscar sermón, versículo o palabra',prepare:'Preparar',new_sermon:'Nuevo sermón',new_desc:'Abre la hoja y empieza a escribir. Se guarda solo.',
 st_total:'Sermones',st_done:'Predicados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recientes',my_sermons:'Mis sermones',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima predicación',
@@ -84,7 +84,7 @@ night:'Lectura nocturna',night_d:'Fondo negro, letras blancas y brillo más bajo
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
-pt:{nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Configurações',nav_dic:'Dicionários',
+pt:{tagline:'PREPARE. ORGANIZE. PREGUE.',nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Configurações',nav_dic:'Dicionários',
 greet_m:'Bom dia,',greet_a:'Boa tarde,',greet_n:'Boa noite,',pastor:'Pastor',
 search_ph:'Buscar sermão, versículo ou palavra',prepare:'Preparar',new_sermon:'Novo sermão',new_desc:'Abra a folha e comece a escrever. Salva sozinho.',
 st_total:'Sermões',st_done:'Pregados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recentes',my_sermons:'Meus sermões',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima pregação',
@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v47';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v48';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -886,7 +886,7 @@ const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planStat
 function applyPlan(){const b=!!(planState&&planState.blocked)||waitingOk();if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
 function watchPlan(u){try{firebase.firestore().collection('planos').doc(u.uid).onSnapshot(d=>{planState=d.exists?d.data():null;planLoaded=true;applyPlan()},()=>{})}catch(e){}}
 function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.remove('tabs');const w=!(planState&&planState.blocked);const wa=String(PCFG.wa||'').replace(/\D/g,'');const em=(authU&&authU.email)||'';
-  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t(w?'wt_t':'blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t(w?'wt_d':'blk_d'))}</p>${w&&em?`<p class="sub" style="margin:0;font-size:14px">${esc(t('wt_acc'))}: <b>${esc(em)}</b></p>`:''}${w&&wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(t('wt_msg',{e:em}))}" target="_blank" rel="noopener">${ic('chat')}${esc(t('wt_wa'))}</a>`:''}<button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
+  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-name.png" alt="Meu Púlpito"><img class="b-l" src="logo-name-light.png" alt="Meu Púlpito"><div class="tagline"><i></i><span>${esc(t('tagline'))}</span><i></i></div></div><h2>${esc(t(w?'wt_t':'blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t(w?'wt_d':'blk_d'))}</p>${w&&em?`<p class="sub" style="margin:0;font-size:14px">${esc(t('wt_acc'))}: <b>${esc(em)}</b></p>`:''}${w&&wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(t('wt_msg',{e:em}))}" target="_blank" rel="noopener">${ic('chat')}${esc(t('wt_wa'))}</a>`:''}<button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
 /* =========================================================
    Planes: Gratis · Premium mensual · trimestral · anual
    El plan de cada cuenta está en planos/{uid} y SOLO el administrador puede cambiarlo (reglas de Firestore).
@@ -1176,7 +1176,7 @@ function homeHtml(){
   return`
   <div class="row topbrand">
     <span class="mark"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
-    <div class="wordmark" style="flex:1;min-width:0" aria-label="Meu Púlpito"><b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>PREPARE. ORGANIZE. PREGUE.</small></div>
+    <div class="wordmark" style="flex:1;min-width:0" aria-label="Meu Púlpito"><b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>${esc(t('tagline'))}</small></div>
     <button class="iconbtn bg${meta.photo?' hasph':''}" data-act="tab" data-k="profile" aria-label="${esc(t('nav_profile'))}">${meta.photo?`<img src="${esc(meta.photo)}" alt="">`:ic('gear')}</button>
   </div>
   <div class="hello"><span class="sub">${esc(greet())}</span><b>${esc(meta.name||t('pastor'))}</b></div>
@@ -1937,7 +1937,7 @@ async function bioRegister(){const rnd=n=>crypto.getRandomValues(new Uint8Array(
   return b64(c.rawId)}
 async function bioCheck(id){const c=await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:unb64(id)}],userVerification:'required',timeout:60000}});return !!c}
 function showLock(){const cfg=lockCfg();if(!cfg||locked)return;locked=true;const el=document.createElement('div');el.id='lock';el.className='lock';
-  el.innerHTML=`<div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('pin_enter'))}</h2>
+  el.innerHTML=`<div class="brand"><img class="b-d" src="logo-name.png" alt="Meu Púlpito"><img class="b-l" src="logo-name-light.png" alt="Meu Púlpito"><div class="tagline"><i></i><span>${esc(t('tagline'))}</span><i></i></div></div><h2>${esc(t('pin_enter'))}</h2>
    <input class="inp pin" id="lkPin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" aria-label="${esc(t('pin_enter'))}">
    <p class="err" id="lkErr" hidden></p>
    <button class="btn gold block" id="lkGo">${esc(t('unlock'))}</button>
@@ -2039,7 +2039,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
   const langSeg=`<div class="seg" style="margin-top:6px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div>`;
   const keepE=(($('#lgE')||{}).value||showLogin._e||'').trim();
   if(mode==='rec'||mode==='sent'){
-    $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div>
+    $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-name.png" alt="Meu Púlpito"><img class="b-l" src="logo-name-light.png" alt="Meu Púlpito"><div class="tagline"><i></i><span>${esc(t('tagline'))}</span><i></i></div></div>
      ${mode==='rec'?`<h2>${esc(t('rec_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('rec_d'))}</p>
      <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="${prefs.ui==='pt'?'seu@email.com':'tu@correo.com'}"></div>
      <p class="err" id="lgErr" hidden></p>
@@ -2056,7 +2056,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
       try{await firebase.auth().sendPasswordResetEmail(em);showLogin._e=em;showLogin('sent')}
       catch(e){const c=e&&e.code||'';err(t(c.includes('invalid-email')?'e_email':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen'));b.disabled=false;b.textContent=t('rec_send')}};
     $('#lgSend').onclick=send;$('#lgE').addEventListener('keydown',e=>{if(e.key==='Enter')send()});setTimeout(()=>{try{$('#lgE').focus()}catch(e){}},50);return}
-  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
+  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-name.png" alt="Meu Púlpito"><img class="b-l" src="logo-name-light.png" alt="Meu Púlpito"><div class="tagline"><i></i><span>${esc(t('tagline'))}</span><i></i></div></div><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
    <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="${prefs.ui==='pt'?'seu@email.com':'tu@correo.com'}"></div>
    <div class="fld"><label for="lgP">${esc(t('pass'))}</label><div class="pwbox"><input class="inp" id="lgP" type="password" autocomplete="current-password" placeholder="${esc(t('pass_ph'))}"><button class="iconbtn" id="lgEye" type="button" aria-label="${esc(t('show_pw'))}" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
    <button class="lnk" id="lgF" style="align-self:flex-end;margin-top:-6px">${esc(t('forgot'))}</button>

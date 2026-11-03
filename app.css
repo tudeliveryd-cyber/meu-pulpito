@@ -631,3 +631,7 @@ html[data-mode="dark"] .cu-ans{background:var(--black);box-shadow:0 0 0 1px rgba
 .sub-pay{display:flex;justify-content:space-between;font-size:13.5px;border-top:1px solid var(--line);padding-top:6px}
 .ac-row{display:grid;grid-template-columns:90px 1fr 1fr;gap:8px;align-items:center}.ac-row.ac3{grid-template-columns:1fr 1fr 1fr}.ac-h span{font-size:12px;color:var(--muted);font-weight:700}
 a.btn{text-decoration:none}
+.brand .tagline{display:flex;align-items:center;gap:8px;margin-top:6px}
+.brand .tagline i{flex:1;height:2.5px;border-radius:2px;background:linear-gradient(90deg,transparent,#D6AD55)}.brand .tagline i:last-child{background:linear-gradient(90deg,#D6AD55,transparent)}
+.brand .tagline span{font-family:var(--head);font-weight:800;font-size:clamp(11px,3.4vw,14px);letter-spacing:.07em;color:var(--fg);white-space:nowrap}
+.brand .tagline{justify-content:center}.brand .tagline i{flex:0 0 20px}
