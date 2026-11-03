@@ -444,3 +444,7 @@ html.tabs #app{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling
 .pwbox .iconbtn[aria-pressed="true"]{color:var(--gold-ink)}
 .login .okmark{width:64px;height:64px;border-radius:32px;background:var(--okbg);color:var(--ok);display:flex;align-items:center;justify-content:center}
 .login .okmark svg{width:30px;height:30px;stroke-width:2.4}
+.crop{position:relative;width:min(100%,340px);aspect-ratio:1;margin:4px auto 0;overflow:hidden;border-radius:20px;background:#000;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.crop img{position:absolute;max-width:none;pointer-events:none;-webkit-user-drag:none}
+.crop-mask{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 999px rgba(8,13,22,.62);outline:2px solid rgba(214,173,85,.9);outline-offset:-2px;pointer-events:none}
+.crop-z{display:flex;align-items:center;gap:10px;color:var(--faint)}.crop-z .rng{flex:1}.crop-z svg{width:18px;height:18px;flex:none}
