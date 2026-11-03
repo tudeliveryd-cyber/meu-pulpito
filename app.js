@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v60';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v61';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -2088,7 +2088,7 @@ function dictStop(){if(DICT){const r=DICT;DICT=null;try{r.stop()}catch(e){}}}
 /* =========================================================
    Entrada (login)
    ========================================================= */
-function showLogin(mode){window.__fromLogin=true;ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
+function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;view.overlay='login';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
   const langSeg=`<div class="seg" style="margin-top:6px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div>`;
   const keepE=(($('#lgE')||{}).value||showLogin._e||'').trim();
   if(mode==='rec'||mode==='sent'){
@@ -2209,7 +2209,7 @@ const ACT={
   impOpen:()=>importSheet(),autoBak:()=>autoBakSheet(),
   lockT:b=>{if((b.dataset.v==='on')!==!!lockCfg())lockSetup()},
   bioT:b=>{const c=lockCfg();if(c&&(b.dataset.v==='on')!==!!c.bio)bioAvailable().then(ok=>ok?bioToggle():toast(t('bio_fail')))},
-  logout:async()=>{unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;try{await firebase.auth().signOut()}catch(e){}authU=null;sermons=[];agenda=[];showLogin()},
+  logout:async()=>{unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;try{await firebase.auth().signOut()}catch(e){}authU=null;sermons=[];agenda=[];view.tab='home';view.prev=null;showLogin()},
   toLogin:()=>toLogin()
 };
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-keep]');if(b&&E)e.preventDefault()});
