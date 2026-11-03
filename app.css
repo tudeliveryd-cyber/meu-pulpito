@@ -670,3 +670,4 @@ html.subp .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px)}
 .ig-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:7px 14px;border-radius:18px;box-shadow:0 0 0 1px var(--line) inset;color:var(--fg);text-decoration:none;font-family:var(--head);font-weight:700;font-size:13.5px}
 .ig-link svg{width:18px;height:18px;color:var(--gold-ink)}html[data-mode="dark"] .ig-link svg{color:var(--gold)}
 .ob-logo,.ob-logo img{height:96px}.ob-logo .b-d{display:none}html[data-mode="dark"] .ob-logo .b-d{display:block}html[data-mode="dark"] .ob-logo .b-l{display:none}
+.banner.pv{box-shadow:0 0 0 1.5px var(--gold) inset}.banner.pv.warn{box-shadow:0 0 0 1.5px var(--danger) inset}
