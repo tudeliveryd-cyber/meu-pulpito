@@ -448,7 +448,7 @@ function dxWire(sh,o){sh.addEventListener('click',ev=>{const b=ev.target.closest
   else if(a==='ai'){o.ai&&o.ai(x)}})}
 function dxOpen(k,id){if(k==='p')return dxOpenPreg(+id);if(k==='b')return dxOpenBib(id);return dxOpenLex(k,+id)}
 
-async function dxOpenLex(k,n){const L=lxLang();let d,ch;try{[d,ch]=await Promise.all([lxIdx(k),lxChunk(k,n)])}catch(e){toast(t('dx_err'));return}
+async function dxOpenLex(k,n){if(!dicQuota())return;const L=lxLang();let d,ch;try{[d,ch]=await Promise.all([lxIdx(k),lxChunk(k,n)])}catch(e){toast(t('dx_err'));return}
   const e=d.by[n];if(!e){toast(t('dict_nf'));return}const x=ch[n]||{me:'',s:[],r:[],rn:0,mr:[]};
   let S=null;try{S=(await loadStrong(k)).d[n]||null}catch(err){}
   let P=[];try{P=((await loadPreg()).byN[(k==='h'?'H':'G')+n]||[])}catch(err){}
@@ -492,7 +492,7 @@ async function dxOpenLex(k,n){const L=lxLang();let d,ch;try{[d,ch]=await Promise
   if(miss.length&&navigator.onLine){const src=miss.map(([,s])=>s[0]).join(' | ');const v=await lxGet('s'+id,src,L).catch(()=>null);if(!sh.isConnected)return;
     const parts=v?v.split('|').map(z=>z.trim()):[];if(parts.length===miss.length){miss.forEach(([i],j)=>{const w=$(`.dx-snw[data-i="${i}"]`,sh);if(w){w.textContent=parts[j];w.title=senses[i][0]}});const nn=$('.dx-snn',sh);if(nn)nn.textContent=t('dx_ctx_n')+' '+t('lx_auto')}}}
 
-async function dxOpenBib(name){const L=lxLang();let d,ch;try{d=await bibIdx();ch=await bibChunk(name)}catch(e){toast(t('dx_err'));return}
+async function dxOpenBib(name){if(!dicQuota())return;const L=lxLang();let d,ch;try{d=await bibIdx();ch=await bibChunk(name)}catch(e){toast(t('dx_err'));return}
   const i=d.byName[String(name).toLowerCase()];const e=i!=null?d.e[i]:[name,0,'',0,0];const [eas,smi,refs]=ch[e[0]]||['','',[]];
   const main=eas||smi;const other=eas&&smi?smi:'';
   // relacionados: "See X" dentro del artículo y palabras originales del predicador
@@ -522,7 +522,7 @@ async function dxOpenBib(name){const L=lxLang();let d,ch;try{d=await bibIdx();ch
   if(tt&&norm(tt)!==norm(e[0]))$('#dxT',sh).innerHTML=`${esc(tt)} <span class="sub" style="font-size:15px;font-weight:600">· ${esc(e[0])}</span>`;if(nm&&$('#dxNm',sh))$('#dxNm',sh).textContent=nm;
   if(main){const v=await dxTrInto(sh,'#dxD','b'+e[0],head,L);const mb=$('#dxMore',sh);if(mb&&v!==head){mb.hidden=false;mb.onclick=async()=>{mb.disabled=true;const rest=await lxGet('b'+e[0]+'r',main.slice(head.length-1,head.length+4000),L);if(rest){$('#dxD',sh).textContent=v.replace(/…$/,'')+' '+rest;mb.remove()}else{mb.disabled=false;toast(t('dict_tr_err'))}}}}}
 
-async function dxOpenPreg(i){try{await loadPreg()}catch(e){toast(t('dx_err'));return}const e=PREG.e[i];if(!e)return;const L=lxLang();const pt=L==='pt';const [wpt,wes,mpt,mes,o,vs]=e;
+async function dxOpenPreg(i){if(!dicQuota())return;try{await loadPreg()}catch(e){toast(t('dx_err'));return}const e=PREG.e[i];if(!e)return;const L=lxLang();const pt=L==='pt';const [wpt,wes,mpt,mes,o,vs]=e;
   const sh=dxSheet(`<div class="sd-head"><span class="sd-num">${esc(t('dx_b'))}</span><span class="sub">${esc(t('dx_preg'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
     <h3 class="sd-name">${esc(pt?wpt:wes)}</h3>${dxActs(dxIsFav('p',i))}
     ${dxSec(t('dx_def'),`<p class="sd-p">${esc(pt?mpt:mes)}</p>`)}
@@ -566,14 +566,14 @@ function curResHtml(){const l=cuL();let list=CV.q.trim()?curSearch(CV.q):CUR.e.s
   const dic=CV.q.trim().length>2&&CV.cat!=='fav'?curDicHtml():'';
   if(!list.length)return`${dic?`<p class="sub" style="margin:0">${esc(t('cu_none2'))}</p>`+dic:`<div class="empty"><p style="margin:0">${esc(t(CV.cat==='fav'&&!CV.q?'cu_nofav':'cu_none'))}</p></div>`}${CV.q.trim().length>4?(aiKey()?`<button class="btn gold" data-cu="ai" style="align-self:center">${ic('spark')}${esc(t('cu_ai'))}</button>`:`<p class="dx-sm" style="text-align:center">${esc(t('cu_ai_need'))}</p>`):''}`;
   const groups=CV.q.trim()||CV.cat?[[null,list]]:Object.keys(CUR.cats).map(k=>[k,list.filter(e=>e.cat===k)]);
-  return groups.map(([k,items])=>`${k?`<span class="sect cu-sect">${esc(CUR.cats[k][l])}</span>`:''}<div class="cu-list">${items.map(e=>`<button class="cu-item" data-cu="open" data-id="${e.id}"><span class="cu-q">${esc(e.q[l])}</span>${F.includes(e.id)?`<span class="cu-st">${ic('star')}</span>`:''}${ic('next')}</button>`).join('')}</div>`).join('')+dic}
+  return groups.map(([k,items])=>`${k?`<span class="sect cu-sect">${esc(CUR.cats[k][l])}</span>`:''}<div class="cu-list">${items.map(e=>`<button class="cu-item" data-cu="open" data-id="${e.id}"><span class="cu-q">${esc(e.q[l])}</span>${!curFree(e.id)?`<span class="cu-lock" aria-label="Premium">Premium</span>`:''}${F.includes(e.id)?`<span class="cu-st">${ic('star')}</span>`:''}${ic('next')}</button>`).join('')}</div>`).join('')+dic}
 function curAfter(){if(!CUR){loadCur().then(()=>{if(view.tab==='cur')render()}).catch(()=>{});return}
   const i=$('#cuQ');if(i){i.oninput=()=>{CV.q=i.value;clearTimeout(i._t);i._t=setTimeout(()=>{const r=$('#cuRes');if(r)r.innerHTML=curResHtml()},180)};i.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();i.blur()}}}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cu]');if(!b||view.tab!=='cur')return;const a=b.dataset.cu;
   if(a==='cat'){CV.cat=b.dataset.k;$$('[data-cu=cat]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const r=$('#cuRes');if(r)r.innerHTML=curResHtml()}
   else if(a==='open')curOpen(+b.dataset.id);else if(a==='dic')dxOpen(b.dataset.k,b.dataset.id);else if(a==='ai')curAi(CV.q.trim())});
 function curText(e,l){return[e.q[l],'',e.a[l],'',e.x[l],e.r.length?'\n'+(l?'Referências: ':'Referencias: ')+(l?e.r:(e.r_es||e.r)).map(r=>refStr(r,l?'pt':'es')).join('; '):'',e.c?'\n'+t('cu_more')+' '+e.c[l]:'','\n— Meu Púlpito'].filter(x=>x!=='').join('\n')}
-function curOpen(id){const e=CUR.by[id];if(!e)return;const l=cuL(),L=l?'pt':'es';const refs=(l?e.r:(e.r_es||e.r));const fav=cuFavs().includes(id);
+function curOpen(id){const e=CUR.by[id];if(!e)return;if(!curFree(id)){planGate('cur');return}const l=cuL(),L=l?'pt':'es';const refs=(l?e.r:(e.r_es||e.r));const fav=cuFavs().includes(id);
   const sh=openSheet(`<div class="dx-entry"><div class="sd-head"><span class="sd-num">${esc(CUR.cats[e.cat][l])}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
     <h3 class="cu-h">${esc(e.q[l])}</h3>
     <div class="cu-ans"><span class="lbl">${esc(t('cu_ans'))}</span><p>${esc(e.a[l])}</p></div>
@@ -718,7 +718,7 @@ async function translateHtml(s,to,prog){const from=sLang(s);const d=docOf(s);try
   return cleanHtml(d.innerHTML)}
 const hashStr=x=>{let h=5381;for(let i=0;i<x.length;i++)h=((h<<5)+h+x.charCodeAt(i))|0;return(h>>>0).toString(36)+x.length};
 const trCached=(s,to)=>{const c=s.tr&&s.tr[to];return c&&c.h===hashStr(getHtml(s))?c.html:null};
-async function translateSermon(id){const s=sermons.find(x=>x.id===id);if(!s)return;closeSheet();const from=sLang(s),to=from==='pt'?'es':'pt';
+async function translateSermon(id){const s=sermons.find(x=>x.id===id);if(!s)return;if(!canNewSermon())return;closeSheet();const from=sLang(s),to=from==='pt'?'es':'pt';
   const d=docOf(s);const chars=d.textContent.length;
   const sh=openSheet(`<h3>${esc(t('tr_t'))}</h3><p style="margin:0;font-size:15px;line-height:1.5">${esc(t('tr_d'))}</p><p class="sub" style="margin:0">${esc(aiKey()?t('ai_tr_ai'):t('tr_lim',{n:chars.toLocaleString()}))}</p>
     <div class="sub" id="trProg" hidden></div><div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn gold" id="trGo">${ic('lang')}${esc(t('tr_go'))}</button></div>`);
@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v43';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v45';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -885,6 +885,121 @@ function applyPlan(){const b=!!(planState&&planState.blocked);if(b===blocked)ret
 function watchPlan(u){try{firebase.firestore().collection('planos').doc(u.uid).onSnapshot(d=>{planState=d.exists?d.data():null;applyPlan()},()=>{})}catch(e){}}
 function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
   $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t('blk_d'))}</p><button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
+/* =========================================================
+   Planes: Gratis · Premium mensual · trimestral · anual
+   El plan de cada cuenta está en planos/{uid} y SOLO el administrador puede cambiarlo (reglas de Firestore).
+   Precios, límites y el «período de pruebas» están en config/app, editables desde el panel.
+   ========================================================= */
+const PCFG_DEF={test:true,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:5,dic:5,cur:15}};
+let PCFG=Object.assign({},PCFG_DEF,ls.get('mp.pcfg',{}));
+function watchCfg(){try{firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);if(ready&&!view.overlay)refreshBg()}},()=>{})}catch(e){}}
+const PMON={m:1,t:3,a:12};
+function planNow(){const p=planState||{};const until=p.until||0;const paid=PMON[p.plan]&&until>Date.now();
+  return{plan:paid?p.plan:'free',paid,test:!!PCFG.test,premium:paid||!!PCFG.test||isAdmin(),until,since:p.since||0,expired:!!(PMON[p.plan]&&until&&until<=Date.now()),last:p.plan,pays:Array.isArray(p.pays)?p.pays:[]}}
+const isPremium=()=>planNow().premium;
+const money=(n,c)=>c==='brl'?'R$ '+n.toLocaleString('pt-BR'):'₲ '+n.toLocaleString('es-PY');
+const fmtDay=ts=>ts?new Date(ts).toLocaleDateString(prefs.ui==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'short',year:'numeric'}):'—';
+const addMonths=(ts,n)=>{const d=new Date(ts);d.setMonth(d.getMonth()+n);return d.getTime()};
+Object.assign(I18N.es,{pl_choose:'Elige tu plan',pl_sub:'Use Meu Púlpito gratis o desbloquee todas las herramientas con Premium.',pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MEJOR PRECIO · AHORRA CON EL PLAN ANUAL',
+  pl_per_m:'por mes',pl_per_t:'cada 3 meses',pl_per_a:'por año',pl_save:'Ahorra {n}% frente al mensual',pl_eq:'equivale a {v} por mes',
+  pl_go_free:'Continuar gratis',pl_go_m:'Elegir Premium Mensual',pl_go_t:'Elegir Premium Trimestral',pl_go_a:'Elegir Premium Anual',
+  pl_f1:'Hasta {n} sermones',pl_f2:'Editor, Biblia y Agenda completos',pl_f3:'Modo Predicar básico',pl_f4:'Diccionarios: {n} artículos completos por día',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e historial',
+  pl_p1:'Sermones sin límite',pl_p2:'Diccionarios Bíblico, Hebreo y Griego completos',pl_p3:'Todas las curiosidades bíblicas',pl_p4:'Modo Predicar avanzado: traducción ES/PT y desplazamiento automático',pl_p5:'Sincronización y respaldo en su cuenta',pl_p6:'Todo lo del plan gratis',
+  pl_cond:'Condiciones: el acceso dura el período pagado. Por ahora la renovación no es automática: antes del vencimiento le avisamos para renovar. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
+  pl_pay_t:'Contratar {p}',pl_pay_d:'Envíe un mensaje al administrador para pagar por transferencia, Pix o billetera. Cuando el administrador confirme el pago, su cuenta pasa a Premium.',pl_pay_wa:'Enviar mensaje por WhatsApp',pl_pay_mail:'Enviar correo',pl_pay_msg:'Hola, quiero contratar {p} de Meu Púlpito ({v}). Mi cuenta: {e}',
+  pl_test:'Período de pruebas: todas las funciones están liberadas.',pl_lock_s:'El plan gratis permite hasta {n} sermones. Sus sermones no se pierden; para crear más, pase a Premium.',pl_lock_d:'El plan gratis permite {n} artículos completos por día en los diccionarios. Mañana se liberan de nuevo, o pase a Premium.',pl_lock_c:'Esta curiosidad es del plan Premium.',pl_lock_p:'Esta función del Modo Predicar es del plan Premium.',pl_see:'Ver planes',
+  sub_t:'Mi suscripción',sub_plan:'Plan actual',sub_state:'Estado',sub_on:'Activa',sub_exp:'Vencida',sub_freeS:'Gratis',sub_since:'Contratado el',sub_until:'Vence el',sub_pays:'Pagos',sub_nopay:'Sin pagos registrados.',sub_change:'Cambiar de plan',sub_cancel:'Cancelar renovación',sub_cancel_d:'Su plan no se renueva solo: no hay nada que cancelar. Al vencer, vuelve al plan gratis y conserva sus datos.',sub_left:'{n} días restantes',
+  ad_plan:'Plan',ad_cfg:'Precios y pruebas',ad_cfg_d:'Precios, límites del plan gratis, contacto y período de pruebas',ad_test:'Período de pruebas (todo liberado)',ad_wa:'WhatsApp para pagos (con código de país)',ad_save:'Guardar',ad_saved:'Guardado',ad_setp:'Plan de {u}',ad_from:'Desde',ad_to:'Hasta',ad_amt:'Monto pagado',ad_note:'Nota (ej.: transferencia Itaú)',ad_act:'Activar',ad_free:'Pasar a gratis',ad_cnt:'{f} gratis · {p} premium · {v} vencidas',ad_lim:'Límites del plan gratis: sermones · artículos por día · curiosidades',ad_done:'Plan actualizado'});
+Object.assign(I18N.pt,{pl_choose:'Escolha seu plano',pl_sub:'Use o Meu Púlpito grátis ou libere todas as ferramentas com o Premium.',pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MELHOR PREÇO · ECONOMIZE COM O PLANO ANUAL',
+  pl_per_m:'por mês',pl_per_t:'a cada 3 meses',pl_per_a:'por ano',pl_save:'Economize {n}% em relação ao mensal',pl_eq:'equivale a {v} por mês',
+  pl_go_free:'Continuar grátis',pl_go_m:'Escolher Premium Mensal',pl_go_t:'Escolher Premium Trimestral',pl_go_a:'Escolher Premium Anual',
+  pl_f1:'Até {n} sermões',pl_f2:'Editor, Bíblia e Agenda completos',pl_f3:'Modo Pregar básico',pl_f4:'Dicionários: {n} artigos completos por dia',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e histórico',
+  pl_p1:'Sermões sem limite',pl_p2:'Dicionários Bíblico, Hebraico e Grego completos',pl_p3:'Todas as curiosidades bíblicas',pl_p4:'Modo Pregar avançado: tradução ES/PT e rolagem automática',pl_p5:'Sincronização e backup na sua conta',pl_p6:'Tudo do plano grátis',
+  pl_cond:'Condições: o acesso dura o período pago. Por enquanto a renovação não é automática: antes do vencimento avisamos para renovar. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
+  pl_pay_t:'Contratar {p}',pl_pay_d:'Envie uma mensagem ao administrador para pagar por Pix, transferência ou carteira. Quando o administrador confirmar o pagamento, sua conta passa a Premium.',pl_pay_wa:'Enviar mensagem no WhatsApp',pl_pay_mail:'Enviar e-mail',pl_pay_msg:'Olá, quero contratar o {p} do Meu Púlpito ({v}). Minha conta: {e}',
+  pl_test:'Período de testes: todas as funções estão liberadas.',pl_lock_s:'O plano grátis permite até {n} sermões. Seus sermões não se perdem; para criar mais, passe para o Premium.',pl_lock_d:'O plano grátis permite {n} artigos completos por dia nos dicionários. Amanhã libera de novo, ou passe para o Premium.',pl_lock_c:'Esta curiosidade é do plano Premium.',pl_lock_p:'Esta função do Modo Pregar é do plano Premium.',pl_see:'Ver planos',
+  sub_t:'Minha assinatura',sub_plan:'Plano atual',sub_state:'Situação',sub_on:'Ativa',sub_exp:'Vencida',sub_freeS:'Grátis',sub_since:'Contratado em',sub_until:'Vence em',sub_pays:'Pagamentos',sub_nopay:'Nenhum pagamento registrado.',sub_change:'Mudar de plano',sub_cancel:'Cancelar renovação',sub_cancel_d:'Seu plano não renova sozinho: não há nada para cancelar. Ao vencer, volta ao plano grátis e mantém seus dados.',sub_left:'{n} dias restantes',
+  ad_plan:'Plano',ad_cfg:'Preços e testes',ad_cfg_d:'Preços, limites do plano grátis, contato e período de testes',ad_test:'Período de testes (tudo liberado)',ad_wa:'WhatsApp para pagamentos (com código do país)',ad_save:'Salvar',ad_saved:'Salvo',ad_setp:'Plano de {u}',ad_from:'De',ad_to:'Até',ad_amt:'Valor pago',ad_note:'Nota (ex.: Pix, transferência Itaú)',ad_act:'Ativar',ad_free:'Passar para grátis',ad_cnt:'{f} grátis · {p} premium · {v} vencidas',ad_lim:'Limites do plano grátis: sermões · artigos por dia · curiosidades',ad_done:'Plano atualizado'});
+const planName=k=>t(k==='free'?'pl_free':'pl_'+k);
+const curOrder=()=>prefs.ui==='pt'?['brl','pyg']:['pyg','brl'];
+function priceLine(k){return curOrder().map(c=>money(PCFG.p[k][c],c)).join(' · ')}
+function planSave(k){const m=PCFG.p.m,x=PCFG.p[k];const c=curOrder()[0];return Math.round((1-x[c]/(m[c]*PMON[k]))*100)}
+/* pantalla «Elige tu plan» */
+function plansSheet(reason){const N=planNow();const F=PCFG.free;const c=curOrder()[0];
+  const feat=a=>`<ul class="pl-f">${a.map(x=>`<li>${ic('check')}<span>${esc(x)}</span></li>`).join('')}</ul>`;
+  const card=k=>{const x=PCFG.p[k];const sv=k==='m'?0:planSave(k);const cur=N.paid&&N.plan===k;
+    return`<div class="pl-card ${k==='a'?'best':''}">${k==='a'?`<span class="pl-badge">${esc(t('pl_best'))}</span>`:''}
+      <div class="pl-h"><b>${esc(planName(k))}</b>${cur?`<span class="tag ok">${esc(t('sub_on'))}</span>`:''}</div>
+      <div class="pl-price">${esc(money(x[c],c))} <small>${esc(t('pl_per_'+k))}</small></div>
+      <span class="sub">${esc(money(x[c==='brl'?'pyg':'brl'],c==='brl'?'pyg':'brl'))} ${esc(t('pl_per_'+k))}${k!=='m'?' · '+esc(t('pl_eq',{v:money(Math.round(x[c]/PMON[k]),c)})):''}</span>
+      ${sv>0?`<span class="pl-save">${esc(t('pl_save',{n:sv}))}</span>`:''}
+      ${k==='m'?feat([t('pl_p1'),t('pl_p2'),t('pl_p3'),t('pl_p4'),t('pl_p5'),t('pl_p6')]):''}
+      <button class="btn ${k==='a'?'gold':'dark'} block" data-pl-go="${k}">${esc(t('pl_go_'+k))}</button></div>`};
+  const sh=openSheet(`<div class="pl-wrap"><div class="between"><h3 class="pl-t">${esc(t('pl_choose'))}</h3><button class="iconbtn" data-pl-x aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+    ${reason?`<p class="pl-why">${esc(reason)}</p>`:`<p class="sub" style="margin:0;font-size:14.5px">${esc(t('pl_sub'))}</p>`}
+    ${N.test?`<p class="pl-testn">${ic('check')}${esc(t('pl_test'))}</p>`:''}
+    <div class="pl-grid">
+    <div class="pl-card"><div class="pl-h"><b>${esc(t('pl_free'))}</b>${!N.paid?`<span class="tag">${esc(t('sub_plan'))}</span>`:''}</div><div class="pl-price">${esc(money(0,c))}</div>
+      ${feat([t('pl_f1',{n:F.serm}),t('pl_f2'),t('pl_f3'),t('pl_f4',{n:F.dic}),t('pl_f5',{n:F.cur}),t('pl_f6')])}
+      <button class="btn ghost block" data-pl-x>${esc(t('pl_go_free'))}</button></div>
+    ${card('m')}${card('t')}${card('a')}</div>
+    <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_cond'))}</p></div>`,{cls:'tall'});
+  sh.addEventListener('click',e=>{if(e.target.closest('[data-pl-x]')){closeSheet();return}const b=e.target.closest('[data-pl-go]');if(b)planContact(b.dataset.plGo)})}
+function planContact(k){const c=curOrder()[0];const v=money(PCFG.p[k][c],c)+' '+t('pl_per_'+k);const em=(authU&&authU.email)||'';
+  const msg=t('pl_pay_msg',{p:planName(k),v,e:em});const wa=String(PCFG.wa||'').replace(/\D/g,'');
+  const sh=openSheet(`<h3>${esc(t('pl_pay_t',{p:planName(k)}))}</h3><p class="pl-price" style="margin:0">${esc(v)}</p><p style="margin:0;line-height:1.5">${esc(t('pl_pay_d'))}</p>
+    ${wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">${ic('chat')}${esc(t('pl_pay_wa'))}</a>`:''}
+    <a class="btn ${wa?'ghost':'gold'} block" href="mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent('Meu Púlpito · '+planName(k))}&body=${encodeURIComponent(msg)}">${esc(t('pl_pay_mail'))}</a>
+    <p class="sub" style="margin:0;font-size:12.5px">${esc(t('pl_cond'))}</p>`)}
+/* bloqueo con explicación (los datos nunca se tocan) */
+function planGate(kind){if(isPremium())return true;const F=PCFG.free;
+  const msg={serm:t('pl_lock_s',{n:F.serm}),dic:t('pl_lock_d',{n:F.dic}),cur:t('pl_lock_c'),preg:t('pl_lock_p')}[kind];plansSheet(msg);return false}
+function canNewSermon(){return isPremium()||liveS().length<PCFG.free.serm||planGate('serm')}
+function dicQuota(){if(isPremium())return true;const k='mp.dq.'+todayISO();const n=ls.get(k,0);if(n>=PCFG.free.dic)return planGate('dic');ls.set(k,n+1);return true}
+const curFree=id=>isPremium()||id<=0||curFreeIds().has(id);
+function curFreeIds(){const n=PCFG.free.cur;const out=new Set();if(!CUR)return out;const by={};CUR.e.forEach(e=>(by[e.cat]=by[e.cat]||[]).push(e.id));
+  const cats=Object.keys(by);let i=0;while(out.size<Math.min(n,CUR.e.length)){const c=cats[i%cats.length];const l=by[c];const j=Math.floor(i/cats.length);if(j<l.length)out.add(l[j]);i++;if(i>500)break}return out}
+/* sección «Mi suscripción» en Configuración */
+function subHtml(){const N=planNow();const L=prefs.ui;const left=N.paid?Math.max(0,Math.ceil((N.until-Date.now())/864e5)):0;
+  const pays=N.pays.slice().sort((a,b)=>(b.at||0)-(a.at||0));
+  return`<div class="pgrp"><div class="prow" style="flex-direction:column;align-items:stretch;gap:10px">
+    <span class="k">${esc(t('sub_t'))}</span>
+    <div class="sub-grid"><span>${esc(t('sub_plan'))}</span><b>${esc(N.paid?planName(N.plan):t('pl_free'))}</b>
+      <span>${esc(t('sub_state'))}</span><b>${N.paid?`<span class="tag ok">${esc(t('sub_on'))}</span> <small class="sub">${esc(t('sub_left',{n:left}))}</small>`:N.expired?`<span class="tag warn">${esc(t('sub_exp'))}</span>`:esc(t('sub_freeS'))}</b>
+      ${N.since?`<span>${esc(t('sub_since'))}</span><b>${esc(fmtDay(N.since))}</b>`:''}
+      ${N.until?`<span>${esc(t('sub_until'))}</span><b>${esc(fmtDay(N.until))}</b>`:''}</div>
+    ${N.test?`<p class="pl-testn" style="margin:0">${ic('check')}${esc(t('pl_test'))}</p>`:''}
+    ${pays.length?`<span class="s">${esc(t('sub_pays'))}</span>${pays.map(p=>`<div class="sub-pay"><span>${esc(fmtDay(p.at))} · ${esc(planName(p.plan))}</span><b>${esc(p.amt?money(+p.amt,p.cur||'pyg'):'')}</b></div>`).join('')}`:''}
+    <div class="two"><button class="btn sm gold" data-act="plans">${esc(t('sub_change'))}</button><button class="btn sm ghost" data-act="subCancel">${esc(t('sub_cancel'))}</button></div>
+  </div></div>`}
+/* administración */
+async function admPlan(uid,label){const db=firebase.firestore();let cur={};try{const d=await db.collection('planos').doc(uid).get();cur=d.exists?d.data():{}}catch(e){}
+  const today=todayISO();const iso=ts=>todayISO(new Date(ts));let k=PMON[cur.plan]?cur.plan:'m';
+  const sh=openSheet(`<h3>${esc(t('ad_setp',{u:label}))}</h3>
+    <div class="seg" id="apK">${['m','t','a'].map(x=>`<button data-k="${x}" aria-pressed="${x===k}">${esc(planName(x).replace('Premium ',''))}</button>`).join('')}</div>
+    <div class="two"><label class="fld"><span class="lb">${esc(t('ad_from'))}</span><input class="inp" type="date" id="apF" value="${today}"></label><label class="fld"><span class="lb">${esc(t('ad_to'))}</span><input class="inp" type="date" id="apT"></label></div>
+    <div class="two"><label class="fld"><span class="lb">${esc(t('ad_amt'))}</span><input class="inp" id="apA" inputmode="numeric"></label><label class="fld"><span class="lb">&nbsp;</span><select class="inp" id="apC"><option value="pyg">₲ PYG</option><option value="brl">R$ BRL</option></select></label></div>
+    <label class="fld"><span class="lb">${esc(t('ad_note'))}</span><input class="inp" id="apN"></label>
+    <button class="btn gold block" id="apGo">${esc(t('ad_act'))}</button>
+    ${PMON[cur.plan]?`<button class="btn ghost block" id="apFree">${esc(t('ad_free'))}</button>`:''}`);
+  const sync=()=>{const f=new Date($('#apF',sh).value+'T12:00:00').getTime()||Date.now();$('#apT',sh).value=iso(addMonths(f,PMON[k]));const c=$('#apC',sh).value;$('#apA',sh).value=PCFG.p[k][c]};
+  $('#apK',sh).onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;k=b.dataset.k;$$('#apK button',sh).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));sync()};
+  $('#apF',sh).onchange=sync;$('#apC',sh).onchange=sync;sync();
+  $('#apGo',sh).onclick=async()=>{const since=new Date($('#apF',sh).value+'T00:00:00').getTime();const until=new Date($('#apT',sh).value+'T23:59:59').getTime();if(!since||!until||until<=since){toast(t('dict_err'));return}
+    const pay={at:Date.now(),plan:k,amt:+String($('#apA',sh).value).replace(/\D/g,'')||0,cur:$('#apC',sh).value,note:$('#apN',sh).value.trim(),from:since,to:until};
+    try{await db.collection('planos').doc(uid).set({plan:k,since,until,status:'active',updated:Date.now(),pays:firebase.firestore.FieldValue.arrayUnion(pay)},{merge:true});closeSheet();toast(t('ad_done'));closeSheet();adminPanel()}catch(e){toast(t('adm_err'))}};
+  const fr=$('#apFree',sh);if(fr)fr.onclick=async()=>{try{await db.collection('planos').doc(uid).set({plan:'free',until:0,status:'free',updated:Date.now()},{merge:true});closeSheet();toast(t('ad_done'));closeSheet();adminPanel()}catch(e){toast(t('adm_err'))}}}
+function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><b>${esc(planName(k).replace('Premium ',''))}</b><input class="inp" data-p="${k}.pyg" value="${P[k].pyg}" inputmode="numeric" aria-label="₲"><input class="inp" data-p="${k}.brl" value="${P[k].brl}" inputmode="numeric" aria-label="R$"></div>`;
+  const sh=openSheet(`<h3>${esc(t('ad_cfg'))}</h3>
+    <label class="prow" style="padding:0"><span class="k">${esc(t('ad_test'))}</span><input type="checkbox" id="acT" ${PCFG.test?'checked':''} style="width:24px;height:24px"></label>
+    <div class="ac-row ac-h"><span></span><span>₲ PYG</span><span>R$ BRL</span></div>${row('m')}${row('t')}${row('a')}
+    <span class="lbl">${esc(t('ad_lim'))}</span><div class="ac-row ac3"><input class="inp" id="acS" value="${F.serm}" inputmode="numeric"><input class="inp" id="acD" value="${F.dic}" inputmode="numeric"><input class="inp" id="acC" value="${F.cur}" inputmode="numeric"></div>
+    <label class="fld"><span class="lb">${esc(t('ad_wa'))}</span><input class="inp" id="acW" value="${esc(PCFG.wa||'')}" placeholder="595981234567" inputmode="tel"></label>
+    <button class="btn gold block" id="acGo">${esc(t('ad_save'))}</button>`);
+  $('#acGo',sh).onclick=async()=>{const n=v=>Math.max(0,parseInt(String(v).replace(/\D/g,''),10)||0);const p={m:{},t:{},a:{}};$$('[data-p]',sh).forEach(i=>{const [k,c]=i.dataset.p.split('.');p[k][c]=n(i.value)});
+    const cfg={test:$('#acT',sh).checked,wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},updated:Date.now()};
+    try{await firebase.firestore().collection('config').doc('app').set(cfg);PCFG=Object.assign({},PCFG_DEF,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
+
 async function adminPanel(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
   let rows=[];try{const db=firebase.firestore();const[q,pq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get()]);
     const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
@@ -894,13 +1009,18 @@ async function adminPanel(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t
   const uses={};rows.forEach(r=>Object.entries(r.uses||{}).forEach(([k,v])=>uses[k]=(uses[k]||0)+v));
   const uNames={pregar:t('adm_u_pregar'),dic:t('adm_u_dic'),ia:t('adm_u_ia')};
   const uTop=Object.entries(uses).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${uNames[k]||k}: ${v}`).join(' · ');
-  const row=r=>{const nm=r.name||r.email||r.uid.slice(0,6);const bl=!!(r.plan&&r.plan.blocked);
+  const pst=r=>{const p=r.plan||{};return PMON[p.plan]&&p.until>Date.now()?'p':PMON[p.plan]&&p.until?'v':'f'};
+  const cnt={f:0,p:0,v:0};rows.forEach(r=>cnt[pst(r)]++);
+  const row=r=>{const nm=r.name||r.email||r.uid.slice(0,6);const bl=!!(r.plan&&r.plan.blocked);const ps=pst(r);const pl=r.plan||{};
     return`<div class="adm-row"><div style="flex:1;min-width:0"><b>${esc(nm)}</b><span class="sub" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(r.email||'')}</span>
-      <span class="sub" style="font-size:12.5px">${esc(t('adm_n_serm',{n:r.sermons||0}))} · ${esc(t('adm_seen',{d:r.seen?relDate(r.seen):'—'}))} · ${esc((r.lang||'').toUpperCase())}</span></div>
+      <span class="sub" style="font-size:12.5px">${esc(t('adm_n_serm',{n:r.sermons||0}))} · ${esc(t('adm_seen',{d:r.seen?relDate(r.seen):'—'}))} · ${esc((r.lang||'').toUpperCase())}</span>
+      <span style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">${ps==='p'?`<span class="tag ok">${esc(planName(pl.plan))} · ${esc(fmtDay(pl.until))}</span>`:ps==='v'?`<span class="tag warn">${esc(t('sub_exp'))} · ${esc(fmtDay(pl.until))}</span>`:`<span class="tag">${esc(t('pl_free'))}</span>`}<button class="lnk" data-act="admPlan" data-uid="${esc(r.uid)}" data-l="${esc(nm)}">${esc(t('ad_plan'))}</button></span></div>
       <div class="seg sm adm-seg" data-uid="${esc(r.uid)}"><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="0" aria-pressed="${!bl}">${esc(t('adm_on'))}</button><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="1" aria-pressed="${bl}">${esc(t('adm_off'))}</button></div></div>`};
   const el=$('#admBody',sh);if(!el)return;
   el.innerHTML=`<div class="stats"><div class="stat"><b>${tot}</b><span>${esc(t('adm_users'))}</span></div><div class="stat"><b>${a7}</b><span>${esc(t('adm_act7'))}</span></div><div class="stat"><b>${totS}</b><span>${esc(t('adm_serms'))}</span></div></div>
     ${uTop?`<p class="sub" style="margin:0;font-size:12.5px">${esc(t('adm_uses'))}: ${esc(uTop)}</p>`:''}
+    <p class="sub" style="margin:0;font-size:13px;font-weight:600">${esc(t('ad_cnt',cnt))}${PCFG.test?' · '+esc(t('ad_test')):''}</p>
+    <button class="btn ghost block" data-act="admCfg">${ic('sliders')}${esc(t('ad_cfg'))}</button>
     <div class="adm-list">${rows.length?rows.map(row).join(''):`<p class="sub">${esc(t('adm_none'))}</p>`}</div>
     <p class="sub" style="font-size:11.5px;margin:0">${esc(t('adm_note'))}</p>`}
 let bgT=0;function refreshBg(){clearTimeout(bgT);bgT=setTimeout(()=>{if(!view.tab||view.overlay)return;
@@ -946,7 +1066,7 @@ const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.dele
     unsubs.push(subCol(cols.n,()=>notes,a=>{notes=a},()=>refreshBg()));
     unsubs.push(cols.m.onSnapshot(d=>{if(d.exists){const r=d.data();if((r.updated||0)>=(meta.updated||0)){meta=r;fixMeta();cacheAll();refreshBg()}else putMeta()}else if(meta.updated)putMeta()},()=>{}));
   };
-  listen(+ls.get(PK,0)||0);watchPlan(u);
+  listen(+ls.get(PK,0)||0);watchPlan(u);watchCfg();
 }
 // Entrar con cuenta desde el modo sin cuenta: si el sistema de cuentas no cargó, lo intenta cargar de nuevo
 function loadScript(u){return new Promise((ok,ko)=>{const sc=document.createElement('script');sc.src=u;sc.onload=ok;sc.onerror=ko;document.head.appendChild(sc);setTimeout(ko,12000)})}
@@ -1171,7 +1291,7 @@ function sermonMenu(id){const s=sermons.find(x=>x.id===id);if(!s)return;const d=
    <button class="act" data-act="hist" data-id="${esc(id)}">${ic('cal')}${esc(t('act_hist'))}</button>
    <button class="act red" data-act="delAsk" data-id="${esc(id)}">${ic('trash')}${esc(t('act_del'))}</button></div>`);
   return sh}
-function duplicate(id){const s=sermons.find(x=>x.id===id);if(!s)return;const c=JSON.parse(JSON.stringify(s));const d=derive(s);
+function duplicate(id){const s=sermons.find(x=>x.id===id);if(!s)return;if(!canNewSermon())return;const c=JSON.parse(JSON.stringify(s));const d=derive(s);
   Object.assign(c,{id:uid(),fav:false,log:[],preached:{},created:Date.now()});
   const h=document.createElement('div');h.innerHTML=getHtml(s);let h1=h.querySelector('h1');if(!h1){h1=document.createElement('h1');h.prepend(h1)}h1.textContent=`${d.title||t('untitled')} ${t('copy_sfx')}`;c.html=cleanHtml(h.innerHTML);
   putSermon(c,{silent:true});closeSheet();openEditor(c.id);toast(t('duplicated'))}
@@ -1180,7 +1300,7 @@ function duplicate(id){const s=sermons.find(x=>x.id===id);if(!s)return;const c=J
    EDITOR
    ========================================================= */
 let E=null;
-function newSermon(){const s={id:uid(),html:'',lang:'',category:listState.cat||'',fav:false,created:Date.now(),log:[],v:2};openEditor(null,s)}
+function newSermon(){if(!canNewSermon())return;const s={id:uid(),html:'',lang:'',category:listState.cat||'',fav:false,created:Date.now(),log:[],v:2};openEditor(null,s)}
 function openEditor(id,fresh){
   const s=fresh||sermons.find(x=>x.id===id);if(!s)return;closeSheet();while($('.ov'))closeSheet();
   view.overlay='editor';$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
@@ -1583,7 +1703,7 @@ function ascDraw(){const b=$('#pgScr');if(!b)return;b.classList.toggle('on',!!PG
 function pgShow(lang){if(!PG)return;const sc=$('#pgScroll');const ratio=sc?sc.scrollTop/Math.max(1,sc.scrollHeight):0;
   if(lang===sLang(PG.orig)){PG.s=PG.orig}else{const h=trCached(PG.orig,lang);if(!h)return false;PG.s=Object.assign({},PG.orig,{html:h,lang})}
   PG.lang=lang;$('#pgLang').textContent=lang.toUpperCase();loadBible(lang).catch(()=>{}).then(()=>{pgRender();if(sc)sc.scrollTop=ratio*sc.scrollHeight});return true}
-function pgLang(){if(!PG)return;const o=sLang(PG.orig),other=o==='pt'?'es':'pt';const L=PG.lang;const nm=x=>x==='pt'?'Português':'Español';
+function pgLang(){if(!PG)return;if(!isPremium()){planGate('preg');return}const o=sLang(PG.orig),other=o==='pt'?'es':'pt';const L=PG.lang;const nm=x=>x==='pt'?'Português':'Español';
   const has=!!trCached(PG.orig,other);const old=PG.orig.tr&&PG.orig.tr[other];
   const sh=openSheet(`<h3>${esc(t('pl_t',null,L))}</h3><p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('pl_d',null,L))}</p>
     <div class="seg" style="align-self:stretch"><button data-pl="${o}" aria-pressed="${PG.lang===o}">${esc(nm(o))} · ${esc(t('pl_orig',null,L))}</button><button data-pl="${other}" aria-pressed="${PG.lang===other}">${esc(nm(other))}${has?'':' · '+esc(t('pl_new',null,L))}</button></div>
@@ -1746,6 +1866,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     <div class="prow"><span><span class="k">${esc(t('lock'))}</span><span class="s">${esc(t('lock_d'))}</span></span>${seg('lockT',lockCfg()?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>
     ${lockCfg()&&window.PublicKeyCredential?`<div class="prow"><span class="k">${esc(t('bio'))}</span>${seg('bioT',lockCfg().bio?'on':'off',[['off',t('no')],['on',t('yes')]])}</div>`:''}
   </div>
+  ${subHtml()}
   <div class="pgrp"><div class="prow" style="flex-direction:column;align-items:stretch;gap:8px"><span><span class="k">${ic('spark')} ${esc(t('ai'))}</span><span class="s">${esc(t('ai_d'))}</span></span>
     <label class="s" for="pAi">${esc(t('ai_key'))} · ${esc(t('ai_key_d'))}</label>
     <div class="row"><input class="inp" id="pAi" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="sk-ant-…" style="height:42px" data-input="pAi"><button class="btn sm dark" data-act="aiTest">${esc(t('ai_test'))}</button></div></div></div>
@@ -1982,7 +2103,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{PG&&(PG.asc?ascStop():ascStart())},agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},
