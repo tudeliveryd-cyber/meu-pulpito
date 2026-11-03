@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v53';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v54';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1003,7 +1003,7 @@ function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><
     const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},updated:Date.now()};
     try{await firebase.firestore().collection('config').doc('app').set(cfg);PCFG=Object.assign({},PCFG_DEF,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 
-async function adminPanel(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
+async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
   let rows=[];try{const db=firebase.firestore();const[q,pq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get()]);
     const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
   catch(e){const el=$('#admBody',sh);if(el)el.innerHTML=`<p class="sub" style="margin:0">${esc(t('adm_err'))}</p>`;return}
@@ -1051,7 +1051,7 @@ function startCloud(u){authU=u;localMode=false;loadLocal();
       add(sermons,'s');add(notes,'n');add(agenda,'a');
       const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
     cacheAll()}
-const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;go(view.tab||'home');setSync(false,'sync_conn');
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;go(view.tab||'home');setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -1202,7 +1202,45 @@ function homeHtml(){
 }
 const RES='mp.resume',RES_MS=6*3600e3,BAK='pulpito.bak',WEEK=7*864e5;
 function getResume(){const r=ls.get(RES,null);return r&&r.id&&Date.now()-(r.at||0)<RES_MS?r:null}
-function bannersHtml(){let h='';const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
+
+/* ---------- aviso al administrador: cuentas esperando liberación ---------- */
+let ADMP={n:0,at:0,busy:false};
+function admPendCheck(force){if(!isAdmin()||localMode||ADMP.busy)return;if(!force&&Date.now()-ADMP.at<60000)return;ADMP.busy=true;
+  const db=firebase.firestore();Promise.all([db.collection('stats').get(),db.collection('planos').get()]).then(([q,pq])=>{const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());
+    const n=q.docs.filter(d=>{const r=d.data(),p=pm[d.id];return r.email!==ADMIN_EMAIL&&!(p&&(p.ok||p.blocked||PMON[p.plan]))}).length;
+    const ch=n!==ADMP.n;ADMP.n=n;ADMP.at=Date.now();if(ch&&view.tab==='home'&&!view.overlay)refreshBg()}).catch(()=>{}).finally(()=>{ADMP.busy=false})}
+setInterval(()=>{if(document.visibilityState==='visible')admPendCheck()},90000);
+/* ---------- relatar un problema (WhatsApp o correo del administrador) ---------- */
+function reportSheet(){const wa=String(PCFG.wa||'').replace(/\D/g,'');
+  const sh=openSheet(`<h3>${esc(t('rp_t'))}</h3><p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('rp_d'))}</p>
+    <textarea class="inp" id="rpTx" rows="5" placeholder="${esc(t('rp_ph'))}" style="height:auto;padding:12px;line-height:1.45;resize:vertical"></textarea>
+    <p class="sub" style="margin:0;font-size:12.5px">${esc(t('rp_tip'))}</p>
+    <button class="btn gold block" id="rpGo">${ic(wa?'chat':'share')}${esc(t(wa?'rp_wa':'rp_mail'))}</button>`);
+  $('#rpGo',sh).onclick=()=>{const tx=$('#rpTx',sh).value.trim();if(!tx){$('#rpTx',sh).focus();return}
+    const ua=navigator.userAgent;const dev=/iPhone/.test(ua)?'iPhone':/iPad/.test(ua)?'iPad':/Android/.test(ua)?'Android':/Mac/.test(ua)?'Mac':/Windows/.test(ua)?'Windows':'otro';
+    const os=(ua.match(/OS (\d+[_\d]*)/)||ua.match(/Android ([\d.]+)/)||[])[1]||'';const pwa=window.matchMedia&&matchMedia('(display-mode: standalone)').matches?'app':'navegador';
+    const info=`\n\n— Meu Púlpito ${APP_VER} · ${dev} ${os.replace(/_/g,'.')} · ${pwa} · ${innerWidth}×${innerHeight} · ${(prefs.ui||'').toUpperCase()} · ${(authU&&authU.email)||'sin cuenta'}`;
+    const msg=t('rp_hd')+'\n'+tx+info;closeSheet();
+    if(wa)window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');else location.href=`mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent('Meu Púlpito · '+t('rp_t'))}&body=${encodeURIComponent(msg)}`}}
+/* ---------- bienvenida (primera vez) ---------- */
+const ONB=[['plus','ob1t','ob1d'],['lectern','ob2t','ob2d'],['dict','ob3t','ob3d'],['cal','ob4t','ob4d']];
+function onboarding(){let i=0;const sh=openSheet(`<div class="ob"><div id="obIn"></div><div class="ob-dots">${ONB.map((_,k)=>`<i data-k="${k}"></i>`).join('')}</div>
+    <div class="two"><button class="btn ghost" id="obSkip">${esc(t('ob_skip'))}</button><button class="btn gold" id="obNext"></button></div></div>`,{onClose:()=>ls.set('mp.onb',1)});
+  const paint=()=>{const [icn,tt,dd]=ONB[i];$('#obIn',sh).innerHTML=`<span class="ob-ic">${ic(icn)}</span><h3 class="ob-t">${esc(t(tt))}</h3><p class="ob-d">${esc(t(dd))}</p>`;
+    $$('.ob-dots i',sh).forEach((d,k)=>d.classList.toggle('on',k===i));$('#obNext',sh).textContent=t(i<ONB.length-1?'ob_next':'ob_go');$('#obSkip',sh).style.visibility=i<ONB.length-1?'visible':'hidden'};
+  $('#obNext',sh).onclick=()=>{if(i<ONB.length-1){i++;paint()}else closeSheet()};$('#obSkip',sh).onclick=()=>closeSheet();paint()}
+Object.assign(I18N.es,{adp_t:'{n} cuenta(s) esperando liberación',adp_d:'Toque para ver y liberar.',rp_t:'Relatar un problema',rp_d:'Cuéntenos qué pasó y qué estaba haciendo. El mensaje va con la versión del app y el tipo de celular, para corregirlo más rápido.',rp_ph:'Ej.: toqué Predicar y la pantalla quedó en blanco…',rp_tip:'Si puede, después envíe también una captura de pantalla en la misma conversación.',rp_wa:'Enviar por WhatsApp',rp_mail:'Enviar por correo',rp_hd:'Problema en Meu Púlpito:',rp_btn:'Relatar un problema',ob_btn:'Ver la presentación',
+  ob1t:'Escriba su sermón',ob1d:'Toque «Nuevo sermón». Escriba el título y el texto; con «Versículo» el app coloca el texto bíblico y con «Nuevo punto» organiza el bosquejo. Todo se guarda solo.',
+  ob2t:'Predique desde el celular',ob2d:'Toque «Predicar»: letra grande, cronómetro y avance por partes. Puede cambiar el sermón entre español y portugués sin crear una copia.',
+  ob3t:'Estudie la Palabra',ob3d:'Biblia en español y portugués, diccionarios Bíblico, Hebreo y Griego, y curiosidades bíblicas. Desde el editor, toque el libro para consultar e insertar en el sermón.',
+  ob4t:'Organice su ministerio',ob4d:'Agenda de predicaciones, categorías y favoritos. Sus sermones quedan en su cuenta y aparecen en cualquier celular donde entre.',ob_next:'Siguiente',ob_go:'Comenzar',ob_skip:'Saltar'});
+Object.assign(I18N.pt,{adp_t:'{n} conta(s) aguardando liberação',adp_d:'Toque para ver e liberar.',rp_t:'Relatar um problema',rp_d:'Conte o que aconteceu e o que você estava fazendo. A mensagem vai com a versão do app e o tipo de celular, para corrigir mais rápido.',rp_ph:'Ex.: toquei em Pregar e a tela ficou em branco…',rp_tip:'Se puder, depois mande também um print da tela na mesma conversa.',rp_wa:'Enviar pelo WhatsApp',rp_mail:'Enviar por e-mail',rp_hd:'Problema no Meu Púlpito:',rp_btn:'Relatar um problema',ob_btn:'Ver a apresentação',
+  ob1t:'Escreva seu sermão',ob1d:'Toque em «Novo sermão». Escreva o título e o texto; com «Versículo» o app coloca o texto bíblico e com «Novo ponto» organiza o esboço. Tudo é salvo sozinho.',
+  ob2t:'Pregue pelo celular',ob2d:'Toque em «Pregar»: letra grande, cronômetro e avanço por partes. Você pode trocar o sermão entre português e espanhol sem criar uma cópia.',
+  ob3t:'Estude a Palavra',ob3d:'Bíblia em português e espanhol, dicionários Bíblico, Hebraico e Grego, e curiosidades bíblicas. No editor, toque no livro para consultar e inserir no sermão.',
+  ob4t:'Organize seu ministério',ob4d:'Agenda de pregações, categorias e favoritos. Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',ob_next:'Próximo',ob_go:'Começar',ob_skip:'Pular'});
+
+function bannersHtml(){let h='';if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<button class="banner adp" data-act="admin"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</button>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
   if(rs)h+=`<div class="banner"><div class="tx">${esc(t('cont_preach'))}<br><b class="serif">${esc(derive(rs).title||t('untitled'))}</b>${r.tSec?' · '+fmtSec(r.tSec):''}</div>
     <div class="row"><button class="btn sm ghost" data-act="resNo">${esc(t('end'))}</button><button class="btn sm gold" data-act="resGo">${ic('lectern')}${esc(t('go_on'))}</button></div></div>`;
   if(ls.get(BAK,null)===null)ls.set(BAK,Date.now());
@@ -1892,6 +1930,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     ${!localMode&&authU?`<button class="prow plink" data-act="delAcc"><span><span class="k" style="color:var(--danger)">${esc(t('del_acc'))}</span><span class="s">${esc(t('del_acc_d'))}</span></span>${ic('next')}</button>`:''}
   </div>
   <p class="sub" style="margin:0;text-align:center;font-size:12px">${esc(t('credits'))}</p>
+  <div class="pgrp"><button class="prow plink" data-act="report"><span><span class="k">${ic('chat')} ${esc(t('rp_btn'))}</span></span>${ic('next')}</button><button class="prow plink" data-act="onb"><span><span class="k">${ic('play')} ${esc(t('ob_btn'))}</span></span>${ic('next')}</button></div>
   ${!localMode&&authU?`<button class="btn ghost block" data-act="logout" style="color:var(--danger)">${ic('out')}${esc(t('logout'))}</button>`:''}
   <p class="sub" style="text-align:center;margin:4px 0 0;font-size:12px">Meu Púlpito · ${APP_VER}</p>`}
 const PRIV={es:[['Tus sermones son tuyos','Todo lo que escribes en Meu Púlpito (sermones, agenda, biblioteca y notas) pertenece a ti. Se usa solo para que la app funcione y para que lo veas en cualquier celular donde entres con tu cuenta.'],
@@ -2120,7 +2159,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),report:()=>reportSheet(),onb:()=>onboarding(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},

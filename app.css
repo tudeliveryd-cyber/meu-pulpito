@@ -643,3 +643,18 @@ html:has(.ed-view){scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--
 /* iPhone: la barra de arriba es "sticky" con el área de la cámara; el editor empieza debajo de esa área
    para que la barra y la fila de botones no tapen el título */
 .ed-view{padding-top:env(safe-area-inset-top,0px)}
+/* aviso de cuentas esperando */
+.banner.adp{display:flex;align-items:center;gap:12px;text-align:left;width:100%;box-shadow:0 0 0 1.5px var(--gold) inset}
+.banner.adp .tx{flex:1}.adp-n{min-width:34px;height:34px;border-radius:17px;background:var(--gold);color:#101827;font-family:var(--head);font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+/* bienvenida */
+.ob{display:flex;flex-direction:column;gap:18px;padding:6px 0 4px;min-height:330px}
+#obIn{flex:1;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;justify-content:center}
+.ob-ic{width:64px;height:64px;border-radius:20px;background:var(--navy);color:#D6AD55;display:flex;align-items:center;justify-content:center}.ob-ic svg{width:30px;height:30px}
+.ob-t{font-family:var(--head);font-size:22px!important;font-weight:800}
+.ob-d{margin:0;font-size:15.5px;line-height:1.55;color:var(--muted);max-width:420px}
+.ob-dots{display:flex;gap:6px;justify-content:center}.ob-dots i{width:7px;height:7px;border-radius:4px;background:var(--line);transition:all .2s}.ob-dots i.on{width:22px;background:var(--gold)}
+/* barra del editor: todos los botones caben en la pantalla (micrófono y diccionarios a la vista) */
+.tb .fmt{gap:0;justify-content:space-between}
+.tb .fmt button{flex:1 1 0;width:auto;min-width:30px;max-width:48px}
+.tb .fmt button svg{width:21px;height:21px}
+.ob-ic{box-shadow:0 0 0 1.5px rgba(214,173,85,.55) inset}
