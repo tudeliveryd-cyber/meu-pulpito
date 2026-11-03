@@ -1,80 +1,458 @@
 <!doctype html>
-<html lang="es" data-mode="light">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Meu Púlpito</title>
-<meta name="description" content="Bloc de notas para preparar y predicar sermones">
-<meta name="theme-color" content="#101827">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Meu Púlpito">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" href="icon-192.png">
+<script>
+// Quien abre el ícono instalado en el celular va directo a la plataforma
+try{if((window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone)location.replace('app/')}catch(e){}
+</script>
+<title>Meu Púlpito · Prepare, organice y predique</title>
+<meta name="description" content="Meu Púlpito es una plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras con la Biblia y los diccionarios bíblico, hebreo y griego, y predique desde el celular.">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="app/icon-192.png">
+<link rel="apple-touch-icon" href="app/apple-touch-icon.png">
+<meta property="og:title" content="Meu Púlpito">
+<meta property="og:description" content="Prepare y organice sus mensajes en un solo lugar.">
+<meta property="og:image" content="https://meupulpito.com/img/og.jpg">
+<meta property="og:url" content="https://meupulpito.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,700;1,7..72,400&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<link rel="stylesheet" href="app.css">
-<script>
-// tema antes de pintar, para no parpadear
-try{var _p=JSON.parse(localStorage.getItem('mp.prefs')||'{}');var _m=_p.theme==='dark'||(_p.theme!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.dataset.mode=_m;}catch(e){}
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --navy:#0B1220;--navy-2:#111A2E;--navy-3:#1A2540;--ink:#0F172A;--text:#334155;--muted:#64748B;--line:#E6E8EE;--soft:#F5F6F8;
+  --gold:#C9A24E;--gold-2:#B8913F;--gold-soft:rgba(201,162,78,.12);--white:#fff;
+  --head:'Manrope','Inter',system-ui,-apple-system,sans-serif;--body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --wrap:1160px;--r:18px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:17px;line-height:1.6;color:var(--text);background:var(--white);-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--head);color:var(--ink);margin:0;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 26px;border-radius:26px;font-family:var(--head);font-weight:700;font-size:15.5px;letter-spacing:-.005em;transition:transform .18s ease,background .18s ease,box-shadow .18s ease,color .18s ease;white-space:nowrap;cursor:pointer;border:0}
+.btn:hover{transform:translateY(-1px)}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.btn.gold{background:var(--gold);color:#0B1220;box-shadow:0 6px 20px rgba(201,162,78,.25)}
+.btn.gold:hover{background:#D3AE5C}
+.btn.line{color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.28) inset}
+.btn.line:hover{box-shadow:0 0 0 1px rgba(255,255,255,.6) inset}
+.btn.dark{background:var(--navy);color:#fff}
+.btn.dark:hover{background:var(--navy-3)}
+.btn.out{color:var(--ink);box-shadow:0 0 0 1px var(--line) inset;background:#fff}
+.btn.out:hover{box-shadow:0 0 0 1px #C9CED8 inset}
+.btn svg{width:18px;height:18px}
+.eyebrow{font-family:var(--head);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-2)}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* navegación */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .25s ease,box-shadow .25s ease;padding-top:env(safe-area-inset-top,0px)}
+.nav.solid{background:rgba(11,18,32,.92);backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.brand{display:flex;align-items:center;gap:11px;color:#fff}
+.brand img{height:38px;width:auto}
+.brand b{font-family:var(--head);font-weight:800;font-size:17px;letter-spacing:.01em;line-height:1}
+.brand b span{color:var(--gold)}
+.brand small{display:block;margin-top:4px;font-family:var(--head);font-weight:700;font-size:8.5px;letter-spacing:.17em;color:rgba(255,255,255,.55)}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav ul a{font-family:var(--head);font-weight:600;font-size:14.5px;color:rgba(255,255,255,.78);transition:color .15s}
+.nav ul a:hover{color:#fff}
+.lang{display:flex;gap:2px;padding:3px;border-radius:18px;box-shadow:0 0 0 1px rgba(255,255,255,.18) inset}
+.lang button{border:0;background:none;color:rgba(255,255,255,.65);font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.06em;height:28px;padding:0 10px;border-radius:14px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--navy)}
+.nav .btn{height:42px;padding:0 20px;font-size:14.5px}
+@media (max-width:900px){.nav ul{display:none}.nav .lang{margin-left:auto}}
+@media (max-width:420px){.nav .btn{display:none}}
+@media (max-width:480px){.brand small{display:none}.brand b{font-size:15px;white-space:nowrap}.brand img{height:32px}.nav .btn{padding:0 16px}.nav .wrap{gap:12px}}
+
+/* portada */
+.hero{position:relative;background:var(--navy);color:#C5CCDA;overflow:hidden;padding:calc(env(safe-area-inset-top,0px) + 140px) 0 0}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 520px at 78% 30%,rgba(41,64,112,.55),transparent 70%),radial-gradient(600px 400px at 10% 100%,rgba(201,162,78,.07),transparent 70%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero h1{color:#fff;font-size:clamp(38px,5.2vw,62px);line-height:1.06;font-weight:800;letter-spacing:-.032em;margin:18px 0 22px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .lead{font-size:clamp(17px,1.5vw,19px);line-height:1.65;color:#AEB7C8;max-width:540px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.hero .facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:34px;font-size:14px;color:#8F9AAF}
+.hero .facts span{display:inline-flex;align-items:center;gap:8px}
+.hero .facts svg{width:17px;height:17px;color:var(--gold)}
+.hero .eyebrow{color:var(--gold)}
+.phones{position:relative;height:640px}
+.phone{position:absolute;width:290px;aspect-ratio:390/844;border-radius:46px;padding:9px;background:#05080F;box-shadow:0 0 0 1px rgba(255,255,255,.08) inset,0 40px 80px -20px rgba(0,0,0,.55),0 18px 40px -18px rgba(0,0,0,.6)}
+.phone img{width:100%;height:100%;object-fit:cover;border-radius:38px}
+.phones .p1{left:6%;top:30px;z-index:2}
+.phones .p2{right:2%;top:110px;transform:scale(.92);transform-origin:top right;opacity:.96}
+@media (max-width:900px){
+  .hero{padding-top:calc(env(safe-area-inset-top,0px) + 112px)}
+  .hero .wrap{grid-template-columns:1fr;gap:56px}
+  .phones{height:520px;max-width:520px;margin:0 auto;width:100%}
+  .phone{width:236px;border-radius:38px;padding:8px}.phone img{border-radius:31px}
+  .phones .p1{left:calc(50% - 210px)}.phones .p2{right:calc(50% - 210px);top:80px}
+}
+@media (max-width:480px){.phones{height:470px}.phones .p1{left:2%}.phones .p2{right:2%;top:70px}.phone{width:210px}.hero .ctas .btn{flex:1 1 100%}}
+
+/* secciones */
+section{scroll-margin-top:72px}
+.sec{padding:120px 0}
+.sec.soft{background:var(--soft)}
+.sec-h{max-width:720px;margin:0 auto 72px;text-align:center}
+.sec-h h2{font-size:clamp(30px,3.6vw,44px);line-height:1.12;font-weight:800;margin-top:14px;text-wrap:balance}
+.sec-h p{margin-top:18px;font-size:18px;color:var(--muted);text-wrap:pretty}
+@media (max-width:700px){.sec{padding:84px 0}.sec-h{margin-bottom:52px}}
+
+/* funciones */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;padding:28px 0}
+.feat+.feat{margin-top:72px}
+.feat.rev .ft-media{order:2}
+.ft-media{display:flex;justify-content:center;position:relative}
+.ft-media::before{content:"";position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(201,162,78,.13),transparent 68%);top:50%;left:50%;transform:translate(-50%,-50%)}
+.ft-media .phone{position:relative;width:300px}
+.ft-num{font-family:var(--head);font-weight:700;font-size:13px;letter-spacing:.14em;color:var(--gold-2);text-transform:uppercase}
+.ft-text h3{font-size:clamp(26px,2.6vw,34px);line-height:1.15;font-weight:800;margin:12px 0 16px}
+.ft-text>p{font-size:17.5px;color:var(--text);max-width:500px}
+.ft-list{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:13px;max-width:500px}
+.ft-list li{display:flex;gap:12px;font-size:16px;line-height:1.5;color:var(--text)}
+.ft-list svg{width:20px;height:20px;color:var(--gold-2);margin-top:2px}
+.ft-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.ft-tags span{font-family:var(--head);font-weight:600;font-size:13px;color:var(--ink);background:#fff;box-shadow:0 0 0 1px var(--line) inset;border-radius:10px;padding:7px 12px}
+.sec.soft .ft-tags span{background:#fff}
+@media (max-width:860px){.feat{grid-template-columns:1fr;gap:44px}.feat.rev .ft-media{order:0}.feat+.feat{margin-top:40px}.ft-media .phone{width:250px}}
+
+/* más herramientas */
+.more{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:96px}
+.tool{background:#fff;border-radius:22px;box-shadow:0 0 0 1px var(--line) inset;overflow:hidden;display:flex;flex-direction:column}
+.tool .shot{background:var(--navy);height:270px;overflow:hidden;display:flex;justify-content:center;align-items:flex-start;padding-top:28px}
+.tool .shot .phone{position:relative;flex:none;width:220px;border-radius:34px;padding:7px;box-shadow:0 0 0 1px rgba(255,255,255,.08) inset}
+.tool .shot .phone img{border-radius:28px}
+.tool .tx{padding:26px 26px 30px}
+.tool h3{font-size:20px;font-weight:800;margin-bottom:8px}
+.tool p{font-size:15.5px;color:var(--muted);line-height:1.55}
+.tool .ico{width:250px;height:250px;margin:auto;display:flex;align-items:center;justify-content:center}
+@media (max-width:900px){.more{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto}}
+
+/* pasos */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
+.step{padding:30px 28px;border-radius:22px;background:#fff;box-shadow:0 0 0 1px var(--line) inset}
+.step .n{width:40px;height:40px;border-radius:12px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;font-size:16px;margin-bottom:20px}
+.step h3{font-size:19px;font-weight:800;margin-bottom:8px}
+.step p{font-size:15.5px;color:var(--muted)}
+@media (max-width:860px){.steps{grid-template-columns:1fr;max-width:520px;margin:0 auto}}
+
+/* planes */
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;gap:14px;padding:30px 24px 26px;border-radius:22px;background:#fff;box-shadow:0 0 0 1px var(--line) inset}
+.plan.best{background:var(--navy);box-shadow:0 0 0 1.5px var(--gold) inset,0 24px 50px -24px rgba(11,18,32,.55)}
+.plan.best h3,.plan.best .price{color:#fff}.plan.best .per,.plan.best .eq,.plan.best li{color:#AEB7C8}
+.badge{margin:-30px -24px 4px;text-align:center;background:var(--gold);color:var(--navy);font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;padding:9px 14px;border-radius:21px 21px 0 0;line-height:1.35}
+.plan h3{font-size:18px;font-weight:800}
+.price{font-family:var(--head);font-weight:800;font-size:34px;letter-spacing:-.025em;color:var(--ink);line-height:1}
+.per{font-size:14px;color:var(--muted);font-weight:500}
+.eq{font-size:13.5px;color:var(--muted);margin-top:-6px}
+.save{align-self:flex-start;font-family:var(--head);font-weight:700;font-size:12.5px;color:#166534;background:#E8F5EC;border-radius:8px;padding:4px 9px}
+.plan.best .save{background:rgba(201,162,78,.18);color:var(--gold)}
+.plan ul{list-style:none;padding:0;margin:4px 0 8px;display:grid;gap:9px;flex:1}
+.plan li{display:flex;gap:9px;font-size:14.5px;line-height:1.45;color:var(--text)}
+.plan li svg{width:18px;height:18px;color:var(--gold-2);margin-top:1px}
+.plan.best li svg{color:var(--gold)}
+.plan .btn{width:100%;height:48px}
+.plan.best .btn.out{background:transparent;color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.3) inset}
+.cond{max-width:760px;margin:30px auto 0;text-align:center;font-size:14px;color:var(--muted);text-wrap:pretty}
+@media (max-width:1060px){.plans{grid-template-columns:repeat(2,1fr);max-width:720px;margin:0 auto}}
+@media (max-width:560px){.plans{grid-template-columns:1fr;gap:26px}}
+
+/* preguntas */
+.faq{max-width:780px;margin:0 auto;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 4px;font-family:var(--head);font-weight:700;font-size:18px;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg{transition:transform .2s ease;color:var(--muted)}
+.faq details[open] summary svg{transform:rotate(45deg)}
+.faq details p{padding:0 4px 26px;color:var(--text);font-size:16.5px;max-width:680px}
+
+/* cierre */
+.cta{background:var(--navy);color:#AEB7C8;text-align:center;padding:110px 0;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 360px at 50% 0%,rgba(41,64,112,.6),transparent 70%)}
+.cta .wrap{position:relative}
+.cta img{height:86px;width:auto;margin:0 auto 26px}
+.cta h2{color:#fff;font-size:clamp(30px,3.6vw,44px);font-weight:800;line-height:1.12;max-width:720px;margin:0 auto;text-wrap:balance}
+.cta p{margin:18px auto 0;max-width:560px;font-size:18px}
+.cta .ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:34px}
+
+footer{background:#070C17;color:#7C879B;padding:56px 0 calc(40px + env(safe-area-inset-bottom,0px));font-size:14.5px}
+footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+footer h4{font-family:var(--head);color:#fff;font-size:14px;font-weight:700;margin:0 0 14px}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+footer a:hover{color:#fff}
+footer .brand{margin-bottom:16px}
+footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);padding-top:24px;margin-top:8px;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+footer .soc{display:inline-flex;align-items:center;gap:8px}
+footer .soc svg{width:18px;height:18px}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr 1fr}footer .wrap>div:first-child{grid-column:1/-1}}
+
+/* aparición suave */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.btn{transition:none}}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></symbol>
-  <symbol id="i-dict" viewBox="0 0 24 24"><path d="M2 5.5C4.5 4.2 7.6 4 12 6c4.4-2 7.5-1.8 10-.5V19c-2.5-1.3-5.6-1.5-10 .5-4.4-2-7.5-1.8-10-.5z"/><path d="M12 6v13.5"/></symbol>
-  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
-  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
-  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></symbol>
-  <symbol id="i-bible" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5a2.5 2.5 0 0 0 0 5H20"/><path d="M12 7v6M9 10h6"/></symbol>
-  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
-  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
-  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
-  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
-  <symbol id="i-next" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
-  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
-  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
-  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
-  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
-  <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4M12 2v14"/></symbol>
-  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
-  <symbol id="i-lectern" viewBox="0 0 24 24"><path d="M4 7h16l-2 5H6zM12 12v9M8 21h8"/></symbol>
-  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></symbol>
-  <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></symbol>
-  <symbol id="i-ol" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></symbol>
-  <symbol id="i-hl" viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></symbol>
-  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></symbol>
-  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
-  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
-  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
-  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
-  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></symbol>
-  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></symbol>
-  <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/><path d="M17 15v6M14 18h6"/></symbol>
-  <symbol id="i-lang" viewBox="0 0 24 24"><path d="M3 5h10M8 3v2M5 5c0 5 3 8 7 9M11 5c0 4-3 8-7 9"/><path d="m13 21 4-9 4 9M14.5 18h5"/></symbol>
-  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></symbol>
-  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
-  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
-  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+  <symbol id="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="ar" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="pl" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  <symbol id="dev" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+  <symbol id="lib" viewBox="0 0 24 24"><path d="M5 4h4v16H5zM10 4h4v16h-4zM15.2 4.6l3.8-1 3.9 15.4-3.8 1z"/></symbol>
 </svg>
 
-<main id="app"></main>
-<nav class="nav" id="nav" aria-label="Menú principal" hidden><div class="in" id="navIn"></div></nav>
-<div id="layer"></div>
-<div class="toast" id="toast" role="status" hidden></div>
-<div id="printArea"></div>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Meu Púlpito"><img src="app/mark.png" alt="" width="47" height="38"><span><b>MEU <span>PÚLPITO</span></b><small data-t="tag"></small></span></a>
+    <ul>
+      <li><a href="#funciones" data-t="n_feat"></a></li>
+      <li><a href="#planes" data-t="n_plans"></a></li>
+      <li><a href="#preguntas" data-t="n_faq"></a></li>
+    </ul>
+    <div class="lang" role="group" aria-label="Idioma"><button data-l="es">ES</button><button data-l="pt">PT</button></div>
+    <a class="btn gold" href="app/" data-go data-t="n_go"></a>
+  </div>
+</header>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="app.js"></script>
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="rv">
+        <span class="eyebrow" data-t="h_eye"></span>
+        <h1 data-t="h_t"></h1>
+        <p class="lead" data-t="h_d"></p>
+        <div class="ctas">
+          <a class="btn gold" href="app/" data-go><span data-t="h_b1"></span><svg class="i"><use href="#ar"/></svg></a>
+          <a class="btn line" href="#funciones" data-t="h_b2"></a>
+        </div>
+        <div class="facts">
+          <span><svg class="i"><use href="#globe"/></svg><span data-t="f1"></span></span>
+          <span><svg class="i"><use href="#dev"/></svg><span data-t="f2"></span></span>
+          <span><svg class="i"><use href="#lock"/></svg><span data-t="f3"></span></span>
+        </div>
+      </div>
+      <div class="phones rv" aria-hidden="true">
+        <div class="phone p1"><img data-img="home" alt="" width="390" height="844"></div>
+        <div class="phone p2"><img data-img="preach" alt="" width="390" height="844" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="funciones">
+    <div class="wrap">
+      <div class="sec-h rv"><span class="eyebrow" data-t="fe_eye"></span><h2 data-t="fe_t"></h2><p data-t="fe_d"></p></div>
+
+      <article class="feat rv">
+        <div class="ft-media"><div class="phone"><img data-img="editor" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-text"><span class="ft-num">01</span><h3 data-t="a_t"></h3><p data-t="a_d"></p><ul class="ft-list" data-list="a_l"></ul></div>
+      </article>
+
+      <article class="feat rev rv">
+        <div class="ft-media"><div class="phone"><img data-img="preach" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-text"><span class="ft-num">02</span><h3 data-t="b_t"></h3><p data-t="b_d"></p><ul class="ft-list" data-list="b_l"></ul></div>
+      </article>
+
+      <article class="feat rv">
+        <div class="ft-media"><div class="phone"><img data-img="bible" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-text"><span class="ft-num">03</span><h3 data-t="c_t"></h3><p data-t="c_d"></p><ul class="ft-list" data-list="c_l"></ul><div class="ft-tags" data-tags="c_tags"></div></div>
+      </article>
+
+      <article class="feat rev rv">
+        <div class="ft-media"><div class="phone"><img data-img="dicentry" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-text"><span class="ft-num">04</span><h3 data-t="d_t"></h3><p data-t="d_d"></p><ul class="ft-list" data-list="d_l"></ul><div class="ft-tags" data-tags="d_tags"></div></div>
+      </article>
+
+      <div class="more">
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="cur" alt="" width="390" height="844" loading="lazy"></div></div><div class="tx"><h3 data-t="e_t"></h3><p data-t="e_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="agenda" alt="" width="390" height="844" loading="lazy"></div></div><div class="tx"><h3 data-t="g_t"></h3><p data-t="g_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="lib" alt="" width="390" height="844" loading="lazy"></div></div><div class="tx"><h3 data-t="h2_t"></h3><p data-t="h2_d"></p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec soft" id="empezar">
+    <div class="wrap">
+      <div class="sec-h rv"><span class="eyebrow" data-t="s_eye"></span><h2 data-t="s_t"></h2></div>
+      <div class="steps">
+        <div class="step rv"><div class="n">1</div><h3 data-t="s1_t"></h3><p data-t="s1_d"></p></div>
+        <div class="step rv"><div class="n">2</div><h3 data-t="s2_t"></h3><p data-t="s2_d"></p></div>
+        <div class="step rv"><div class="n">3</div><h3 data-t="s3_t"></h3><p data-t="s3_d"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="planes">
+    <div class="wrap">
+      <div class="sec-h rv"><span class="eyebrow" data-t="p_eye"></span><h2 data-t="p_t"></h2><p data-t="p_d"></p></div>
+      <div class="plans rv" id="plans"></div>
+      <p class="cond" data-t="p_cond"></p>
+    </div>
+  </section>
+
+  <section class="sec soft" id="preguntas">
+    <div class="wrap">
+      <div class="sec-h rv"><span class="eyebrow" data-t="q_eye"></span><h2 data-t="q_t"></h2></div>
+      <div class="faq rv" id="faq"></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap rv">
+      <img src="app/mark.png" alt="" width="108" height="86">
+      <h2 data-t="z_t"></h2>
+      <p data-t="z_d"></p>
+      <div class="ctas"><a class="btn gold" href="app/" data-go><span data-t="h_b1"></span><svg class="i"><use href="#ar"/></svg></a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top"><img src="app/mark.png" alt="" width="47" height="38"><span><b>MEU <span>PÚLPITO</span></b><small data-t="tag"></small></span></a>
+      <p data-t="ft_d" style="max-width:340px"></p>
+    </div>
+    <div><h4 data-t="ft_p"></h4><ul><li><a href="#funciones" data-t="n_feat"></a></li><li><a href="#planes" data-t="n_plans"></a></li><li><a href="#preguntas" data-t="n_faq"></a></li><li><a href="app/" data-go data-t="n_go"></a></li></ul></div>
+    <div><h4 data-t="ft_c"></h4><ul>
+      <li><a class="soc" href="https://instagram.com/meupulpito" target="_blank" rel="noopener"><svg class="i"><use href="#ig"/></svg>@meupulpito</a></li>
+      <li><a class="soc" href="https://wa.me/595983879344" target="_blank" rel="noopener"><svg class="i"><use href="#chat"/></svg>WhatsApp</a></li>
+    </ul></div>
+    <div class="copy"><span>© <span id="yr"></span> Meu Púlpito</span><span data-t="ft_n"></span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+// Precios actuales (los mismos que se configuran en el panel del app)
+var PRICE={m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},MON={m:1,t:3,a:12};
+var T={es:{
+  tag:'PREPARA. ORGANIZA. PREDICA.',n_feat:'Funciones',n_plans:'Planes',n_faq:'Preguntas',n_go:'Acceder',
+  h_eye:'Para pastores y predicadores',h_t:'Prepare y organice sus mensajes en <em>un solo lugar.</em>',
+  h_d:'Meu Púlpito es una plataforma para preparar sermones, estudiar las Escrituras y organizar sus mensajes, desde el primer bosquejo hasta el púlpito.',
+  h_b1:'Acceder a la plataforma',h_b2:'Conocer las funciones',f1:'Español y portugués',f2:'iPhone, Android y computadora',f3:'Sus sermones, solo suyos',
+  fe_eye:'Funciones',fe_t:'Todo lo que necesita, desde la preparación hasta la predicación.',fe_d:'Herramientas pensadas para el trabajo pastoral de cada semana, sin pantallas de más.',
+  a_t:'Preparación de sermones',a_d:'Escriba con libertad y deje que la estructura aparezca sola: título, texto base, puntos y conclusión, en una hoja limpia que se guarda mientras usted escribe.',
+  a_l:['Inserte versículos y el texto bíblico se coloca automáticamente','Modelos de bosquejo: expositivo, temático, evangelístico y más','Categorías, favoritos y versiones anteriores de cada sermón','Dictado por voz para registrar ideas rápidamente'],
+  b_t:'Modo Predicar',b_d:'Su sermón en pantalla completa, con letra grande y una lectura cómoda para el púlpito.',
+  b_l:['Tamaño de letra y espaciado ajustables','Cronómetro con tiempo objetivo','Avance por partes y desplazamiento automático','Cambie el sermón entre español y portugués sin crear una copia'],
+  c_t:'Biblia',c_d:'Lea, busque y compare versiones en español, portugués y en los idiomas originales.',
+  c_l:['Búsqueda por referencia o por palabra','Compare un versículo en varias versiones','Toque una palabra del original para ver su significado','Inserte el texto en el sermón con un toque'],
+  c_tags:['Reina-Valera 1909','Reina-Valera 1865','Bíblia Livre','Nova Versão de Acesso Livre','Textus Receptus','Códice de Leningrado'],
+  d_t:'Diccionarios Bíblico, Hebreo y Griego',d_d:'Tres diccionarios independientes, con fuentes indicadas y en el idioma que usted usa.',
+  d_l:['Busque en español, en portugués, en el idioma original o por número de Strong','Vea cómo se traduce cada palabra según el contexto','Personajes, lugares, costumbres y conceptos de la Biblia','Consulte e inserte en el sermón sin cerrar lo que está escribiendo'],
+  d_tags:['Diccionario Bíblico','Diccionario Hebreo','Diccionario Griego'],
+  e_t:'Curiosidades bíblicas',e_d:'Preguntas y respuestas con referencias y el criterio de cada dato. Funciona sin conexión.',
+  g_t:'Agenda',g_d:'Programe dónde y cuándo va a predicar, y lleve el historial de cada mensaje.',
+  h2_t:'Biblioteca personal',h2_d:'Guarde estudios, ilustraciones, frases e ideas, también por voz, para usar en sus próximos sermones.',
+  s_eye:'Cómo empezar',s_t:'Comience en pocos minutos.',
+  s1_t:'Cree su cuenta',s1_d:'Solo necesita un correo y una contraseña. Sus sermones quedan guardados en su cuenta.',
+  s2_t:'Instálelo en su celular',s2_d:'En el iPhone, toque Compartir y luego «Agregar a pantalla de inicio». En Android, use el menú del navegador.',
+  s3_t:'Prepare y predique',s3_d:'Escriba su mensaje, estúdielo con la Biblia y los diccionarios, y predíquelo desde la misma pantalla.',
+  p_eye:'Planes',p_t:'Elija el plan que mejor se adapta a su ministerio.',p_d:'Comience gratis. Cuando quiera todas las herramientas, pase a Premium.',
+  pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para siempre',per_m:'por mes',per_t:'cada 3 meses',per_a:'por año',eq:'equivale a {v} por mes',save:'Ahorre {n}%',best:'Mejor precio · ahorre con el plan anual',
+  go_f:'Comenzar gratis',go_m:'Elegir Premium Mensual',go_t:'Elegir Premium Trimestral',go_a:'Elegir Premium Anual',
+  ff:['Hasta 5 sermones','Editor, Biblia y Agenda','Modo Predicar básico','Diccionarios: 5 artículos por día','15 curiosidades bíblicas'],
+  fp:['Sermones sin límite','Diccionarios completos','Todas las curiosidades bíblicas','Modo Predicar avanzado','Traducción del sermón ES/PT'],
+  fp2:'Los mismos beneficios del Premium Mensual',
+  p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
+  q_eye:'Preguntas frecuentes',q_t:'Lo que más nos preguntan.',
+  faq:[['¿En qué dispositivos funciona?','En iPhone, Android y computadora, desde el navegador. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
+   ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones y las Biblias quedan guardados en el celular, de modo que puede predicar aunque no tenga señal.'],
+   ['¿Quién puede ver mis sermones?','Solo usted. Cada sermón queda protegido en su cuenta y nadie más tiene acceso a su contenido, tampoco el equipo de Meu Púlpito.'],
+   ['¿Puedo predicar el mismo mensaje en español y en portugués?','Sí. En el Modo Predicar puede cambiar el idioma del sermón; la traducción se guarda en el mismo sermón y los versículos se toman de la Biblia del otro idioma. Recomendamos revisarla antes de predicar.'],
+   ['¿Qué pasa si mi plan vence?','Recibe un aviso antes del vencimiento. Si no renueva, vuelve al plan gratis y todos sus sermones siguen guardados.'],
+   ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera; al confirmar el pago, su cuenta pasa a Premium.']],
+  z_t:'Su próximo mensaje empieza aquí.',z_d:'Prepare, organice y predique con una herramienta hecha para el ministerio.',
+  ft_d:'Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras y predique con confianza.',ft_p:'Producto',ft_c:'Contacto',ft_n:'Hecho para pastores, en español y portugués.',
+  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).'
+},pt:{
+  tag:'PREPARE. ORGANIZE. PREGUE.',n_feat:'Funções',n_plans:'Planos',n_faq:'Perguntas',n_go:'Acessar',
+  h_eye:'Para pastores e pregadores',h_t:'Prepare e organize suas mensagens em <em>um só lugar.</em>',
+  h_d:'O Meu Púlpito é uma plataforma para preparar sermões, estudar as Escrituras e organizar suas mensagens, do primeiro esboço até o púlpito.',
+  h_b1:'Acessar a plataforma',h_b2:'Conhecer as funções',f1:'Português e espanhol',f2:'iPhone, Android e computador',f3:'Seus sermões, só seus',
+  fe_eye:'Funções',fe_t:'Tudo o que você precisa, da preparação à pregação.',fe_d:'Ferramentas pensadas para o trabalho pastoral de cada semana, sem telas a mais.',
+  a_t:'Preparação de sermões',a_d:'Escreva com liberdade e deixe a estrutura aparecer sozinha: título, texto base, pontos e conclusão, numa folha limpa que é salva enquanto você escreve.',
+  a_l:['Insira versículos e o texto bíblico é colocado automaticamente','Modelos de esboço: expositivo, temático, evangelístico e mais','Categorias, favoritos e versões anteriores de cada sermão','Ditado por voz para registrar ideias rapidamente'],
+  b_t:'Modo Pregar',b_d:'Seu sermão em tela cheia, com letra grande e uma leitura confortável para o púlpito.',
+  b_l:['Tamanho da letra e espaçamento ajustáveis','Cronômetro com tempo-alvo','Avanço por partes e rolagem automática','Troque o sermão entre português e espanhol sem criar uma cópia'],
+  c_t:'Bíblia',c_d:'Leia, busque e compare versões em português, espanhol e nos idiomas originais.',
+  c_l:['Busca por referência ou por palavra','Compare um versículo em várias versões','Toque numa palavra do original para ver o significado','Insira o texto no sermão com um toque'],
+  c_tags:['Bíblia Livre','Nova Versão de Acesso Livre','Reina-Valera 1909','Reina-Valera 1865','Textus Receptus','Códice de Leningrado'],
+  d_t:'Dicionários Bíblico, Hebraico e Grego',d_d:'Três dicionários independentes, com as fontes indicadas e no idioma que você usa.',
+  d_l:['Busque em português, em espanhol, no idioma original ou pelo número de Strong','Veja como cada palavra é traduzida conforme o contexto','Personagens, lugares, costumes e conceitos da Bíblia','Consulte e insira no sermão sem fechar o que está escrevendo'],
+  d_tags:['Dicionário Bíblico','Dicionário Hebraico','Dicionário Grego'],
+  e_t:'Curiosidades bíblicas',e_d:'Perguntas e respostas com referências e o critério de cada dado. Funciona sem internet.',
+  g_t:'Agenda',g_d:'Programe onde e quando vai pregar, e mantenha o histórico de cada mensagem.',
+  h2_t:'Biblioteca pessoal',h2_d:'Guarde estudos, ilustrações, frases e ideias, também por voz, para usar nos próximos sermões.',
+  s_eye:'Como começar',s_t:'Comece em poucos minutos.',
+  s1_t:'Crie sua conta',s1_d:'Você só precisa de um e-mail e uma senha. Seus sermões ficam guardados na sua conta.',
+  s2_t:'Instale no celular',s2_d:'No iPhone, toque em Compartilhar e depois em «Adicionar à Tela de Início». No Android, use o menu do navegador.',
+  s3_t:'Prepare e pregue',s3_d:'Escreva sua mensagem, estude com a Bíblia e os dicionários, e pregue na mesma tela.',
+  p_eye:'Planos',p_t:'Escolha o plano que combina com o seu ministério.',p_d:'Comece grátis. Quando quiser todas as ferramentas, passe para o Premium.',
+  pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para sempre',per_m:'por mês',per_t:'a cada 3 meses',per_a:'por ano',eq:'equivale a {v} por mês',save:'Economize {n}%',best:'Melhor preço · economize com o plano anual',
+  go_f:'Começar grátis',go_m:'Escolher Premium Mensal',go_t:'Escolher Premium Trimestral',go_a:'Escolher Premium Anual',
+  ff:['Até 5 sermões','Editor, Bíblia e Agenda','Modo Pregar básico','Dicionários: 5 artigos por dia','15 curiosidades bíblicas'],
+  fp:['Sermões sem limite','Dicionários completos','Todas as curiosidades bíblicas','Modo Pregar avançado','Tradução do sermão PT/ES'],
+  fp2:'Os mesmos benefícios do Premium Mensal',
+  p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
+  q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
+  faq:[['Em quais aparelhos funciona?','No iPhone, Android e computador, pelo navegador. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
+   ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões e as Bíblias ficam guardados no celular, então você pode pregar mesmo sem sinal.'],
+   ['Quem pode ver meus sermões?','Só você. Cada sermão fica protegido na sua conta e ninguém mais tem acesso ao conteúdo, nem a equipe do Meu Púlpito.'],
+   ['Posso pregar a mesma mensagem em português e em espanhol?','Sim. No Modo Pregar você troca o idioma do sermão; a tradução fica guardada no mesmo sermão e os versículos vêm da Bíblia do outro idioma. Recomendamos revisar antes de pregar.'],
+   ['O que acontece se meu plano vencer?','Você recebe um aviso antes do vencimento. Se não renovar, volta ao plano grátis e todos os seus sermões continuam guardados.'],
+   ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira; ao confirmarmos o pagamento, sua conta passa a Premium.']],
+  z_t:'Sua próxima mensagem começa aqui.',z_d:'Prepare, organize e pregue com uma ferramenta feita para o ministério.',
+  ft_d:'Plataforma para pastores e pregadores: prepare sermões, estude as Escrituras e pregue com confiança.',ft_p:'Produto',ft_c:'Contato',ft_n:'Feito para pastores, em português e espanhol.',
+  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).'
+}};
+var L='es';try{L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es')}catch(e){}
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var ck='<svg class="i"><use href="#ck"/></svg>';
+function money(n,c){return c==='brl'?'R$ '+n.toLocaleString('pt-BR'):'₲ '+n.toLocaleString('es-PY')}
+function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
+  document.title=L==='pt'?'Meu Púlpito · Prepare, organize e pregue':'Meu Púlpito · Prepare, organice y predique';
+  document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');if(D[k]!=null)el.innerHTML=k==='h_t'?D[k]:esc(D[k])});
+  document.querySelectorAll('[data-list]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-list')].map(function(x){return'<li>'+ck+'<span>'+esc(x)+'</span></li>'}).join('')});
+  document.querySelectorAll('[data-tags]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-tags')].map(function(x){return'<span>'+esc(x)+'</span>'}).join('')});
+  document.querySelectorAll('[data-img]').forEach(function(el){el.src='img/'+el.getAttribute('data-img')+'-'+L+'.webp'});
+  document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-l')===L))});
+  var c=L==='pt'?'brl':'pyg',o=L==='pt'?'pyg':'brl';
+  var card=function(k){var x=PRICE[k],sv=k==='m'?0:Math.round((1-x[c]/(PRICE.m[c]*MON[k]))*100);
+    var msg=D.wa_plan.replace('{p}',D['pl_'+k]).replace('{v}',money(x[c],c)+' '+D['per_'+k]);
+    return'<div class="plan'+(k==='a'?' best':'')+'">'+(k==='a'?'<span class="badge">'+esc(D.best)+'</span>':'')+
+      '<h3>'+esc(D['pl_'+k])+'</h3><div><div class="price">'+esc(money(x[c],c))+'</div><div class="per">'+esc(D['per_'+k])+' · '+esc(money(x[o],o))+'</div></div>'+
+      (k!=='m'?'<div class="eq">'+esc(D.eq.replace('{v}',money(Math.round(x[c]/MON[k]),c)))+'</div>':'')+
+      (sv>0?'<span class="save">'+esc(D.save.replace('{n}',sv))+'</span>':'')+
+      '<ul>'+(k==='m'?D.fp.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join(''):'<li>'+ck+'<span>'+esc(D.fp2)+'</span></li>')+'</ul>'+
+      '<a class="btn '+(k==='a'?'gold':'dark')+'" href="https://wa.me/595983879344?text='+encodeURIComponent(msg)+'" target="_blank" rel="noopener">'+esc(D['go_'+k])+'</a></div>'};
+  document.getElementById('plans').innerHTML='<div class="plan"><h3>'+esc(D.pl_free)+'</h3><div><div class="price">'+esc(money(0,c))+'</div><div class="per">'+esc(D.per_f)+'</div></div><ul>'+D.ff.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join('')+'</ul><a class="btn out" href="app/" data-go>'+esc(D.go_f)+'</a></div>'+card('m')+card('t')+card('a');
+  document.getElementById('faq').innerHTML=D.faq.map(function(q){return'<details><summary>'+esc(q[0])+'<svg class="i"><use href="#pl"/></svg></summary><p>'+esc(q[1])+'</p></details>'}).join('');
+}
+apply();
+document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){L=b.getAttribute('data-l');try{localStorage.setItem('mp.site.l',L)}catch(e){}apply()})});
+// el app abre en el mismo idioma que el sitio (solo si todavía no eligió uno)
+document.addEventListener('click',function(e){var a=e.target.closest('[data-go]');if(!a)return;try{var p=JSON.parse(localStorage.getItem('mp.prefs')||'null');if(!p){localStorage.setItem('mp.prefs',JSON.stringify({ui:L}))}}catch(err){}});
+document.getElementById('yr').textContent=new Date().getFullYear();
+var nav=document.getElementById('nav');var onS=function(){nav.classList.toggle('solid',scrollY>20)};addEventListener('scroll',onS,{passive:true});onS();
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});document.querySelectorAll('.rv').forEach(function(el){io.observe(el)})}
+else document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')});
+// retira el service worker viejo de la raíz (el app ahora vive en /app/)
+if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){var s=new URL(r.scope);if(s.pathname==='/'||s.pathname==='/meu-pulpito/')r.unregister()})}).catch(function(){});
+})();
+</script>
 </body>
 </html>

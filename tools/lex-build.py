@@ -3,7 +3,7 @@
 # Glosas traducidas al español y portugués: gl/map.json (traducción revisada de las glosas de STEP)
 import json,re,collections,os,sys
 SP='/tmp/claude-0/-home-claude/bc3af29e-25b3-57fb-8d3a-55ee1453ea10/scratchpad/build/'
-OUT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','biblia','lex')
+OUT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','app','biblia','lex')
 os.makedirs(OUT,exist_ok=True)
 raw=json.load(open(SP+'lexraw.json'))
 gmap={k.lower():v for k,v in json.load(open(SP+'gl/map.json')).items()}

@@ -2,7 +2,7 @@
 # Las estadísticas se cuentan aquí mismo sobre las Biblias del app (Reina-Valera 1909 y Bíblia Livre),
 # para que cada número diga de qué traducción sale y con qué criterio se contó.
 import json,re,os
-R=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','biblia')
+R=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','app','biblia')
 RV=json.load(open(R+'/es-rv1909.json'));BL=json.load(open(R+'/pt-livre.json'))
 W=lambda s:len(re.findall(r"[\wÀ-ÿ]+(?:[-'’][\wÀ-ÿ]+)*",s or ''))
 real=lambda v:v and v.strip() not in ('—','-')
