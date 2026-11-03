@@ -711,3 +711,10 @@ details.credits{text-align:center}details.credits summary{list-style:none;cursor
 .dx-allsec{display:flex;flex-direction:column;gap:8px}
 .dx-allsec .res>*:nth-child(n+4){display:none}
 .dx-allsec .empty{padding:10px 0}
+/* búsqueda en toda la Biblia (Curiosidades) */
+.bq-card{background:var(--surface);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:inset 3px 0 0 var(--gold)}
+.bq-h{margin:0;font-family:var(--head);font-weight:800;font-size:17px;line-height:1.35;color:var(--fg)}
+.bq-s{margin:0;font-size:13.5px;color:var(--muted);line-height:1.45}
+.bq-note{margin:0;font-size:12px;color:var(--faint);line-height:1.45}
+.bq-v .cu-q small{display:block;font-family:var(--read);font-size:15px;line-height:1.5;color:var(--fg);margin-top:3px;white-space:normal}
+.bq-v mark{background:var(--gold-soft);color:inherit;border-radius:3px;padding:0 2px}
