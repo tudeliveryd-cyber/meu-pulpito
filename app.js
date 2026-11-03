@@ -784,7 +784,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v34';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v35';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -963,11 +963,12 @@ function homeHtml(){
   const S=sortedByUpd();const favs=S.filter(s=>s.fav);const NS=S.length;const up=upcoming();const wk=up.filter(e=>e.date<=addDays(todayISO(),6)).length;
   const ev=up[0];const evS=ev&&sermons.find(s=>s.id===ev.sermonId);
   return`
-  <div class="row">
-    <img class="logo" src="logo.jpg" alt="Meu Púlpito">
-    <div class="hello" style="flex:1;min-width:0"><span class="sub">${esc(greet())}</span><b>${esc(meta.name||t('pastor'))}</b></div>
+  <div class="row topbrand">
+    <span class="mark"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
+    <div class="wordmark" style="flex:1;min-width:0" aria-label="Meu Púlpito"><b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b><small>PREPARE. ORGANIZE. PREGUE.</small></div>
     <button class="iconbtn bg${meta.photo?' hasph':''}" data-act="tab" data-k="profile" aria-label="${esc(t('nav_profile'))}">${meta.photo?`<img src="${esc(meta.photo)}" alt="">`:ic('gear')}</button>
   </div>
+  <div class="hello"><span class="sub">${esc(greet())}</span><b>${esc(meta.name||t('pastor'))}</b></div>
   <form class="search" data-form="homeSearch" role="search">${ic('search')}<input id="hq" name="q" type="search" placeholder="${esc(t('search_ph'))}" autocomplete="off" enterkeyhint="search"></form>
   ${bannersHtml()}
   <button class="hero" data-act="new"><span><span class="k">${esc(t('prepare'))}</span><span class="t" style="display:block">${esc(t('new_sermon'))}</span><span class="d">${esc(t('new_desc'))}</span></span><span class="plus">${ic('plus')}</span></button>

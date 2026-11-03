@@ -566,3 +566,11 @@ h1.h{font-weight:800;letter-spacing:-.025em}
 .brand .b-d{display:none}
 html[data-mode="dark"] .brand .b-d{display:block}html[data-mode="dark"] .brand .b-l{display:none}
 .login h2,.login>p.sub{text-align:center;align-self:center}
+.topbrand{gap:12px}
+.mark{flex:none;height:50px;display:flex;align-items:center}.mark img{height:50px;width:auto}
+.mark .b-d{display:none}html[data-mode="dark"] .mark .b-d{display:block}html[data-mode="dark"] .mark .b-l{display:none}
+.wordmark b{display:block;font-family:var(--head);font-size:21px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.wordmark .w1{color:var(--fg)}.wordmark .w2{color:var(--gold-ink)}
+html[data-mode="dark"] .wordmark .w2{color:var(--gold)}
+.wordmark small{display:block;margin-top:3px;font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.hello{margin-top:-4px}.hello .sub{font-size:14px}
