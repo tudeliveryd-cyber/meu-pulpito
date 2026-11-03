@@ -840,7 +840,7 @@ function lastPreach(s){let best=null;(s.log||[]).forEach(l=>{if(!best||l.date>be
   if(!best){const p=s.preached||{};Object.keys(p).forEach(k=>{if(!best||p[k]>best.date)best={place:k,date:p[k]}})}return best}
 const placeName=l=>l?(l.place==='sede'?t('sede'):l.place==='anexo'?t('anexo'):(l.placeName||t('other'))):'';
 const catOf=s=>(s.category??s.series??'').trim();
-const sLang=s=>{if(s.langSet&&s.lang)return s.lang;const k=s.id+'|'+(s.updated||0)+'|'+(s.html||'').length;if(!LDC.has(k)){const d=derive(s);LDC.set(k,detectSure(d.title+' '+d.text))}return LDC.get(k)||s.lang||detectLang(derive(s).text)};
+const sLang=s=>{if(s.langSet&&s.lang)return s.lang;const k=s.id+'|'+(s.updated||0)+'|'+(s.html||'').length;if(!LDC.has(k)){const d=derive(s);LDC.set(k,detectSure(d.title+' '+d.text))}if(LDC.get(k))return LDC.get(k);if(s.lang)return s.lang;const tx=derive(s).text;return tx.trim().length>40?detectLang(tx):(prefs.ui==='pt'?'pt':'es')};
 
 /* =========================================================
    Datos y sincronización
@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v52';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v53';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}

@@ -640,3 +640,6 @@ a.btn{text-decoration:none}
 /* que el cursor nunca quede escondido detrás de las barras fijas */
 html:has(.ed-view){scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--edTop,61px) + 56px + 12px)}
 .doc>*{scroll-margin-top:calc(env(safe-area-inset-top,0px) + var(--edTop,61px) + 56px + 12px)}
+/* iPhone: la barra de arriba es "sticky" con el área de la cámara; el editor empieza debajo de esa área
+   para que la barra y la fila de botones no tapen el título */
+.ed-view{padding-top:env(safe-area-inset-top,0px)}
