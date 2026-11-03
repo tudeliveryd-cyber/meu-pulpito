@@ -475,7 +475,10 @@ function purgeTrash(){const lim=Date.now()-30*864e5;sermons.filter(s=>s.deleted&
 function putEvent(e){e.updated=Date.now();const i=agenda.findIndex(x=>x.id===e.id);if(i<0)agenda.push(e);else agenda[i]=e;cacheAll();if(cols)cols.a.doc(e.id).set(strip(e)).catch(()=>{})}
 function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols.a.doc(id).delete().catch(()=>{})}
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
-let bgT=0;function refreshBg(){clearTimeout(bgT);bgT=setTimeout(()=>{if(view.tab&&!view.overlay)render()},60)}
+let bgT=0;function refreshBg(){clearTimeout(bgT);bgT=setTimeout(()=>{if(!view.tab||view.overlay)return;
+  // No redibujar mientras la persona escribe en un campo (se perderían espacios o el cursor); se actualiza al salir del campo
+  const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)&&a.type!=='range'&&$('#app').contains(a)){a.addEventListener('blur',()=>refreshBg(),{once:true});return}
+  render()},60)}
 
 function subCol(ref,getL,setL,onAny){let first=true;
   return ref.onSnapshot({includeMetadataChanges:true},snap=>{
@@ -1537,7 +1540,8 @@ document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset
   if(k==='bQ'){BV.q=e.target.value;const p=parseRef(BV.q);clearTimeout(e.target._t);e.target._t=setTimeout(()=>{if(p){BV.b=p.b;BV.c=Math.max(1,p.ch);BV.sel=new Set(p.vs||[]);}render()},300)}
   if(k==='pMail'){prefs.mmEmail=e.target.value.trim();savePrefs()}
   if(k==='pAi'){ls.set('mp.aikey',e.target.value.trim())}
-  if(k==='pName'){meta.name=e.target.value.trim();clearTimeout(e.target._t);e.target._t=setTimeout(putMeta,600)}});
+  if(k==='pName'){meta.name=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(putMeta,600)}});
+document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.input==='pName'){meta.name=e.target.value.replace(/\s+/g,' ').trim();e.target.value=meta.name;putMeta()}});
 document.addEventListener('submit',e=>{const f=e.target.dataset.form;if(!f)return;e.preventDefault();
   if(f==='homeSearch'){listState.q=$('#hq').value;listState.f='all';listState.cat='';go('list')}
   if(f==='bSearch'){const inp=$('#bq');inp&&inp.blur()}
