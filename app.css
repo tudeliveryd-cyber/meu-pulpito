@@ -472,3 +472,9 @@ html[data-mode="dark"] .sd-num{background:#1C2638}
 .res .pres span em{color:var(--gold-ink);font-weight:700;font-style:normal}
 button.prow.plink{width:100%;background:none;border:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
 button.prow.plink>svg{width:18px;height:18px;color:var(--faint);flex:none}
+/* Panel del administrador */
+.adm-list{display:flex;flex-direction:column;gap:8px}
+.adm-row{display:flex;gap:10px;align-items:center;background:var(--chip);border-radius:14px;padding:10px 12px}
+.adm-row b{font-size:14.5px}
+.adm-seg{flex:none}
+.adm-seg button[aria-pressed=true][data-b="1"]{background:var(--danger);color:#fff;box-shadow:none}

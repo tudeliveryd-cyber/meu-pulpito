@@ -1,14 +1,24 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Cada pastor lee y escribe solo sus propios sermones, agenda, biblioteca y preferencias
+    // Solo el dueño de la app (su correo) es administrador
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'tudeliveryd@gmail.com';
+    }
+    // Cada pastor lee y escribe SOLO sus propios sermones, agenda, biblioteca y preferencias.
+    // El administrador NO está incluido aquí: el contenido queda cerrado también para él.
     match /pulpito/{uid}/{rest=**} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
-    // Plan de cada cuenta (gratis / completo): el pastor solo lo lee; solo el dueño lo cambia desde la consola
+    // Estadísticas (solo números): cada uno escribe la suya; solo el administrador las lee.
+    match /stats/{uid} {
+      allow read: if isAdmin();
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+    // Plan y acceso de cada cuenta: el pastor solo lo lee; solo el administrador lo cambia.
     match /planos/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false;
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
     }
   }
 }
