@@ -868,7 +868,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v51';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v52';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1527,6 +1527,9 @@ let edVisT=0;function edCaretVis(){if(!E||edVisT)return;edVisT=requestAnimationF
   let r=sel.getRangeAt(0).getBoundingClientRect();if(!r.height&&n&&n.getBoundingClientRect)r=n.getBoundingClientRect();
   const top=em.getBoundingClientRect().bottom+(window.visualViewport?visualViewport.offsetTop:0)+8;if(r.height&&r.top<top)window.scrollBy(0,r.top-top)})}
 document.addEventListener('selectionchange',()=>{if(E)edCaretVis()});
+/* sermón corto: la página no tiene por qué moverse; si el iPhone la corre, vuelve al inicio */
+function edLockTop(){if(!E||view.overlay!=='editor')return;const se=document.scrollingElement;if(window.scrollY>0&&se.scrollHeight-window.innerHeight<=260)window.scrollTo(0,0)}
+window.addEventListener('scroll',edLockTop,{passive:true});if(window.visualViewport)visualViewport.addEventListener('resize',()=>setTimeout(edLockTop,80));
 if(window.visualViewport){visualViewport.addEventListener('resize',fitToolbar);visualViewport.addEventListener('resize',()=>{if(E)setTimeout(edCaretVis,60)});visualViewport.addEventListener('scroll',fitToolbar)}
 function edMenu(){if(!E)return;edSave();if(!sermons.find(x=>x.id===E.s.id)){toast(t('body_ph'));return}const id=E.s.id;
   openSheet(`<div class="acts">
