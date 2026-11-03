@@ -784,7 +784,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v33';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v34';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -800,7 +800,7 @@ function pushStats(force){if(!cols||!authU||localMode||!window.firebase)return;c
 function applyPlan(){const b=!!(planState&&planState.blocked);if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
 function watchPlan(u){try{firebase.firestore().collection('planos').doc(u.uid).onSnapshot(d=>{planState=d.exists?d.data():null;applyPlan()},()=>{})}catch(e){}}
 function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.remove('tabs');
-  $('#app').innerHTML=`<div class="login"><img class="logo full" src="logo-full.jpg" alt=""><h2>${esc(t('blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t('blk_d'))}</p><button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
+  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('blk_t'))}</h2><p class="sub" style="font-size:15px;line-height:1.55">${esc(t('blk_d'))}</p><button class="btn ghost block" data-act="logout">${esc(t('logout'))}</button></div>`}
 async function adminPanel(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
   let rows=[];try{const db=firebase.firestore();const[q,pq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get()]);
     const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
@@ -1700,7 +1700,7 @@ async function bioRegister(){const rnd=n=>crypto.getRandomValues(new Uint8Array(
   return b64(c.rawId)}
 async function bioCheck(id){const c=await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:unb64(id)}],userVerification:'required',timeout:60000}});return !!c}
 function showLock(){const cfg=lockCfg();if(!cfg||locked)return;locked=true;const el=document.createElement('div');el.id='lock';el.className='lock';
-  el.innerHTML=`<img class="logo full" src="logo-full.jpg" alt="Meu Púlpito"><h2>${esc(t('pin_enter'))}</h2>
+  el.innerHTML=`<div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('pin_enter'))}</h2>
    <input class="inp pin" id="lkPin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" aria-label="${esc(t('pin_enter'))}">
    <p class="err" id="lkErr" hidden></p>
    <button class="btn gold block" id="lkGo">${esc(t('unlock'))}</button>
@@ -1802,7 +1802,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
   const langSeg=`<div class="seg" style="margin-top:6px">${[['es','Español'],['pt','Português']].map(([v,l])=>`<button data-lg="${v}" aria-pressed="${prefs.ui===v}">${l}</button>`).join('')}</div>`;
   const keepE=(($('#lgE')||{}).value||showLogin._e||'').trim();
   if(mode==='rec'||mode==='sent'){
-    $('#app').innerHTML=`<div class="login"><img class="logo full" src="logo-full.jpg" alt="Meu Púlpito">
+    $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div>
      ${mode==='rec'?`<h2>${esc(t('rec_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('rec_d'))}</p>
      <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="${prefs.ui==='pt'?'seu@email.com':'tu@correo.com'}"></div>
      <p class="err" id="lgErr" hidden></p>
@@ -1819,7 +1819,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
       try{await firebase.auth().sendPasswordResetEmail(em);showLogin._e=em;showLogin('sent')}
       catch(e){const c=e&&e.code||'';err(t(c.includes('invalid-email')?'e_email':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen'));b.disabled=false;b.textContent=t('rec_send')}};
     $('#lgSend').onclick=send;$('#lgE').addEventListener('keydown',e=>{if(e.key==='Enter')send()});setTimeout(()=>{try{$('#lgE').focus()}catch(e){}},50);return}
-  $('#app').innerHTML=`<div class="login"><img class="logo full" src="logo-full.jpg" alt="Meu Púlpito"><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
+  $('#app').innerHTML=`<div class="login"><div class="brand"><img class="b-d" src="logo-full.png" alt="Meu Púlpito"><img class="b-l" src="logo-full-light.png" alt="Meu Púlpito"></div><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
    <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="${prefs.ui==='pt'?'seu@email.com':'tu@correo.com'}"></div>
    <div class="fld"><label for="lgP">${esc(t('pass'))}</label><div class="pwbox"><input class="inp" id="lgP" type="password" autocomplete="current-password" placeholder="${esc(t('pass_ph'))}"><button class="iconbtn" id="lgEye" type="button" aria-label="${esc(t('show_pw'))}" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
    <button class="lnk" id="lgF" style="align-self:flex-end;margin-top:-6px">${esc(t('forgot'))}</button>

@@ -560,5 +560,9 @@ h1.h{font-weight:800;letter-spacing:-.025em}
 .sd-lemma[dir="rtl"]{text-align:right}
 .res .sd-num{font-family:var(--head)}
 
-.login .logo.full,.lock .logo.full{width:min(220px,56vw);height:auto;aspect-ratio:1;border-radius:28px;box-shadow:0 14px 36px rgba(8,13,22,.28)}
 .login h2{font-family:var(--head);font-weight:800;letter-spacing:-.02em}
+.brand{align-self:center;width:min(250px,64vw);margin:4px auto 6px}
+.brand img{display:block;width:100%;height:auto}
+.brand .b-d{display:none}
+html[data-mode="dark"] .brand .b-d{display:block}html[data-mode="dark"] .brand .b-l{display:none}
+.login h2,.login>p.sub{text-align:center;align-self:center}
