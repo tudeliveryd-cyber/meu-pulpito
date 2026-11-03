@@ -1398,7 +1398,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
   if(mode==='rec'||mode==='sent'){
     $('#app').innerHTML=`<div class="login"><img class="logo" src="logo.jpg" alt="Meu Púlpito">
      ${mode==='rec'?`<h2>${esc(t('rec_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('rec_d'))}</p>
-     <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="tu@correo.com"></div>
+     <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="${prefs.ui==='pt'?'seu@email.com':'tu@correo.com'}"></div>
      <p class="err" id="lgErr" hidden></p>
      <button class="btn gold block" id="lgSend">${esc(t('rec_send'))}</button>`
      :`<div class="okmark">${ic('check')}</div><h2>${esc(t('rec_ok_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.55">${esc(t('rec_ok_d',{e:keepE}))}</p>
@@ -1414,7 +1414,7 @@ function showLogin(mode){ready=false;view.overlay='login';$('#nav').hidden=true;
       catch(e){const c=e&&e.code||'';err(t(c.includes('invalid-email')?'e_email':c.includes('too-many')?'e_many':c.includes('network')?'e_net':'e_gen'));b.disabled=false;b.textContent=t('rec_send')}};
     $('#lgSend').onclick=send;$('#lgE').addEventListener('keydown',e=>{if(e.key==='Enter')send()});setTimeout(()=>{try{$('#lgE').focus()}catch(e){}},50);return}
   $('#app').innerHTML=`<div class="login"><img class="logo" src="logo.jpg" alt="Meu Púlpito"><h2>${esc(t('login_t'))}</h2><p class="sub" style="margin:0;font-size:15px;line-height:1.5">${esc(t('login_d'))}</p>
-   <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="tu@correo.com"></div>
+   <div class="fld"><label for="lgE">${esc(t('email'))}</label><input class="inp" id="lgE" type="email" autocomplete="username" inputmode="email" autocapitalize="off" value="${esc(keepE)}" placeholder="${prefs.ui==='pt'?'seu@email.com':'tu@correo.com'}"></div>
    <div class="fld"><label for="lgP">${esc(t('pass'))}</label><div class="pwbox"><input class="inp" id="lgP" type="password" autocomplete="current-password" placeholder="${esc(t('pass_ph'))}"><button class="iconbtn" id="lgEye" type="button" aria-label="${esc(t('show_pw'))}" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
    <button class="lnk" id="lgF" style="align-self:flex-end;margin-top:-6px">${esc(t('forgot'))}</button>
    <p class="err" id="lgErr" hidden></p>
