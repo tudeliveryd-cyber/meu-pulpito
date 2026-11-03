@@ -246,7 +246,7 @@ footer .soc svg{width:18px;height:18px}
       </div>
       <div class="phones rv" aria-hidden="true">
         <div class="phone p1"><img data-img="home" alt="" width="390" height="844"></div>
-        <div class="phone p2"><img data-img="preach" alt="" width="390" height="844" loading="lazy"></div>
+        <div class="phone p2"><img data-img="preach" alt="" width="390" height="844"></div>
       </div>
     </div>
   </section>
@@ -256,29 +256,29 @@ footer .soc svg{width:18px;height:18px}
       <div class="sec-h rv"><span class="eyebrow" data-t="fe_eye"></span><h2 data-t="fe_t"></h2><p data-t="fe_d"></p></div>
 
       <article class="feat rv">
-        <div class="ft-media"><div class="phone"><img data-img="editor" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-media"><div class="phone"><img data-img="editor" alt="" width="390" height="844"></div></div>
         <div class="ft-text"><span class="ft-num">01</span><h3 data-t="a_t"></h3><p data-t="a_d"></p><ul class="ft-list" data-list="a_l"></ul></div>
       </article>
 
       <article class="feat rev rv">
-        <div class="ft-media"><div class="phone"><img data-img="preach" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-media"><div class="phone"><img data-img="preach" alt="" width="390" height="844"></div></div>
         <div class="ft-text"><span class="ft-num">02</span><h3 data-t="b_t"></h3><p data-t="b_d"></p><ul class="ft-list" data-list="b_l"></ul></div>
       </article>
 
       <article class="feat rv">
-        <div class="ft-media"><div class="phone"><img data-img="bible" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-media"><div class="phone"><img data-img="bible" alt="" width="390" height="844"></div></div>
         <div class="ft-text"><span class="ft-num">03</span><h3 data-t="c_t"></h3><p data-t="c_d"></p><ul class="ft-list" data-list="c_l"></ul><div class="ft-tags" data-tags="c_tags"></div></div>
       </article>
 
       <article class="feat rev rv">
-        <div class="ft-media"><div class="phone"><img data-img="dicentry" alt="" width="390" height="844" loading="lazy"></div></div>
+        <div class="ft-media"><div class="phone"><img data-img="dicentry" alt="" width="390" height="844"></div></div>
         <div class="ft-text"><span class="ft-num">04</span><h3 data-t="d_t"></h3><p data-t="d_d"></p><ul class="ft-list" data-list="d_l"></ul><div class="ft-tags" data-tags="d_tags"></div></div>
       </article>
 
       <div class="more">
-        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="cur" alt="" width="390" height="844" loading="lazy"></div></div><div class="tx"><h3 data-t="e_t"></h3><p data-t="e_d"></p></div></div>
-        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="agenda" alt="" width="390" height="844" loading="lazy"></div></div><div class="tx"><h3 data-t="g_t"></h3><p data-t="g_d"></p></div></div>
-        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="lib" alt="" width="390" height="844" loading="lazy"></div></div><div class="tx"><h3 data-t="h2_t"></h3><p data-t="h2_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="cur" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="e_t"></h3><p data-t="e_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="agenda" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="g_t"></h3><p data-t="g_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="lib" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="h2_t"></h3><p data-t="h2_d"></p></div></div>
       </div>
     </div>
   </section>
@@ -428,7 +428,7 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
   document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');if(D[k]!=null)el.innerHTML=k==='h_t'?D[k]:esc(D[k])});
   document.querySelectorAll('[data-list]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-list')].map(function(x){return'<li>'+ck+'<span>'+esc(x)+'</span></li>'}).join('')});
   document.querySelectorAll('[data-tags]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-tags')].map(function(x){return'<span>'+esc(x)+'</span>'}).join('')});
-  document.querySelectorAll('[data-img]').forEach(function(el){el.src='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=2'});
+  document.querySelectorAll('[data-img]').forEach(function(el){var u='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=3';if(el.getAttribute('src')===u)return;var im=document.createElement('img');im.setAttribute('data-img',el.getAttribute('data-img'));im.alt='';im.width=390;im.height=844;im.decoding='async';im.src=u;el.replaceWith(im)});
   document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-l')===L))});
   var c=L==='pt'?'brl':'pyg',o=L==='pt'?'pyg':'brl';
   var card=function(k){var x=PRICE[k],sv=k==='m'?0:Math.round((1-x[c]/(PRICE.m[c]*MON[k]))*100);
