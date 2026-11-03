@@ -1,9 +1,9 @@
-// Configuración del proyecto Firebase (el mismo de Tú Delivery; Meu Púlpito usa su propia colección "pulpito") (es pública por diseño; los datos se protegen con firestore.rules).
+// Configuración del proyecto Firebase propio de Meu Púlpito (es pública por diseño; los datos se protegen con firestore.rules).
 window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAIF3GBWko0C8S5xuvxG9ufPZXizAjDwCs",
-  authDomain: "tu-delivery-1eb61.firebaseapp.com",
-  projectId: "tu-delivery-1eb61",
-  storageBucket: "tu-delivery-1eb61.firebasestorage.app",
-  messagingSenderId: "433293083763",
-  appId: "1:433293083763:web:6f6863d32d29cdccb01606"
+  apiKey: "AIzaSyAuOBVdU5-bcFuaVEsGv4iK8H2krFU9Un8",
+  authDomain: "meu-pulpito-app.firebaseapp.com",
+  projectId: "meu-pulpito-app",
+  storageBucket: "meu-pulpito-app.firebasestorage.app",
+  messagingSenderId: "470479497085",
+  appId: "1:470479497085:web:2b0456467548e2702dce14"
 };
