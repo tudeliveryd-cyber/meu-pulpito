@@ -1,0 +1,6 @@
+strong-gr.json / strong-he.json
+- Definiciones: Strong's Dictionary of the Greek / Hebrew words (1890/1894), dominio público.
+  Versión JSON de Open Scriptures (https://github.com/openscriptures/strongs), licencia CC BY-SA.
+  Estos archivos derivados se comparten bajo la misma licencia CC BY-SA 4.0.
+- Formas de palabras, números y glosas en español: STEPBible.org, Tyndale House Cambridge
+  (TAGNT / TAHOT, https://github.com/STEPBible/STEPBible-Data), licencia CC BY 4.0.

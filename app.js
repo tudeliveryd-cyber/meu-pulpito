@@ -48,14 +48,14 @@ five:'Faltan 5 minutos',done_t:'Tiempo cumplido',cont:'Continuando donde lo deja
 cont_preach:'Continuar predicando',end:'Terminar',go_on:'Continuar',
 bak_t:'Guarda una copia de tus sermones.',bak_d:'Hace más de una semana desde la última.',copy_now:'Copiar ahora',bak_done:'Copia copiada. Pégala en un chat tuyo de WhatsApp o en Notas.',
 b_search:'Buscar libro, cita o palabra',chap:'Cap.',vers:'Vers.',copied:'Copiado',fav_add:'Guardado en favoritos',fav_rm:'Quitado de favoritos',ins_s:'Insertar en sermón',choose_s:'¿En qué sermón?',inserted:'Versículo insertado',
-b_res:'{n} resultados',b_none:'Sin resultados',b_loading:'Abriendo la Biblia…',b_err:'No pude abrir la Biblia. Revisa la conexión e intenta de nuevo.',b_nofav:'Aún no guardaste versículos. Toca un versículo y la estrella.',b_favs:'Versículos favoritos',
+b_res:'{n} resultados',b_none:'Sin resultados',b_loading:'Abriendo la Biblia…',b_err:'No pude abrir la Biblia. Revisa la conexión e intenta de nuevo.',b_nofav:'Aún no guardaste versículos. Toca un versículo y la estrella.',b_favs_s:'Favoritos',b_favs:'Versículos favoritos',
 schedule:'Programar',upcoming:'Próximas predicaciones',past:'Anteriores',no_ev:'Nada programado. Toca Programar para agregar una predicación.',ev_new:'Nueva predicación',ev_edit:'Editar predicación',
 cult:'Tipo de culto',theme:'Tema del mensaje',sermon:'Sermón',later_pick:'Elegir después',pick_s:'Elegir sermón',tbd:'tema por definir',ev_saved:'Predicación programada',ev_del:'Predicación eliminada',
 your_name:'Tu nombre',language:'Idioma de la app',appearance:'Apariencia',light:'Claro',dark:'Oscuro',auto:'Auto',def_bible:'Biblia',categories:'Categorías',add_cat:'Nueva categoría',add:'Agregar',
 backup:'Copia de seguridad',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar o traer sermones',restore_d:'Pega aquí una copia de seguridad o el texto copiado en «Levar para o app próprio».',import:'Importar',imported:'{n} sermón(es) importado(s)',nothing_new:'Nada nuevo para importar',bad_paste:'No reconocí el texto pegado. Cópialo de nuevo.',
 account:'Cuenta',rec_t:'Recuperar contraseña',rec_d:'Escribe el correo de tu cuenta. Te enviaremos un enlace para crear una contraseña nueva.',rec_send:'Enviar enlace',rec_sending:'Enviando…',rec_ok_t:'Revisa tu correo',rec_ok_d:'Enviamos el enlace a {e}. Ábrelo, crea tu contraseña nueva y vuelve aquí para entrar. Si no aparece, mira en Spam o Promociones.',rec_back:'Volver a entrar',rec_again:'Enviar de nuevo',retry:'Intentar de nuevo',show_pw:'Mostrar contraseña',acc_conn:'Conectando con tu cuenta…',acc_fail:'No se pudo conectar con el sistema de cuentas. Revisa tu internet o abre el app desde el ícono de la pantalla de inicio.',local_only:'Sin cuenta: los sermones quedan solo en este celular.',logout:'Cerrar sesión',login_btn:'Entrar con una cuenta',soon:'Próximamente',s_rec:'Grabar audio',s_tr:'Audio a texto',s_trl:'Traducir ES ↔ PT',s_ai:'Asistente para sermones',
-credits:'Biblias: Reina-Valera 1909 y 1865 (dominio público), Bíblia Livre y Bíblia Livre TR (licencia libre), Nova Versão de Acesso Livre, Textus Receptus griego y Códice de Leningrado hebreo (dominio público). Traducción automática: MyMemory.',
-cmp:'Comparar versiones',cmp_t:'Versiones',orig:'En el original',orig_g:'Griego',orig_h:'Hebreo',translit:'pronunciación aproximada',cmp_load:'Abriendo las versiones…',cmp_none:'Este versículo no está en esta versión.',cmp_tip:'Toca la cita para comparar versiones',
+credits:'Biblias: Reina-Valera 1909 y 1865 (dominio público), Bíblia Livre y Bíblia Livre TR (licencia libre), Nova Versão de Acesso Livre, Textus Receptus griego y Códice de Leningrado hebreo (dominio público). Diccionario: Strong (dominio público; datos de Open Scriptures, CC BY-SA) y STEPBible.org de Tyndale House (CC BY). Traducción automática: MyMemory.',b_read:'Biblia',
+cmp:'Comparar versiones',lx:'Diccionario',lx_ph:'Palabra, griego, hebreo o número (G26, H430)',dict_gr:'Griego',dict_he:'Hebreo',dict_all:'Todo',dict_hint:'Busca una palabra (amor, gracia, fe), una palabra en griego o hebreo, o un número Strong. En «Comparar versiones», toca una palabra en griego o hebreo para ver su significado.',dict_load:'Abriendo el diccionario…',dict_err:'No pude abrir el diccionario. Revisa tu internet e intenta de nuevo.',dict_def:'Definición',dict_kjv:'Traducida en la Biblia como',dict_orig:'Origen',dict_ctx:'En este versículo',dict_en:'Definición original en inglés (Strong, 1890).',dict_tr:'Traducir',dict_trd:'Traducción automática',dict_tr_err:'No se pudo traducir ahora',dict_more:'Buscando también en inglés…',dict_nf:'Esa palabra no está en el diccionario',dict_tap:'Toca una palabra para ver su significado',dict_src:'Diccionario Strong (1890–1894, dominio público) · Open Scriptures (CC BY-SA) · STEPBible.org (CC BY)',cmp_t:'Versiones',orig:'En el original',orig_g:'Griego',orig_h:'Hebreo',translit:'pronunciación aproximada',cmp_load:'Abriendo las versiones…',cmp_none:'Este versículo no está en esta versión.',cmp_tip:'Toca la cita para comparar versiones',
 tr_to:'Traducir al {l}',tr_t:'Traducir sermón',tr_d:'Se crea una copia traducida; el original no cambia. Los versículos se colocan desde la Biblia del otro idioma. El resto del texto se envía al servicio gratuito MyMemory para traducir.',tr_lim:'Este sermón tiene {n} caracteres. Límite gratuito: unos 5.000 por día, o 50.000 si pones tu correo en Perfil.',tr_go:'Traducir',tr_prog:'Traduciendo… {i} de {n}',tr_done:'Traducción creada. Revísala antes de predicar.',tr_quota:'Se acabó el límite gratuito de hoy. Intenta mañana o pon tu correo en Perfil para tener más.',tr_err:'No pude traducir ahora. Revisa la conexión e intenta de nuevo.',tr_mail:'Correo para traducción',tr_mail_d:'Opcional. Se envía a MyMemory solo para aumentar el límite diario.',
 sync_ok:'Guardado en tu cuenta',sync_local:'Guardado en este celular',sync_conn:'Conectando…',sync_off:'Sin señal: usando la copia del celular',sync_pend:'Guardando… se envía cuando haya señal',sync_err:'No pude leer tu cuenta ahora. Queda guardado en el celular.',sync_noperm:'Tu cuenta todavía no puede guardar en la nube. Queda en este celular.',
 login_t:'Entra para guardar tus sermones',login_d:'Tus sermones quedan en tu cuenta y aparecen en cualquier celular donde entres.',email:'Correo',pass:'Contraseña',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Crear cuenta',forgot:'¿Olvidaste tu contraseña?',nologin:'Usar sin cuenta',reset_sent:'Te enviamos un correo para crear una contraseña nueva',
@@ -106,14 +106,14 @@ five:'Faltam 5 minutos',done_t:'Tempo encerrado',cont:'Continuando de onde você
 cont_preach:'Continuar pregando',end:'Encerrar',go_on:'Continuar',
 bak_t:'Guarde uma cópia dos seus sermões.',bak_d:'Faz mais de uma semana desde a última.',copy_now:'Copiar agora',bak_done:'Cópia copiada. Cole numa conversa sua no WhatsApp ou nas Notas.',
 b_search:'Buscar livro, referência ou palavra',chap:'Cap.',vers:'Vers.',copied:'Copiado',fav_add:'Salvo nos favoritos',fav_rm:'Removido dos favoritos',ins_s:'Inserir no sermão',choose_s:'Em qual sermão?',inserted:'Versículo inserido',
-b_res:'{n} resultados',b_none:'Nenhum resultado',b_loading:'Abrindo a Bíblia…',b_err:'Não consegui abrir a Bíblia. Confira a conexão e tente de novo.',b_nofav:'Você ainda não salvou versículos. Toque num versículo e na estrela.',b_favs:'Versículos favoritos',
+b_res:'{n} resultados',b_none:'Nenhum resultado',b_loading:'Abrindo a Bíblia…',b_err:'Não consegui abrir a Bíblia. Confira a conexão e tente de novo.',b_nofav:'Você ainda não salvou versículos. Toque num versículo e na estrela.',b_favs_s:'Favoritos',b_favs:'Versículos favoritos',
 schedule:'Agendar',upcoming:'Próximas pregações',past:'Anteriores',no_ev:'Nada agendado. Toque em Agendar para adicionar uma pregação.',ev_new:'Nova pregação',ev_edit:'Editar pregação',
 cult:'Tipo de culto',theme:'Tema da mensagem',sermon:'Sermão',later_pick:'Escolher depois',pick_s:'Escolher sermão',tbd:'tema a definir',ev_saved:'Pregação agendada',ev_del:'Pregação excluída',
 your_name:'Seu nome',language:'Idioma do app',appearance:'Aparência',light:'Claro',dark:'Escuro',auto:'Auto',def_bible:'Bíblia',categories:'Categorias',add_cat:'Nova categoria',add:'Adicionar',
 backup:'Cópia de segurança',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar ou trazer sermões',restore_d:'Cole aqui uma cópia de segurança ou o texto copiado em «Levar para o app próprio».',import:'Importar',imported:'{n} sermão(ões) importado(s)',nothing_new:'Nada novo para importar',bad_paste:'Não reconheci o texto colado. Copie de novo.',
 account:'Conta',rec_t:'Recuperar senha',rec_d:'Digite o e-mail da sua conta. Vamos enviar um link para criar uma senha nova.',rec_send:'Enviar link',rec_sending:'Enviando…',rec_ok_t:'Confira seu e-mail',rec_ok_d:'Enviamos o link para {e}. Abra, crie sua senha nova e volte aqui para entrar. Se não aparecer, olhe em Spam ou Promoções.',rec_back:'Voltar para entrar',rec_again:'Enviar de novo',retry:'Tentar de novo',show_pw:'Mostrar senha',acc_conn:'Conectando com a sua conta…',acc_fail:'Não foi possível conectar ao sistema de contas. Verifique a internet ou abra o app pelo ícone da tela inicial.',local_only:'Sem conta: os sermões ficam só neste celular.',logout:'Sair da conta',login_btn:'Entrar com uma conta',soon:'Em breve',s_rec:'Gravar áudio',s_tr:'Áudio para texto',s_trl:'Traduzir ES ↔ PT',s_ai:'Assistente de sermões',
-credits:'Bíblias: Reina-Valera 1909 e 1865 (domínio público), Bíblia Livre e Bíblia Livre TR (licença livre), Nova Versão de Acesso Livre, Textus Receptus grego e Códice de Leningrado hebraico (domínio público). Tradução automática: MyMemory.',
-cmp:'Comparar versões',cmp_t:'Versões',orig:'No original',orig_g:'Grego',orig_h:'Hebraico',translit:'pronúncia aproximada',cmp_load:'Abrindo as versões…',cmp_none:'Este versículo não está nesta versão.',cmp_tip:'Toque na referência para comparar versões',
+credits:'Bíblias: Reina-Valera 1909 e 1865 (domínio público), Bíblia Livre e Bíblia Livre TR (licença livre), Nova Versão de Acesso Livre, Textus Receptus grego e Códice de Leningrado hebraico (domínio público). Dicionário: Strong (domínio público; dados de Open Scriptures, CC BY-SA) e STEPBible.org da Tyndale House (CC BY). Tradução automática: MyMemory.',b_read:'Bíblia',
+cmp:'Comparar versões',lx:'Dicionário',lx_ph:'Palavra, grego, hebraico ou número (G26, H430)',dict_gr:'Grego',dict_he:'Hebraico',dict_all:'Tudo',dict_hint:'Busque uma palavra (amor, graça, fé), uma palavra em grego ou hebraico, ou um número Strong. Em «Comparar versões», toque numa palavra em grego ou hebraico para ver o significado.',dict_load:'Abrindo o dicionário…',dict_err:'Não consegui abrir o dicionário. Verifique a internet e tente de novo.',dict_def:'Definição',dict_kjv:'Traduzida na Bíblia como',dict_orig:'Origem',dict_ctx:'Neste versículo',dict_en:'Definição original em inglês (Strong, 1890).',dict_tr:'Traduzir',dict_trd:'Tradução automática',dict_tr_err:'Não foi possível traduzir agora',dict_more:'Buscando também em inglês…',dict_nf:'Essa palavra não está no dicionário',dict_tap:'Toque numa palavra para ver o significado',dict_src:'Dicionário Strong (1890–1894, domínio público) · Open Scriptures (CC BY-SA) · STEPBible.org (CC BY)',cmp_t:'Versões',orig:'No original',orig_g:'Grego',orig_h:'Hebraico',translit:'pronúncia aproximada',cmp_load:'Abrindo as versões…',cmp_none:'Este versículo não está nesta versão.',cmp_tip:'Toque na referência para comparar versões',
 tr_to:'Traduzir para {l}',tr_t:'Traduzir sermão',tr_d:'É criada uma cópia traduzida; o original não muda. Os versículos vêm da Bíblia do outro idioma. O resto do texto é enviado ao serviço grátis MyMemory para traduzir.',tr_lim:'Este sermão tem {n} caracteres. Limite grátis: uns 5.000 por dia, ou 50.000 se você colocar seu e-mail no Perfil.',tr_go:'Traduzir',tr_prog:'Traduzindo… {i} de {n}',tr_done:'Tradução criada. Revise antes de pregar.',tr_quota:'Acabou o limite grátis de hoje. Tente amanhã ou coloque seu e-mail no Perfil para ter mais.',tr_err:'Não consegui traduzir agora. Confira a conexão e tente de novo.',tr_mail:'E-mail para tradução',tr_mail_d:'Opcional. É enviado ao MyMemory só para aumentar o limite diário.',
 sync_ok:'Salvo na sua conta',sync_local:'Salvo neste celular',sync_conn:'Conectando…',sync_off:'Sem sinal: usando a cópia do celular',sync_pend:'Salvando… envia quando tiver sinal',sync_err:'Não consegui ler sua conta agora. Fica salvo no celular.',sync_noperm:'Sua conta ainda não pode guardar na nuvem. Fica neste celular.',
 login_t:'Entre para guardar seus sermões',login_d:'Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',email:'E-mail',pass:'Senha',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Criar conta',forgot:'Esqueceu a senha?',nologin:'Usar sem conta',reset_sent:'Enviamos um e-mail para criar uma senha nova',
@@ -227,6 +227,73 @@ function translitHe(t){t=t.replace(/[֑-ֽֿ֯׀ׅׄ\/]/g,'');let out='',wordSta
     if(/\s/.test(c)){out+=' ';wordStart=true;continue}
   }
   return out.replace(/\s+/g,' ').trim()}
+/* ---------- Diccionario Strong (griego y hebreo) ---------- */
+const STR={g:null,h:null},STRP={};
+function loadStrong(k){if(STR[k])return Promise.resolve(STR[k]);
+  if(!STRP[k])STRP[k]=fetch('biblia/strong-'+(k==='g'?'gr':'he')+'.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
+    const es={};if(k==='g')Object.values(d.f).forEach(v=>{if(Array.isArray(v)&&v[1]){const s=(es[v[0]]=es[v[0]]||new Set());s.add(v[1].toLowerCase())}});
+    d.es=d.e||{};d.ix=Object.entries(d.d).map(([n,e])=>[n,' '+[normG(e[0]),normH(e[0]),norm(e[1]),norm(e[2]),norm(e[3]),norm([...(es[n]||[]),...((d.e||{})[n]||[])].join(' '))].join(' ')+' ']);
+    return STR[k]=d}).catch(e=>{STRP[k]=null;throw e});
+  return STRP[k]}
+function normG(w){return (w||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ς/g,'σ').replace(/[^\u0370-\u03ff]/g,'')}
+function normH(w){return (w||'').normalize('NFC').replace(/[\/\\]/g,'').replace(/[\u0591-\u05AF\u05BD\u05BF\u05C0\u05C3-\u05C6\u05F3\u05F4\u200D\u034F\u05BE]/g,'').replace(/[^\u0590-\u05FF]/g,'')}
+function origWords(tx,k){return tx.split(k==='h'?/([\s\u05be]+)/:/(\s+)/).map(w=>/^[\s\u05be]*$/.test(w)?esc(w):`<button class="ow" data-ow="${esc(w)}" data-k="${k}">${esc(w)}</button>`).join('')}
+function strongFind(k,w){const d=STR[k];if(!d)return null;const f=d.f[k==='g'?normG(w):normH(w)];if(f==null)return null;return Array.isArray(f)?{n:f[0],ctx:f[1]}:{n:f}}
+const sRef=(k,n)=>(k==='g'?'G':'H')+n;
+function strongLinks(txt){return esc(txt).replace(/\b([GH])0*(\d{1,4})\b/g,(m,a,n)=>`<button class="lnk sref" data-sref="${a}${n}">${a}${n}</button>`)}
+async function openStrong(k,n,ctx){let d;try{d=await loadStrong(k)}catch(e){toast(t('dict_err'));return}const e=d.d[n];if(!e){toast(t('dict_nf'));return}
+  const [lemma,tr,def,kjv,der,pron]=e;const es=(d.es[n]||[]).slice(0,5);
+  const sh=openSheet(`<div class="sd-head"><span class="sd-num">${sRef(k,n)}</span><span class="sub">${esc(t(k==='g'?'dict_gr':'dict_he'))}</span></div>
+    <div class="sd-lemma" ${k==='h'?'dir="rtl" lang="he"':'lang="grc"'}>${esc(lemma)}</div>
+    <div class="sd-tr">${esc(tr)}${pron?` · <span class="sub">${esc(pron)}</span>`:''}</div>
+    ${ctx?`<div class="sd-box"><span class="lbl">${esc(t('dict_ctx'))}</span><b>${esc(ctx)}</b></div>`:''}
+    ${es.length?`<div class="sd-es">${es.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>`:''}
+    <div class="fld"><span class="lbl">${esc(t('dict_def'))}</span><p class="sd-p" id="sdDef">${esc(def)}</p></div>
+    ${kjv?`<div class="fld"><span class="lbl">${esc(t('dict_kjv'))}</span><p class="sd-p" id="sdKjv">${esc(kjv)}</p></div>`:''}
+    ${der?`<div class="fld"><span class="lbl">${esc(t('dict_orig'))}</span><p class="sd-p">${strongLinks(der)}</p></div>`:''}
+    <div id="sdTr"></div>
+    <div class="row" style="gap:10px;align-items:center"><button class="btn dark" id="sdTrB">${ic('lang')}${esc(t('dict_tr'))}</button><span class="sub" style="font-size:12px;flex:1">${esc(t('dict_en'))}</span></div>`);
+  sh.addEventListener('click',ev=>{const b=ev.target.closest('[data-sref]');if(!b)return;const r=b.dataset.sref;closeSheet();openStrong(r[0]==='G'?'g':'h',r.slice(1))});
+  $('#sdTrB',sh).onclick=async()=>{const b=$('#sdTrB',sh);b.disabled=true;try{const to=prefs.ui==='pt'?'pt':'es';
+      const [a,c]=await Promise.all([enTranslate(def,to),kjv?enTranslate(kjv,to):Promise.resolve('')]);
+      $('#sdTr',sh).innerHTML=`<div class="sd-box"><span class="lbl">${esc(t('dict_trd'))}</span><p class="sd-p" style="margin:0">${esc(a)}</p>${c?`<p class="sd-p sub" style="margin:6px 0 0">${esc(c)}</p>`:''}</div>`;b.hidden=true}
+    catch(e){toast(t('dict_tr_err'));b.disabled=false}}}
+const EN_TR={};
+async function enTranslate(text,to){const key=to+'|'+text;if(EN_TR[key])return EN_TR[key];const out=[];
+  for(const ch of splitChunks(text)){const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(ch)}&langpair=en|${to==='pt'?'pt-BR':'es'}${prefs.mmEmail?'&de='+encodeURIComponent(prefs.mmEmail):''}`;
+    const r=await fetch(url);if(!r.ok)throw 0;const j=await r.json();out.push(j&&j.responseData&&j.responseData.translatedText||ch)}
+  return EN_TR[key]=out.join(' ')}
+async function toEnglish(q,from){const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(q)}&langpair=${from==='pt'?'pt-BR':'es'}|en${prefs.mmEmail?'&de='+encodeURIComponent(prefs.mmEmail):''}`;
+  const r=await fetch(url);if(!r.ok)throw 0;const j=await r.json();return (j&&j.responseData&&j.responseData.translatedText||'').toLowerCase()}
+document.addEventListener('click',e=>{const b=e.target.closest('.ow');if(!b)return;const k=b.dataset.k;
+  loadStrong(k).then(()=>{const f=strongFind(k,b.dataset.ow);if(!f){toast(t('dict_nf'));return}openStrong(k,f.n,f.ctx)}).catch(()=>toast(t('dict_err')))});
+/* búsqueda en el diccionario (pestaña Biblia) */
+const DQ={q:'',k:'all',res:null,busy:false,en:''};
+function dictSearch(q,extra){const out=[];const qq=q.trim();if(!qq)return out;
+  const m=qq.match(/^([GHgh])\s*0*(\d{1,4})$/);if(m){const k=m[1].toLowerCase();return STR[k]&&STR[k].d[m[2]]?[[k,m[2],3]]:[]}
+  const terms=[[norm(qq),1],[normG(qq),1],[normH(qq),1],[extra?norm(extra):'',0]].filter(x=>x[0]&&x[0].length>1);
+  ['g','h'].forEach(k=>{if(DQ.k!=='all'&&DQ.k!==k)return;const d=STR[k];if(!d)return;
+    for(const [n,ix] of d.ix){let sc=0;for(const [tm,bo] of terms){if(ix.includes(' '+tm+' '))sc=Math.max(sc,3+bo);else if(ix.includes(tm))sc=Math.max(sc,1+bo)}if(sc)out.push([k,n,sc])}});
+  const top=out.some(x=>x[2]>=3)?out.filter(x=>x[2]>=3):out;const fq=(k,n)=>(STR[k].c&&STR[k].c[n])||0;
+  return top.sort((a,b)=>b[2]-a[2]||fq(b[0],b[1])-fq(a[0],a[1])).slice(0,60)}
+function dictHtml(){
+  const seg=`<div class="chips">${[['all','dict_all'],['g','dict_gr'],['h','dict_he']].map(([k,l])=>`<button class="chip" data-act="dK" data-k="${k}" aria-pressed="${DQ.k===k}">${esc(t(l))}</button>`).join('')}</div>`;
+  return`<label class="search">${ic('search')}<input id="dq" type="search" value="${esc(DQ.q)}" placeholder="${esc(t('lx_ph'))}" autocomplete="off" autocapitalize="off" data-input="dQ"></label>${seg}<div id="dRes" style="display:flex;flex-direction:column;gap:12px">${dictResHtml()}</div>
+   <p class="sub" style="font-size:11.5px;margin:0">${esc(t('dict_src'))}</p>`}
+function dictResHtml(){const ready=STR.g&&STR.h;let body='';
+  if(!ready)body=`<div class="empty"><p style="margin:0">${esc(t(DQ.err?'dict_err':'dict_load'))}</p>${DQ.err?`<button class="btn dark" data-act="dRetry">${esc(t('go_on'))}</button>`:''}</div>`;
+  else if(!DQ.q.trim())body=`<p class="sub" style="margin:0;line-height:1.55">${esc(t('dict_hint'))}</p>`;
+  else{const r=dictSearch(DQ.q,DQ.en);
+    body=r.length?`<div class="res">${r.map(([k,n])=>{const e=STR[k].d[n];const es=(STR[k].es[n]||[]).slice(0,3).join(', ');
+      return`<button data-act="dOpen" data-k="${k}" data-n="${n}"><b><span class="sd-num sm">${sRef(k,n)}</span> <span ${k==='h'?'dir="rtl" lang="he"':''} style="font-family:var(--read);font-size:17px">${esc(e[0])}</span> · ${esc(e[1])}</b><span>${es?`<em>${esc(es)}</em> · `:''}${esc((e[2]||'').slice(0,120))}</span></button>`}).join('')}</div>`
+      :`<div class="empty"><p style="margin:0">${esc(DQ.busy?t('dict_more'):t('b_none'))}</p></div>`}
+  return body}
+function dictPaint(){const el=$('#dRes');if(el)el.innerHTML=dictResHtml();else render()}
+function dictLoad(){if(STR.g&&STR.h)return;Promise.all([loadStrong('g'),loadStrong('h')]).then(()=>{DQ.err=false;if(view.tab==='bible'&&BV.dict)dictPaint()}).catch(()=>{DQ.err=true;if(view.tab==='bible'&&BV.dict)dictPaint()})}
+async function dictQuery(q){DQ.q=q;DQ.en='';dictPaint();const r=dictSearch(q);
+  if(q.trim().length>=3&&r.length<3&&!/^[GHgh]\d/.test(q)&&!/[\u0370-\u03ff\u0590-\u05ff]/.test(q)&&navigator.onLine){DQ.busy=true;dictPaint();
+    try{const en=await toEnglish(q.trim(),prefs.ui==='pt'?'pt':'es');if(DQ.q===q)DQ.en=en}catch(e){}DQ.busy=false;if(DQ.q===q)dictPaint()}}
+
 /* comparar versiones */
 function compareRef(ref,host,lang){const p=parseRef(ref);if(!p||!p.vs){toast(t('verse_nf'));return}
   const first=lang==='pt'?['pt','ptr','nva','es','es65']:['es','es65','pt','ptr','nva'];const og=p.b>=39?'grc':'hbo';const keys=[...first,og];
@@ -235,7 +302,7 @@ function compareRef(ref,host,lang){const p=parseRef(ref);if(!p||!p.vs){toast(t('
     $('#cmpBody',sh).outerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${keys.map(k=>{const tx=bibleText(ref,k);const orig=k===og;
       return`<div style="display:flex;flex-direction:column;gap:4px;${orig?'border-top:1px solid var(--line);padding-top:12px':''}">
         <span class="lbl" style="color:var(--gold-ink)">${esc(orig?`${t('orig')} · ${t(og==='grc'?'orig_g':'orig_h')}`:VNAME[k])}</span>
-        ${tx?`<span ${orig&&og==='hbo'?'dir="rtl" lang="he"':orig?'lang="grc"':''} style="font-family:var(--read);font-size:${orig?19:16.5}px;line-height:1.6">${esc(tx)}</span>
+        ${tx?`<span ${orig&&og==='hbo'?'dir="rtl" lang="he"':orig?'lang="grc"':''} style="font-family:var(--read);font-size:${orig?19:16.5}px;line-height:1.6">${orig?origWords(tx,og==='grc'?'g':'h'):esc(tx)}</span>${orig?`<span class="sub" style="font-size:12px">${ic('search')} ${esc(t('dict_tap'))}</span>`:''}
         ${orig?`<span class="sub" style="font-style:italic">${esc(og==='grc'?translitGr(tx):translitHe(tx))}</span><span class="sub" style="font-size:11px">${esc(t('translit'))} · ${esc(VNAME[k])}</span>`:''}`
         :`<span class="sub">${esc(t('cmp_none'))}</span>`}</div>`}).join('')}</div>`})}
 
@@ -1197,10 +1264,12 @@ function bibleHtml(){const l=bver();const B=BIB[l];const names=t('books',null,l)
     body=`<div class="sub">${esc(hits.length?t('b_res',{n:hits.length>=80?'80+':hits.length}):t('b_none'))}</div><div class="res">${hits.map(h=>`<button data-act="bGo" data-b="${h.b}" data-c="${h.c}" data-v="${h.v}"><b>${esc(names[h.b])} ${h.c}:${h.v}</b><span>${h.html}</span></button>`).join('')}</div>`}
   else{const ch=(B[BV.b]||[])[BV.c-1]||[];
     body=`<div class="verses">${ch.map((v,i)=>v?`<button class="vs" data-act="bSel" data-v="${i+1}" aria-pressed="${BV.sel.has(i+1)}"><sup>${i+1}</sup>${esc(v)}</button>`:'').join('')}</div>`}
-  const sel=[...BV.sel];
-  return`<div class="between"><h1 class="h">${esc(t('nav_bible'))}</h1><button class="btn sm ghost" data-act="bVer">${esc(verLabel(l))}${ic('down')}</button></div>
+  const sel=[...BV.sel];const head=`<div class="between"><h1 class="h">${esc(t('nav_bible'))}</h1><button class="btn sm ghost" data-act="bVer">${esc(verLabel(l))}${ic('down')}</button></div>`;
+  const chips=`<div class="chips"><button class="chip" data-act="bMode" data-f="0" aria-pressed="${!BV.fav&&!BV.dict}">${esc(t('b_read'))}</button><button class="chip" data-act="bMode" data-f="1" aria-pressed="${BV.fav&&!BV.dict}">${ic('star')}${esc(t('b_favs_s'))}</button><button class="chip" data-act="bMode" data-f="2" aria-pressed="${!!BV.dict}">${ic('bible')}${esc(t('lx'))}</button></div>`;
+  if(BV.dict)return head+chips+dictHtml();
+  return`${head}
    <form class="search" data-form="bSearch" role="search">${ic('search')}<input id="bq" type="search" value="${esc(BV.q)}" placeholder="${esc(t('b_search'))}" autocomplete="off" enterkeyhint="search" data-input="bQ"></form>
-   <div class="chips"><button class="chip" data-act="bMode" data-f="0" aria-pressed="${!BV.fav}">${esc(verLabel(l))}</button><button class="chip" data-act="bMode" data-f="1" aria-pressed="${BV.fav}">${ic('star')}${esc(t('b_favs'))}</button></div>
+   ${chips}
    ${!BV.fav?`<div class="bsel"><select class="book" id="bBook" aria-label="Libro">${names.map((n,i)=>`<option value="${i}" ${i===BV.b?'selected':''}>${esc(n)}</option>`).join('')}</select>
      <select class="chap" id="bChap" aria-label="${esc(t('chap'))}">${Array.from({length:chN},(_,i)=>`<option value="${i+1}" ${i+1===BV.c?'selected':''}>${esc(t('chap'))} ${i+1}</option>`).join('')}</select>
      <select class="chap" id="bVers" aria-label="${esc(t('vers'))}"><option value="">${esc(t('vers'))}</option>${Array.from({length:B?((B[BV.b]||[])[BV.c-1]||[]).length:0},(_,i)=>`<option value="${i+1}" ${BV.sel.size===1&&BV.sel.has(i+1)?'selected':''}>${esc(t('vers'))} ${i+1}</option>`).join('')}</select></div>`:''}
@@ -1505,7 +1574,8 @@ const ACT={
   pgClose:()=>closePreach(),pgTimer:()=>pgTimer(),pgSet:()=>pgSettings(),pgPrev:()=>pgGo(-1),pgNext:()=>pgGo(1),
   // biblia
   bVer:()=>{BV.ver=bver()==='es'?'pt':'es';BV.sel.clear();render()},
-  bMode:b=>{BV.fav=b.dataset.f==='1';render()},
+  bMode:b=>{BV.dict=b.dataset.f==='2';BV.fav=b.dataset.f==='1';if(BV.dict)dictLoad();render()},
+  dK:b=>{DQ.k=b.dataset.k;$$('[data-act=dK]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));dictPaint()},dOpen:b=>openStrong(b.dataset.k,b.dataset.n),dRetry:()=>{DQ.err=false;render();dictLoad()},
   bRetry:()=>{BV.err=false;render()},
   bSel:b=>{const v=+b.dataset.v;BV.sel.has(v)?BV.sel.delete(v):BV.sel.add(v);render()},
   bGo:b=>{BV.b=+b.dataset.b;BV.c=+b.dataset.c;BV.q='';BV.sel=new Set([+b.dataset.v]);render();setTimeout(()=>{const el=$(`.vs[data-v="${b.dataset.v}"]`);el&&el.scrollIntoView({block:'center'})},50)},
@@ -1538,6 +1608,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
 document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.input;if(!k)return;
   if(k==='listQ'){listState.q=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(render,180)}
   if(k==='bQ'){BV.q=e.target.value;const p=parseRef(BV.q);clearTimeout(e.target._t);e.target._t=setTimeout(()=>{if(p){BV.b=p.b;BV.c=Math.max(1,p.ch);BV.sel=new Set(p.vs||[]);}render()},300)}
+  if(k==='dQ'){const v=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(()=>dictQuery(v),350)}
   if(k==='pMail'){prefs.mmEmail=e.target.value.trim();savePrefs()}
   if(k==='pAi'){ls.set('mp.aikey',e.target.value.trim())}
   if(k==='pName'){meta.name=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(putMeta,600)}});
