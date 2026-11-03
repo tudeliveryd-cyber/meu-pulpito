@@ -428,7 +428,7 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
   document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');if(D[k]!=null)el.innerHTML=k==='h_t'?D[k]:esc(D[k])});
   document.querySelectorAll('[data-list]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-list')].map(function(x){return'<li>'+ck+'<span>'+esc(x)+'</span></li>'}).join('')});
   document.querySelectorAll('[data-tags]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-tags')].map(function(x){return'<span>'+esc(x)+'</span>'}).join('')});
-  document.querySelectorAll('[data-img]').forEach(function(el){el.src='img/'+el.getAttribute('data-img')+'-'+L+'.webp'});
+  document.querySelectorAll('[data-img]').forEach(function(el){el.src='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=2'});
   document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-l')===L))});
   var c=L==='pt'?'brl':'pyg',o=L==='pt'?'pyg':'brl';
   var card=function(k){var x=PRICE[k],sv=k==='m'?0:Math.round((1-x[c]/(PRICE.m[c]*MON[k]))*100);
