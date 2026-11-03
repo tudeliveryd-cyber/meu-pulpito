@@ -10,3 +10,8 @@ dic-easton.json
   Datos: NEUU bible-dictionary-dataset (https://github.com/neuu-org/bible-dictionary-dataset), CC BY 4.0, a partir de CCEL.
 dic-alias.json
 - Nombres en español/portugués → entrada en inglés, preparado para Meu Púlpito.
+
+--- Diccionarios (v32) ---
+biblia/lex/ (Diccionario Hebreo y Griego): STEPBible.org, Tyndale House Cambridge — TBESH, TBESG, TAHOT, TAGNT. Licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Glosas traducidas al español y portugués para Meu Púlpito. Script: tools/lex-build.py
+biblia/bib/ (Diccionario Bíblico): Easton's Bible Dictionary (1897), Smith's Bible Dictionary (1863), Hitchcock's Bible Names Dictionary (1869) — dominio público; datos estructurados del NEUU bible-dictionary-dataset (CC BY 4.0). Script: tools/biblico-build.py
+biblia/dic-pregador.json: escrito por Meu Púlpito (español y portugués).

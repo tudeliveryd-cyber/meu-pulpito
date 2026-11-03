@@ -26,7 +26,7 @@ function copyText(txt){return new Promise(ok=>{const fb=()=>{const ta=document.c
    Idiomas
    ========================================================= */
 const I18N={
-es:{nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Perfil',
+es:{nav_home:'Inicio',nav_list:'Sermones',nav_bible:'Biblia',nav_agenda:'Agenda',nav_profile:'Configuración',nav_dic:'Diccionarios',
 greet_m:'Buenos días,',greet_a:'Buenas tardes,',greet_n:'Buenas noches,',pastor:'Pastor',
 search_ph:'Buscar sermón, versículo o palabra',prepare:'Preparar',new_sermon:'Nuevo sermón',new_desc:'Abre la hoja y empieza a escribir. Se guarda solo.',
 st_total:'Sermones',st_done:'Predicados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recientes',my_sermons:'Mis sermones',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima predicación',
@@ -53,10 +53,10 @@ schedule:'Programar',upcoming:'Próximas predicaciones',past:'Anteriores',no_ev:
 cult:'Tipo de culto',theme:'Tema del mensaje',sermon:'Sermón',later_pick:'Elegir después',pick_s:'Elegir sermón',tbd:'tema por definir',ev_saved:'Predicación programada',ev_del:'Predicación eliminada',
 your_name:'Tu nombre',language:'Idioma de la app',appearance:'Apariencia',light:'Claro',dark:'Oscuro',auto:'Auto',def_bible:'Biblia',categories:'Categorías',add_cat:'Nueva categoría',add:'Agregar',
 backup:'Copia de seguridad',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar o traer sermones',restore_d:'Pega aquí una copia de seguridad o el texto copiado en «Levar para o app próprio».',import:'Importar',imported:'{n} sermón(es) importado(s)',nothing_new:'Nada nuevo para importar',bad_paste:'No reconocí el texto pegado. Cópialo de nuevo.',
-account:'Cuenta',got_it:'Entendido',adm_t:'Panel del administrador',adm_d:'Cuántos se registraron y controlar el acceso',adm_load:'Cargando…',adm_err:'No se pudo cargar. Revisa tu internet.',adm_users:'Registrados',adm_act7:'Activos (7 días)',adm_serms:'Sermones',adm_uses:'Más usado',adm_u_pregar:'Modo Predicar',adm_u_dic:'Diccionario',adm_u_ia:'Asistente IA',adm_n_serm:'{n} sermones',adm_seen:'visto {d}',adm_on:'Activo',adm_off:'Bloqueado',adm_active:'Acceso activado',adm_blocked:'Acceso bloqueado',adm_none:'Todavía nadie se registró.',adm_note:'Solo ves números (sermones, fechas, uso). El contenido de los sermones queda cerrado por las reglas de seguridad: ni tú lo ves desde la app.',blk_t:'Acceso en pausa',blk_d:'Tu acceso a Meu Púlpito está pausado por ahora. Habla con quien te dio el acceso para activarlo de nuevo. Tus sermones están guardados y no se borran.',priv:'Privacidad',priv_d:'Cómo cuidamos tus sermones y tus datos',priv_date:'Política de privacidad · noviembre de 2026',del_acc:'Borrar mi cuenta',del_acc_d:'Borra tu cuenta y todos tus sermones para siempre',del_warn:'Se borrarán tu cuenta, tus sermones, agenda, biblioteca y notas, en la nube y en este celular. No se puede deshacer. Si quieres guardar algo, haz antes una copia en Perfil → Copia de seguridad.',del_type:'Para confirmar, escribe BORRAR',del_word:'BORRAR',del_go:'Borrar todo para siempre',del_doing:'Borrando…',del_done:'Tu cuenta fue borrada',del_relog:'Por seguridad, cierra la sesión, vuelve a entrar y repite este paso.',rec_t:'Recuperar contraseña',rec_d:'Escribe el correo de tu cuenta. Te enviaremos un enlace para crear una contraseña nueva.',rec_send:'Enviar enlace',rec_sending:'Enviando…',rec_ok_t:'Revisa tu correo',rec_ok_d:'Enviamos el enlace a {e}. Ábrelo, crea tu contraseña nueva y vuelve aquí para entrar. Si no aparece, mira en Spam o Promociones.',rec_back:'Volver a entrar',rec_again:'Enviar de nuevo',retry:'Intentar de nuevo',show_pw:'Mostrar contraseña',acc_conn:'Conectando con tu cuenta…',acc_fail:'No se pudo conectar con el sistema de cuentas. Revisa tu internet o abre el app desde el ícono de la pantalla de inicio.',local_only:'Sin cuenta: los sermones quedan solo en este celular.',logout:'Cerrar sesión',login_btn:'Entrar con una cuenta',soon:'Próximamente',s_rec:'Grabar audio',s_tr:'Audio a texto',s_trl:'Traducir ES ↔ PT',s_ai:'Asistente para sermones',
+account:'Cuenta',got_it:'Entendido',adm_t:'Panel del administrador',adm_d:'Cuántos se registraron y controlar el acceso',adm_load:'Cargando…',adm_err:'No se pudo cargar. Revisa tu internet.',adm_users:'Registrados',adm_act7:'Activos (7 días)',adm_serms:'Sermones',adm_uses:'Más usado',adm_u_pregar:'Modo Predicar',adm_u_dic:'Diccionario',adm_u_ia:'Asistente IA',adm_n_serm:'{n} sermones',adm_seen:'visto {d}',adm_on:'Activo',adm_off:'Bloqueado',adm_active:'Acceso activado',adm_blocked:'Acceso bloqueado',adm_none:'Todavía nadie se registró.',adm_note:'Solo ves números (sermones, fechas, uso). El contenido de los sermones queda cerrado por las reglas de seguridad: ni tú lo ves desde la app.',blk_t:'Acceso en pausa',blk_d:'Tu acceso a Meu Púlpito está pausado por ahora. Habla con quien te dio el acceso para activarlo de nuevo. Tus sermones están guardados y no se borran.',priv:'Privacidad',priv_d:'Cómo cuidamos tus sermones y tus datos',priv_date:'Política de privacidad · noviembre de 2026',del_acc:'Borrar mi cuenta',del_acc_d:'Borra tu cuenta y todos tus sermones para siempre',del_warn:'Se borrarán tu cuenta, tus sermones, agenda, biblioteca y notas, en la nube y en este celular. No se puede deshacer. Si quieres guardar algo, haz antes una copia en Configuración → Copia de seguridad.',del_type:'Para confirmar, escribe BORRAR',del_word:'BORRAR',del_go:'Borrar todo para siempre',del_doing:'Borrando…',del_done:'Tu cuenta fue borrada',del_relog:'Por seguridad, cierra la sesión, vuelve a entrar y repite este paso.',rec_t:'Recuperar contraseña',rec_d:'Escribe el correo de tu cuenta. Te enviaremos un enlace para crear una contraseña nueva.',rec_send:'Enviar enlace',rec_sending:'Enviando…',rec_ok_t:'Revisa tu correo',rec_ok_d:'Enviamos el enlace a {e}. Ábrelo, crea tu contraseña nueva y vuelve aquí para entrar. Si no aparece, mira en Spam o Promociones.',rec_back:'Volver a entrar',rec_again:'Enviar de nuevo',retry:'Intentar de nuevo',show_pw:'Mostrar contraseña',acc_conn:'Conectando con tu cuenta…',acc_fail:'No se pudo conectar con el sistema de cuentas. Revisa tu internet o abre el app desde el ícono de la pantalla de inicio.',local_only:'Sin cuenta: los sermones quedan solo en este celular.',logout:'Cerrar sesión',login_btn:'Entrar con una cuenta',soon:'Próximamente',s_rec:'Grabar audio',s_tr:'Audio a texto',s_trl:'Traducir ES ↔ PT',s_ai:'Asistente para sermones',
 credits:'Biblias: Reina-Valera 1909 y 1865 (dominio público), Bíblia Livre y Bíblia Livre TR (licencia libre), Nova Versão de Acesso Livre, Textus Receptus griego y Códice de Leningrado hebreo (dominio público). Diccionarios: Easton (1897, dominio público; datos NEUU, CC BY 4.0) y Strong (dominio público; datos de Open Scriptures, CC BY-SA) y STEPBible.org de Tyndale House (CC BY). Traducción automática: MyMemory.',b_read:'Biblia',
 cmp:'Comparar versiones',dic_preg:'Diccionario del predicador',dic_eas:'Más en el Diccionario Bíblico de Easton · traducción automática',dic_o:'En el original',dic_vs:'Versículos',dic_bib:'Bíblico',dic_refs:'Pasajes',dic_rest:'Traducir el resto',dic_nref:'{n} pasajes',dic_hint_b:'Busca una palabra para tu predicación (Dios, gracia, fe, amor, salvación…) o personas y lugares (Moisés, Betel…). Verás el significado y la palabra en hebreo y griego.',dic_src_b:'Diccionario del predicador: escrito para Meu Púlpito. Diccionario Bíblico de Easton (1897, dominio público) · datos NEUU (CC BY 4.0), con traducción automática.',lx_wait:'Traduciendo…',lx_auto_b:'Traducción automática. Queda guardada en este celular.',lx_en:'Ver el original en inglés',lx_auto:'Traducción automática del diccionario Strong. Queda guardada en este celular.',lx_off:'Sin internet: se muestra el original en inglés. Con internet aparece traducido.',lx:'Diccionario',lx_ph:'Palabra, griego, hebreo o número (G26, H430)',dict_gr:'Griego',dict_he:'Hebreo',dict_all:'Todo',dict_hint:'Busca una palabra (amor, gracia, fe), una palabra en griego o hebreo, o un número Strong. En «Comparar versiones», toca una palabra en griego o hebreo para ver su significado.',dict_load:'Abriendo el diccionario…',dict_err:'No pude abrir el diccionario. Revisa tu internet e intenta de nuevo.',dict_def:'Definición',dict_kjv:'Traducida en la Biblia como',dict_orig:'Origen',dict_ctx:'En este versículo',dict_en:'Definición original en inglés (Strong, 1890).',dict_tr:'Traducir',dict_trd:'Traducción automática',dict_tr_err:'No se pudo traducir ahora',dict_more:'Buscando también en inglés…',dict_nf:'Esa palabra no está en el diccionario',dict_tap:'Toca una palabra para ver su significado',dict_src:'Diccionario Strong (1890–1894, dominio público) · Open Scriptures (CC BY-SA) · STEPBible.org (CC BY)',cmp_t:'Versiones',orig:'En el original',orig_g:'Griego',orig_h:'Hebreo',translit:'pronunciación aproximada',cmp_load:'Abriendo las versiones…',cmp_none:'Este versículo no está en esta versión.',cmp_tip:'Toca la cita para comparar versiones',
-tr_to:'Traducir al {l}',tr_t:'Traducir sermón',tr_d:'Se crea una copia traducida; el original no cambia. Los versículos se colocan desde la Biblia del otro idioma. El resto del texto se envía al servicio gratuito MyMemory para traducir.',tr_lim:'Este sermón tiene {n} caracteres. Límite gratuito: unos 5.000 por día, o 50.000 si pones tu correo en Perfil.',tr_go:'Traducir',tr_prog:'Traduciendo… {i} de {n}',tr_done:'Traducción creada. Revísala antes de predicar.',tr_quota:'Se acabó el límite gratuito de hoy. Intenta mañana o pon tu correo en Perfil para tener más.',tr_err:'No pude traducir ahora. Revisa la conexión e intenta de nuevo.',tr_mail:'Correo para traducción',tr_mail_d:'Opcional. Se envía a MyMemory solo para aumentar el límite diario.',
+tr_to:'Traducir al {l}',tr_t:'Traducir sermón',tr_d:'Se crea una copia traducida; el original no cambia. Los versículos se colocan desde la Biblia del otro idioma. El resto del texto se envía al servicio gratuito MyMemory para traducir.',tr_lim:'Este sermón tiene {n} caracteres. Límite gratuito: unos 5.000 por día, o 50.000 si pones tu correo en Configuración.',tr_go:'Traducir',tr_prog:'Traduciendo… {i} de {n}',tr_done:'Traducción creada. Revísala antes de predicar.',tr_quota:'Se acabó el límite gratuito de hoy. Intenta mañana o pon tu correo en Perfil para tener más.',tr_err:'No pude traducir ahora. Revisa la conexión e intenta de nuevo.',tr_mail:'Correo para traducción',tr_mail_d:'Opcional. Se envía a MyMemory solo para aumentar el límite diario.',
 sync_ok:'Guardado en tu cuenta',sync_local:'Guardado en este celular',sync_conn:'Conectando…',sync_off:'Sin señal: usando la copia del celular',sync_pend:'Guardando… se envía cuando haya señal',sync_err:'No pude leer tu cuenta ahora. Queda guardado en el celular.',sync_noperm:'Tu cuenta todavía no puede guardar en la nube. Queda en este celular.',
 login_t:'Entra para guardar tus sermones',login_d:'Tus sermones quedan en tu cuenta y aparecen en cualquier celular donde entres.',email:'Correo',pass:'Contraseña',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Crear cuenta',forgot:'¿Olvidaste tu contraseña?',nologin:'Usar sin cuenta',reset_sent:'Te enviamos un correo para crear una contraseña nueva',
 e_email:'Correo inválido. Revisa si lo escribiste bien.',e_pass:'Escribe la contraseña.',e_weak:'La contraseña necesita al menos 6 caracteres.',e_used:'Este correo ya tiene cuenta. Toca Entrar.',e_cred:'Correo o contraseña no coinciden. Intenta de nuevo o toca «¿Olvidaste tu contraseña?».',e_many:'Muchos intentos. Espera unos minutos.',e_net:'Sin internet. Conéctate para entrar la primera vez.',e_gen:'No pude entrar ahora. Intenta de nuevo.',e_reset:'Escribe tu correo arriba y toca otra vez Olvidé la contraseña.',
@@ -75,7 +75,7 @@ bp_t:'Biblia',bp_ins:'Insertar',bp_ins_n:'Insertar ({n})',bp_pick:'Toca los vers
 pdf_print:'PDF para imprimir',pdf_study:'PDF para estudiar',pdf_preach:'PDF para predicar',pdf_points:'PDF solo puntos',pdf_print_d:'Limpio y completo.',pdf_study_d:'Con detalles, recordatorios y espacio para notas.',pdf_preach_d:'Letra grande y puntos destacados.',pdf_points_d:'Una hoja con el esquema.',notes_area:'Notas',
 security:'Seguridad',lock:'Bloquear con código',lock_d:'Pide el código al abrir la app.',lock_on:'Bloqueo activado',lock_off:'Bloqueo desactivado',pin_new:'Crea un código de 4 a 6 números',pin_again:'Repite el código',pin_diff:'Los códigos no coinciden. Intenta de nuevo.',pin_short:'Usa de 4 a 6 números.',pin_enter:'Escribe tu código',pin_wrong:'Código incorrecto',unlock:'Desbloquear',bio:'Usar Face ID o huella',bio_use:'Desbloquear con Face ID o huella',bio_on:'Face ID o huella activado',bio_fail:'No se pudo usar Face ID o huella. Usa el código.',forgot_pin:'Olvidé el código',forgot_pin_d:'Para quitar el bloqueo, sal de tu cuenta y entra de nuevo con tu correo y contraseña. Tus sermones siguen guardados en tu cuenta.',forgot_local:'Sin cuenta no es posible quitar el bloqueo sin el código. Por eso, en modo sin cuenta te recomendamos no activarlo.',sign_out_unlock:'Salir y entrar de nuevo',lock_local_warn:'Estás sin cuenta: si olvidas el código no podrás recuperarlo.',
 autobak:'Copias automáticas',autobak_d:'Una por día en este celular, últimos 7 días.',autobak_none:'Todavía no hay copias automáticas. La primera se hace hoy.',autobak_rest:'Recuperar de esta copia',autobak_rest_d:'Agrega los sermones, anotaciones y predicaciones que falten o estén en la papelera. No borra nada.',autobak_done:'{n} elementos recuperados',
-ai:'Meu Púlpito IA',ai_d:'Asistente para preparar el sermón. No sustituye tu estudio bíblico personal.',ai_key:'Clave de la IA',ai_key_d:'Se guarda solo en este celular. Créala en console.anthropic.com.',ai_test:'Probar',ai_ok:'La IA está lista',ai_nokey:'Para usar la IA, pon tu clave en Perfil → Meu Púlpito IA.',ai_err_key:'La clave no es válida. Revísala en Perfil.',ai_err_rate:'Demasiadas solicitudes. Espera un minuto.',ai_err_busy:'La IA está ocupada. Intenta en unos segundos.',ai_err_credit:'Tu cuenta de la IA no tiene saldo. Agrega créditos en console.anthropic.com.',ai_err:'No pude usar la IA ahora. Revisa la conexión.',
+ai:'Meu Púlpito IA',ai_d:'Asistente para preparar el sermón. No sustituye tu estudio bíblico personal.',ai_key:'Clave de la IA',ai_key_d:'Se guarda solo en este celular. Créala en console.anthropic.com.',ai_test:'Probar',ai_ok:'La IA está lista',ai_nokey:'Para usar la IA, pon tu clave en Configuración → Meu Púlpito IA.',ai_err_key:'La clave no es válida. Revísala en Configuración.',ai_err_rate:'Demasiadas solicitudes. Espera un minuto.',ai_err_busy:'La IA está ocupada. Intenta en unos segundos.',ai_err_credit:'Tu cuenta de la IA no tiene saldo. Agrega créditos en console.anthropic.com.',ai_err:'No pude usar la IA ahora. Revisa la conexión.',
 ai_thinking:'Pensando…',ai_intro:'Crear introducción',ai_point:'Desarrollar el punto actual',ai_concl:'Mejorar la conclusión',ai_apps:'Aplicaciones prácticas',ai_ctx:'Contexto bíblico',ai_refs:'Referencias relacionadas',ai_gram:'Corregir gramática',ai_trans:'Traducir el sermón',ai_ask:'Pregunta libre',ai_ask_ph:'Ej.: ¿qué significa «propuso en su corazón»?',ai_send:'Enviar',ai_insert:'Insertar en el sermón',ai_replace:'Reemplazar el texto',ai_again:'Otra respuesta',ai_dropped:'{n} cita(s) no encontradas en la Biblia fueron quitadas.',ai_unver:'(cita no verificada)',ai_inserted:'Agregado al sermón',ai_replaced:'Texto corregido',ai_need_sel:'Coloca el cursor en el párrafo o selecciona el texto que quieres corregir.',ai_tr_ai:'Se usa la IA para traducir (mejor calidad).',
 rec:'Audio y dictado',rec_d:'Los audios quedan guardados en este celular.',rec_start:'Grabar',rec_stop:'Detener',rec_saved:'Audio guardado',rec_none:'Todavía no hay audios en este sermón.',rec_none_g:'Todavía no hay notas de voz.',rec_err:'No pude usar el micrófono. Revisa el permiso en Ajustes → Safari → Micrófono.',rec_to_note:'Convertir en anotación',rec_del:'Eliminar audio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
 dict:'Dictar (voz a texto)',dict_on:'Escuchando… habla con calma',dict_stop:'Terminar dictado',dict_none:'El dictado no está disponible aquí. Usa el micrófono del teclado del iPhone: es igual de rápido.',dict_ins:'Insertar en el sermón',dict_note:'Guardar como anotación',dict_ph:'El texto aparece aquí…',voice_notes:'Notas de voz',
@@ -84,7 +84,7 @@ night:'Lectura nocturna',night_d:'Fondo negro, letras blancas y brillo más bajo
 cats:['Santa Cena','Culto de Enseñanza','Culto de la Familia','Jóvenes','Liderazgo','Evangelismo','Consagración','Mensajes especiales'],
 wd:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 books:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']},
-pt:{nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Perfil',
+pt:{nav_home:'Início',nav_list:'Sermões',nav_bible:'Bíblia',nav_agenda:'Agenda',nav_profile:'Configurações',nav_dic:'Dicionários',
 greet_m:'Bom dia,',greet_a:'Boa tarde,',greet_n:'Boa noite,',pastor:'Pastor',
 search_ph:'Buscar sermão, versículo ou palavra',prepare:'Preparar',new_sermon:'Novo sermão',new_desc:'Abra a folha e comece a escrever. Salva sozinho.',
 st_total:'Sermões',st_done:'Pregados',st_fav:'Favoritos',st_week:'Esta semana',recent:'Recentes',my_sermons:'Meus sermões',favorites:'Favoritos',see_all:'Ver todos',next_preach:'Próxima pregação',
@@ -111,10 +111,10 @@ schedule:'Agendar',upcoming:'Próximas pregações',past:'Anteriores',no_ev:'Nad
 cult:'Tipo de culto',theme:'Tema da mensagem',sermon:'Sermão',later_pick:'Escolher depois',pick_s:'Escolher sermão',tbd:'tema a definir',ev_saved:'Pregação agendada',ev_del:'Pregação excluída',
 your_name:'Seu nome',language:'Idioma do app',appearance:'Aparência',light:'Claro',dark:'Escuro',auto:'Auto',def_bible:'Bíblia',categories:'Categorias',add_cat:'Nova categoria',add:'Adicionar',
 backup:'Cópia de segurança',last_bak:'Última: {d}',never:'nunca',restore:'Restaurar ou trazer sermões',restore_d:'Cole aqui uma cópia de segurança ou o texto copiado em «Levar para o app próprio».',import:'Importar',imported:'{n} sermão(ões) importado(s)',nothing_new:'Nada novo para importar',bad_paste:'Não reconheci o texto colado. Copie de novo.',
-account:'Conta',got_it:'Entendi',adm_t:'Painel do administrador',adm_d:'Quantos se cadastraram e controlar o acesso',adm_load:'Carregando…',adm_err:'Não consegui carregar. Verifique a internet.',adm_users:'Cadastrados',adm_act7:'Ativos (7 dias)',adm_serms:'Sermões',adm_uses:'Mais usado',adm_u_pregar:'Modo Pregar',adm_u_dic:'Dicionário',adm_u_ia:'Assistente IA',adm_n_serm:'{n} sermões',adm_seen:'visto {d}',adm_on:'Ativo',adm_off:'Bloqueado',adm_active:'Acesso ativado',adm_blocked:'Acesso bloqueado',adm_none:'Ninguém se cadastrou ainda.',adm_note:'Você vê só números (sermões, datas, uso). O conteúdo dos sermões fica fechado pelas regras de segurança: nem você lê pelo app.',blk_t:'Acesso pausado',blk_d:'Seu acesso ao Meu Púlpito está pausado por enquanto. Fale com quem te deu o acesso para ativar de novo. Seus sermões estão guardados e não são apagados.',priv:'Privacidade',priv_d:'Como cuidamos dos seus sermões e dados',priv_date:'Política de privacidade · novembro de 2026',del_acc:'Apagar minha conta',del_acc_d:'Apaga sua conta e todos os seus sermões para sempre',del_warn:'Serão apagados sua conta, seus sermões, agenda, biblioteca e notas, na nuvem e neste celular. Não dá para desfazer. Se quiser guardar algo, faça antes uma cópia em Perfil → Cópia de segurança.',del_type:'Para confirmar, escreva APAGAR',del_word:'APAGAR',del_go:'Apagar tudo para sempre',del_doing:'Apagando…',del_done:'Sua conta foi apagada',del_relog:'Por segurança, saia da conta, entre de novo e repita este passo.',rec_t:'Recuperar senha',rec_d:'Digite o e-mail da sua conta. Vamos enviar um link para criar uma senha nova.',rec_send:'Enviar link',rec_sending:'Enviando…',rec_ok_t:'Confira seu e-mail',rec_ok_d:'Enviamos o link para {e}. Abra, crie sua senha nova e volte aqui para entrar. Se não aparecer, olhe em Spam ou Promoções.',rec_back:'Voltar para entrar',rec_again:'Enviar de novo',retry:'Tentar de novo',show_pw:'Mostrar senha',acc_conn:'Conectando com a sua conta…',acc_fail:'Não foi possível conectar ao sistema de contas. Verifique a internet ou abra o app pelo ícone da tela inicial.',local_only:'Sem conta: os sermões ficam só neste celular.',logout:'Sair da conta',login_btn:'Entrar com uma conta',soon:'Em breve',s_rec:'Gravar áudio',s_tr:'Áudio para texto',s_trl:'Traduzir ES ↔ PT',s_ai:'Assistente de sermões',
+account:'Conta',got_it:'Entendi',adm_t:'Painel do administrador',adm_d:'Quantos se cadastraram e controlar o acesso',adm_load:'Carregando…',adm_err:'Não consegui carregar. Verifique a internet.',adm_users:'Cadastrados',adm_act7:'Ativos (7 dias)',adm_serms:'Sermões',adm_uses:'Mais usado',adm_u_pregar:'Modo Pregar',adm_u_dic:'Dicionário',adm_u_ia:'Assistente IA',adm_n_serm:'{n} sermões',adm_seen:'visto {d}',adm_on:'Ativo',adm_off:'Bloqueado',adm_active:'Acesso ativado',adm_blocked:'Acesso bloqueado',adm_none:'Ninguém se cadastrou ainda.',adm_note:'Você vê só números (sermões, datas, uso). O conteúdo dos sermões fica fechado pelas regras de segurança: nem você lê pelo app.',blk_t:'Acesso pausado',blk_d:'Seu acesso ao Meu Púlpito está pausado por enquanto. Fale com quem te deu o acesso para ativar de novo. Seus sermões estão guardados e não são apagados.',priv:'Privacidade',priv_d:'Como cuidamos dos seus sermões e dados',priv_date:'Política de privacidade · novembro de 2026',del_acc:'Apagar minha conta',del_acc_d:'Apaga sua conta e todos os seus sermões para sempre',del_warn:'Serão apagados sua conta, seus sermões, agenda, biblioteca e notas, na nuvem e neste celular. Não dá para desfazer. Se quiser guardar algo, faça antes uma cópia em Configurações → Cópia de segurança.',del_type:'Para confirmar, escreva APAGAR',del_word:'APAGAR',del_go:'Apagar tudo para sempre',del_doing:'Apagando…',del_done:'Sua conta foi apagada',del_relog:'Por segurança, saia da conta, entre de novo e repita este passo.',rec_t:'Recuperar senha',rec_d:'Digite o e-mail da sua conta. Vamos enviar um link para criar uma senha nova.',rec_send:'Enviar link',rec_sending:'Enviando…',rec_ok_t:'Confira seu e-mail',rec_ok_d:'Enviamos o link para {e}. Abra, crie sua senha nova e volte aqui para entrar. Se não aparecer, olhe em Spam ou Promoções.',rec_back:'Voltar para entrar',rec_again:'Enviar de novo',retry:'Tentar de novo',show_pw:'Mostrar senha',acc_conn:'Conectando com a sua conta…',acc_fail:'Não foi possível conectar ao sistema de contas. Verifique a internet ou abra o app pelo ícone da tela inicial.',local_only:'Sem conta: os sermões ficam só neste celular.',logout:'Sair da conta',login_btn:'Entrar com uma conta',soon:'Em breve',s_rec:'Gravar áudio',s_tr:'Áudio para texto',s_trl:'Traduzir ES ↔ PT',s_ai:'Assistente de sermões',
 credits:'Bíblias: Reina-Valera 1909 e 1865 (domínio público), Bíblia Livre e Bíblia Livre TR (licença livre), Nova Versão de Acesso Livre, Textus Receptus grego e Códice de Leningrado hebraico (domínio público). Dicionários: Easton (1897, domínio público; dados NEUU, CC BY 4.0) e Strong (domínio público; dados de Open Scriptures, CC BY-SA) e STEPBible.org da Tyndale House (CC BY). Tradução automática: MyMemory.',b_read:'Bíblia',
 cmp:'Comparar versões',dic_preg:'Dicionário do pregador',dic_eas:'Mais no Dicionário Bíblico de Easton · tradução automática',dic_o:'No original',dic_vs:'Versículos',dic_bib:'Bíblico',dic_refs:'Passagens',dic_rest:'Traduzir o resto',dic_nref:'{n} passagens',dic_hint_b:'Busque uma palavra para a sua pregação (Deus, graça, fé, amor, salvação…) ou pessoas e lugares (Moisés, Betel…). Você verá o significado e a palavra em hebraico e grego.',dic_src_b:'Dicionário do pregador: escrito para o Meu Púlpito. Dicionário Bíblico de Easton (1897, domínio público) · dados NEUU (CC BY 4.0), com tradução automática.',lx_wait:'Traduzindo…',lx_auto_b:'Tradução automática. Fica guardada neste celular.',lx_en:'Ver o original em inglês',lx_auto:'Tradução automática do dicionário Strong. Fica guardada neste celular.',lx_off:'Sem internet: aparece o original em inglês. Com internet aparece traduzido.',lx:'Dicionário',lx_ph:'Palavra, grego, hebraico ou número (G26, H430)',dict_gr:'Grego',dict_he:'Hebraico',dict_all:'Tudo',dict_hint:'Busque uma palavra (amor, graça, fé), uma palavra em grego ou hebraico, ou um número Strong. Em «Comparar versões», toque numa palavra em grego ou hebraico para ver o significado.',dict_load:'Abrindo o dicionário…',dict_err:'Não consegui abrir o dicionário. Verifique a internet e tente de novo.',dict_def:'Definição',dict_kjv:'Traduzida na Bíblia como',dict_orig:'Origem',dict_ctx:'Neste versículo',dict_en:'Definição original em inglês (Strong, 1890).',dict_tr:'Traduzir',dict_trd:'Tradução automática',dict_tr_err:'Não foi possível traduzir agora',dict_more:'Buscando também em inglês…',dict_nf:'Essa palavra não está no dicionário',dict_tap:'Toque numa palavra para ver o significado',dict_src:'Dicionário Strong (1890–1894, domínio público) · Open Scriptures (CC BY-SA) · STEPBible.org (CC BY)',cmp_t:'Versões',orig:'No original',orig_g:'Grego',orig_h:'Hebraico',translit:'pronúncia aproximada',cmp_load:'Abrindo as versões…',cmp_none:'Este versículo não está nesta versão.',cmp_tip:'Toque na referência para comparar versões',
-tr_to:'Traduzir para {l}',tr_t:'Traduzir sermão',tr_d:'É criada uma cópia traduzida; o original não muda. Os versículos vêm da Bíblia do outro idioma. O resto do texto é enviado ao serviço grátis MyMemory para traduzir.',tr_lim:'Este sermão tem {n} caracteres. Limite grátis: uns 5.000 por dia, ou 50.000 se você colocar seu e-mail no Perfil.',tr_go:'Traduzir',tr_prog:'Traduzindo… {i} de {n}',tr_done:'Tradução criada. Revise antes de pregar.',tr_quota:'Acabou o limite grátis de hoje. Tente amanhã ou coloque seu e-mail no Perfil para ter mais.',tr_err:'Não consegui traduzir agora. Confira a conexão e tente de novo.',tr_mail:'E-mail para tradução',tr_mail_d:'Opcional. É enviado ao MyMemory só para aumentar o limite diário.',
+tr_to:'Traduzir para {l}',tr_t:'Traduzir sermão',tr_d:'É criada uma cópia traduzida; o original não muda. Os versículos vêm da Bíblia do outro idioma. O resto do texto é enviado ao serviço grátis MyMemory para traduzir.',tr_lim:'Este sermão tem {n} caracteres. Limite grátis: uns 5.000 por dia, ou 50.000 se você colocar seu e-mail em Configurações.',tr_go:'Traduzir',tr_prog:'Traduzindo… {i} de {n}',tr_done:'Tradução criada. Revise antes de pregar.',tr_quota:'Acabou o limite grátis de hoje. Tente amanhã ou coloque seu e-mail em Configurações para ter mais.',tr_err:'Não consegui traduzir agora. Confira a conexão e tente de novo.',tr_mail:'E-mail para tradução',tr_mail_d:'Opcional. É enviado ao MyMemory só para aumentar o limite diário.',
 sync_ok:'Salvo na sua conta',sync_local:'Salvo neste celular',sync_conn:'Conectando…',sync_off:'Sem sinal: usando a cópia do celular',sync_pend:'Salvando… envia quando tiver sinal',sync_err:'Não consegui ler sua conta agora. Fica salvo no celular.',sync_noperm:'Sua conta ainda não pode guardar na nuvem. Fica neste celular.',
 login_t:'Entre para guardar seus sermões',login_d:'Seus sermões ficam na sua conta e aparecem em qualquer celular em que você entrar.',email:'E-mail',pass:'Senha',pass_ph:'Mínimo 6 caracteres',enter:'Entrar',create:'Criar conta',forgot:'Esqueceu a senha?',nologin:'Usar sem conta',reset_sent:'Enviamos um e-mail para criar uma senha nova',
 e_email:'E-mail inválido. Confira se digitou certo.',e_pass:'Digite a senha.',e_weak:'A senha precisa ter pelo menos 6 caracteres.',e_used:'Este e-mail já tem conta. Toque em Entrar.',e_cred:'E-mail ou senha não conferem. Tente de novo ou toque em «Esqueceu a senha?».',e_many:'Muitas tentativas. Espere alguns minutos.',e_net:'Sem internet. Conecte-se para entrar pela primeira vez.',e_gen:'Não consegui entrar agora. Tente de novo.',e_reset:'Digite seu e-mail acima e toque de novo em Esqueci a senha.',
@@ -133,7 +133,7 @@ bp_t:'Bíblia',bp_ins:'Inserir',bp_ins_n:'Inserir ({n})',bp_pick:'Toque nos vers
 pdf_print:'PDF para imprimir',pdf_study:'PDF para estudar',pdf_preach:'PDF para pregar',pdf_points:'PDF só os pontos',pdf_print_d:'Limpo e completo.',pdf_study_d:'Com detalhes, lembretes e espaço para anotações.',pdf_preach_d:'Letra grande e pontos em destaque.',pdf_points_d:'Uma folha com o esboço.',notes_area:'Anotações',
 security:'Segurança',lock:'Bloquear com código',lock_d:'Pede o código ao abrir o app.',lock_on:'Bloqueio ativado',lock_off:'Bloqueio desativado',pin_new:'Crie um código de 4 a 6 números',pin_again:'Repita o código',pin_diff:'Os códigos não conferem. Tente de novo.',pin_short:'Use de 4 a 6 números.',pin_enter:'Digite seu código',pin_wrong:'Código errado',unlock:'Desbloquear',bio:'Usar Face ID ou digital',bio_use:'Desbloquear com Face ID ou digital',bio_on:'Face ID ou digital ativado',bio_fail:'Não deu para usar Face ID ou digital. Use o código.',forgot_pin:'Esqueci o código',forgot_pin_d:'Para tirar o bloqueio, saia da conta e entre de novo com seu e-mail e senha. Seus sermões continuam guardados na conta.',forgot_local:'Sem conta não é possível tirar o bloqueio sem o código. Por isso, no modo sem conta recomendamos não ativar.',sign_out_unlock:'Sair e entrar de novo',lock_local_warn:'Você está sem conta: se esquecer o código, não dá para recuperar.',
 autobak:'Cópias automáticas',autobak_d:'Uma por dia neste celular, últimos 7 dias.',autobak_none:'Ainda não há cópias automáticas. A primeira é feita hoje.',autobak_rest:'Recuperar desta cópia',autobak_rest_d:'Adiciona os sermões, anotações e pregações que faltam ou estão na lixeira. Não apaga nada.',autobak_done:'{n} itens recuperados',
-ai:'Meu Púlpito IA',ai_d:'Assistente para preparar o sermão. Não substitui o seu estudo bíblico pessoal.',ai_key:'Chave da IA',ai_key_d:'Fica guardada só neste celular. Crie em console.anthropic.com.',ai_test:'Testar',ai_ok:'A IA está pronta',ai_nokey:'Para usar a IA, coloque sua chave em Perfil → Meu Púlpito IA.',ai_err_key:'A chave não é válida. Confira no Perfil.',ai_err_rate:'Muitos pedidos. Espere um minuto.',ai_err_busy:'A IA está ocupada. Tente em alguns segundos.',ai_err_credit:'Sua conta da IA está sem saldo. Adicione créditos em console.anthropic.com.',ai_err:'Não consegui usar a IA agora. Confira a conexão.',
+ai:'Meu Púlpito IA',ai_d:'Assistente para preparar o sermão. Não substitui o seu estudo bíblico pessoal.',ai_key:'Chave da IA',ai_key_d:'Fica guardada só neste celular. Crie em console.anthropic.com.',ai_test:'Testar',ai_ok:'A IA está pronta',ai_nokey:'Para usar a IA, coloque sua chave em Configurações → Meu Púlpito IA.',ai_err_key:'A chave não é válida. Confira em Configurações.',ai_err_rate:'Muitos pedidos. Espere um minuto.',ai_err_busy:'A IA está ocupada. Tente em alguns segundos.',ai_err_credit:'Sua conta da IA está sem saldo. Adicione créditos em console.anthropic.com.',ai_err:'Não consegui usar a IA agora. Confira a conexão.',
 ai_thinking:'Pensando…',ai_intro:'Criar introdução',ai_point:'Desenvolver o ponto atual',ai_concl:'Melhorar a conclusão',ai_apps:'Aplicações práticas',ai_ctx:'Contexto bíblico',ai_refs:'Referências relacionadas',ai_gram:'Corrigir gramática',ai_trans:'Traduzir o sermão',ai_ask:'Pergunta livre',ai_ask_ph:'Ex.: o que significa «propôs no seu coração»?',ai_send:'Enviar',ai_insert:'Inserir no sermão',ai_replace:'Substituir o texto',ai_again:'Outra resposta',ai_dropped:'{n} referência(s) não encontradas na Bíblia foram retiradas.',ai_unver:'(referência não conferida)',ai_inserted:'Adicionado ao sermão',ai_replaced:'Texto corrigido',ai_need_sel:'Coloque o cursor no parágrafo ou selecione o texto que quer corrigir.',ai_tr_ai:'A IA é usada para traduzir (melhor qualidade).',
 rec:'Áudio e ditado',rec_d:'Os áudios ficam guardados neste celular.',rec_start:'Gravar',rec_stop:'Parar',rec_saved:'Áudio guardado',rec_none:'Ainda não há áudios neste sermão.',rec_none_g:'Ainda não há notas de voz.',rec_err:'Não consegui usar o microfone. Confira a permissão em Ajustes → Safari → Microfone.',rec_to_note:'Transformar em anotação',rec_del:'Excluir áudio',rec_title:'Nota de voz {d}',voice_note:'Nota de voz',
 dict:'Ditar (voz para texto)',dict_on:'Ouvindo… fale com calma',dict_stop:'Terminar ditado',dict_none:'O ditado não está disponível aqui. Use o microfone do teclado do iPhone: é igualmente rápido.',dict_ins:'Inserir no sermão',dict_note:'Salvar como anotação',dict_ph:'O texto aparece aqui…',voice_notes:'Notas de voz',
@@ -252,23 +252,6 @@ async function lxGet(key,en,L){if(!en)return'';const b=(LXB[L]||await loadLxBuil
 const DER={es:[[/\bfrom the same as\b/g,'de lo mismo que'],[/\bfrom\b/g,'de'],[/\band\b/g,'y'],[/\bor\b/g,'o'],[/\ba primitive root\b/g,'raíz primitiva'],[/\ba primitive word\b/g,'palabra primitiva'],[/\ba primary verb\b/g,'verbo primario'],[/\ba primary particle\b/g,'partícula primaria'],[/\ba primary word\b/g,'palabra primaria'],[/\bof Hebrew origin\b/g,'de origen hebreo'],[/\bof Chaldee origin\b/g,'de origen arameo'],[/\bof Latin origin\b/g,'de origen latino'],[/\bof foreign origin\b/g,'de origen extranjero'],[/\bof uncertain affinity\b/g,'de afinidad incierta'],[/\bof uncertain derivation\b/g,'de derivación incierta'],[/\bcorresponding to\b/g,'correspondiente a'],[/\(Aramaic\)/g,'(arameo)'],[/\bprobably\b/g,'probablemente'],[/\bperhaps\b/g,'quizás'],[/\bapparently\b/g,'aparentemente'],[/\bakin to\b/g,'afín a'],[/\ba prolonged form of\b/g,'forma prolongada de'],[/\bthe same as\b/g,'lo mismo que'],[/\bfeminine of\b/g,'femenino de'],[/\bplural of\b/g,'plural de'],[/\bcompare\b/gi,'compárese'],[/\bin the sense of\b/g,'en el sentido de'],[/\bthrough the idea of\b/g,'por la idea de'],[/\bthe base of\b/g,'la base de'],[/\bas if\b/g,'como si'],[/\bmasculine\b/g,'masculino'],[/\bneuter\b/g,'neutro'],[/\bpassive\b/g,'pasivo']],
   pt:[[/\bfrom the same as\b/g,'do mesmo que'],[/\bfrom\b/g,'de'],[/\band\b/g,'e'],[/\bor\b/g,'ou'],[/\ba primitive root\b/g,'raiz primitiva'],[/\ba primitive word\b/g,'palavra primitiva'],[/\ba primary verb\b/g,'verbo primário'],[/\ba primary particle\b/g,'partícula primária'],[/\ba primary word\b/g,'palavra primária'],[/\bof Hebrew origin\b/g,'de origem hebraica'],[/\bof Chaldee origin\b/g,'de origem aramaica'],[/\bof Latin origin\b/g,'de origem latina'],[/\bof foreign origin\b/g,'de origem estrangeira'],[/\bof uncertain affinity\b/g,'de afinidade incerta'],[/\bof uncertain derivation\b/g,'de derivação incerta'],[/\bcorresponding to\b/g,'correspondente a'],[/\(Aramaic\)/g,'(aramaico)'],[/\bprobably\b/g,'provavelmente'],[/\bperhaps\b/g,'talvez'],[/\bapparently\b/g,'aparentemente'],[/\bakin to\b/g,'afim a'],[/\ba prolonged form of\b/g,'forma prolongada de'],[/\bthe same as\b/g,'o mesmo que'],[/\bfeminine of\b/g,'feminino de'],[/\bplural of\b/g,'plural de'],[/\bcompare\b/gi,'compare'],[/\bin the sense of\b/g,'no sentido de'],[/\bthrough the idea of\b/g,'pela ideia de'],[/\bthe base of\b/g,'a base de'],[/\bas if\b/g,'como se'],[/\bmasculine\b/g,'masculino'],[/\bneuter\b/g,'neutro'],[/\bpassive\b/g,'passivo']]};
 function derLocal(txt,L){let o=txt||'';for(const [a,b] of DER[L])o=o.replace(a,b);return o}
-async function openStrong(k,n,ctx){let d;try{d=await loadStrong(k)}catch(e){toast(t('dict_err'));return}const e=d.d[n];if(!e){toast(t('dict_nf'));return}
-  const [lemma,tr,def,kjv,der,pron]=e;const es=(d.es[n]||[]).slice(0,5);const L=lxLang();const key=k+n;
-  const sh=openSheet(`<div class="sd-head"><span class="sd-num">${sRef(k,n)}</span><span class="sub">${esc(t(k==='g'?'dict_gr':'dict_he'))}</span></div>
-    <div class="sd-lemma" ${k==='h'?'dir="rtl" lang="he"':'lang="grc"'}>${esc(lemma)}</div>
-    <div class="sd-tr">${esc(tr)}${pron?` · <span class="sub">${esc(pron)}</span>`:''}</div>
-    ${ctx?`<div class="sd-box"><span class="lbl">${esc(t('dict_ctx'))}</span><b>${esc(ctx)}</b></div>`:''}
-    ${es.length?`<div class="sd-es">${es.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>`:''}
-    <div class="fld"><span class="lbl">${esc(t('dict_def'))}</span><p class="sd-p" id="sdDef"><span class="sub">${esc(t('lx_wait'))}</span></p></div>
-    ${kjv?`<div class="fld"><span class="lbl">${esc(t('dict_kjv'))}</span><p class="sd-p" id="sdKjv"><span class="sub">…</span></p></div>`:''}
-    ${der?`<div class="fld"><span class="lbl">${esc(t('dict_orig'))}</span><p class="sd-p">${strongLinks(derLocal(der,L))}</p></div>`:''}
-    <details class="sd-en"><summary>${esc(t('lx_en'))}</summary><p class="sd-p">${esc(def)}</p>${kjv?`<p class="sd-p sub">${esc(kjv)}</p>`:''}</details>
-    <p class="sub" id="sdNote" style="font-size:12px;margin:0" hidden></p>`);
-  sh.addEventListener('click',ev=>{const b=ev.target.closest('[data-sref]');if(!b)return;const r=b.dataset.sref;closeSheet();openStrong(r[0]==='G'?'g':'h',r.slice(1))});
-  const [a,c]=await Promise.all([lxGet(key,def,L),kjv?lxGet(key+'k',kjv,L):Promise.resolve('')]);if(!sh.isConnected)return;
-  const built=(LXB[L]||{})[key];
-  $('#sdDef',sh).innerHTML=a?esc(a):`${esc(def)}`;if(kjv)$('#sdKjv',sh).innerHTML=c?esc(c):esc(kjv);
-  const note=$('#sdNote',sh);if(!a){note.textContent=t('lx_off');note.hidden=false}else if(!built){note.textContent=t('lx_auto');note.hidden=false}}
 const EN_TR={};
 async function enTranslate(text,to){const key=to+'|'+text;if(EN_TR[key])return EN_TR[key];const out=[];
   for(const ch of splitChunks(text)){const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(ch)}&langpair=en|${to==='pt'?'pt-BR':'es'}${prefs.mmEmail?'&de='+encodeURIComponent(prefs.mmEmail):''}`;
@@ -277,82 +260,279 @@ async function enTranslate(text,to){const key=to+'|'+text;if(EN_TR[key])return E
 async function toEnglish(q,from){const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(q)}&langpair=${from==='pt'?'pt-BR':'es'}|en${prefs.mmEmail?'&de='+encodeURIComponent(prefs.mmEmail):''}`;
   const r=await fetch(url);if(!r.ok)throw 0;const j=await r.json();return (j&&j.responseData&&j.responseData.translatedText||'').toLowerCase()}
 document.addEventListener('click',e=>{const b=e.target.closest('.ow');if(!b)return;const k=b.dataset.k;
-  loadStrong(k).then(()=>{const f=strongFind(k,b.dataset.ow);if(!f){toast(t('dict_nf'));return}openStrong(k,f.n,f.ctx)}).catch(()=>toast(t('dict_err')))});
-/* búsqueda en el diccionario (pestaña Biblia) */
-const DQ={q:'',k:'bib',res:null,busy:false,en:''};
-/* Diccionario del predicador: escrito en español y portugués, con las palabras originales */
+  loadStrong(k).then(()=>{const f=strongFind(k,b.dataset.ow);if(!f){toast(t('dict_nf'));return}dxOpenLex(k,+f.n)}).catch(()=>toast(t('dict_err')))});
+/* =========================================================
+   Diccionarios: Bíblico · Hebreo · Griego
+   Datos: STEPBible (CC BY 4.0), Strong (Open Scriptures, CC BY-SA), Easton/Smith/Hitchcock (dominio público, NEUU CC BY 4.0)
+   ========================================================= */
+const DXT={es:{
+  dx_t:'Diccionarios',dx_ed:'Consultar diccionarios',dx_b:'Diccionario Bíblico',dx_h:'Diccionario Hebreo',dx_g:'Diccionario Griego',
+  dx_bd:'Personajes, lugares, acontecimientos, costumbres y conceptos de la Biblia.',dx_hd:'Las palabras originales del Antiguo Testamento.',dx_gd:'Las palabras originales del Nuevo Testamento.',
+  dx_bn:'{n} artículos',dx_wn:'{n} palabras',dx_fav:'Favoritos',dx_hist:'Historial',dx_hclr:'Borrar historial',dx_nofav:'Todavía no guardó favoritos. Abra una palabra y toque la estrella.',dx_nohist:'Sus búsquedas aparecerán aquí.',
+  dx_ph_b:'Buscar persona, lugar, tema…',dx_ph_h:'Palabra en español, portugués, hebreo o H7225',dx_ph_g:'Palabra en español, portugués, griego o G26',
+  dx_hint_b:'Busque por nombre (Moisés, Jerusalén), tema (gracia, pacto) o costumbre (Pascua, diezmo).',dx_hint_l:'Busque por palabra en español o portugués, por la palabra original o por el número de Strong.',
+  dx_load:'Cargando el diccionario…',dx_err:'No se pudo cargar. Revise la conexión.',dx_none:'Sin resultados.',dx_more:'Buscando también en inglés…',
+  dx_na:'No disponible en las fuentes.',dx_tr:'Traducción',dx_cat:'Categoría gramatical',dx_pron:'Pronunciación',dx_pron_n:'La sílaba tónica va en mayúsculas.',dx_pron_g:'El acento marca la sílaba tónica.',
+  dx_mean:'Significados',dx_mean_n:'Una misma palabra puede tener sentidos distintos según el pasaje. Lea el contexto de cada texto.',dx_ctx:'Cómo se traduce según el contexto',dx_ctx_n:'Veces que aparece con cada sentido en la Biblia.',
+  dx_root:'Raíz y formación',dx_strong:'Definición de Strong',dx_kjv:'Usos en la traducción',dx_hist_c:'Contexto histórico y cultural',dx_hist_na:'Las fuentes léxicas no traen contexto histórico para esta palabra.',
+  dx_refs:'Referencias bíblicas',dx_refs_n:'Aparece {n} veces.',dx_all:'Ver todas ({n})',dx_ex:'Ejemplos de uso',dx_ex_as:'traducida como «{s}»',dx_past:'Explicación pastoral',dx_past_n:'Escrita por Meu Púlpito a partir de los léxicos.',
+  dx_src:'Fuente',dx_auto:'Traducción automática del inglés. El texto original está abajo.',dx_auto_w:'Traduciendo…',dx_orig:'Ver texto original (inglés)',dx_off:'Sin conexión: se muestra el texto original en inglés.',
+  dx_def:'Definición',dx_name:'Significado del nombre',dx_other:'Otra fuente: Smith',dx_deep:'Textos para profundizar',dx_rel:'Relacionados',dx_lexw:'Palabras originales',
+  dx_ai:'Estudio guiado con IA',dx_ai_btn:'Explicar con IA',dx_ai_lbl:'Generado por IA a partir de las fuentes. Revíselo antes de usarlo.',dx_ai_need:'Para el estudio guiado con IA, agregue su clave en Configuración.',
+  dx_copy:'Copiar',dx_ins:'Insertar en el sermón',dx_ins_ok:'Insertado en el sermón',dx_faved:'Guardado en favoritos',dx_unfav:'Quitado de favoritos',dx_back:'Diccionarios',dx_x:'Quitar',
+  dx_v:'verbo',dx_n:'sustantivo',dx_a:'adjetivo',dx_adv:'adverbio',dx_prep:'preposición',dx_conj:'conjunción',dx_part:'partícula',dx_intj:'interjección',dx_pron_d:'pronombre demostrativo',dx_pron_p:'pronombre personal',dx_pron_r:'pronombre relativo',dx_pron_i:'pronombre interrogativo',dx_neg:'negación',dx_cond:'condicional',dx_art:'artículo',dx_num:'numeral',dx_pron_x:'pronombre',
+  dx_m:'masculino',dx_f:'femenino',dx_nt:'neutro',dx_np:'nombre propio',dx_per:'persona',dx_loc:'lugar',dx_grp:'pueblo o grupo',dx_lh:'hebreo',dx_la:'arameo',dx_lg:'griego',dx_x_times:'{n}×',
+  dx_preg:'Meu Púlpito',dx_lexsrc:'Léxico',dx_p_src:'Escrito por Meu Púlpito en español y portugués, con base en los léxicos hebreo y griego.'
+},pt:{
+  dx_t:'Dicionários',dx_ed:'Consultar dicionários',dx_b:'Dicionário Bíblico',dx_h:'Dicionário Hebraico',dx_g:'Dicionário Grego',
+  dx_bd:'Personagens, lugares, acontecimentos, costumes e conceitos da Bíblia.',dx_hd:'As palavras originais do Antigo Testamento.',dx_gd:'As palavras originais do Novo Testamento.',
+  dx_bn:'{n} artigos',dx_wn:'{n} palavras',dx_fav:'Favoritos',dx_hist:'Histórico',dx_hclr:'Apagar histórico',dx_nofav:'Você ainda não salvou favoritos. Abra uma palavra e toque na estrela.',dx_nohist:'Suas buscas vão aparecer aqui.',
+  dx_ph_b:'Buscar pessoa, lugar, tema…',dx_ph_h:'Palavra em português, espanhol, hebraico ou H7225',dx_ph_g:'Palavra em português, espanhol, grego ou G26',
+  dx_hint_b:'Busque por nome (Moisés, Jerusalém), tema (graça, aliança) ou costume (Páscoa, dízimo).',dx_hint_l:'Busque por palavra em português ou espanhol, pela palavra original ou pelo número de Strong.',
+  dx_load:'Carregando o dicionário…',dx_err:'Não foi possível carregar. Confira a conexão.',dx_none:'Nenhum resultado.',dx_more:'Buscando também em inglês…',
+  dx_na:'Não disponível nas fontes.',dx_tr:'Tradução',dx_cat:'Categoria gramatical',dx_pron:'Pronúncia',dx_pron_n:'A sílaba tônica está em maiúsculas.',dx_pron_g:'O acento marca a sílaba tônica.',
+  dx_mean:'Significados',dx_mean_n:'Uma mesma palavra pode ter sentidos diferentes conforme a passagem. Leia o contexto de cada texto.',dx_ctx:'Como é traduzida conforme o contexto',dx_ctx_n:'Vezes que aparece com cada sentido na Bíblia.',
+  dx_root:'Raiz e formação',dx_strong:'Definição de Strong',dx_kjv:'Usos na tradução',dx_hist_c:'Contexto histórico e cultural',dx_hist_na:'As fontes léxicas não trazem contexto histórico para esta palavra.',
+  dx_refs:'Referências bíblicas',dx_refs_n:'Aparece {n} vezes.',dx_all:'Ver todas ({n})',dx_ex:'Exemplos de uso',dx_ex_as:'traduzida como «{s}»',dx_past:'Explicação pastoral',dx_past_n:'Escrita pelo Meu Púlpito a partir dos léxicos.',
+  dx_src:'Fonte',dx_auto:'Tradução automática do inglês. O texto original está abaixo.',dx_auto_w:'Traduzindo…',dx_orig:'Ver texto original (inglês)',dx_off:'Sem conexão: aparece o texto original em inglês.',
+  dx_def:'Definição',dx_name:'Significado do nome',dx_other:'Outra fonte: Smith',dx_deep:'Textos para aprofundar',dx_rel:'Relacionados',dx_lexw:'Palavras originais',
+  dx_ai:'Estudo guiado com IA',dx_ai_btn:'Explicar com IA',dx_ai_lbl:'Gerado por IA a partir das fontes. Revise antes de usar.',dx_ai_need:'Para o estudo guiado com IA, coloque sua chave em Configurações.',
+  dx_copy:'Copiar',dx_ins:'Inserir no sermão',dx_ins_ok:'Inserido no sermão',dx_faved:'Salvo nos favoritos',dx_unfav:'Removido dos favoritos',dx_back:'Dicionários',dx_x:'Remover',
+  dx_v:'verbo',dx_n:'substantivo',dx_a:'adjetivo',dx_adv:'advérbio',dx_prep:'preposição',dx_conj:'conjunção',dx_part:'partícula',dx_intj:'interjeição',dx_pron_d:'pronome demonstrativo',dx_pron_p:'pronome pessoal',dx_pron_r:'pronome relativo',dx_pron_i:'pronome interrogativo',dx_neg:'negação',dx_cond:'condicional',dx_art:'artigo',dx_num:'numeral',dx_pron_x:'pronome',
+  dx_m:'masculino',dx_f:'feminino',dx_nt:'neutro',dx_np:'nome próprio',dx_per:'pessoa',dx_loc:'lugar',dx_grp:'povo ou grupo',dx_lh:'hebraico',dx_la:'aramaico',dx_lg:'grego',dx_x_times:'{n}×',
+  dx_preg:'Meu Púlpito',dx_lexsrc:'Léxico',dx_p_src:'Escrito pelo Meu Púlpito em português e espanhol, com base nos léxicos hebraico e grego.'
+}};
+Object.keys(DXT).forEach(l=>Object.assign(I18N[l],DXT[l]));
+
+const DX={k:null,view:'hub',q:{b:'',h:'',g:''},en:{},busy:false,err:{},ctx:null};
+const lxFile=k=>k==='h'?'he':'gr';
+const nWords=x=>' '+norm(x).replace(/[^a-z0-9]+/g,' ').trim()+' ';
+const LXI={},LXIP={},LXC={},LXCP={};
+function lxIdx(k){if(LXI[k])return Promise.resolve(LXI[k]);
+  if(!LXIP[k])LXIP[k]=fetch('biblia/lex/'+lxFile(k)+'-idx.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{d.by={};
+    d.ix=d.e.map(r=>{d.by[r[0]]=r;return{o:k==='h'?normH(r[1]):normG(r[1]),tr:norm(r[2]).replace(/[^a-z]/g,''),en:nWords(r[4]),es:nWords(r[5]),pt:nWords(r[6]),kw:nWords(r[8])}});return LXI[k]=d}).catch(e=>{LXIP[k]=null;throw e});
+  return LXIP[k]}
+function lxChunk(k,n){const c=lxFile(k)+'-'+Math.floor(n/500);if(LXC[c])return Promise.resolve(LXC[c]);
+  if(!LXCP[c])LXCP[c]=fetch('biblia/lex/'+c+'.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>LXC[c]=d).catch(e=>{LXCP[c]=null;throw e});return LXCP[c]}
+function lxSearch(k,q){const d=LXI[k];if(!d)return[];q=q.trim();if(!q)return[];
+  const m=q.match(/^[GHgh]?\s*0*(\d{1,4})[a-z]?$/);if(m){const r=d.by[+m[1]];return r?[r]:[]}
+  const out=[];const L=lxLang();
+  if(/[֐-׿Ͱ-Ͽἀ-῿]/.test(q)){const o=k==='h'?normH(q):normG(q);if(!o)return[];
+    d.ix.forEach((x,i)=>{if(x.o===o)out.push([i,9]);else if(o.length>1&&x.o.startsWith(o))out.push([i,5])})}
+  else{const qn=norm(q).replace(/[^a-z0-9]+/g,' ').trim();if(qn.length<2)return[];const en=DX.en[k+'|'+qn]||'';const tq=qn.replace(/ /g,'');
+    const W=(f,full,pre)=>f.includes(' '+qn+' ')?full:(qn.length>2&&f.includes(' '+qn))?pre:0;
+    d.ix.forEach((x,i)=>{let s=Math.max(W(L==='pt'?x.pt:x.es,9,5),W(L==='pt'?x.es:x.pt,8,4),W(x.kw,7,3),x.tr===tq?7:0,W(x.en,4,2));
+      if(en&&x.en.includes(' '+en+' '))s=Math.max(s,6);if(s)out.push([i,s])})}
+  const top=out.some(x=>x[1]>=6)?out.filter(x=>x[1]>=4):out;
+  return top.sort((a,b)=>b[1]-a[1]||d.e[b[0]][7]-d.e[a[0]][7]).slice(0,60).map(x=>d.e[x[0]])}
+/* categoría gramatical a partir del código de STEPBible */
+function lxCat(mo,L){if(!mo)return'';const c=mo.split('/')[0].trim();const [lang,code='']=c.split(':');const T=k=>t(k,null,L);
+  const lg={H:'dx_lh',A:'dx_la',G:'dx_lg'}[lang];const p=code.split('-');const b=p[0];
+  if(lang==='N'){const k=(p[2]||'');const what=k.startsWith('P')?T('dx_per'):k.startsWith('L')?T('dx_loc'):'';return T('dx_np')+(what?' · '+what:'')+(k.endsWith('G')?' ('+T('dx_grp')+')':'')+(p[1]==='M'?' · '+T('dx_m'):p[1]==='F'?' · '+T('dx_f'):'')}
+  const M={V:'dx_v',N:'dx_n',A:'dx_a',ADV:'dx_adv',Adv:'dx_adv',PREP:'dx_prep',Prep:'dx_prep',CONJ:'dx_conj',Conj:'dx_conj',PRT:'dx_part',Part:'dx_part',INJ:'dx_intj',Intj:'dx_intj',D:'dx_pron_d',DemP:'dx_pron_d',P:'dx_pron_p',PerP:'dx_pron_p',R:'dx_pron_r',RelP:'dx_pron_r',Q:'dx_pron_i',I:'dx_pron_i',Intg:'dx_pron_i',Neg:'dx_neg',COND:'dx_cond',Cond:'dx_cond',T:'dx_art',K:'dx_pron_x',S:'dx_pron_x',F:'dx_pron_x',C:'dx_pron_x',X:'dx_pron_x',IndP:'dx_pron_x'}[b];
+  if(!M)return lg?T(lg):'';let s=T(M);if(b==='PRT'&&p[1]==='N')s=T('dx_neg');if(b==='A'&&/NUI/.test(p[1]||''))s=T('dx_num');
+  const g=(p[1]||'').split('/')[0];if(b==='N'||b==='A'&&g.length===1){s+=g==='M'?' '+T('dx_m'):g==='F'?' '+T('dx_f'):g==='N'?' '+T('dx_nt'):''}
+  return s+(lg?' · '+T(lg):'')}
+/* pronunciación: sílabas de STEPBible con la tónica marcada por Strong */
+function lxPron(k,tr,spron){if(k==='g')return'';const sy=(tr||'').split('.').filter(Boolean);if(!sy.length)return'';
+  const sp=(spron||'').split(/[-\s]+/).filter(Boolean);const st=sp.findIndex(x=>x.includes("'"));
+  return sy.map((x,i)=>sp.length===sy.length&&i===st?x.toUpperCase():x).join('·')}
+const refStr=(r,L)=>easRefStr(r,L);
+function easRefStr(r,L){const m=String(r).match(/^(\d+)\.(\d+)\.(\d+)(?:-(\d+))?$/);if(!m)return'';const a=+m[3],z=m[4]?+m[4]:a;const vs=[];for(let v=a;v<=z&&vs.length<30;v++)vs.push(v);return refName(+m[1],+m[2],vs,L)}
+function refTags(refs,L,max=24){const s=refs.map(r=>refStr(r,L)).filter(Boolean);if(!s.length)return'';
+  const tag=x=>`<button class="tag eref" data-eref="${esc(x)}">${esc(x)}</button>`;
+  return`<div class="sd-es">${s.slice(0,max).map(tag).join('')}${s.length>max?`<button class="tag dx-all" data-dx="all">${esc(t('dx_all',{n:s.length}))}</button><span class="dx-rest" hidden>${s.slice(max).map(tag).join('')}</span>`:''}</div>`}
+/* Bíblico: Easton + Smith + Hitchcock (índice + un archivo por letra) */
+let BIX=null,BIXP=null;const BCH={},BCHP={};
+function bibIdx(){if(BIX)return Promise.resolve(BIX);
+  if(!BIXP)BIXP=Promise.all([fetch('biblia/bib/idx.json').then(r=>{if(!r.ok)throw 0;return r.json()}),fetch('biblia/bib/alias.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([d,a])=>{
+    d.al={};Object.entries(a).forEach(([k,v])=>d.al[norm(k).trim()]=v);d.nn=d.e.map(r=>nWords(r[0]));d.byName={};d.e.forEach((r,i)=>d.byName[r[0].toLowerCase()]=i);return BIX=d}).catch(e=>{BIXP=null;throw e});return BIXP}
+const bLetter=n=>{const c=norm(n).charAt(0);return c>='a'&&c<='z'?c:'0'};
+function bibChunk(name){const L=bLetter(name);if(BCH[L])return Promise.resolve(BCH[L]);if(!BCHP[L])BCHP[L]=fetch('biblia/bib/'+L+'.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>BCH[L]=d).catch(e=>{BCHP[L]=null;throw e});return BCHP[L]}
+function bibSearch(q){const d=BIX;if(!d)return[];const qn=norm(q).replace(/[^a-z0-9]+/g,' ').trim();if(qn.length<2)return[];
+  const terms=[qn,d.al[qn]?norm(d.al[qn]):'',DX.en['b|'+qn]||''].filter(Boolean).map(x=>x.replace(/[^a-z0-9]+/g,' ').trim()).filter(x=>x.length>1);
+  const out=[];d.nn.forEach((nm,i)=>{let sc=0;for(const tm of terms){if(nm===' '+tm+' ')sc=Math.max(sc,6);else if(nm.startsWith(' '+tm))sc=Math.max(sc,5);else if(tm.length>2&&nm.includes(' '+tm))sc=Math.max(sc,3)}if(sc)out.push([i,sc])});
+  return out.sort((a,b)=>b[1]-a[1]||d.e[b[0]][1]-d.e[a[0]][1]).slice(0,50).map(x=>x[0])}
+/* Diccionario del predicador (escrito en ES/PT): va primero en el Bíblico y aparece como explicación pastoral en hebreo/griego */
 let PREG=null,PREGP=null;
 function loadPreg(){if(PREG)return Promise.resolve(PREG);if(!PREGP)PREGP=fetch('biblia/dic-pregador.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
-    d.ix=d.e.map(e=>[[e[0],...e[6]].map(norm),[e[1],...e[7]].map(norm)]);return PREG=d}).catch(e=>{PREGP=null;throw e});return PREGP}
+    d.ix=d.e.map(e=>[[e[0],...e[6]].map(norm),[e[1],...e[7]].map(norm)]);d.byN={};d.e.forEach((e,i)=>e[4].forEach(o=>{(d.byN[o[0]]=d.byN[o[0]]||[]).push([i,o])}));return PREG=d}).catch(e=>{PREGP=null;throw e});return PREGP}
 function pregSearch(q){if(!PREG)return[];const qn=norm(q.trim());if(qn.length<2)return[];const out=[];
-  PREG.ix.forEach((ix,i)=>{const sc=ws=>Math.max(0,...ws.map(w=>w===qn?6:w.startsWith(qn)?5:(qn.length>2&&w.split(' ').some(x=>x.startsWith(qn)))?3:0));const a=sc(ix[0]),b=sc(ix[1]);
-    if(a||b)out.push([i,a>b?'pt':b>a?'es':lxLang(),Math.max(a,b)])});
-  return out.sort((x,y)=>y[2]-x[2]).slice(0,20)}
-function openPreg(i,L){const e=PREG.e[i];if(!e)return;const [wpt,wes,mpt,mes,o,vs]=e;const pt=L==='pt';
-  const sh=openSheet(`<div class="sd-head"><span class="sd-num">${esc(t('dic_preg',null,L))}</span><div class="seg sm" style="margin-left:auto"><button data-pl="pt" aria-pressed="${pt}">PT</button><button data-pl="es" aria-pressed="${!pt}">ES</button></div></div>
-    <h3 class="sd-name">${esc(pt?wpt:wes)}</h3>
-    <p class="sd-p">${esc(pt?mpt:mes)}</p>
-    <span class="lbl" style="margin-top:4px">${esc(t('dic_o',null,L))}</span>
-    ${o.map(([n,lem,tr,xpt,xes])=>`<div class="sd-box po"><div class="row" style="gap:10px;align-items:baseline;flex-wrap:wrap"><span class="sd-lemma sm" ${n[0]==='H'?'dir="rtl" lang="he"':'lang="grc"'}>${esc(lem)}</span><span class="sd-tr">${esc(n[0]==='H'?translitHe(lem):tr)}</span><button class="sd-num sm sref" data-sref="${n}" style="margin-left:auto">${n}</button></div><span class="sub" style="font-size:12px;font-weight:700">${esc(t(n[0]==='H'?'dict_he':'dict_gr',null,L))}</span><p class="sd-p" style="margin:0">${esc(pt?xpt:xes)}</p></div>`).join('')}
-    ${vs.length?`<div class="fld"><span class="lbl">${esc(t('dic_vs',null,L))}</span><div class="sd-es">${vs.map(r=>{const x=easRefStr(r,L);return x?`<button class="tag eref" data-eref="${esc(x)}">${esc(x)}</button>`:''}).join('')}</div></div>`:''}`);
-  sh.addEventListener('click',ev=>{const pl=ev.target.closest('[data-pl]');if(pl){closeSheet();openPreg(i,pl.dataset.pl);return}
-    const b=ev.target.closest('[data-eref]');if(b){compareRef(b.dataset.eref,null,L);return}
-    const r=ev.target.closest('[data-sref]');if(r){const k=r.dataset.sref[0]==='G'?'g':'h';openStrong(k,r.dataset.sref.slice(1))}})}
-/* Diccionario bíblico (Easton) */
-let EAS=null,EASP=null;
-function loadEaston(){if(EAS)return Promise.resolve(EAS);if(!EASP)EASP=Promise.all([fetch('biblia/dic-easton.json').then(r=>{if(!r.ok)throw 0;return r.json()}),fetch('biblia/dic-alias.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([d,a])=>{
-    d.al={};Object.entries(a).forEach(([k,v])=>d.al[norm(k)]=v);d.nn=d.e.map(r=>' '+norm(r[0]).replace(/[^a-z0-9 ]/g,' ')+' ');return EAS=d}).catch(e=>{EASP=null;throw e});return EASP}
-function easSearch(q,extra){const d=EAS;if(!d)return[];const qn=norm(q.trim());if(!qn)return[];
-  const terms=[qn,d.al[qn]?norm(d.al[qn]):'',extra?norm(extra):''].filter(Boolean).map(x=>x.replace(/[^a-z0-9 ]/g,' ').trim()).filter(x=>x.length>1);
-  const out=[];d.nn.forEach((nm,i)=>{let sc=0;for(const tm of terms){if(nm.trim()===tm)sc=Math.max(sc,6);else if(nm.startsWith(' '+tm))sc=Math.max(sc,5);else if(nm.includes(' '+tm))sc=Math.max(sc,3)}if(sc)out.push([i,sc])});
-  if(out.length<8){const tl=terms.filter(x=>x.length>3);if(tl.length)d.e.forEach((r,i)=>{if(out.some(o=>o[0]===i))return;const tx=norm(r[1]);if(tl.some(tm=>tx.includes(tm)))out.push([i,1])})}
-  return out.sort((a,b)=>b[1]-a[1]||d.e[b[0]][2].length-d.e[a[0]][2].length).slice(0,60)}
-function easRefStr(r,L){const m=r.match(/^(\d+)\.(\d+)\.(\d+)(?:-(\d+))?$/);if(!m)return'';const a=+m[3],z=m[4]?+m[4]:a;const vs=[];for(let v=a;v<=z&&vs.length<30;v++)vs.push(v);return refName(+m[1],+m[2],vs,L)}
-async function openEaston(i){let d;try{d=await loadEaston()}catch(e){toast(t('dict_err'));return}const [name,txt,refs]=d.e[i];const L=lxLang();const key='e'+i;
-  const head=txt.length>1800?txt.slice(0,1800).replace(/\s+\S*$/,'')+'…':txt;
-  const sh=openSheet(`<div class="sd-head"><span class="sd-num">${esc(t('dic_bib'))}</span></div>
-    <h3 class="sd-name" id="eaT">${esc(name)}</h3>
-    <div class="fld"><p class="sd-p" id="eaD" style="white-space:pre-line"><span class="sub">${esc(t('lx_wait'))}</span></p>${txt.length>1800?`<button class="lnk" id="eaMore" hidden>${esc(t('dic_rest'))}</button>`:''}</div>
-    ${refs.length?`<div class="fld"><span class="lbl">${esc(t('dic_refs'))}</span><div class="sd-es">${refs.map(r=>{const s=easRefStr(r,L);return s?`<button class="tag eref" data-eref="${esc(s)}">${esc(s)}</button>`:''}).join('')}</div></div>`:''}
-    <details class="sd-en"><summary>${esc(t('lx_en'))}</summary><p class="sd-p" style="white-space:pre-line">${esc(txt)}</p></details>
-    <p class="sub" id="eaNote" style="font-size:12px;margin:0" hidden></p>`);
-  sh.addEventListener('click',ev=>{const b=ev.target.closest('[data-eref]');if(b)compareRef(b.dataset.eref,null,L)});
-  const [tt,tx]=await Promise.all([lxGet(key+'t',name,L),lxGet(key,head,L)]);if(!sh.isConnected)return;
-  if(tt&&norm(tt)!==norm(name))$('#eaT',sh).innerHTML=`${esc(tt)} <span class="sub" style="font-size:15px;font-weight:600">· ${esc(name)}</span>`;
-  $('#eaD',sh).textContent=tx||head;const note=$('#eaNote',sh);note.textContent=t(tx?'lx_auto_b':'lx_off');note.hidden=false;
-  const mb=$('#eaMore',sh);if(mb&&tx){mb.hidden=false;mb.onclick=async()=>{mb.disabled=true;const rest=await lxGet(key+'r',txt.slice(head.length-1),L);if(rest){$('#eaD',sh).textContent=tx.replace(/…$/,'')+' '+rest;mb.remove()}else{mb.disabled=false;toast(t('dict_tr_err'))}}}}
-function dictSearch(q,extra){const out=[];const qq=q.trim();if(!qq)return out;
-  const m=qq.match(/^([GHgh])\s*0*(\d{1,4})$/);if(m){const k=m[1].toLowerCase();return STR[k]&&STR[k].d[m[2]]?[[k,m[2],3]]:[]}
-  const terms=[[norm(qq),1],[normG(qq),1],[normH(qq),1],[extra?norm(extra):'',0]].filter(x=>x[0]&&x[0].length>1);
-  [DQ.k].forEach(k=>{const d=STR[k];if(!d)return;
-    for(const [n,ix] of d.ix){let sc=0;for(const [tm,bo] of terms){if(ix.includes(' '+tm+' '))sc=Math.max(sc,3+bo);else if(ix.includes(tm))sc=Math.max(sc,1+bo)}if(sc)out.push([k,n,sc])}});
-  const top=out.some(x=>x[2]>=3)?out.filter(x=>x[2]>=3):out;const fq=(k,n)=>(STR[k].c&&STR[k].c[n])||0;
-  return top.sort((a,b)=>b[2]-a[2]||fq(b[0],b[1])-fq(a[0],a[1])).slice(0,60)}
-function dictHtml(){
-  const seg=`<div class="chips">${[['bib','dic_bib'],['g','dict_gr'],['h','dict_he']].map(([k,l])=>`<button class="chip" data-act="dK" data-k="${k}" aria-pressed="${DQ.k===k}">${esc(t(l))}</button>`).join('')}</div>`;
-  return`<label class="search">${ic('search')}<input id="dq" type="search" value="${esc(DQ.q)}" placeholder="${esc(t('lx_ph'))}" autocomplete="off" autocapitalize="off" data-input="dQ"></label>${seg}<div id="dRes" style="display:flex;flex-direction:column;gap:12px">${dictResHtml()}</div>
-   <p class="sub dsrc" style="font-size:11.5px;margin:0">${esc(t(DQ.k==='bib'?'dic_src_b':'dict_src'))}</p>`}
-function dictResHtml(){const bib=DQ.k==='bib';const ready=bib?!!PREG:!!STR[DQ.k];let body='';var miss;
-  if(!ready)body=`<div class="empty"><p style="margin:0">${esc(t(DQ.err?'dict_err':'dict_load'))}</p>${DQ.err?`<button class="btn dark" data-act="dRetry">${esc(t('go_on'))}</button>`:''}</div>`;
-  else if(!DQ.q.trim())body=`<p class="sub" style="margin:0;line-height:1.55">${esc(t(bib?'dic_hint_b':'dict_hint'))}</p>`;
-  else if(bib){const pr=pregSearch(DQ.q);const r=EAS?easSearch(DQ.q,pr.some(x=>x[2]>=5)?'':DQ.en):[];const L=lxLang(),C=lxCache(L);
-    const ph=pr.length?`<span class="lbl">${esc(t('dic_preg'))}</span><div class="res">${pr.map(([i,l])=>{const e=PREG.e[i];const pt=l==='pt';return`<button class="pres" data-act="pOpen" data-i="${i}" data-l="${l}"><b style="font-size:17px;letter-spacing:0;color:var(--fg);font-family:var(--read)">${esc(pt?e[0]:e[1])}</b><span>${e[4].map(x=>`<em>${esc(x[0][0]==='H'?translitHe(x[1]):x[2])}</em>`).join(' · ')}</span><span>${esc((pt?e[2]:e[3]).slice(0,110))}${(pt?e[2]:e[3]).length>110?'…':''}</span></button>`}).join('')}</div>`:'';
-    body=ph+(r.length?`<span class="lbl" style="margin-top:6px">${esc(t('dic_eas'))}</span><div class="res">${r.map(([i])=>{const e=EAS.e[i];const tt=C['e'+i+'t'];return`<button data-act="eOpen" data-i="${i}"><b style="font-size:15px;letter-spacing:0;color:var(--fg);font-family:var(--read)">${esc(tt&&norm(tt)!==norm(e[0])?tt+' · '+e[0]:e[0])}</b><span>${esc(t('dic_nref',{n:e[2].length}))}</span></button>`}).join('')}</div>`
-      :(ph?'':`<div class="empty"><p style="margin:0">${esc(DQ.busy||!EAS?t('dict_more'):t('b_none'))}</p></div>`));
-    if(!EAS)loadEaston().then(()=>{if(view.tab==='bible'&&BV.dict&&DQ.k==='bib')dictPaint()}).catch(()=>{})}
-  else{const r=dictSearch(DQ.q,DQ.en);
-    const L=lxLang(),B=LXB[L]||{},C=lxCache(L);miss=[];
-    body=r.length?`<div class="res">${r.map(([k,n],i)=>{const e=STR[k].d[n];const es=(STR[k].es[n]||[]).slice(0,3).join(', ');const loc=B[k+n]||C[k+n]||'';if(!loc&&i<6)miss.push([k,n,e[2]]);
-      return`<button data-act="dOpen" data-k="${k}" data-n="${n}"><b><span class="sd-num sm">${sRef(k,n)}</span> <span ${k==='h'?'dir="rtl" lang="he"':''} style="font-family:var(--read);font-size:17px">${esc(e[0])}</span> · ${esc(e[1])}</b><span>${es?`<em>${esc(es)}</em>${loc?' · ':''}`:''}${esc(loc.slice(0,140))}${!es&&!loc?`<span class="sub">${esc(t('lx_wait'))}</span>`:''}</span></button>`}).join('')}</div>`
-      :`<div class="empty"><p style="margin:0">${esc(DQ.busy?t('dict_more'):t('b_none'))}</p></div>`}
-  if(typeof miss!=='undefined'&&miss.length&&navigator.onLine){const q=DQ.q;clearTimeout(dictResHtml._t);dictResHtml._t=setTimeout(async()=>{let any=false;for(const [k,n,en] of miss){if(DQ.q!==q)return;const v=await lxGet(k+n,en,lxLang());if(v)any=true}if(any&&DQ.q===q)dictPaint()},50)}
-  return body}
-function dictPaint(){const el=$('#dRes');if(el)el.innerHTML=dictResHtml();else render()}
-function dictLoad(){track('dic');loadLxBuilt(lxLang());const k=DQ.k;if(k==='bib'?PREG:STR[k])return;(k==='bib'?loadPreg():Promise.all([loadStrong(k),loadLxBuilt(lxLang())])).then(()=>{DQ.err=false;if(view.tab==='bible'&&BV.dict)dictPaint()}).catch(()=>{DQ.err=true;if(view.tab==='bible'&&BV.dict)dictPaint()})}
-async function dictQuery(q){DQ.q=q;DQ.en='';dictPaint();const r=DQ.k==='bib'?easSearch(q):dictSearch(q);
-  const weak=DQ.k==='bib'?!r.some(x=>x[1]>=5)&&!pregSearch(q).some(x=>x[2]>=5):r.length<3;
-  if(q.trim().length>=3&&weak&&!/^[GHgh]\d/.test(q)&&!/[\u0370-\u03ff\u0590-\u05ff]/.test(q)&&navigator.onLine){DQ.busy=true;dictPaint();
-    try{const en=await toEnglish(q.trim(),prefs.ui==='pt'?'pt':'es');if(DQ.q===q)DQ.en=en}catch(e){}DQ.busy=false;if(DQ.q===q)dictPaint()}}
+  PREG.ix.forEach((ix,i)=>{const sc=ws=>Math.max(0,...ws.map(w=>w===qn?6:w.startsWith(qn)?5:(qn.length>2&&w.split(' ').some(x=>x.startsWith(qn)))?3:0));const s=Math.max(sc(ix[0]),sc(ix[1]));if(s)out.push([i,s])});
+  return out.sort((x,y)=>y[1]-x[1]).slice(0,12).map(x=>x[0])}
+
+/* ---------- favoritos e historial (en la cuenta: meta.dicFav / meta.dicHist) ---------- */
+const dxFavs=()=>Array.isArray(meta.dicFav)?meta.dicFav:(meta.dicFav=[]);
+const dxHists=()=>Array.isArray(meta.dicHist)?meta.dicHist:(meta.dicHist=[]);
+const dxIsFav=(k,id)=>dxFavs().some(f=>f.k===k&&String(f.id)===String(id));
+function dxFavToggle(it){const F=dxFavs();const i=F.findIndex(f=>f.k===it.k&&String(f.id)===String(it.id));if(i>=0){F.splice(i,1);toast(t('dx_unfav'))}else{F.unshift(Object.assign({at:Date.now()},it));if(F.length>300)F.length=300;toast(t('dx_faved'))}putMeta();return i<0}
+function dxHistAdd(k,q){q=String(q||'').trim();if(q.length<2)return;const H=dxHists();const i=H.findIndex(x=>x.k===k&&norm(x.q)===norm(q));if(i>=0)H.splice(i,1);H.unshift({k,q,at:Date.now()});if(H.length>60)H.length=60;putMeta()}
+
+/* ---------- pantalla ---------- */
+const DXK=[['b','dx_b','dx_bd'],['h','dx_h','dx_hd'],['g','dx_g','dx_gd']];
+const dxGlyph={b:ic('bible'),h:'<span lang="he">א</span>',g:'<span lang="grc">Ω</span>'};
+function dxHtml(){const inEd=DX.ctx==='ed';
+  if(DX.view==='dic'&&DX.k)return dxDicHtml(DX.k);
+  const head=inEd?`<div class="between"><h3>${esc(t('dx_ed'))}</h3><button class="iconbtn" data-dx="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>`:`<h1 class="h">${esc(t('dx_t'))}</h1>`;
+  if(DX.view==='fav'||DX.view==='hist')return head+dxListHtml(DX.view);
+  const F=dxFavs(),H=dxHists();
+  return`${head}<div class="dx-tiles">${DXK.map(([k,tl,d])=>`<button class="dx-tile" data-dx="go" data-k="${k}"><span class="dx-gl dx-gl-${k}">${dxGlyph[k]}</span><span class="dx-tt">${esc(t(tl))}</span><span class="dx-td">${esc(t(d))}</span><span class="dx-go">${ic('next')}</span></button>`).join('')}</div>
+   <div class="dx-two"><button class="dx-mini" data-dx="view" data-v="fav">${ic('star')}<span>${esc(t('dx_fav'))}</span><b>${F.length}</b></button><button class="dx-mini" data-dx="view" data-v="hist">${ic('undo')}<span>${esc(t('dx_hist'))}</span><b>${H.length}</b></button></div>
+   ${H.length?`<div class="sd-es">${H.slice(0,8).map((h,i)=>`<span class="dx-hc"><button data-dx="hq" data-i="${i}"><small>${esc(h.k==='b'?'B':h.k==='h'?'H':'G')}</small>${esc(h.q)}</button><button data-dx="hdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('x')}</button></span>`).join('')}</div>`:''}`}
+function dxListHtml(v){const L=dxHists(),F=dxFavs();const back=`<button class="lnk dx-back" data-dx="hub">${ic('back')}${esc(t('dx_back'))}</button>`;
+  if(v==='fav')return back+`<h2 class="dx-h2">${esc(t('dx_fav'))}</h2>`+(F.length?`<div class="res">${F.map((f,i)=>`<div class="dx-row"><button data-dx="open" data-k="${f.k}" data-id="${esc(f.id)}"><b>${esc(t(f.k==='h'?'dx_h':f.k==='g'?'dx_g':'dx_b'))}</b><span ${f.k==='h'?'':''}>${esc(f.t)}</span>${f.s?`<small>${esc(f.s)}</small>`:''}</button><button class="iconbtn" data-dx="fdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('trash')}</button></div>`).join('')}</div>`:`<div class="empty"><p style="margin:0">${esc(t('dx_nofav'))}</p></div>`);
+  return back+`<div class="between"><h2 class="dx-h2">${esc(t('dx_hist'))}</h2>${L.length?`<button class="lnk" data-dx="hclr">${esc(t('dx_hclr'))}</button>`:''}</div>`+(L.length?`<div class="res">${L.map((h,i)=>`<div class="dx-row"><button data-dx="hq" data-i="${i}"><b>${esc(t(h.k==='h'?'dx_h':h.k==='g'?'dx_g':'dx_b'))}</b><span>${esc(h.q)}</span><small>${esc(relDate(h.at))}</small></button><button class="iconbtn" data-dx="hdel" data-i="${i}" aria-label="${esc(t('dx_x'))}">${ic('x')}</button></div>`).join('')}</div>`:`<div class="empty"><p style="margin:0">${esc(t('dx_nohist'))}</p></div>`)}
+function dxDicHtml(k){const tl=k==='b'?'dx_b':k==='h'?'dx_h':'dx_g';
+  return`<button class="lnk dx-back" data-dx="hub">${ic('back')}${esc(t('dx_back'))}</button>
+   <div class="row"><span class="dx-gl dx-gl-${k} sm">${dxGlyph[k]}</span><h2 class="dx-h2" style="flex:1">${esc(t(tl))}</h2></div>
+   <label class="search">${ic('search')}<input class="dx-q" type="search" value="${esc(DX.q[k])}" placeholder="${esc(t('dx_ph_'+k))}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
+   <div class="dx-res">${dxResHtml(k)}</div>
+   <p class="sub dx-srcl">${esc(t('dx_src'))}: ${esc(k==='b'?"Easton (1897), Smith (1863), Hitchcock (1869) · Meu Púlpito":'STEPBible.org (Tyndale House, CC BY 4.0) · Strong')}</p>`}
+function dxLoad(k){const p=k==='b'?Promise.all([bibIdx(),loadPreg()]):Promise.all([lxIdx(k),loadPreg()]);
+  return p.then(()=>{DX.err[k]=false},()=>{DX.err[k]=true})}
+function dxResHtml(k){const ready=k==='b'?!!BIX:!!LXI[k];const q=DX.q[k];const L=lxLang();
+  if(!ready)return`<div class="empty"><p style="margin:0">${esc(t(DX.err[k]?'dx_err':'dx_load'))}</p>${DX.err[k]?`<button class="btn dark" data-dx="retry">${esc(t('go_on'))}</button>`:''}</div>`;
+  if(!q.trim()){const H=dxHists().filter(h=>h.k===k).slice(0,8);return`<p class="sub" style="margin:0;line-height:1.55">${esc(t(k==='b'?'dx_hint_b':'dx_hint_l'))}</p>${H.length?`<div class="sd-es">${H.map(h=>`<span class="dx-hc"><button data-dx="hq" data-i="${dxHists().indexOf(h)}">${esc(h.q)}</button></span>`).join('')}</div>`:''}`}
+  if(k==='b'){const pr=pregSearch(q);const r=bibSearch(q);const C=lxCache(L);
+    const ph=pr.map(i=>{const e=PREG.e[i];const pt=L==='pt';const m=pt?e[2]:e[3];return`<button data-dx="open" data-k="p" data-id="${i}"><b>${esc(t('dx_preg'))}</b><span class="dx-ti">${esc(pt?e[0]:e[1])}</span><span>${esc(m.length>120?m.slice(0,120).replace(/\s+\S*$/,'')+'…':m)}</span></button>`}).join('');
+    const qn=norm(q).replace(/[^a-z0-9]+/g,' ').trim();const viaAl=BIX.al[qn]?BIX.al[qn].toLowerCase():'';
+    const bh=r.map(i=>{const e=BIX.e[i];const tt=C['bt'+e[0]]||(viaAl===e[0].toLowerCase()?q.trim().replace(/^./,c=>c.toUpperCase()):'');const nm=e[2]?(C['bn'+e[0]]||''):'';return`<button data-dx="open" data-k="b" data-id="${esc(e[0])}"><span class="dx-ti">${esc(tt&&norm(tt)!==norm(e[0])?tt:e[0])}${tt&&norm(tt)!==norm(e[0])?` <small>· ${esc(e[0])}</small>`:''}</span>${nm?`<span><em>${esc(nm)}</em></span>`:''}${e[1]?`<small>${esc(t('dic_nref',{n:e[1]}))}</small>`:''}</button>`}).join('');
+    if(!ph&&!bh)return`<div class="empty"><p style="margin:0">${esc(DX.busy?t('dx_more'):t('dx_none'))}</p></div>`;
+    return`<div class="res">${ph}${bh}</div>`}
+  const r=lxSearch(k,q);if(!r.length)return`<div class="empty"><p style="margin:0">${esc(DX.busy?t('dx_more'):t('dx_none'))}</p></div>`;
+  return`<div class="res">${r.map(e=>{const g=(L==='pt'?e[6]:e[5])||'';return`<button data-dx="open" data-k="${k}" data-id="${e[0]}"><b><span class="sd-num sm">${k==='h'?'H':'G'}${e[0]}</span> ${esc(lxCat(e[3],L))}</b><span class="dx-lrow"><span class="dx-lem" ${k==='h'?'dir="rtl" lang="he"':'lang="grc"'}>${esc(e[1])}</span><span class="dx-trl">${esc(e[2].replace(/\./g,''))}</span></span><span>${g?esc(g):`<span class="sub">${esc(e[4])} (en)</span>`}${e[7]?` <small>· ${esc(t('dx_x_times',{n:e[7]}))}</small>`:''}</span></button>`}).join('')}</div>`}
+async function dxQuery(host,k,q){DX.q[k]=q;DX.busy=false;const paint=()=>{const el=$('.dx-res',host);if(el)el.innerHTML=dxResHtml(k)};paint();
+  const qq=q.trim();if(qq.length<3||/^[GHgh]?\s*\d/.test(qq)||/[Ͱ-Ͽ֐-׿ἀ-῿]/.test(qq)||!navigator.onLine)return;
+  const qn=norm(qq).replace(/[^a-z0-9]+/g,' ').trim();if(DX.en[k+'|'+qn]!==undefined)return;
+  const weak=k==='b'?!bibSearch(qq).length&&!pregSearch(qq).length:lxSearch(k,qq).length<3;if(!weak)return;
+  DX.busy=true;paint();try{const en=await toEnglish(qq,lxLang());DX.en[k+'|'+qn]=norm(en).replace(/[^a-z0-9]+/g,' ').trim()}catch(e){DX.en[k+'|'+qn]=''}DX.busy=false;if(DX.q[k]===q)paint()}
+function dxMount(host){host.innerHTML=dxHtml();
+  if(DX.view==='dic'&&DX.k){const k=DX.k;const ready=k==='b'?BIX:LXI[k];if(!ready)dxLoad(k).then(()=>{if(host.isConnected&&DX.k===k){const el=$('.dx-res',host);if(el)el.innerHTML=dxResHtml(k)}})}
+  if(host._dx)return;host._dx=1;
+  host.addEventListener('input',e=>{const i=e.target.closest('.dx-q');if(!i)return;const k=DX.k,v=i.value;clearTimeout(i._t);i._t=setTimeout(()=>dxQuery(host,k,v),280)});
+  host.addEventListener('keydown',e=>{const i=e.target.closest('.dx-q');if(i&&e.key==='Enter'){e.preventDefault();i.blur()}});
+  host.addEventListener('click',e=>{const b=e.target.closest('[data-dx]');if(!b||!host.contains(b))return;e.preventDefault();const a=b.dataset.dx;
+    if(a==='go'){DX.k=b.dataset.k;DX.view='dic';track('dic');dxMount(host);const i=$('.dx-q',host);if(i&&!('ontouchstart' in window))i.focus()}
+    else if(a==='hub'){DX.view='hub';dxMount(host)}
+    else if(a==='view'){DX.view=b.dataset.v;dxMount(host)}
+    else if(a==='close'){closeSheet()}
+    else if(a==='retry'){DX.err[DX.k]=false;dxMount(host)}
+    else if(a==='open'){const k=b.dataset.k;if(DX.view==='dic'&&DX.k&&DX.q[DX.k])dxHistAdd(DX.k,DX.q[DX.k]);dxOpen(k,b.dataset.id)}
+    else if(a==='hq'){const h=dxHists()[+b.dataset.i];if(!h)return;DX.k=h.k;DX.view='dic';DX.q[h.k]=h.q;dxMount(host);dxQuery(host,h.k,h.q)}
+    else if(a==='hdel'){dxHists().splice(+b.dataset.i,1);putMeta();dxMount(host)}
+    else if(a==='hclr'){meta.dicHist=[];putMeta();dxMount(host)}
+    else if(a==='fdel'){dxFavs().splice(+b.dataset.i,1);putMeta();dxMount(host)}})}
+function dxTabHtml(){return`<div id="dxHost" class="dx-host"></div>`}
+function dxAfter(){const h=$('#dxHost');if(h){DX.ctx=null;dxMount(h)}}
+/* desde el editor: el sermón queda abierto debajo */
+function dxEditor(){if(!E)return;edSave();trackRange();DX.ctx='ed';
+  const sh=openSheet(`<div class="dx-host"></div>`,{cls:'tall',onClose:()=>{DX.ctx=null}});dxMount($('.dx-host',sh))}
+
+/* ---------- abrir una entrada ---------- */
+function dxSec(title,body,cls=''){return`<section class="dx-sec ${cls}"><h4>${esc(title)}</h4>${body}</section>`}
+const dxNA=(m)=>`<p class="dx-na">${esc(m||t('dx_na'))}</p>`;
+function dxSheet(html){return openSheet(`<div class="dx-entry">${html}</div>`,{cls:'tall'})}
+function dxActs(fav){return`<div class="dx-acts"><button class="btn sm ghost" data-x="copy">${ic('copy')}${esc(t('dx_copy'))}</button><button class="btn sm ghost dx-fav" data-x="fav" aria-pressed="${fav}">${ic('star')}${esc(t('dx_fav'))}</button>${DX.ctx==='ed'&&E?`<button class="btn sm gold" data-x="ins">${ic('plus')}${esc(t('dx_ins'))}</button>`:''}</div>`}
+/* traduce un texto largo del inglés y lo pinta; el original queda disponible */
+async function dxTrInto(sh,sel,key,en,L){const el=$(sel,sh);if(!el||!en)return'';const v=await lxGet(key,en,L);if(!sh.isConnected)return'';
+  el.textContent=v||en;const n=el.parentNode.querySelector('.dx-note');if(n){n.textContent=t(v?'dx_auto':'dx_off');n.hidden=false}return v||en}
+function dxWire(sh,o){sh.addEventListener('click',ev=>{const b=ev.target.closest('[data-eref]');if(b){compareRef(b.dataset.eref,null,lxLang());return}
+  const s=ev.target.closest('[data-sref]');if(s){const r=s.dataset.sref;dxOpen(r[0]==='G'?'g':'h',r.slice(1));return}
+  const al=ev.target.closest('[data-dx="all"]');if(al){const r=al.nextElementSibling;if(r){r.hidden=false;r.replaceWith(...r.childNodes)}al.remove();return}
+  const rel=ev.target.closest('[data-rel]');if(rel){dxOpen(rel.dataset.k,rel.dataset.rel);return}
+  const x=ev.target.closest('[data-x]');if(!x)return;const a=x.dataset.x;
+  if(a==='close'){closeSheet();return}
+  if(a==='copy'){copyText(o.text()).then(()=>toast(t('copied')))}
+  else if(a==='fav'){const on=dxFavToggle(o.fav);x.setAttribute('aria-pressed',String(on))}
+  else if(a==='ins'){const html=o.html();while($('.ov'))closeSheet();DX.ctx=null;insertHtmlAfterCaret(html);toast(t('dx_ins_ok'))}
+  else if(a==='ai'){o.ai&&o.ai(x)}})}
+function dxOpen(k,id){if(k==='p')return dxOpenPreg(+id);if(k==='b')return dxOpenBib(id);return dxOpenLex(k,+id)}
+
+async function dxOpenLex(k,n){const L=lxLang();let d,ch;try{[d,ch]=await Promise.all([lxIdx(k),lxChunk(k,n)])}catch(e){toast(t('dx_err'));return}
+  const e=d.by[n];if(!e){toast(t('dict_nf'));return}const x=ch[n]||{me:'',s:[],r:[],rn:0,mr:[]};
+  let S=null;try{S=(await loadStrong(k)).d[n]||null}catch(err){}
+  let P=[];try{P=((await loadPreg()).byN[(k==='h'?'H':'G')+n]||[])}catch(err){}
+  const [num,lem,tr,mo,gEN,gES,gPT,cnt]=e;const g=L==='pt'?gPT:gES;const id=(k==='h'?'H':'G')+num;const he=k==='h';
+  const pron=he?lxPron(k,tr,S&&S[5]):(S&&S[1])||'';
+  const cat=lxCat(mo,L);
+  const senses=x.s||[];const sl=s=>L==='pt'?s[2]:s[1];
+  const ex=senses.filter(s=>s[4]&&s[4].length).slice(0,3);
+  const sh=dxSheet(`<div class="sd-head"><span class="sd-num">${id}</span><span class="sub">${esc(t(he?'dx_h':'dx_g'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+    <div class="sd-lemma" ${he?'dir="rtl" lang="he"':'lang="grc"'}>${esc(lem)}</div>
+    <div class="sd-tr">${esc(tr.replace(/\./g,''))}${S&&S[1]&&norm(S[1])!==norm(tr.replace(/\./g,''))?` <span class="sub">· ${esc(S[1])}</span>`:''}</div>
+    ${dxActs(dxIsFav(k,num))}
+    ${dxSec(t('dx_tr'),g?`<p class="dx-big">${esc(g)}</p>`:dxNA()+`<p class="sub" style="margin:0">${esc(gEN)} (en)</p>`)}
+    <div class="dx-grid">${dxSec(t('dx_cat'),cat?`<p class="sd-p">${esc(cat)}</p>`:dxNA())}${dxSec(t('dx_pron'),pron?`<p class="sd-p dx-pr">${esc(pron)}</p>${!he||/[A-Z]/.test(pron)?`<p class="dx-sm">${esc(t(he?'dx_pron_n':'dx_pron_g'))}</p>`:''}`:dxNA())}</div>
+    ${P.length?dxSec(t('dx_past'),P.map(([i,o])=>`<div class="sd-box"><span class="lbl">${esc(L==='pt'?PREG.e[i][0]:PREG.e[i][1])}</span><p class="sd-p" style="margin:0">${esc(L==='pt'?o[3]:o[4])}</p></div>`).join('')+`<p class="dx-sm">${esc(t('dx_past_n'))}</p>`):''}
+    ${dxSec(t('dx_mean'),x.me?`<p class="sd-p dx-pre" id="dxMe"><span class="sub">${esc(t('dx_auto_w'))}</span></p><p class="dx-sm dx-note" hidden></p><details class="sd-en"><summary>${esc(t('dx_orig'))}</summary><p class="sd-p dx-pre">${esc(x.me)}</p></details><p class="dx-sm">${esc(t('dx_mean_n'))}</p>`:dxNA())}
+    ${dxSec(t('dx_ctx'),senses.length?`<div class="dx-senses" id="dxSn">${senses.map((s,i)=>`<div class="dx-sn"><span class="dx-snw" data-i="${i}">${esc(sl(s)||s[0])}</span><span class="dx-snc">${s[3]}×</span>${s[4].length?`<span class="dx-snr">${s[4].slice(0,3).map(r=>{const z=refStr(r,L);return z?`<button class="tag eref" data-eref="${esc(z)}">${esc(z)}</button>`:''}).join('')}</span>`:''}</div>`).join('')}</div><p class="dx-sm dx-snn">${esc(t('dx_ctx_n'))}</p>`:dxNA())}
+    ${dxSec(t('dx_root'),S&&S[4]?`<p class="sd-p">${strongLinks(derLocal(S[4],L))}</p>`:dxNA())}
+    ${S?dxSec(t('dx_strong'),`<p class="sd-p" id="dxSd">${esc(S[2])}</p>${S[3]?`<span class="lbl">${esc(t('dx_kjv'))}</span><p class="sd-p" id="dxSk">${esc(S[3])}</p>`:''}<p class="dx-sm dx-note" hidden></p>`):''}
+    ${dxSec(t('dx_hist_c'),`<div id="dxAi">${dxNA(t('dx_hist_na'))}${aiKey()?`<button class="btn sm ghost" data-x="ai">${ic('spark')}${esc(t('dx_ai_btn'))}</button>`:`<p class="dx-sm">${esc(t('dx_ai_need'))}</p>`}</div>`)}
+    ${dxSec(t('dx_ex'),ex.length?`<div class="dx-ex" id="dxEx">${ex.map(s=>{const z=refStr(s[4][0],L);return`<div class="dx-exi"><button class="tag eref" data-eref="${esc(z)}">${esc(z)}</button><span class="dx-sm">${esc(t('dx_ex_as',{s:sl(s)||s[0]}))}</span><p class="sd-p dx-ext" data-ref="${esc(z)}">…</p></div>`}).join('')}</div>`:dxNA())}
+    ${dxSec(t('dx_refs'),x.r&&x.r.length?`<p class="dx-sm" style="margin-top:0">${esc(t('dx_refs_n',{n:cnt}))}</p>`+refTags(x.r,L):dxNA())}
+    <p class="dx-src">${esc(t('dx_src'))}: ${esc(d.src)}${S?' · Strong (Open Scriptures, CC BY-SA)':''}</p>`);
+  const txt=()=>{const p=[`${lem} (${tr.replace(/\./g,'')}) · ${id}`];if(g)p.push(`${t('dx_tr')}: ${g}`);if(cat)p.push(`${t('dx_cat')}: ${cat}`);const me=$('#dxMe',sh);if(me)p.push(`${t('dx_mean')}: ${me.textContent}`);
+    const sn=$$('.dx-snw',sh).map((w,i)=>`${w.textContent} (${senses[i][3]}×)`);if(sn.length)p.push(`${t('dx_ctx')}: ${sn.join('; ')}`);p.push(`${t('dx_src')}: STEPBible.org`);return p.join('\n')};
+  dxWire(sh,{fav:{k,id:num,t:`${lem} · ${tr.replace(/\./g,'')}`,s:`${id}${g?' · '+g:''}`},text:txt,
+    html:()=>{const sn=$$('.dx-snw',sh).slice(0,5).map((w,i)=>`${w.textContent} (${senses[i][3]}×)`);
+      return`<p><b>${esc(lem)}</b> <i>(${esc(tr.replace(/\./g,''))}, ${id})</i>${g?` — ${esc(g)}`:''}${cat?`, ${esc(cat)}`:''}.${sn.length?` ${esc(t('dx_ctx'))}: ${esc(sn.join('; '))}.`:''}</p>`},
+    ai:async btn=>{const box=$('#dxAi',sh);btn.disabled=true;btn.innerHTML=`${ic('spark')}${esc(t('ai_thinking'))}`;
+      const facts=`Palabra: ${lem} (${tr}), Strong ${id}. Glosa: ${gEN}${g?' / '+g:''}. Categoría: ${mo}.\nLéxico (inglés):\n${x.me.slice(0,1800)}\nTraducciones según contexto: ${senses.slice(0,8).map(s=>s[0]+' ×'+s[3]).join('; ')}`;
+      const sys=L==='pt'?'Você ajuda pastores a estudar palavras bíblicas. Escreva em português do Brasil, texto simples, no máximo 170 palavras. Use SOMENTE os dados fornecidos e conhecimento histórico amplamente aceito. NÃO invente significados, raízes, pronúncias, números de Strong, referências bíblicas nem datas. Não cite referências bíblicas. Se os dados não bastarem, diga isso claramente.':'Ayudas a pastores a estudiar palabras bíblicas. Escribe en español, texto simple, máximo 170 palabras. Usa SOLO los datos dados y conocimiento histórico ampliamente aceptado. NO inventes significados, raíces, pronunciaciones, números de Strong, referencias bíblicas ni fechas. No cites referencias bíblicas. Si los datos no alcanzan, dilo claramente.';
+      try{const r=await aiCall(sys,(L==='pt'?'Explique o contexto histórico e cultural desta palavra e o que isso ajuda a entender na pregação.\n\n':'Explica el contexto histórico y cultural de esta palabra y qué ayuda a entender en la predicación.\n\n')+facts,700);
+        if(!sh.isConnected)return;box.innerHTML=`<p class="dx-ailbl">${ic('spark')}${esc(t('dx_ai_lbl'))}</p><p class="sd-p dx-pre">${esc(r.replace(/\*\*/g,''))}</p>`}catch(err){btn.disabled=false;btn.innerHTML=`${ic('spark')}${esc(t('dx_ai_btn'))}`;toast(aiErr(err))}}});
+  // ejemplos con el texto de la Biblia del usuario
+  if(ex.length)loadBible(L).then(()=>{$$('.dx-ext',sh).forEach(p=>{p.textContent=bibleText(p.dataset.ref,L)||''})}).catch(()=>{});
+  // significados y definición de Strong en el idioma del app
+  if(x.me)dxTrInto(sh,'#dxMe','x'+id,x.me,L);
+  if(S){Promise.all([lxGet(k+n,S[2],L),S[3]?lxGet(k+n+'k',S[3],L):Promise.resolve('')]).then(([a,c])=>{if(!sh.isConnected)return;if(a)$('#dxSd',sh).textContent=a;if(c&&$('#dxSk',sh))$('#dxSk',sh).textContent=c;const nt=$('#dxSd',sh).parentNode.querySelector('.dx-note');if(nt){nt.textContent=t(a?'dx_auto':'dx_off');nt.hidden=false}})}
+  // sentidos sin traducción preparada: una sola traducción automática
+  const miss=senses.map((s,i)=>[i,s]).filter(([,s])=>!sl(s));
+  if(miss.length&&navigator.onLine){const src=miss.map(([,s])=>s[0]).join(' | ');const v=await lxGet('s'+id,src,L).catch(()=>null);if(!sh.isConnected)return;
+    const parts=v?v.split('|').map(z=>z.trim()):[];if(parts.length===miss.length){miss.forEach(([i],j)=>{const w=$(`.dx-snw[data-i="${i}"]`,sh);if(w){w.textContent=parts[j];w.title=senses[i][0]}});const nn=$('.dx-snn',sh);if(nn)nn.textContent=t('dx_ctx_n')+' '+t('lx_auto')}}}
+
+async function dxOpenBib(name){const L=lxLang();let d,ch;try{d=await bibIdx();ch=await bibChunk(name)}catch(e){toast(t('dx_err'));return}
+  const i=d.byName[String(name).toLowerCase()];const e=i!=null?d.e[i]:[name,0,'',0,0];const [eas,smi,refs]=ch[e[0]]||['','',[]];
+  const main=eas||smi;const other=eas&&smi?smi:'';
+  // relacionados: "See X" dentro del artículo y palabras originales del predicador
+  const rel=[...new Set([...(main+' '+other).matchAll(/\b[Ss]ee\s+([A-Z][A-Za-z'\- ]{2,30}?)(?=[.,;:)]|\s+and\b|$)/g)].map(m=>m[1].trim()))].filter(x=>d.byName[x.toLowerCase()]!=null&&x.toLowerCase()!==e[0].toLowerCase()).slice(0,10);
+  const head=main.length>2200?main.slice(0,2200).replace(/\s+\S*$/,'')+'…':main;const deep=refs.slice(0,3);
+  const sh=dxSheet(`<div class="sd-head"><span class="sd-num">${esc(t('dx_b'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+    <h3 class="sd-name" id="dxT">${esc(e[0])}</h3>
+    ${dxActs(dxIsFav('b',e[0]))}
+    ${e[2]?dxSec(t('dx_name'),`<p class="sd-p"><em id="dxNm">${esc(e[2])}</em></p><p class="dx-sm">Hitchcock (1869)</p>`):''}
+    ${dxSec(t('dx_def'),main?`<p class="sd-p dx-pre" id="dxD"><span class="sub">${esc(t('dx_auto_w'))}</span></p>${main.length>2200?`<button class="lnk" id="dxMore" hidden>${esc(t('dic_rest'))}</button>`:''}<p class="dx-sm dx-note" hidden></p><details class="sd-en"><summary>${esc(t('dx_orig'))}</summary><p class="sd-p dx-pre">${esc(main)}</p></details><p class="dx-sm">${esc(eas?"Easton's Bible Dictionary (1897)":"Smith's Bible Dictionary (1863)")}</p>`:dxNA())}
+    ${other?`<details class="dx-sec dx-oth"><summary><h4>${esc(t('dx_other'))}</h4></summary><p class="sd-p dx-pre" id="dxO">${esc(other)}</p><button class="lnk" id="dxOt">${esc(t('dx_tr'))}</button></details>`:''}
+    ${dxSec(t('dx_ai'),`<div id="dxAi">${aiKey()?`<p class="dx-sm" style="margin-top:0">${esc(t('dx_hist_c'))} · ${esc(L==='pt'?'contexto bíblico · importância espiritual':'contexto bíblico · importancia espiritual')}</p><button class="btn sm ghost" data-x="ai">${ic('spark')}${esc(t('dx_ai_btn'))}</button>`:`<p class="dx-sm" style="margin:0">${esc(t('dx_ai_need'))}</p>`}</div>`)}
+    ${deep.length?dxSec(t('dx_deep'),`<div class="dx-ex">${deep.map(r=>{const z=refStr(r,L);return z?`<div class="dx-exi"><button class="tag eref" data-eref="${esc(z)}">${esc(z)}</button><p class="sd-p dx-ext" data-ref="${esc(z)}">…</p></div>`:''}).join('')}</div>`):''}
+    ${dxSec(t('dx_refs'),refs.length?refTags(refs,L):dxNA())}
+    ${rel.length?dxSec(t('dx_rel'),`<div class="sd-es">${rel.map(r=>`<button class="tag eref" data-rel="${esc(r)}" data-k="b">${esc(r)}</button>`).join('')}</div>`):''}
+    <p class="dx-src">${esc(t('dx_src'))}: ${esc(d.src)}</p>`);
+  const tx={v:''};
+  dxWire(sh,{fav:{k:'b',id:e[0],t:e[0],s:''},text:()=>`${$('#dxT',sh).textContent}\n${$('#dxD',sh)?$('#dxD',sh).textContent:''}\n${t('dx_src')}: ${eas?'Easton':'Smith'}`,
+    html:()=>{const m=($('#dxD',sh)||{}).textContent||'';const s=m.length>600?m.slice(0,600).replace(/\s+\S*$/,'')+'…':m;return`<p><b>${esc($('#dxT',sh).textContent)}</b>: ${esc(s.replace(/\n/g,' '))}</p>`},
+    ai:async btn=>{const box=$('#dxAi',sh);btn.disabled=true;btn.innerHTML=`${ic('spark')}${esc(t('ai_thinking'))}`;
+      const sys=L==='pt'?'Você ajuda pastores a estudar a Bíblia. Escreva em português do Brasil, texto simples, com três títulos exatamente assim: "# Contexto histórico e cultural", "# Contexto bíblico", "# Importância espiritual". No máximo 260 palavras. Baseie-se SOMENTE no artigo fornecido. NÃO invente datas, nomes, referências nem dados históricos. Não cite referências bíblicas. Se o artigo não trouxer algo, escreva "Não disponível no artigo."':'Ayudas a pastores a estudiar la Biblia. Escribe en español, texto simple, con tres títulos exactamente así: "# Contexto histórico y cultural", "# Contexto bíblico", "# Importancia espiritual". Máximo 260 palabras. Básate SOLO en el artículo dado. NO inventes fechas, nombres, referencias ni datos históricos. No cites referencias bíblicas. Si el artículo no trae algo, escribe "No disponible en el artículo."';
+      try{const r=await aiCall(sys,`${e[0]}\n\n${(main+'\n\n'+other).slice(0,5000)}`,900);if(!sh.isConnected)return;
+        box.innerHTML=`<p class="dx-ailbl">${ic('spark')}${esc(t('dx_ai_lbl'))}</p>`+r.replace(/\*\*/g,'').split('\n').filter(z=>z.trim()).map(z=>/^#\s*/.test(z)?`<h5>${esc(z.replace(/^#\s*/,''))}</h5>`:`<p class="sd-p">${esc(z)}</p>`).join('')}catch(err){btn.disabled=false;btn.innerHTML=`${ic('spark')}${esc(t('dx_ai_btn'))}`;toast(aiErr(err))}}});
+  if(deep.length)loadBible(L).then(()=>$$('.dx-ext',sh).forEach(p=>{p.textContent=bibleText(p.dataset.ref,L)||''})).catch(()=>{});
+  const ot=$('#dxOt',sh);if(ot)ot.onclick=async()=>{ot.disabled=true;const v=await lxGet('bs'+e[0],other.slice(0,2500),L);if(v){$('#dxO',sh).textContent=v;ot.textContent=t('lx_auto')}else{ot.disabled=false;toast(t('dict_tr_err'))}};
+  const [tt,nm]=await Promise.all([lxGet('bt'+e[0],e[0],L),e[2]?lxGet('bn'+e[0],e[2],L):Promise.resolve('')]);if(!sh.isConnected)return;
+  if(tt&&norm(tt)!==norm(e[0]))$('#dxT',sh).innerHTML=`${esc(tt)} <span class="sub" style="font-size:15px;font-weight:600">· ${esc(e[0])}</span>`;if(nm&&$('#dxNm',sh))$('#dxNm',sh).textContent=nm;
+  if(main){const v=await dxTrInto(sh,'#dxD','b'+e[0],head,L);const mb=$('#dxMore',sh);if(mb&&v!==head){mb.hidden=false;mb.onclick=async()=>{mb.disabled=true;const rest=await lxGet('b'+e[0]+'r',main.slice(head.length-1,head.length+4000),L);if(rest){$('#dxD',sh).textContent=v.replace(/…$/,'')+' '+rest;mb.remove()}else{mb.disabled=false;toast(t('dict_tr_err'))}}}}}
+
+async function dxOpenPreg(i){try{await loadPreg()}catch(e){toast(t('dx_err'));return}const e=PREG.e[i];if(!e)return;const L=lxLang();const pt=L==='pt';const [wpt,wes,mpt,mes,o,vs]=e;
+  const sh=dxSheet(`<div class="sd-head"><span class="sd-num">${esc(t('dx_b'))}</span><span class="sub">${esc(t('dx_preg'))}</span><button class="iconbtn" style="margin-left:auto" data-x="close" aria-label="${esc(t('close'))}">${ic('x')}</button></div>
+    <h3 class="sd-name">${esc(pt?wpt:wes)}</h3>${dxActs(dxIsFav('p',i))}
+    ${dxSec(t('dx_def'),`<p class="sd-p">${esc(pt?mpt:mes)}</p>`)}
+    ${dxSec(t('dx_lexw'),o.map(([n,lem,tr,xpt,xes])=>`<button class="sd-box po dx-po" data-sref="${n}"><div class="row" style="gap:10px;align-items:baseline;flex-wrap:wrap"><span class="sd-lemma sm" ${n[0]==='H'?'dir="rtl" lang="he"':'lang="grc"'}>${esc(lem)}</span><span class="sd-tr">${esc(tr)}</span><span class="sd-num sm" style="margin-left:auto">${n}</span></div><span class="dx-sm">${esc(t(n[0]==='H'?'dx_h':'dx_g'))}</span><p class="sd-p" style="margin:0">${esc(pt?xpt:xes)}</p></button>`).join(''))}
+    ${vs.length?dxSec(t('dx_deep'),`<div class="dx-ex">${vs.slice(0,6).map(r=>{const z=refStr(r,L);return z?`<div class="dx-exi"><button class="tag eref" data-eref="${esc(z)}">${esc(z)}</button><p class="sd-p dx-ext" data-ref="${esc(z)}">…</p></div>`:''}).join('')}</div>`):''}
+    <p class="dx-src">${esc(t('dx_p_src'))}</p>`);
+  dxWire(sh,{fav:{k:'p',id:i,t:pt?wpt:wes,s:o.map(x=>x[1]).join(' · ')},
+    text:()=>[pt?wpt:wes,pt?mpt:mes,...o.map(([n,lem,tr,xpt,xes])=>`${lem} (${tr}, ${n}): ${pt?xpt:xes}`)].join('\n'),
+    html:()=>`<p><b>${esc(pt?wpt:wes)}</b>: ${esc(pt?mpt:mes)}</p>`+o.map(([n,lem,tr,xpt,xes])=>`<p><b>${esc(lem)}</b> <i>(${esc(tr)}, ${n})</i> — ${esc(pt?xpt:xes)}</p>`).join('')});
+  loadBible(L).then(()=>$$('.dx-ext',sh).forEach(p=>{p.textContent=bibleText(p.dataset.ref,L)||''})).catch(()=>{})}
 
 /* comparar versiones */
 function compareRef(ref,host,lang){const p=parseRef(ref);if(!p||!p.vs){toast(t('verse_nf'));return}
@@ -585,7 +765,7 @@ const K={s:'pulpito.v1',a:'pulpito.agenda',m:'pulpito.meta',n:'pulpito.notas'};
 let sermons=[],agenda=[],notes=[],meta={},authU=null,localMode=false,cols=null,unsubs=[],sync={ok:false,msg:'sync_conn'},ready=false;
 const keyOf=k=>localMode||!authU?K[k]:K[k]+'.'+authU.uid;
 function loadLocal(){sermons=ls.get(keyOf('s'),[])||[];notes=ls.get(keyOf('n'),[])||[];agenda=ls.get(keyOf('a'),[])||[];meta=ls.get(keyOf('m'),{})||{};fixMeta()}
-function fixMeta(){if(meta.read&&typeof meta.read==='object')prefs.p=Object.assign({},prefs.p,meta.read);if(!Array.isArray(meta.cats))meta.cats=t('cats').slice();if(!Array.isArray(meta.favVerses))meta.favVerses=[];if(typeof meta.name!=='string')meta.name=''}
+function fixMeta(){if(meta.read&&typeof meta.read==='object')prefs.p=Object.assign({},prefs.p,meta.read);if(!Array.isArray(meta.cats))meta.cats=t('cats').slice();if(!Array.isArray(meta.favVerses))meta.favVerses=[];if(!Array.isArray(meta.dicFav))meta.dicFav=[];if(!Array.isArray(meta.dicHist))meta.dicHist=[];if(typeof meta.name!=='string')meta.name=''}
 function cacheAll(){ls.set(keyOf('n'),notes);ls.set(keyOf('s'),sermons);ls.set(keyOf('a'),agenda);ls.set(keyOf('m'),meta)}
 const strip=x=>{const c=JSON.parse(JSON.stringify(x));delete c.id;return c};
 function setSync(ok,msg){sync={ok,msg};$$('[data-sync]').forEach(el=>{el.innerHTML=syncHtml()})}
@@ -604,7 +784,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v31';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v32';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -723,16 +903,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.ov'))closeSheet
    ========================================================= */
 const view={tab:'home',overlay:null};
 let listState={q:'',f:'all',cat:'',mode:'s',nt:''};
-const TABS=[['home','home','nav_home'],['list','doc','nav_list'],['bible','bible','nav_bible'],['agenda','cal','nav_agenda'],['profile','user','nav_profile']];
+const TABS=[['home','home','nav_home'],['list','doc','nav_list'],['bible','bible','nav_bible'],['dic','dict','nav_dic'],['agenda','cal','nav_agenda']];
 function drawNav(){$('#navIn').innerHTML=TABS.map(([k,i,l])=>`<button data-act="tab" data-k="${k}" ${view.tab===k?'aria-current="page"':''}>${ic(i)}${esc(t(l))}</button>`).join('')}
 function go(tab){view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0);$('#app').scrollTop=0}
 function render(anim){
   if(!ready)return;if(blocked){showBlocked();return}$('#nav').hidden=false;document.documentElement.classList.add('tabs');drawNav();
   const app=$('#app');const keep=app.querySelector('input:focus');const sel=keep?[keep.id,keep.selectionStart]:null;
-  const html={home:homeHtml,list:listHtml,bible:bibleHtml,agenda:agendaHtml,profile:profileHtml}[view.tab]();
+  const html={home:homeHtml,list:listHtml,bible:bibleHtml,dic:dxTabHtml,agenda:agendaHtml,profile:profileHtml}[view.tab]();
   app.innerHTML=`<section class="view ${anim?'enter':''}"><div class="wrap">${html}</div></section>`;
   if(sel&&sel[0]){const el=document.getElementById(sel[0]);if(el){el.focus();try{el.setSelectionRange(sel[1],sel[1])}catch(e){}}}
   if(view.tab==='bible')bibleAfter();
+  if(view.tab==='dic')dxAfter();
 }
 
 /* =========================================================
@@ -785,7 +966,7 @@ function homeHtml(){
   <div class="row">
     <img class="logo" src="logo.jpg" alt="Meu Púlpito">
     <div class="hello" style="flex:1;min-width:0"><span class="sub">${esc(greet())}</span><b>${esc(meta.name||t('pastor'))}</b></div>
-    <button class="iconbtn bg${meta.photo?' hasph':''}" data-act="tab" data-k="profile" aria-label="${esc(t('nav_profile'))}">${meta.photo?`<img src="${esc(meta.photo)}" alt="">`:ic('user')}</button>
+    <button class="iconbtn bg${meta.photo?' hasph':''}" data-act="tab" data-k="profile" aria-label="${esc(t('nav_profile'))}">${meta.photo?`<img src="${esc(meta.photo)}" alt="">`:ic('gear')}</button>
   </div>
   <form class="search" data-form="homeSearch" role="search">${ic('search')}<input id="hq" name="q" type="search" placeholder="${esc(t('search_ph'))}" autocomplete="off" enterkeyhint="search"></form>
   ${bannersHtml()}
@@ -943,6 +1124,7 @@ function openEditor(id,fresh){
        <button data-act="fmtImp" data-keep aria-label="${esc(t('imp'))}">${ic('star')}</button>
        <button data-act="aiOpen" data-keep aria-label="${esc(t('ai'))}" style="color:var(--gold-ink)">${ic('spark')}</button>
        <button data-act="recE" data-keep aria-label="${esc(t('rec'))}">${ic('mic')}</button>
+       <button data-act="dicE" data-keep aria-label="${esc(t('dx_ed'))}">${ic('dict')}</button>
      </div>
      <div class="big"><button class="v" data-act="edVerse" data-keep>${ic('bible')}${esc(t('tb_verse'))}</button><button class="p" data-act="edPoint" data-keep>${ic('plus')}${esc(t('tb_point'))}</button></div>
    </div></div></div>`;
@@ -1131,6 +1313,7 @@ function edMenu(){if(!E)return;edSave();if(!sermons.find(x=>x.id===E.s.id)){toas
    <button class="act" data-act="share" data-id="${esc(id)}">${ic('share')}${esc(t('act_share'))}</button>
    <button class="act" data-act="edInfo">${ic('doc')}${esc(t('details_t'))}</button>
    <button class="act" data-act="edOrg">${ic('ol')}${esc(t('organize'))}</button>
+   <button class="act" data-act="dicE">${ic('dict')}${esc(t('dx_ed'))}</button>
    <button class="act" data-act="aiOpen">${ic('spark')}${esc(t('ai'))}</button>
    <button class="act" data-act="recE">${ic('mic')}${esc(t('rec'))}</button>
    <button class="act" data-act="vers">${ic('undo')}${esc(t('versions'))}</button>
@@ -1362,8 +1545,7 @@ function bibleHtml(){const l=bver();const B=BIB[l];const names=t('books',null,l)
   else{const ch=(B[BV.b]||[])[BV.c-1]||[];
     body=`<div class="verses">${ch.map((v,i)=>v?`<button class="vs" data-act="bSel" data-v="${i+1}" aria-pressed="${BV.sel.has(i+1)}"><sup>${i+1}</sup>${esc(v)}</button>`:'').join('')}</div>`}
   const sel=[...BV.sel];const head=`<div class="between"><h1 class="h">${esc(t('nav_bible'))}</h1><button class="btn sm ghost" data-act="bVer">${esc(verLabel(l))}${ic('down')}</button></div>`;
-  const chips=`<div class="chips"><button class="chip" data-act="bMode" data-f="0" aria-pressed="${!BV.fav&&!BV.dict}">${esc(t('b_read'))}</button><button class="chip" data-act="bMode" data-f="1" aria-pressed="${BV.fav&&!BV.dict}">${ic('star')}${esc(t('b_favs_s'))}</button><button class="chip" data-act="bMode" data-f="2" aria-pressed="${!!BV.dict}">${ic('bible')}${esc(t('lx'))}</button></div>`;
-  if(BV.dict)return head+chips+dictHtml();
+  const chips=`<div class="chips"><button class="chip" data-act="bMode" data-f="0" aria-pressed="${!BV.fav}">${esc(t('b_read'))}</button><button class="chip" data-act="bMode" data-f="1" aria-pressed="${BV.fav}">${ic('star')}${esc(t('b_favs_s'))}</button></div>`;
   return`${head}
    <form class="search" data-form="bSearch" role="search">${ic('search')}<input id="bq" type="search" value="${esc(BV.q)}" placeholder="${esc(t('b_search'))}" autocomplete="off" enterkeyhint="search" data-input="bQ"></form>
    ${chips}
@@ -1479,7 +1661,7 @@ const PRIV={es:[['Tus sermones son tuyos','Todo lo que escribes en Meu Púlpito 
   ['Quem pode ver','Só você, com a sua conta. As regras de segurança impedem que outro usuário veja seus dados. O responsável técnico do app tem acesso ao sistema para mantê-lo, mas se compromete a não ler o seu conteúdo, a não ser que você peça para receber ajuda ou que a lei exija.'],
   ['O que não fazemos','Não vendemos seus dados, não mostramos propaganda e não usamos seus sermões para nada além do app.'],
   ['Serviços externos','Tradução automática (MyMemory): só é enviado o texto que você pede para traduzir. Assistente de IA (Anthropic): só se você colocar sua própria chave, e só o texto que você envia; a chave fica apenas no seu celular.'],
-  ['Apagar sua conta','Você pode apagar sua conta e todos os seus dados quando quiser, em Perfil → Apagar minha conta. Eles são apagados da nuvem e deste celular, e não podem ser recuperados.'],
+  ['Apagar sua conta','Você pode apagar sua conta e todos os seus dados quando quiser, em Configurações → Apagar minha conta. Eles são apagados da nuvem e deste celular, e não podem ser recuperados.'],
   ['Mudanças','Se esta política mudar, avisaremos no app.']]};
 function privacySheet(){const L=prefs.ui==='pt'?'pt':'es';openSheet(`<h3>${esc(t('priv'))}</h3><p class="sub" style="margin:-6px 0 0;font-size:12.5px">${esc(t('priv_date'))}</p>${PRIV[L].map(([h,p])=>`<div class="fld"><span class="k" style="font-weight:800">${esc(h)}</span><p class="sd-p" style="margin:2px 0 0;font-family:var(--ui);font-size:15px">${esc(p)}</p></div>`).join('')}<button class="btn dark block" data-act="sheetClose">${esc(t('got_it'))}</button>`)}
 async function deleteAccount(){const sh=openSheet(`<h3 style="color:var(--danger)">${esc(t('del_acc'))}</h3><p style="margin:0;line-height:1.5">${esc(t('del_warn'))}</p>
@@ -1711,8 +1893,8 @@ const ACT={
   pgClose:()=>closePreach(),pgTimer:()=>pgTimer(),pgSet:()=>pgSettings(),pgPrev:()=>pgGo(-1),pgNext:()=>pgGo(1),
   // biblia
   bVer:()=>{BV.ver=bver()==='es'?'pt':'es';BV.sel.clear();render()},
-  bMode:b=>{BV.dict=b.dataset.f==='2';BV.fav=b.dataset.f==='1';if(BV.dict)dictLoad();render()},
-  dK:b=>{DQ.k=b.dataset.k;DQ.en='';$$('[data-act=dK]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const s=$('.dsrc');if(s)s.textContent=t(DQ.k==='bib'?'dic_src_b':'dict_src');dictLoad();dictPaint();if(DQ.q)dictQuery(DQ.q)},eOpen:b=>openEaston(+b.dataset.i),pOpen:b=>openPreg(+b.dataset.i,b.dataset.l),dOpen:b=>openStrong(b.dataset.k,b.dataset.n),dRetry:()=>{DQ.err=false;render();dictLoad()},
+  bMode:b=>{BV.fav=b.dataset.f==='1';render()},
+  dicE:()=>dxEditor(),
   bRetry:()=>{BV.err=false;render()},
   bSel:b=>{const v=+b.dataset.v;BV.sel.has(v)?BV.sel.delete(v):BV.sel.add(v);render()},
   bGo:b=>{BV.b=+b.dataset.b;BV.c=+b.dataset.c;BV.q='';BV.sel=new Set([+b.dataset.v]);render();setTimeout(()=>{const el=$(`.vs[data-v="${b.dataset.v}"]`);el&&el.scrollIntoView({block:'center'})},50)},
@@ -1745,7 +1927,6 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
 document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.input;if(!k)return;
   if(k==='listQ'){listState.q=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(render,180)}
   if(k==='bQ'){BV.q=e.target.value;const p=parseRef(BV.q);clearTimeout(e.target._t);e.target._t=setTimeout(()=>{if(p){BV.b=p.b;BV.c=Math.max(1,p.ch);BV.sel=new Set(p.vs||[]);}render()},300)}
-  if(k==='dQ'){const v=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(()=>dictQuery(v),350)}
   if(k==='pMail'){prefs.mmEmail=e.target.value.trim();savePrefs()}
   if(k==='pAi'){ls.set('mp.aikey',e.target.value.trim())}
   if(k==='pName'){meta.name=e.target.value;clearTimeout(e.target._t);e.target._t=setTimeout(putMeta,600)}});
