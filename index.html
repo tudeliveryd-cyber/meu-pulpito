@@ -78,6 +78,10 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stro
 .topbar{display:block;background:var(--gold);color:var(--navy);text-align:center;font-family:var(--head);font-weight:700;font-size:13.5px;line-height:1.35;padding:9px 16px;text-wrap:balance}
 .topbar[hidden]{display:none}
 a.topbar[href]{text-decoration:underline;text-underline-offset:3px}
+
+/* botón flotante de WhatsApp */
+.wa-fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:54px;height:54px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;box-shadow:0 10px 28px -8px rgba(11,18,32,.55),0 0 0 1px rgba(201,162,78,.45) inset;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.wa-fab.on{opacity:1;transform:none;pointer-events:auto}.wa-fab svg{width:25px;height:25px}
 body.has-bar .hero{padding-top:calc(env(safe-area-inset-top,0px) + 186px)}
 .brand{display:flex;align-items:center;gap:11px;color:#fff}
 .brand img{height:38px;width:auto}
@@ -363,6 +367,7 @@ footer .soc svg{width:18px;height:18px}
     </div>
   </section>
 </main>
+<a class="wa-fab" id="waFab" href="https://wa.me/595983879344" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="i"><use href="#chat"/></svg></a>
 
 <footer>
   <div class="wrap">
@@ -429,7 +434,7 @@ var T={es:{
    ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera; al confirmar el pago, su cuenta pasa a Premium.']],
   z_t:'Su próximo mensaje empieza aquí.',z_d:'Prepare, organice y predique con una herramienta hecha para el ministerio.',
   ft_d:'Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras y predique con confianza.',ft_p:'Producto',ft_c:'Contacto',ft_n:'Hecho para pastores, en español y portugués.',ft_t:'Términos de uso',ft_pr:'Privacidad',
-  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).'
+  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.'
 },pt:{
   tag:'PREPARE. ORGANIZE. PREGUE.',n_feat:'Funções',n_plans:'Planos',n_faq:'Perguntas',n_go:'Acessar',
   h_eye:'Para pastores e pregadores',h_t:'Prepare e organize suas mensagens em <em>um só lugar.</em>',
@@ -470,7 +475,7 @@ var T={es:{
    ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira; ao confirmarmos o pagamento, sua conta passa a Premium.']],
   z_t:'Sua próxima mensagem começa aqui.',z_d:'Prepare, organize e pregue com uma ferramenta feita para o ministério.',
   ft_d:'Plataforma para pastores e pregadores: prepare sermões, estude as Escrituras e pregue com confiança.',ft_p:'Produto',ft_c:'Contato',ft_n:'Feito para pastores, em português e espanhol.',ft_t:'Termos de uso',ft_pr:'Privacidade',
-  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).'
+  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.'
 }};
 var L='es';try{L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es')}catch(e){}
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
@@ -493,7 +498,7 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
       '<ul>'+(k==='m'?D.fp.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join(''):'<li>'+ck+'<span>'+esc(D.fp2)+'</span></li>')+'</ul>'+
       '<a class="btn '+(k==='a'?'gold':'dark')+'" href="https://wa.me/'+WA+'?text='+encodeURIComponent(msg)+'" target="_blank" rel="noopener">'+esc(D['go_'+k])+'</a></div>'};
   document.getElementById('plans').innerHTML='<div class="plan"><h3>'+esc(D.pl_free)+'</h3><div><div class="price">'+esc(money(0,c))+'</div><div class="per">'+esc(D.per_f)+'</div></div><ul>'+D.ff.map(function(f){return'<li>'+ck+'<span>'+esc(f.replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))+'</span></li>'}).join('')+'</ul><a class="btn out" href="app/" data-go>'+esc(D.go_f)+'</a></div>'+card('m')+card('t')+card('a');
-  document.getElementById('waFoot').href='https://wa.me/'+WA;
+  document.getElementById('waFoot').href='https://wa.me/'+WA;document.getElementById('waFab').href='https://wa.me/'+WA+'?text='+encodeURIComponent(D.wa_hi);
   var H=(SITE.hero||{})[L]||{};if(H.t)document.querySelector('[data-t=h_t]').textContent=H.t;if(H.d)document.querySelector('[data-t=h_d]').textContent=H.d;
   var B=SITE.bar||{},bt=B.on&&(B[L]||B.es||B.pt),tb=document.getElementById('topbar');tb.hidden=!bt;document.body.classList.toggle('has-bar',!!bt);
   if(bt){tb.textContent=bt;if(/^https?:\/\//.test(B.url||'')){tb.href=B.url;tb.target='_blank';tb.rel='noopener'}else tb.removeAttribute('href')}
@@ -537,7 +542,7 @@ document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener
 // el app abre en el mismo idioma que el sitio (solo si todavía no eligió uno)
 document.addEventListener('click',function(e){var a=e.target.closest('[data-go]');if(!a)return;try{var p=JSON.parse(localStorage.getItem('mp.prefs')||'null');if(!p){localStorage.setItem('mp.prefs',JSON.stringify({ui:L}))}}catch(err){}});
 document.getElementById('yr').textContent=new Date().getFullYear();
-var nav=document.getElementById('nav');var onS=function(){nav.classList.toggle('solid',scrollY>20)};addEventListener('scroll',onS,{passive:true});onS();
+var nav=document.getElementById('nav'),fab=document.getElementById('waFab');var onS=function(){nav.classList.toggle('solid',scrollY>20);fab.classList.toggle('on',scrollY>innerHeight*.8)};addEventListener('scroll',onS,{passive:true});onS();
 if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});document.querySelectorAll('.rv').forEach(function(el){io.observe(el)})}
 else document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')});
 // retira el service worker viejo de la raíz (el app ahora vive en /app/)

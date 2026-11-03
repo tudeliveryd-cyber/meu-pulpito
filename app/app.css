@@ -704,3 +704,10 @@ html.subp .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px)}
 .av-b b{font-family:var(--head);font-size:13.5px;min-width:24px;text-align:right}
 .as-t .iconbtn.sm{width:34px;height:34px}.as-t .iconbtn.sm svg{width:18px;height:18px}
 .sheet.ns>*,.sheet.ns #avBody>*{flex-shrink:0}#avBody{display:flex;flex-direction:column;gap:12px}
+button.prow.plink{flex-wrap:nowrap}button.prow.plink>span{flex:1;min-width:0}
+.plink .k svg{vertical-align:-3px}
+details.credits{text-align:center}details.credits summary{list-style:none;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted);padding:6px}details.credits summary::-webkit-details-marker{display:none}
+.dx-allres:empty{display:none}.dx-allres{display:flex;flex-direction:column;gap:16px}
+.dx-allsec{display:flex;flex-direction:column;gap:8px}
+.dx-allsec .res>*:nth-child(n+4){display:none}
+.dx-allsec .empty{padding:10px 0}
