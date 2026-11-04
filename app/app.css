@@ -781,3 +781,12 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .cu-day{display:flex;flex-direction:column;gap:5px;text-align:left;width:100%;background:var(--hero);color:#fff;border:0;border-radius:var(--r);padding:16px;box-shadow:inset 0 0 0 1.5px var(--gold);cursor:pointer;font:inherit;margin-bottom:6px}
 .cu-day-k{display:flex;align-items:center;gap:6px;font-family:var(--head);font-weight:700;font-size:12.5px;color:#D6AD55}.cu-day-k svg{width:15px;height:15px}
 .cu-day b{font-family:var(--head);font-size:18px;line-height:1.3}.cu-day>span:last-child{font-size:13px;color:#C4C9D4}
+/* agenda: vista mensual */
+.mhead{display:flex;align-items:center;justify-content:space-between}.mhead b{font-family:var(--head);font-size:17px;text-transform:capitalize}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;background:var(--surface);border-radius:var(--r);padding:10px}
+.mgrid>span{text-align:center;font-size:11.5px;font-weight:700;color:var(--muted);padding:2px 0 6px}
+.mc{position:relative;aspect-ratio:1;border:0;border-radius:10px;background:transparent;color:var(--fg);font:600 15px var(--head);cursor:pointer}
+.mc.today{box-shadow:inset 0 0 0 1.5px var(--gold)}.mc.sel{background:var(--hero);color:#fff}
+.mc i{position:absolute;left:50%;bottom:5px;transform:translateX(-50%);min-width:6px;height:6px;border-radius:3px;background:var(--gold);font:700 9px/6px var(--head);color:transparent}
+.ev .hd{position:relative}.ev-desc{font-size:12.5px!important;white-space:pre-wrap}
+.ev{position:relative}.ev-cal{position:absolute;top:8px;right:8px}.ev-cal svg{width:18px;height:18px}

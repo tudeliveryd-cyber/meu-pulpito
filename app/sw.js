@@ -1,6 +1,6 @@
 // Meu Púlpito: guarda o app e as Bíblias para abrir sem sinal.
 // Busca a versão nova primeiro; se a internet estiver lenta (mais de 3 s), abre a cópia guardada.
-const CACHE="pulpito-v80";
+const CACHE="pulpito-v81";
 const SHELL=["./","index.html","app.js","app.css","firebase-config.js","manifest.webmanifest","logo.jpg","logo-full.png","logo-name.png","logo-name-light.png","mark.png","mark-light.png","logo-full-light.png","icon-192.png","icon-512.png","apple-touch-icon.png"];
 const LIBS=["app","auth","firestore"].map(n=>"https://www.gstatic.com/firebasejs/10.12.2/firebase-"+n+"-compat.js");
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(async c=>{await c.addAll(SHELL);

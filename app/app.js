@@ -967,7 +967,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v80';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v81';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -2249,7 +2249,7 @@ function dateBox(iso,gold){const d=new Date(iso+'T12:00:00');return`<div class="
 const evPlace=e=>e.place==='sede'?t('sede'):e.place==='anexo'?t('anexo'):(e.placeName||t('other'));
 function evCard(e,first){const s=e.sermonId&&sermons.find(x=>x.id===e.sermonId);
   return`<div class="ev"><button class="hd" data-act="evEdit" data-id="${esc(e.id)}">${dateBox(e.date,first)}<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
-    <b style="font-size:15px">${esc(evPlace(e))}${e.time?' · '+esc(e.time):''}</b><span class="sub">${esc([e.type,e.theme||(!s?t('tbd'):'')].filter(Boolean).join(' · '))}</span></div></button>
+    <b style="font-size:15px">${esc(evPlace(e))}${e.time?' · '+esc(e.time):''}</b><span class="sub">${esc([e.type,e.theme||(!s?t('tbd'):'')].filter(Boolean).join(' · '))}</span>${e.desc?`<span class="sub ev-desc">${esc(e.desc)}</span>`:''}</div></button><button class="iconbtn ev-cal" data-act="evCal" data-id="${esc(e.id)}" aria-label="${esc(t('ev_cal'))}">${ic('cal')}</button>
     ${s?`<button class="link" data-act="preach" data-id="${esc(s.id)}">${ic('doc')}<span>${esc(derive(s).title||t('untitled'))}</span>${ic('lectern')}</button>`:`<button class="pick" data-act="evPick" data-id="${esc(e.id)}">${esc(t('pick_s'))}</button>`}</div>`}
 let agMode='up';
 function histAllHtml(){const L=[];liveS().forEach(s=>(s.log||[]).forEach(l=>L.push({s,l})));L.sort((a,b)=>(b.l.date||'').localeCompare(a.l.date||''));
@@ -2260,11 +2260,43 @@ function agendaHtml(){const td=todayISO();const d0=new Date(td+'T12:00:00');cons
   return`<div class="between"><div style="display:flex;flex-direction:column;gap:2px"><h1 class="h">${esc(t('nav_agenda'))}</h1><span class="sub">${esc(M[d0.getMonth()])} ${d0.getFullYear()}</span></div>
     <button class="btn gold" data-act="evNew">${ic('plus')}${esc(t('schedule'))}</button></div>
    <div class="week">${days.map(d=>{const x=new Date(d+'T12:00:00');return`<div class="day ${d===td?'today':''} ${agenda.some(e=>e.date===d)?'has':''}"><span>${esc(t('wd')[x.getDay()])}</span><b>${x.getDate()}</b><i></i></div>`}).join('')}</div>
-   <div class="seg"><button data-act="agMode" data-m="up" aria-pressed="${agMode==='up'}">${esc(t('next_tab'))}</button><button data-act="agMode" data-m="hist" aria-pressed="${agMode==='hist'}">${esc(t('hist_all'))}</button></div>
-   ${agMode==='hist'?histAllHtml():`<span class="sect">${esc(t('upcoming'))}</span>
+   <div class="seg"><button data-act="agMode" data-m="up" aria-pressed="${agMode==='up'}">${esc(t('next_tab'))}</button><button data-act="agMode" data-m="month" aria-pressed="${agMode==='month'}">${esc(t('ag_month'))}</button><button data-act="agMode" data-m="hist" aria-pressed="${agMode==='hist'}">${esc(t('hist_all'))}</button></div>
+   ${agMode==='month'?monthHtml():agMode==='hist'?histAllHtml():`<span class="sect">${esc(t('upcoming'))}</span>
    <div class="list">${up.length?up.map((e,i)=>evCard(e,i===0)).join(''):`<div class="empty"><p style="margin:0;max-width:34ch">${esc(t('no_ev'))}</p></div>`}</div>
    ${past.length?`<span class="sect">${esc(t('past'))}</span><div class="list">${past.map(e=>evCard(e,false)).join('')}</div>`:''}`}`}
-function evForm(id){const e=id?Object.assign({},agenda.find(x=>x.id===id)):{id:uid(),date:addDays(todayISO(),(7-new Date().getDay())%7||7),time:'19:00',place:'sede',placeName:'',type:'',theme:'',sermonId:''};
+
+/* ---------- Agenda: recordatorio en el calendario del celular (.ics) y vista mensual ---------- */
+function evSaved(e){if(!+e.rem){toast(t('ev_saved'));return}
+  const sh=openSheet(`<div class="pk"><span class="pk-ic">${ic('cal')}</span><h3>${esc(t('ev_saved'))}</h3><p>${esc(t('ev_cal_d'))}</p>
+    <button class="btn gold block" id="evIcs">${ic('cal')}${esc(t('ev_cal'))}</button><button class="btn ghost block" data-act="sheetClose">${esc(t('pk_no'))}</button></div>`);
+  $('#evIcs',sh).onclick=()=>{closeSheet();evIcs(e)}}
+function icsEsc(x){return String(x||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/([,;])/g,'\\$1')}
+function evIcs(e){const s=e.sermonId&&sermons.find(x=>x.id===e.sermonId);const d=e.date.replace(/-/g,'');const tm=(e.time||'19:00').replace(':','')+'00';
+  const st=new Date(e.date+'T'+(e.time||'19:00')+':00');const en=new Date(st.getTime()+2*3600e3);const p=n=>String(n).padStart(2,'0');
+  const fl=x=>`${x.getFullYear()}${p(x.getMonth()+1)}${p(x.getDate())}T${p(x.getHours())}${p(x.getMinutes())}00`;
+  const now=new Date();const stamp=`${now.getUTCFullYear()}${p(now.getUTCMonth()+1)}${p(now.getUTCDate())}T${p(now.getUTCHours())}${p(now.getUTCMinutes())}00Z`;
+  const title=[t('ev_ics_t'),evPlace(e),e.type].filter(Boolean).join(' · ');
+  const desc=[s?t('sermon')+': '+(derive(s).title||t('untitled')):e.theme,e.desc,'Meu Púlpito'].filter(Boolean).join('\n');
+  const rem=+e.rem||60;const trig=rem>=1440?'-P1D':`-PT${rem}M`;
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Meu Pulpito//Agenda//PT','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',`UID:${e.id}@meupulpito.com`,`DTSTAMP:${stamp}`,`DTSTART:${fl(st)}`,`DTEND:${fl(en)}`,
+    `SUMMARY:${icsEsc(title)}`,`LOCATION:${icsEsc(evPlace(e))}`,`DESCRIPTION:${icsEsc(desc)}`,'BEGIN:VALARM','ACTION:DISPLAY',`DESCRIPTION:${icsEsc(title)}`,`TRIGGER:${trig}`,'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const name='meu-pulpito-'+e.date+'.ics';const f=new File([ics],name,{type:'text/calendar'});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title}).catch(()=>{})}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}}
+let agMonth=null;
+function monthHtml(){const td=todayISO();if(!agMonth)agMonth=td.slice(0,7);const [Y,Mo]=agMonth.split('-').map(Number);const M=t('months');
+  const first=new Date(Y,Mo-1,1,12);const off=(first.getDay()+6)%7;const n=new Date(Y,Mo,0).getDate();const sel=agMonth===td.slice(0,7)?td:agMonth+'-01';const pick=monthHtml._d&&monthHtml._d.startsWith(agMonth)?monthHtml._d:sel;
+  const iso=d=>`${Y}-${String(Mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const wd=t('wd');const hd=[1,2,3,4,5,6,0].map(i=>`<span>${esc(wd[i].slice(0,3))}</span>`).join('');
+  const cells=Array.from({length:off},()=>'<span></span>').join('')+Array.from({length:n},(_,i)=>{const d=iso(i+1);const k=agenda.filter(e=>e.date===d).length;
+    return`<button class="mc ${d===td?'today':''} ${d===pick?'sel':''}" data-act="agDay" data-d="${d}">${i+1}${k?`<i>${k>1?k:''}</i>`:''}</button>`}).join('');
+  const evs=agenda.filter(e=>e.date===pick).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  return`<div class="mhead"><button class="iconbtn" data-act="agMon" data-n="-1" aria-label="${esc(t('ag_prev'))}">${ic('back')}</button><b>${esc(M[Mo-1])} ${Y}</b><button class="iconbtn" data-act="agMon" data-n="1" aria-label="${esc(t('ag_next'))}">${ic('next')}</button></div>
+   <div class="mgrid">${hd}${cells}</div>
+   <div class="between"><span class="sect">${esc(fmtDay(new Date(pick+'T12:00:00').getTime()))}</span><button class="lnk" data-act="evNewDay" data-d="${pick}">${ic('plus')} ${esc(t('schedule'))}</button></div>
+   <div class="list">${evs.length?evs.map(e=>evCard(e,false)).join(''):`<div class="empty"><p style="margin:0">${esc(t('ag_none_day'))}</p></div>`}</div>`}
+Object.assign(I18N.es,{ev_desc:'Descripción',ev_desc_ph:'Ej.: llevar la Biblia de estudio, culto con Santa Cena…',ev_rem:'Recordatorio',ev_r0:'Sin recordatorio',ev_r60:'1 hora antes',ev_r180:'3 horas antes',ev_r1440:'1 día antes',ev_cal:'Agregar al calendario del celular',ev_cal_d:'Para recibir el aviso en el celular, agregue esta predicación al calendario. El calendario le avisará a la hora elegida.',ev_ics_t:'Predicación',ag_month:'Mes',ag_prev:'Mes anterior',ag_next:'Mes siguiente',ag_none_day:'No hay predicaciones este día.',ev_add_cal:'Calendario'});
+Object.assign(I18N.pt,{ev_desc:'Descrição',ev_desc_ph:'Ex.: levar a Bíblia de estudo, culto com Santa Ceia…',ev_rem:'Lembrete',ev_r0:'Sem lembrete',ev_r60:'1 hora antes',ev_r180:'3 horas antes',ev_r1440:'1 dia antes',ev_cal:'Adicionar ao calendário do celular',ev_cal_d:'Para receber o aviso no celular, adicione esta pregação ao calendário. O calendário vai avisar no horário escolhido.',ev_ics_t:'Pregação',ag_month:'Mês',ag_prev:'Mês anterior',ag_next:'Próximo mês',ag_none_day:'Não há pregações neste dia.',ev_add_cal:'Calendário'});
+function evForm(id,day){const e=id?Object.assign({},agenda.find(x=>x.id===id)):{id:uid(),date:day||addDays(todayISO(),(7-new Date().getDay())%7||7),time:'19:00',place:'sede',placeName:'',type:'',theme:'',sermonId:'',desc:'',rem:60};
   const S=sortedByUpd();const cats=[...new Set([...meta.cats,...agenda.map(x=>x.type).filter(Boolean)])];let place=e.place;
   const sh=openSheet(`<h3>${esc(t(id?'ev_edit':'ev_new'))}</h3>
    <div class="two"><div class="fld"><label for="evD">${esc(t('date'))}</label><input class="inp" id="evD" type="date" value="${esc(e.date)}"></div>
@@ -2273,12 +2305,14 @@ function evForm(id){const e=id?Object.assign({},agenda.find(x=>x.id===id)):{id:u
      <input class="inp" id="evPn" placeholder="${esc(t('place_name'))}" value="${esc(e.placeName||'')}" ${place==='otro'?'':'hidden'}></div>
    <div class="fld"><label for="evTy">${esc(t('cult'))}</label><select class="inp" id="evTy"><option value="">—</option>${cats.map(c=>`<option ${c===e.type?'selected':''}>${esc(c)}</option>`).join('')}</select></div>
    <div class="fld"><label for="evTh">${esc(t('theme'))}</label><input class="inp" id="evTh" value="${esc(e.theme||'')}"></div>
+   <div class="fld"><label for="evDs">${esc(t('ev_desc'))}</label><textarea class="inp" id="evDs" rows="2" placeholder="${esc(t('ev_desc_ph'))}">${esc(e.desc||'')}</textarea></div>
+   <div class="fld"><label for="evR">${esc(t('ev_rem'))}</label><select class="inp" id="evR">${[[0,'ev_r0'],[60,'ev_r60'],[180,'ev_r180'],[1440,'ev_r1440']].map(([v,k])=>`<option value="${v}" ${+(e.rem??60)===v?'selected':''}>${esc(t(k))}</option>`).join('')}</select></div>
    <div class="fld"><label for="evS">${esc(t('sermon'))}</label><select class="inp" id="evS"><option value="">${esc(t('later_pick'))}</option>${S.map(s=>`<option value="${esc(s.id)}" ${s.id===e.sermonId?'selected':''}>${esc(derive(s).title||t('untitled'))}</option>`).join('')}</select></div>
    <div class="two">${id?`<button class="btn ghost" id="evDel" style="color:var(--danger)">${ic('trash')}${esc(t('act_del'))}</button>`:`<button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button>`}<button class="btn gold" id="evOk">${esc(t('save'))}</button></div>`);
   $('#evPl',sh).onclick=ev=>{const b=ev.target.closest('button');if(!b)return;place=b.dataset.p;$$('#evPl button',sh).forEach(x=>x.setAttribute('aria-pressed',x===b));$('#evPn',sh).hidden=place!=='otro'};
-  $('#evOk',sh).onclick=()=>{Object.assign(e,{date:$('#evD',sh).value||todayISO(),time:$('#evT',sh).value,place,placeName:place==='otro'?$('#evPn',sh).value.trim():'',type:$('#evTy',sh).value,theme:$('#evTh',sh).value.trim(),sermonId:$('#evS',sh).value});
-    putEvent(e);closeSheet();toast(t('ev_saved'));render()};
-  const del=$('#evDel',sh);if(del)del.onclick=()=>{delEvent(e.id);closeSheet();toast(t('ev_del'));render()}}
+  $('#evOk',sh).onclick=()=>{Object.assign(e,{date:$('#evD',sh).value||todayISO(),time:$('#evT',sh).value,place,placeName:place==='otro'?$('#evPn',sh).value.trim():'',type:$('#evTy',sh).value,theme:$('#evTh',sh).value.trim(),sermonId:$('#evS',sh).value,desc:$('#evDs',sh).value.trim().slice(0,600),rem:+$('#evR',sh).value});
+    putEvent(e);closeSheet();render();evSaved(e)};
+  const del=$('#evDel',sh);if(del)del.onclick=()=>{if(!confirmTap(del))return;delEvent(e.id);closeSheet();toast(t('ev_del'));render()}}
 
 /* =========================================================
    PERFIL
@@ -2615,7 +2649,7 @@ const ACT={
     $('#fvK',sh).onclick=()=>{closeSheet();compareRef(f.ref,null,f.v)};
     $('#fvD',sh).onclick=()=>{meta.favVerses.splice(+b.dataset.i,1);putMeta();closeSheet();render()}},
   // agenda
-  evNew:()=>evForm(null),evEdit:b=>evForm(b.dataset.id),
+  evNew:()=>evForm(null),evEdit:b=>evForm(b.dataset.id),evNewDay:b=>evForm(null,b.dataset.d),agDay:b=>{monthHtml._d=b.dataset.d;render()},agMon:b=>{const [y,m]=(agMonth||todayISO().slice(0,7)).split('-').map(Number);const d=new Date(y,m-1+(+b.dataset.n),1,12);agMonth=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;monthHtml._d=null;render()},evCal:b=>{const e=agenda.find(x=>x.id===b.dataset.id);if(e)evIcs(e)},
   evPick:b=>{const e=agenda.find(x=>x.id===b.dataset.id);chooseSermon(id=>{if(id==='__new'){newSermon();return}e.sermonId=id;putEvent(e);render()})},
   // perfil
   pUi:b=>{prefs.ui=b.dataset.v;savePrefs();document.documentElement.lang=prefs.ui==='pt'?'pt-BR':'es';render()},
