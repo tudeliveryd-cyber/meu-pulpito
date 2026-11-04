@@ -41,6 +41,14 @@ service cloud.firestore {
     match /planos/{uid} {
       allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
       allow write: if isAdmin();
+      // Prueba Premium de 72 horas: la cuenta nueva la crea UNA sola vez (si ya existe el plan, no puede crearla de nuevo)
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['trial','trialFrom','trialAuto','trialState','updated'])
+        && request.resource.data.trialAuto == true && request.resource.data.trialState == 'active'
+        && request.resource.data.trialFrom is int && request.resource.data.trial is int
+        && request.resource.data.trial == request.resource.data.trialFrom + 259200000
+        && request.resource.data.trialFrom > request.time.toMillis() - 600000
+        && request.resource.data.trialFrom < request.time.toMillis() + 600000;
     }
   }
 }

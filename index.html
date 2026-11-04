@@ -408,7 +408,7 @@ footer .soc svg{width:18px;height:18px}
 // Precios actuales (los mismos que se configuran en el panel del app)
 var PRICE={m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},MON={m:1,t:3,a:12};
 // Estos valores se reemplazan por los del panel de administrador del app (config/app y config/site en Firebase)
-var WA='595983879344',FREE={serm:5,dic:5,cur:15},SITE={};
+var WA='595983879344',FREE={serm:2,dic:5,cur:15},SITE={};
 // Testimonios REALES de pastores que usan Meu Púlpito (con su autorización).
 // Formato: {q:'texto tal como lo dijo', n:'Nombre', r:'Iglesia · Ciudad'}. La sección aparece sola cuando hay al menos uno.
 var TESTI=[];
@@ -435,7 +435,7 @@ var T={es:{
   s1_t:'Cree su cuenta',s1_d:'Solo necesita un correo y una contraseña. Sus sermones quedan guardados en su cuenta.',
   s2_t:'Instálelo en su celular',s2_d:'En la pantalla de acceso, toque «Instalar la aplicación» y siga los pasos. Queda en su pantalla de inicio y se abre como una aplicación.',
   s3_t:'Prepare y predique',s3_d:'Escriba su mensaje, estúdielo con la Biblia y los diccionarios, y predíquelo desde la misma pantalla.',
-  p_eye:'Planes',p_t:'Elija el plan que mejor se adapta a su ministerio.',p_d:'Comience gratis. Cuando quiera todas las herramientas, pase a Premium.',
+  p_eye:'Planes',p_t:'Elija el plan que mejor se adapta a su ministerio.',p_d:'Al crear su cuenta, tiene 3 días de Premium gratis. Después elija: seguir gratis o pasar a Premium.',
   pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para siempre',per_m:'por mes',per_t:'cada 3 meses',per_a:'por año',eq:'equivale a {v} por mes',save:'Ahorre {n}%',best:'Mejor precio · ahorre con el plan anual',
   go_f:'Comenzar gratis',go_m:'Elegir Premium Mensual',go_t:'Elegir Premium Trimestral',go_a:'Elegir Premium Anual',
   ff:['Hasta {s} sermones','Editor, Biblia y Agenda','Modo Predicar básico','Diccionarios: {d} artículos por día','{c} curiosidades bíblicas'],
@@ -449,7 +449,7 @@ var T={es:{
    ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones y las Biblias quedan guardados en el celular, de modo que puede predicar aunque no tenga señal.'],
    ['¿Quién puede ver mis sermones?','Solo usted. Cada sermón queda protegido en su cuenta y nadie más tiene acceso a su contenido, tampoco el equipo de Meu Púlpito.'],
    ['¿Puedo predicar el mismo mensaje en español y en portugués?','Sí. En el Modo Predicar puede cambiar el idioma del sermón; la traducción se guarda en el mismo sermón y los versículos se toman de la Biblia del otro idioma. Recomendamos revisarla antes de predicar.'],
-   ['¿Puedo probar Premium antes de pagar?','Sí. Pida una prueba gratis por WhatsApp y liberamos todas las funciones por algunos días. Al terminar, su cuenta vuelve sola al plan gratis, sin perder nada.'],
+   ['¿Puedo probar Premium antes de pagar?','Sí. Al crear su cuenta recibe 3 días de Premium gratis, con todas las funciones liberadas. No pedimos tarjeta y no hay cobros automáticos: al terminar, su cuenta pasa sola al plan gratis y no pierde nada.'],
    ['¿Qué pasa si mi plan vence?','Recibe un aviso antes del vencimiento. Si no renueva, vuelve al plan gratis y todos sus sermones siguen guardados.'],
    ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera; al confirmar el pago, su cuenta pasa a Premium.']],
   z_t:'Su próximo mensaje empieza aquí.',z_d:'Prepare, organice y predique con una herramienta hecha para el ministerio.',
@@ -478,7 +478,7 @@ var T={es:{
   s1_t:'Crie sua conta',s1_d:'Você só precisa de um e-mail e uma senha. Seus sermões ficam guardados na sua conta.',
   s2_t:'Instale no celular',s2_d:'Na tela de acesso, toque em «Instalar o aplicativo» e siga os passos. Ele fica na sua tela de início e abre como um aplicativo.',
   s3_t:'Prepare e pregue',s3_d:'Escreva sua mensagem, estude com a Bíblia e os dicionários, e pregue na mesma tela.',
-  p_eye:'Planos',p_t:'Escolha o plano que combina com o seu ministério.',p_d:'Comece grátis. Quando quiser todas as ferramentas, passe para o Premium.',
+  p_eye:'Planos',p_t:'Escolha o plano que combina com o seu ministério.',p_d:'Ao criar sua conta, você tem 3 dias de Premium grátis. Depois escolha: continuar grátis ou passar para o Premium.',
   pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para sempre',per_m:'por mês',per_t:'a cada 3 meses',per_a:'por ano',eq:'equivale a {v} por mês',save:'Economize {n}%',best:'Melhor preço · economize com o plano anual',
   go_f:'Começar grátis',go_m:'Escolher Premium Mensal',go_t:'Escolher Premium Trimestral',go_a:'Escolher Premium Anual',
   ff:['Até {s} sermões','Editor, Bíblia e Agenda','Modo Pregar básico','Dicionários: {d} artigos por dia','{c} curiosidades bíblicas'],
@@ -492,7 +492,7 @@ var T={es:{
    ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões e as Bíblias ficam guardados no celular, então você pode pregar mesmo sem sinal.'],
    ['Quem pode ver meus sermões?','Só você. Cada sermão fica protegido na sua conta e ninguém mais tem acesso ao conteúdo, nem a equipe do Meu Púlpito.'],
    ['Posso pregar a mesma mensagem em português e em espanhol?','Sim. No Modo Pregar você troca o idioma do sermão; a tradução fica guardada no mesmo sermão e os versículos vêm da Bíblia do outro idioma. Recomendamos revisar antes de pregar.'],
-   ['Posso testar o Premium antes de pagar?','Sim. Peça um teste grátis pelo WhatsApp e liberamos todas as funções por alguns dias. Ao terminar, sua conta volta sozinha ao plano grátis, sem perder nada.'],
+   ['Posso testar o Premium antes de pagar?','Sim. Ao criar sua conta você ganha 3 dias de Premium grátis, com todas as funções liberadas. Não pedimos cartão e não há cobranças automáticas: ao terminar, sua conta passa sozinha para o plano grátis e você não perde nada.'],
    ['O que acontece se meu plano vencer?','Você recebe um aviso antes do vencimento. Se não renovar, volta ao plano grátis e todos os seus sermões continuam guardados.'],
    ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira; ao confirmarmos o pagamento, sua conta passa a Premium.']],
   z_t:'Sua próxima mensagem começa aqui.',z_d:'Prepare, organize e pregue com uma ferramenta feita para o ministério.',
