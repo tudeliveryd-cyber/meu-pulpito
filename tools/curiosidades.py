@@ -209,6 +209,7 @@ dict(cat='ens',q=('¿Qué simboliza el desierto en la Biblia?','O que o deserto 
  r=['4.8.2','1.16.35','1.3.1','10.19.4','39.4.1','27.2.14'],crit=('El significado depende del contexto de cada pasaje.','O significado depende do contexto de cada passagem.'),c=('Juan el Bautista predicó en el desierto, cumpliendo Isaías 40:3: «Voz que clama en el desierto».','João Batista pregou no deserto, cumprindo Isaías 40:3: «Voz do que clama no deserto».')),
 ]
 exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'curiosidades-2.py'),encoding='utf-8').read());C+=N
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'curiosidades-3.py'),encoding='utf-8').read());C+=N3
 # validar referencias en las dos Biblias
 def ok(B,r):
     b,c,v=map(int,r.split('-')[0].split('.'))
