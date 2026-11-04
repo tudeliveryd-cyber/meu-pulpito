@@ -1,6 +1,6 @@
 # Versiones adicionales de la Biblia para Meu Púlpito (todas de dominio público o con licencia libre).
 # Fuentes: eBible.org (corpus BibleNLP/ebible, alineado al versículo) y scrollmapper/bible_databases.
-# Uso: python3 biblias-build.py <dir ebible> <dir con los .json de scrollmapper>
+# Uso: python3 biblias-build.py <dir ebible> <dir scrollmapper (no usado por ahora)>
 import json,re,os,sys
 EB,SM=sys.argv[1],sys.argv[2]
 OUT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','app','biblia')
@@ -49,5 +49,3 @@ ebible('spa-spabes','es-bes')       # La Biblia en Español Sencillo — CC BY 4
 ebible('spa-spapddpt','es-pdt')     # Palabra de Dios para ti — CC BY 4.0, Asociación Bíblica Latinoamericana
 ebible('spa-spavbl','es-vbl')       # Versión Biblia Libre — CC BY-SA 4.0, J. Gallagher y S. Barrios de Ávila
 ebible('spa-spablm','es-blm')       # Santa Biblia libre para el mundo — dominio público
-ebible('eng-engylt','en-ylt')       # Young's Literal Translation — dominio público
-scroll('ASV','en-asv')              # American Standard Version (1901) — dominio público
