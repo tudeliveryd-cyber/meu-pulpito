@@ -358,7 +358,7 @@ function refTags(refs,L,max=24){const s=refs.map(r=>refStr(r,L)).filter(Boolean)
 let BIX=null,BIXP=null;const BCH={},BCHP={};
 function bibIdx(){if(BIX)return Promise.resolve(BIX);
   if(!BIXP)BIXP=Promise.all([fetch('biblia/bib/idx.json').then(r=>{if(!r.ok)throw 0;return r.json()}),fetch('biblia/bib/alias.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([d,a])=>{
-    d.al={};Object.entries(a).forEach(([k,v])=>d.al[norm(k).trim()]=v);d.nn=d.e.map(r=>nWords(r[0]));d.byName={};d.e.forEach((r,i)=>d.byName[r[0].toLowerCase()]=i);return BIX=d}).catch(e=>{BIXP=null;throw e});return BIXP}
+    d.al=Object.create(null);Object.entries(a).forEach(([k,v])=>d.al[norm(k).trim()]=v);d.nn=d.e.map(r=>nWords(r[0]));d.byName={};d.e.forEach((r,i)=>d.byName[r[0].toLowerCase()]=i);return BIX=d}).catch(e=>{BIXP=null;throw e});return BIXP}
 const bLetter=n=>{const c=norm(n).charAt(0);return c>='a'&&c<='z'?c:'0'};
 function bibChunk(name){const L=bLetter(name);if(BCH[L])return Promise.resolve(BCH[L]);if(!BCHP[L])BCHP[L]=fetch('biblia/bib/'+L+'.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>BCH[L]=d).catch(e=>{BCHP[L]=null;throw e});return BCHP[L]}
 function bibSearch0(q){const d=BIX;if(!d)return[];const qn=norm(q).replace(/[^a-z0-9]+/g,' ').trim();if(qn.length<2)return[];
@@ -367,17 +367,25 @@ function bibSearch0(q){const d=BIX;if(!d)return[];const qn=norm(q).replace(/[^a-
   return out.sort((a,b)=>b[1]-a[1]||d.e[b[0]][1]-d.e[a[0]][1]).slice(0,50).map(x=>x[0])}
 /* Formas das palavras -> palavra de dicionário (cidades→cidade, respondeu→responder, díjole→decir) */
 const LEMD={},LEMP={};
+const own=(o,k)=>o&&Object.prototype.hasOwnProperty.call(o,k)&&Array.isArray(o[k])?o[k]:[];
 let ALN=null,ALNP=null;
 function alnLoad(){if(ALN)return Promise.resolve(ALN);if(!ALNP)ALNP=fetch('biblia/lex/alinh.json?v=1').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>ALN=d).catch(()=>{ALNP=null;return null});return ALNP}
 // palavra que o dicionário não traz como tradução: o que o texto original traz nos mesmos versículos
 function alnOf(q){if(!ALN)return[];const qn=norm(q).replace(/[^a-z]+/g,' ').trim();if(!qn||qn.includes(' '))return[];const L=lxLang(),O=L==='pt'?'es':'pt';
-  for(const w of [qn,...lemOf(q)]){const r=(ALN[L]||{})[w]||(ALN[O]||{})[w];if(r)return r}return[]}
+  for(const w of [qn,...lemOf(q)]){const r=own(ALN[L],w).length?own(ALN[L],w):own(ALN[O],w);if(r.length)return r}return[]}
 function lemLoad(L){L=L||lxLang();if(LEMD[L])return Promise.resolve(LEMD[L]);if(!LEMP[L])LEMP[L]=fetch('biblia/lex/lem-'+L+'.json?v=1').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>LEMD[L]=d).catch(()=>{LEMP[L]=null;return null});return LEMP[L]}
 function lemOf(q){const qn=norm(q).replace(/[^a-z]+/g,' ').trim();if(!qn||qn.includes(' ')||qn.length<3)return[];const L=lxLang(),O=L==='pt'?'es':'pt';
-  const D=(LEMD[L]||{}).f,D2=(LEMD[O]||{}).f;const out=[...((D&&D[qn])||[]),...((D2&&D2[qn])||[])];
+  const D=(LEMD[L]||{}).f,D2=(LEMD[O]||{}).f;const out=[...own(D,qn),...own(D2,qn)];
   if(qn.length>4)[[/oes$/,'ao'],[/aes$/,'ao'],[/ns$/,'m'],[/is$/,'l'],[/ces$/,'z'],[/es$/,''],[/s$/,'']].forEach(([a,b])=>{if(a.test(qn))out.push(qn.replace(a,b))});
   return[...new Set(out)].filter(x=>x&&x!==qn&&x.length>2)}
-const lemEn=w=>{const n=norm(w).trim();for(const L of [lxLang(),lxLang()==='pt'?'es':'pt']){const e=(LEMD[L]||{}).e;if(e&&e[n])return e[n]}return''};
+const LREV={};
+// todas as formas da mesma palavra na Bíblia: cidade → cidade, cidades
+function lemFam(q){const L=lxLang();const D=(LEMD[L]||{}).f;const qn=norm(q).replace(/[^a-z]+/g,' ').trim();if(!D||!qn||qn.includes(' '))return[];
+  if(!LREV[L]){const m=Object.create(null);Object.entries(D).forEach(([f,ls])=>ls.forEach(l=>{(m[l]=m[l]||[]).push(f)}));LREV[L]=m}
+  const lem=new Set([qn,...own(D,qn)]);const out=new Set();lem.forEach(l=>{out.add(l);(LREV[L][l]||[]).forEach(f=>out.add(f))});
+  // só formas cujo lema é um dos lemas buscados (evita juntar palavras diferentes)
+  return[...out].filter(f=>f===qn||lem.has(f)||own(D,f).some(l=>lem.has(l)))}
+const lemEn=w=>{const n=norm(w).trim();for(const L of [lxLang(),lxLang()==='pt'?'es':'pt']){const e=(LEMD[L]||{}).e;if(e&&Object.prototype.hasOwnProperty.call(e,n))return e[n]}return''};
 const noLem=q=>/[֐-׿Ͱ-Ͽἀ-῿\d]/.test(q);
 function lxSearch(k,q){const r=lxSearch0(k,q);if(r.length||noLem(q))return r;for(const l of lemOf(q)){const x=lxSearch0(k,l);if(x.length){x.via=l;return x}}
   const d=LXI[k];if(d){const P=k==='g'?'G':'H';const x=alnOf(q).filter(a=>a[0][0]===P).map(a=>d.e.find(e=>e[0]===+a[0].slice(1))).filter(Boolean);if(x.length){x.aln=q.trim();return x}}return r}
@@ -624,7 +632,7 @@ function curHtml(){const l=cuL();
   const chips=`<div class="chips">${[['',t('cu_all')],['fav',t('cu_fav')],['hist',t('cu_hist')],...Object.entries(CUR.cats).map(([k,v])=>[k,v[l]])].map(([k,v])=>`<button class="chip" data-cu="cat" data-k="${k}" aria-pressed="${CV.cat===k}">${k==='fav'?ic('star'):k==='hist'?ic('undo'):''}${esc(v)}</button>`).join('')}</div>`;
   return head+chips+`<div id="cuRes">${curResHtml()}</div>`}
 /* lo que no está en las curiosidades se busca también en el Diccionario Bíblico (sin conexión, fuentes verificadas) */
-function curDicHtml(){const tk=norm(CV.q).replace(/[^a-z0-9]+/g,' ').trim().split(' ').filter(w=>w.length>2&&!CU_STOP.has(w)&&!['significa','quiso','dice','hizo','fue','era','esta','estava'].includes(w));if(!tk.length)return'';
+function curDicHtml(){lemLoad();const tk=norm(CV.q).replace(/[^a-z0-9]+/g,' ').trim().split(' ').filter(w=>w.length>2&&!CU_STOP.has(w)&&!['significa','quiso','dice','hizo','fue','era','esta','estava'].includes(w));if(!tk.length)return'';
   if(!BIX||!PREG){Promise.all([bibIdx(),loadPreg()]).then(()=>{const r=$('#cuRes');if(r&&view.tab==='cur')r.innerHTML=curResHtml()}).catch(()=>{});return''}
   const L=lxLang(),pt=L==='pt',C=lxCache(L);const seen=new Set();const items=[];
   for(const w of tk){pregSearch(w).slice(0,3).forEach(i=>{if(!seen.has('p'+i)){seen.add('p'+i);const e=PREG.e[i];items.push(`<button class="cu-item" data-cu="dic" data-k="p" data-id="${i}"><span class="cu-q"><b>${esc(pt?e[0]:e[1])}</b><small>${esc((pt?e[2]:e[3]).slice(0,90))}…</small></span>${ic('next')}</button>`)}});
@@ -656,7 +664,8 @@ function bqParse(q,L){const n=norm(q).replace(/[^a-z0-9]+/g,' ').trim();if(!n)re
   return{how,tk:tk.filter(w=>!/^\d+$/.test(w)||w.length<4),label:tk.join(' ')}}
 function bqRun(P,L){const V=bibNorm(L);if(!V)return null;const hit=[];let total=0,mode='phrase';
   const count=(s,alts)=>{let c=0;for(const a of alts){let i=s.indexOf(' '+a+' ');while(i>=0){c++;i=s.indexOf(' '+a+' ',i+a.length+1)}}return c};
-  if(P.alts){const al=P.alts.slice().sort((a,b)=>b.length-a.length);const NW=L==='pt'?NW_PT:NW_ES;
+  if(P.fam){V.forEach(v=>{const c=count(v[3],P.fam);if(c){total+=c;hit.push(v)}})}
+  else if(P.alts){const al=P.alts.slice().sort((a,b)=>b.length-a.length);const NW=L==='pt'?NW_PT:NW_ES;
     // el número solo: no cuenta 42 («cuarenta y dos»), 140 («ciento cuarenta») ni 40.000 («cuarenta mil»)
     const part=(s,i,k)=>{const b=s.slice(0,i).trim().split(' ').slice(-2),a=s.slice(i+k.length).trim().split(' ').slice(0,2);const isN=w=>NW.has(w)||/^veinti/.test(w);
       return isN(b[b.length-1])||((b[b.length-1]==='e'||b[b.length-1]==='y')&&isN(b[0]))||isN(a[0])||((a[0]==='e'||a[0]==='y')&&isN(a[1]))};
@@ -680,13 +689,15 @@ function curBibleHtml(){const q=CV.q.trim();if(q.length<2)return'';const L=lxLan
   return`<span class="sect cu-sect">${esc(t('bq_t'))}</span>
    <div class="bq-card"><p class="bq-h">${esc(head)}</p>
     ${R.hit.length?`<p class="bq-s">${esc(t('bq_ot',{a:R.ot,b:R.nt}))}</p><p class="bq-s">${esc(t('bq_top'))}: ${esc(R.top.map(([b,n])=>`${t('books',null,L)[b]} (${n})`).join(' · '))}</p>`:''}
+    ${(()=>{if(P.alts||P.tk.length!==1||R.mode!=='phrase')return'';const fam=lemFam(P.tk[0]);if(fam.length<2)return'';const R2=bqRun({fam},L);if(!R2||R2.total<=R.total)return'';
+      return`<p class="bq-s">${esc(t('bq_fam',{f:fam.slice(0,6).join(', ')+(fam.length>6?'…':''),n:R2.total,m:R2.hit.length}))}</p>`})()}
     <p class="bq-note">${esc(t(P.alts?'bq_note_n':'bq_note'))}</p>
     ${R.hit.length?`<div class="row" style="gap:8px"><button class="btn sm ghost" data-cu="bqshare">${ic('share')}${esc(t('cu_share'))}</button></div>`:''}</div>
    ${R.hit.length&&!isPremium()?`<button class="pk-card" data-cu="bqlock">${ic('lock')}<span><b>${esc(t('pk_bqv',{n:R.hit.length}))} <span class="prem sm">PREMIUM</span></b><span>${esc(t('pk_bq'))}</span></span></button>`:''}
    ${R.hit.length&&isPremium()?`<div class="cu-list">${rows}</div>${R.hit.length>BQ.n?`<button class="btn ghost block" data-cu="bqmore">${esc(t('bq_more',{n:R.hit.length-BQ.n}))}</button>`:''}`:''}`}
-Object.assign(I18N.es,{bq_t:'En toda la Biblia',bq_cnt:'«{w}» aparece {n} veces en {m} versículos ({v}).',bq_cnt1:'«{w}» aparece 1 vez ({v}).',bq_all:'{n} versículos tienen las palabras {w} ({v}).',bq_none:'«{w}» no aparece en la {v}.',
+Object.assign(I18N.es,{bq_fam:'Contando también las otras formas de la palabra ({f}): {n} veces en {m} versículos.',bq_t:'En toda la Biblia',bq_cnt:'«{w}» aparece {n} veces en {m} versículos ({v}).',bq_cnt1:'«{w}» aparece 1 vez ({v}).',bq_all:'{n} versículos tienen las palabras {w} ({v}).',bq_none:'«{w}» no aparece en la {v}.',
   bq_ot:'Antiguo Testamento: {a} versículos · Nuevo Testamento: {b}',bq_top:'Libros donde más aparece',bq_note:'Cuenta la palabra exacta en esta traducción. Otras versiones pueden variar un poco.',bq_note_n:'Cuenta el número solo, escrito con letras en esta traducción (por ejemplo «cuarenta»). No cuenta números mayores que lo contienen, como 42, 140 o 40.000. Otras versiones pueden variar un poco.',bq_more:'Ver {n} versículos más'});
-Object.assign(I18N.pt,{bq_t:'Em toda a Bíblia',bq_cnt:'«{w}» aparece {n} vezes em {m} versículos ({v}).',bq_cnt1:'«{w}» aparece 1 vez ({v}).',bq_all:'{n} versículos têm as palavras {w} ({v}).',bq_none:'«{w}» não aparece na {v}.',
+Object.assign(I18N.pt,{bq_fam:'Contando também as outras formas da palavra ({f}): {n} vezes em {m} versículos.',bq_t:'Em toda a Bíblia',bq_cnt:'«{w}» aparece {n} vezes em {m} versículos ({v}).',bq_cnt1:'«{w}» aparece 1 vez ({v}).',bq_all:'{n} versículos têm as palavras {w} ({v}).',bq_none:'«{w}» não aparece na {v}.',
   bq_ot:'Antigo Testamento: {a} versículos · Novo Testamento: {b}',bq_top:'Livros onde mais aparece',bq_note:'Conta a palavra exata nesta tradução. Outras versões podem variar um pouco.',bq_note_n:'Conta o número sozinho, escrito por extenso nesta tradução (por exemplo «quarenta»). Não conta números maiores que o contêm, como 42, 140 ou 40 mil. Outras versões podem variar um pouco.',bq_more:'Ver mais {n} versículos'});
 function curResHtml(){const l=cuL();let list=CV.q.trim()?curSearch(CV.q):CUR.e.slice();const F=cuFavs();
   if(CV.cat==='fav')list=list.filter(e=>F.includes(e.id));else if(CV.cat==='hist'){const H=cuHist();list=H.map(id=>CUR.by[id]).filter(Boolean).filter(e=>list.includes(e));if(!list.length)return`<div class="empty"><p style="margin:0">${esc(t('cu_nohist'))}</p></div>`}else if(CV.cat)list=list.filter(e=>e.cat===CV.cat);
@@ -1029,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v107';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v108';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
