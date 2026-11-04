@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /app/biblia/
 Disallow: /tools/
+Disallow: /escritorio/
 
 Sitemap: https://meupulpito.com/sitemap.xml

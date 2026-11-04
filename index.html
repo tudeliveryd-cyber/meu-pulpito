@@ -258,6 +258,14 @@ section{scroll-margin-top:72px}
 
 /* preguntas */
 .faq{max-width:780px;margin:0 auto;border-top:1px solid var(--line)}
+.ct{max-width:780px;margin:44px auto 0;padding:28px;border-radius:22px;background:#fff;box-shadow:0 0 0 1px var(--line) inset,0 10px 30px rgba(11,18,32,.06)}
+.ct h3{margin:0 0 6px;font-family:var(--head);font-size:22px;color:var(--ink)}.ct>p{margin:0 0 18px;color:var(--muted);line-height:1.55}
+.ct form{display:flex;flex-direction:column;gap:14px;position:relative}.ct-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ct label{display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.ct input,.ct textarea{font:inherit;font-weight:400;font-size:15.5px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--soft);color:var(--ink);outline:none}
+.ct input:focus,.ct textarea:focus{border-color:var(--gold);background:#fff}.ct textarea{resize:vertical}.ct .btn{align-self:flex-start}
+.ct-msg{margin:0;font-size:14px;min-height:1em}.ct-msg.ok{color:#15803D}.ct-msg.err{color:#B91C1C}
+@media (max-width:600px){.ct{padding:20px}.ct-row{grid-template-columns:1fr}.ct .btn{align-self:stretch}}
 .faq details{border-bottom:1px solid var(--line)}
 .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 4px;font-family:var(--head);font-weight:700;font-size:18px;color:var(--ink)}
 .faq summary::-webkit-details-marker{display:none}
@@ -438,6 +446,17 @@ footer .soc svg{width:18px;height:18px}
     <div class="wrap">
       <div class="sec-h rv"><span class="eyebrow" data-t="q_eye"></span><h2 data-t="q_t"></h2></div>
       <div class="faq rv" id="faq"></div>
+      <div class="ct rv" id="contato">
+        <h3 data-t="ct_t"></h3><p data-t="ct_d"></p>
+        <form id="ctF" novalidate>
+          <div class="ct-row"><label><span data-t="ct_n"></span><input id="ctN" maxlength="80" autocomplete="name" required></label>
+          <label><span data-t="ct_w"></span><input id="ctW" maxlength="30" inputmode="tel" autocomplete="tel" placeholder="+595 9…"></label></div>
+          <label><span data-t="ct_q"></span><textarea id="ctQ" rows="4" maxlength="1500" required></textarea></label>
+          <input id="ctH" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
+          <button class="btn gold" type="submit" id="ctGo"><span data-t="ct_go"></span></button>
+          <p class="ct-msg" id="ctM" role="status"></p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -510,7 +529,7 @@ var T={es:{
   p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
   ab_eye:'Quiénes somos',ab_t:'Hecho por un pastor, para pastores.',ab_d:'Meu Púlpito nació de la rutina de un pastor que prepara mensajes cada semana y predica en español y en portugués, a veces el mismo mensaje en los dos idiomas. Cada función fue pensada para lo que pasa de verdad entre el estudio y el púlpito: escribir con calma, estudiar el texto original y predicar con la mente libre.',ab_r:'Fundador de Meu Púlpito · Paraguay',
   t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',t_play:'Reproducir el testimonio',
-  q_eye:'Preguntas frecuentes',q_t:'Lo que más nos preguntan.',
+  q_eye:'Preguntas frecuentes',ct_t:'¿Todavía tiene una duda? Escríbanos',ct_d:'Respondemos por WhatsApp o por correo. Si ya usa la app, también puede hablar con el soporte en Configuración.',ct_n:'Su nombre',ct_w:'Su WhatsApp',ct_q:'Su mensaje',ct_go:'Enviar mensaje',ct_ok:'¡Mensaje enviado! Le responderemos pronto.',ct_err:'No se pudo enviar ahora. Intente de nuevo o escríbanos por WhatsApp.',ct_need:'Escriba su nombre y su mensaje.',ct_wait:'Su mensaje ya fue enviado. Espere un momento para enviar otro.',q_t:'Lo que más nos preguntan.',
   faq:[['¿En qué dispositivos funciona?','En celular, tablet y computadora (iPhone, iPad, Android, Windows y Mac), desde el navegador. En la tablet y la computadora tiene un menú lateral y más espacio para estudiar. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
    ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones, la Reina-Valera 1909 y la Bíblia Livre quedan guardados en el celular, de modo que puede predicar aunque no tenga señal. Las demás versiones se descargan la primera vez que las abre.'],
    ['¿Qué versiones de la Biblia trae?','10 versiones: 6 en español (Reina-Valera 1909 y 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre y Biblia Libre para el Mundo) y 4 en portugués (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre y Bíblia Portuguesa Mundial), además del hebreo y el griego originales. En el plan gratis tiene la Reina-Valera 1909 y la Bíblia Livre; con Premium, todas.'],
@@ -554,7 +573,7 @@ var T={es:{
   p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
   ab_eye:'Quem somos',ab_t:'Feito por um pastor, para pastores.',ab_d:'O Meu Púlpito nasceu da rotina de um pastor que prepara mensagens toda semana e prega em português e em espanhol, às vezes a mesma mensagem nos dois idiomas. Cada função foi pensada para o que acontece de verdade entre o estudo e o púlpito: escrever com calma, estudar o texto original e pregar com a mente livre.',ab_r:'Fundador do Meu Púlpito · Paraguai',
   t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',t_play:'Reproduzir o depoimento',
-  q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
+  q_eye:'Perguntas frequentes',ct_t:'Ainda tem dúvida? Escreva para nós',ct_d:'Respondemos pelo WhatsApp ou por e-mail. Se você já usa o app, também pode falar com o suporte em Configurações.',ct_n:'Seu nome',ct_w:'Seu WhatsApp',ct_q:'Sua mensagem',ct_go:'Enviar mensagem',ct_ok:'Mensagem enviada! Vamos responder em breve.',ct_err:'Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp.',ct_need:'Escreva seu nome e sua mensagem.',ct_wait:'Sua mensagem já foi enviada. Aguarde um pouco para enviar outra.',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No celular, no tablet e no computador (iPhone, iPad, Android, Windows e Mac), pelo navegador. No tablet e no computador há um menu lateral e mais espaço para estudar. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
    ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões, a Bíblia Livre e a Reina-Valera 1909 ficam guardados no celular, então você pode pregar mesmo sem sinal. As outras versões são baixadas na primeira vez que você abre.'],
    ['Quais versões da Bíblia estão incluídas?','10 versões: 4 em português (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre e Bíblia Portuguesa Mundial) e 6 em espanhol (Reina-Valera 1909 e 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre e Biblia Libre para el Mundo), além do hebraico e do grego originais. No plano grátis você tem a Bíblia Livre e a Reina-Valera 1909; com o Premium, todas.'],
@@ -635,6 +654,14 @@ function origin(){var r='';try{r=document.referrer?new URL(document.referrer).ho
 function visit(){var f=[];try{if(sessionStorage.getItem('mp.sv'))return;sessionStorage.setItem('mp.sv','1')}catch(e){}
   f.push('v',L,/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?'mob':'dsk',country(),origin());
   try{var d=today();if(localStorage.getItem('mp.su')!==d){localStorage.setItem('mp.su',d);f.push('u')}}catch(e){}track(f)}
+// «Fale conosco»: a mensagem vai para o Escritório do Meu Púlpito
+document.getElementById('ctF').addEventListener('submit',function(e){e.preventDefault();var D=T[L],m=document.getElementById('ctM'),b=document.getElementById('ctGo');
+  var n=document.getElementById('ctN').value.trim(),w=document.getElementById('ctW').value.trim(),q=document.getElementById('ctQ').value.trim();
+  if(document.getElementById('ctH').value)return;if(!n||!q){m.textContent=D.ct_need;m.className='ct-msg err';return}
+  try{var last=+localStorage.getItem('mp.ct')||0;if(Date.now()-last<120000){m.textContent=D.ct_wait;m.className='ct-msg';return}}catch(x){}
+  b.disabled=true;fb().then(function(o){return o.F.addDoc(o.F.collection(o.db,'contato'),{n:n.slice(0,80),wa:w.slice(0,30),q:q.slice(0,1500),l:L,at:Date.now()})}).then(function(){
+    try{localStorage.setItem('mp.ct',String(Date.now()))}catch(x){}m.textContent=D.ct_ok;m.className='ct-msg ok';document.getElementById('ctQ').value='';b.disabled=false})
+  .catch(function(){m.textContent=D.ct_err;m.className='ct-msg err';b.disabled=false})});
 var idle=window.requestIdleCallback||function(f){setTimeout(f,600)};
 function fxLoad(){if(window.MP_CUR&&!MP_CUR.fixed()&&!MP_CUR.local(1e5))MP_CUR.load(apply)}
 if(document.readyState==='complete')idle(function(){loadRemote();visit();fxLoad()});else addEventListener('load',function(){idle(function(){loadRemote();visit();fxLoad()})});

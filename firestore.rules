@@ -59,6 +59,29 @@ service cloud.firestore {
         && request.resource.data.ref is string && request.resource.data.ref.size() <= 12;
       allow update, delete: if isAdmin();
     }
+    // Atendimento: conversa de cada pastor com o suporte. Só ele e o administrador leem.
+    match /suporte/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['n','e','l','last','at','ua','uu'])
+        && request.resource.data.last is string && request.resource.data.last.size() <= 200;
+      match /m/{mid} {
+        allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+        allow create: if request.auth != null && request.resource.data.keys().hasOnly(['t','f','at'])
+          && request.resource.data.t is string && request.resource.data.t.size() <= 2000
+          && ((request.auth.uid == uid && request.resource.data.f == 'u') || (isAdmin() && request.resource.data.f == 'a'));
+        allow delete: if isAdmin();
+      }
+    }
+    // Mensagens do formulário «Fale conosco» do site (sem conta). Qualquer um envia; só o administrador lê.
+    match /contato/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['n','wa','q','l','at'])
+        && request.resource.data.n is string && request.resource.data.n.size() > 0 && request.resource.data.n.size() <= 80
+        && request.resource.data.wa is string && request.resource.data.wa.size() <= 30
+        && request.resource.data.q is string && request.resource.data.q.size() > 0 && request.resource.data.q.size() <= 1500;
+      allow read, update, delete: if isAdmin();
+    }
     match /planos/{uid} {
       allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
       allow write: if isAdmin();
