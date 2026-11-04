@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v101';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v102';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1273,10 +1273,10 @@ function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><
 
 /* ---------- Panel del sitio meupulpito.com (solo administrador) ---------- */
 async function admSite(){if(!isAdmin())return;let S={};try{const d=await firebase.firestore().collection('config').doc('site').get();S=d.exists?d.data():{}}catch(e){toast(t('adm_err'));return}
-  const B=S.bar||{},H=S.hero||{};let TS=(Array.isArray(S.testi)?S.testi:[]).map(x=>Object.assign({q:'',n:'',r:'',on:true},x));
+  const B=S.bar||{},H=S.hero||{};let TS=(Array.isArray(S.testi)?S.testi:[]).map(x=>Object.assign({q:'',n:'',r:'',v:'',on:true},x));
   const tRow=(x,i)=>`<div class="as-t" data-i="${i}"><div class="between"><b style="font-size:14px">${esc(t('as_t_n',{n:i+1}))}</b><span class="row" style="gap:6px"><label class="as-on"><input type="checkbox" data-k="on" ${x.on!==false?'checked':''}>${esc(t('as_show'))}</label><button class="iconbtn sm" data-del="${i}" aria-label="${esc(t('del_forever'))}">${ic('trash')}</button></span></div>
     <textarea class="inp" rows="3" data-k="q" placeholder="${esc(t('as_q_ph'))}">${esc(x.q)}</textarea>
-    <input class="inp" data-k="n" value="${esc(x.n)}" placeholder="${esc(t('as_n_ph'))}"><input class="inp" data-k="r" value="${esc(x.r)}" placeholder="${esc(t('as_r_ph'))}"></div>`;
+    <input class="inp" data-k="n" value="${esc(x.n)}" placeholder="${esc(t('as_n_ph'))}"><input class="inp" data-k="r" value="${esc(x.r)}" placeholder="${esc(t('as_r_ph'))}"><input class="inp" data-k="v" value="${esc(x.v||'')}" placeholder="${esc(t('as_v_ph'))}" inputmode="url" autocapitalize="off"></div>`;
   const sh=openSheet(`<h3>${esc(t('as_btn'))}</h3>
     <span class="lbl">${esc(t('as_bar'))}</span>
     <label class="prow" style="padding:0;gap:12px"><span><span class="k">${esc(t('as_bar_on'))}</span><span class="s">${esc(t('as_bar_d'))}</span></span><input type="checkbox" id="asB" ${B.on?'checked':''} style="width:24px;height:24px;flex:none"></label>
@@ -1290,13 +1290,14 @@ async function admSite(){if(!isAdmin())return;let S={};try{const d=await firebas
     <button class="btn ghost block" id="asAdd">${ic('plus')}${esc(t('as_add'))}</button>
     <button class="btn gold block" id="asGo">${esc(t('ad_save'))}</button>
     <a class="lnk" href="/" target="_blank" rel="noopener" style="align-self:center;padding:8px">${esc(t('as_view'))}</a>`,{cls:'big ns'});
-  const read=()=>{TS=$$('.as-t',sh).map(el=>({q:$('[data-k=q]',el).value.trim(),n:$('[data-k=n]',el).value.trim(),r:$('[data-k=r]',el).value.trim(),on:$('[data-k=on]',el).checked}))};
+  const read=()=>{TS=$$('.as-t',sh).map(el=>({q:$('[data-k=q]',el).value.trim(),n:$('[data-k=n]',el).value.trim(),r:$('[data-k=r]',el).value.trim(),v:$('[data-k=v]',el).value.trim(),on:$('[data-k=on]',el).checked}))};
   const draw=()=>{$('#asTL',sh).innerHTML=TS.length?TS.map(tRow).join(''):`<p class="sub" style="margin:0;font-size:13px">${esc(t('as_none'))}</p>`};draw();
-  $('#asAdd',sh).onclick=()=>{read();TS.push({q:'',n:'',r:'',on:true});draw();const l=$$('.as-t textarea',sh).pop();if(l)l.focus()};
+  $('#asAdd',sh).onclick=()=>{read();TS.push({q:'',n:'',r:'',v:'',on:true});draw();const l=$$('.as-t textarea',sh).pop();if(l)l.focus()};
   $('#asTL',sh).onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;read();TS.splice(+b.dataset.del,1);draw()};
   $('#asGo',sh).onclick=async()=>{read();const v=id=>$(id,sh).value.trim();let url=v('#asBu');if(url&&!/^https?:\/\//.test(url))url='https://'+url;
     const site={bar:{on:$('#asB',sh).checked,es:v('#asBes'),pt:v('#asBpt'),url},hero:{es:{t:v('#asHes'),d:v('#asDes')},pt:{t:v('#asHpt'),d:v('#asDpt')}},
-      testi:TS.filter(x=>x.q&&x.n).map(x=>({q:x.q.slice(0,600),n:x.n.slice(0,80),r:x.r.slice(0,120),on:x.on})),updated:Date.now()};
+      testi:TS.filter(x=>x.q&&x.n).map(x=>({q:x.q.slice(0,600),n:x.n.slice(0,80),r:x.r.slice(0,120),v:/^https:\/\/\S+$/.test(x.v||'')?x.v.slice(0,300):'',on:x.on})),updated:Date.now()};
+    const badV=TS.find(x=>x.v&&!/^https:\/\/\S+$/.test(x.v));if(badV){toast(t('as_v_bad'));return}
     if(site.bar.on&&!site.bar.es&&!site.bar.pt){toast(t('as_bar_need'));return}
     try{await firebase.firestore().collection('config').doc('site').set(site);closeSheet();toast(t('as_saved'))}catch(e){toast(t('adm_err'))}}}
 const VK={c:[['cPY','Paraguay'],['cBR','Brasil'],['cAR','Argentina'],['cBO','Bolivia'],['cUS','EE. UU.'],['cOT','other']],r:[['rIG','Instagram'],['rWA','WhatsApp'],['rGG','Google'],['rFB','Facebook'],['rDI','direct']],l:[['es','Español'],['pt','Português']],d:[['mob','mobile'],['dsk','desktop']]};
@@ -1323,13 +1324,13 @@ async function admVisits(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t(
 Object.assign(I18N.es,{as_sec:'Sitio meupulpito.com',as_btn:'Textos y testimonios',av_btn:'Visitas del sitio',as_note:'Precios, límites del plan gratis y WhatsApp de «Precios y pruebas» también aparecen en el sitio.',
   as_bar:'Aviso en la parte de arriba',as_bar_on:'Mostrar aviso',as_bar_d:'Una franja dorada arriba del sitio, por ejemplo para una promoción.',as_bar_ph_es:'Ej.: Promoción de lanzamiento: 20% en el plan anual',as_bar_ph_pt:'Ex.: Promoção de lançamento: 20% no plano anual',as_bar_url:'Enlace al tocar (opcional)',as_bar_need:'Escriba el texto del aviso',
   as_hero:'Título principal',as_hero_d:'Deje en blanco para usar el texto original.',as_sub:'Subtítulo',as_testi:'Testimonios',as_testi_d:'Solo testimonios reales, con autorización de la persona. Aparecen en el sitio cuando hay al menos uno marcado.',
-  as_t_n:'Testimonio {n}',as_show:'Mostrar',as_q_ph:'Lo que dijo, con sus palabras',as_n_ph:'Nombre (ej.: Pr. Luis Gómez)',as_r_ph:'Iglesia · Ciudad',as_add:'Agregar testimonio',as_none:'Todavía no hay testimonios.',as_saved:'Sitio actualizado',as_view:'Ver el sitio',
+  as_t_n:'Testimonio {n}',as_show:'Mostrar',as_q_ph:'Lo que dijo, con sus palabras',as_n_ph:'Nombre (ej.: Pr. Luis Gómez)',as_r_ph:'Iglesia · Ciudad',as_add:'Agregar testimonio',as_v_ph:'Video (opcional): link de YouTube o de un archivo .mp4',as_v_bad:'El link del video debe empezar con https://',as_none:'Todavía no hay testimonios.',as_saved:'Sitio actualizado',as_view:'Ver el sitio',
   av_7:'7 días',av_30:'30 días',av_today:'Hoy',av_visits:'Visitas',av_people:'Personas',av_go:'Tocaron Acceder',av_wa:'Tocaron WhatsApp',av_conv:'Fueron al app',av_per_day:'Visitas por día',av_country:'País',av_from:'De dónde vinieron',av_lang:'Idioma',av_dev:'Aparato',
   av_other:'Otros',av_direct:'Directo / otro',av_mobile:'Celular',av_desktop:'Computadora',av_err:'No se pudo cargar. Verifique que publicó las reglas nuevas de Firebase.',av_note:'Solo números, sin datos de las personas. No cuenta sus propias visitas desde este celular. «Personas» cuenta cada aparato una vez por día.'});
 Object.assign(I18N.pt,{as_sec:'Site meupulpito.com',as_btn:'Textos e depoimentos',av_btn:'Visitas do site',as_note:'Preços, limites do plano grátis e WhatsApp de «Preços e testes» também aparecem no site.',
   as_bar:'Aviso no topo',as_bar_on:'Mostrar aviso',as_bar_d:'Uma faixa dourada no topo do site, por exemplo para uma promoção.',as_bar_ph_es:'Ej.: Promoción de lanzamiento: 20% en el plan anual',as_bar_ph_pt:'Ex.: Promoção de lançamento: 20% no plano anual',as_bar_url:'Link ao tocar (opcional)',as_bar_need:'Escreva o texto do aviso',
   as_hero:'Título principal',as_hero_d:'Deixe em branco para usar o texto original.',as_sub:'Subtítulo',as_testi:'Depoimentos',as_testi_d:'Só depoimentos reais, com autorização da pessoa. Aparecem no site quando há pelo menos um marcado.',
-  as_t_n:'Depoimento {n}',as_show:'Mostrar',as_q_ph:'O que a pessoa disse, com as palavras dela',as_n_ph:'Nome (ex.: Pr. Luis Gómez)',as_r_ph:'Igreja · Cidade',as_add:'Adicionar depoimento',as_none:'Ainda não há depoimentos.',as_saved:'Site atualizado',as_view:'Ver o site',
+  as_t_n:'Depoimento {n}',as_show:'Mostrar',as_q_ph:'O que a pessoa disse, com as palavras dela',as_n_ph:'Nome (ex.: Pr. Luis Gómez)',as_r_ph:'Igreja · Cidade',as_add:'Adicionar depoimento',as_v_ph:'Vídeo (opcional): link do YouTube ou de um arquivo .mp4',as_v_bad:'O link do vídeo deve começar com https://',as_none:'Ainda não há depoimentos.',as_saved:'Site atualizado',as_view:'Ver o site',
   av_7:'7 dias',av_30:'30 dias',av_today:'Hoje',av_visits:'Visitas',av_people:'Pessoas',av_go:'Tocaram Acessar',av_wa:'Tocaram WhatsApp',av_conv:'Foram ao app',av_per_day:'Visitas por dia',av_country:'País',av_from:'De onde vieram',av_lang:'Idioma',av_dev:'Aparelho',
   av_other:'Outros',av_direct:'Direto / outro',av_mobile:'Celular',av_desktop:'Computador',av_err:'Não foi possível carregar. Confira se publicou as regras novas do Firebase.',av_note:'Só números, sem dados das pessoas. Não conta as suas próprias visitas deste celular. «Pessoas» conta cada aparelho uma vez por dia.'});
 

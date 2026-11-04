@@ -240,6 +240,12 @@ section{scroll-margin-top:72px}
 .tq b{display:block;font-family:var(--head);font-weight:700;color:var(--ink);font-size:15px}
 .tq small{display:block;color:var(--muted);font-size:13.5px}
 @media (max-width:900px){.testi{grid-template-columns:1fr;max-width:620px;margin:0 auto}}
+.tv,.tv-v,.tv-f{display:block;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--navy);border:0;padding:0;position:relative;cursor:pointer}
+.tv img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .2s}.tv:hover img{opacity:1}
+.tv-p{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.tq .tv-p svg.i{color:var(--navy);width:26px;height:26px;fill:currentColor!important;stroke:none!important;margin-left:3px}
+.tv-f{border:0}
+.tq.has-v{padding-top:18px}
 
 /* preguntas */
 .faq{max-width:780px;margin:0 auto;border-top:1px solid var(--line)}
@@ -278,7 +284,7 @@ footer .soc svg{width:18px;height:18px}
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="qt" viewBox="0 0 24 24"><path d="M9.5 7C6.5 7.8 5 10 5 13v4h5v-5H7.3c.2-1.7 1.1-2.8 2.7-3.4zM18.5 7c-3 .8-4.5 3-4.5 6v4h5v-5h-2.7c.2-1.7 1.1-2.8 2.7-3.4z"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></symbol><symbol id="qt" viewBox="0 0 24 24"><path d="M9.5 7C6.5 7.8 5 10 5 13v4h5v-5H7.3c.2-1.7 1.1-2.8 2.7-3.4zM18.5 7c-3 .8-4.5 3-4.5 6v4h5v-5h-2.7c.2-1.7 1.1-2.8 2.7-3.4z"/></symbol>
   <symbol id="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="ar" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="pl" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -494,7 +500,7 @@ var T={es:{
   fp2:'Los mismos beneficios del Premium Mensual',
   p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
   ab_eye:'Quiénes somos',ab_t:'Hecho por un pastor, para pastores.',ab_d:'Meu Púlpito nació de la rutina de un pastor que prepara mensajes cada semana y predica en español y en portugués, a veces el mismo mensaje en los dos idiomas. Cada función fue pensada para lo que pasa de verdad entre el estudio y el púlpito: escribir con calma, estudiar el texto original y predicar con la mente libre.',ab_r:'Fundador de Meu Púlpito · Paraguay',
-  t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',
+  t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',t_play:'Reproducir el testimonio',
   q_eye:'Preguntas frecuentes',q_t:'Lo que más nos preguntan.',
   faq:[['¿En qué dispositivos funciona?','En celular, tablet y computadora (iPhone, iPad, Android, Windows y Mac), desde el navegador. En la tablet y la computadora tiene un menú lateral y más espacio para estudiar. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
    ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones, la Reina-Valera 1909 y la Bíblia Livre quedan guardados en el celular, de modo que puede predicar aunque no tenga señal. Las demás versiones se descargan la primera vez que las abre.'],
@@ -538,7 +544,7 @@ var T={es:{
   fp2:'Os mesmos benefícios do Premium Mensal',
   p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
   ab_eye:'Quem somos',ab_t:'Feito por um pastor, para pastores.',ab_d:'O Meu Púlpito nasceu da rotina de um pastor que prepara mensagens toda semana e prega em português e em espanhol, às vezes a mesma mensagem nos dois idiomas. Cada função foi pensada para o que acontece de verdade entre o estudo e o púlpito: escrever com calma, estudar o texto original e pregar com a mente livre.',ab_r:'Fundador do Meu Púlpito · Paraguai',
-  t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',
+  t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',t_play:'Reproduzir o depoimento',
   q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No celular, no tablet e no computador (iPhone, iPad, Android, Windows e Mac), pelo navegador. No tablet e no computador há um menu lateral e mais espaço para estudar. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
    ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões, a Bíblia Livre e a Reina-Valera 1909 ficam guardados no celular, então você pode pregar mesmo sem sinal. As outras versões são baixadas na primeira vez que você abre.'],
@@ -585,8 +591,14 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
   if(bt){tb.textContent=bt;if(/^https?:\/\//.test(B.url||'')){tb.href=B.url;tb.target='_blank';tb.rel='noopener'}else tb.removeAttribute('href')}
   var TS=(Array.isArray(SITE.testi)?SITE.testi:TESTI).filter(function(t){return t&&t.q&&t.n&&t.on!==false});
   var ts=document.getElementById('testimonios');ts.hidden=!TS.length;
-  if(TS.length)document.getElementById('testi').innerHTML=TS.map(function(t){var ini=t.n.replace(/^(Pr|Pra|Pb|Ev|Rev)\.?\s+/i,'').split(/\s+/).map(function(w){return w[0]}).slice(0,2).join('').toUpperCase();
-    return'<figure class="tq"><svg class="i" style="fill:currentColor;stroke:none"><use href="#qt"/></svg><blockquote>'+esc(t.q)+'</blockquote><figcaption><span class="av">'+esc(ini)+'</span><span><b>'+esc(t.n)+'</b><small>'+esc(t.r||'')+'</small></span></figcaption></figure>'}).join('');
+  // Video: link de YouTube (se carga solo al tocar Reproducir, sin cookies) o archivo .mp4
+  var yt=function(u){var m=String(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([A-Za-z0-9_-]{11})/);return m?m[1]:''};
+  var vid=function(t){var u=String(t.v||'');if(!/^https:\/\//.test(u))return'';var id=yt(u);
+    if(id)return'<button class="tv" type="button" data-yt="'+esc(id)+'" aria-label="'+esc(D.t_play)+'"><img src="https://i.ytimg.com/vi/'+esc(id)+'/hqdefault.jpg" alt="" loading="lazy"><span class="tv-p"><svg class="i"><use href="#play"/></svg></span></button>';
+    if(/\.(mp4|webm|mov)(\?|$)/i.test(u))return'<video class="tv-v" controls preload="metadata" playsinline src="'+esc(u)+'"></video>';return''};
+  TS.sort(function(a,b){return (vid(b)?1:0)-(vid(a)?1:0)});
+  if(TS.length)document.getElementById('testi').innerHTML=TS.map(function(t){var ini=t.n.replace(/^(Pr|Pra|Pb|Ev|Rev)\.?\s+/i,'').split(/\s+/).map(function(w){return w[0]}).slice(0,2).join('').toUpperCase();var v=vid(t);
+    return'<figure class="tq'+(v?' has-v':'')+'">'+(v||'<svg class="i" style="fill:currentColor;stroke:none"><use href="#qt"/></svg>')+'<blockquote>'+esc(t.q)+'</blockquote><figcaption><span class="av">'+esc(ini)+'</span><span><b>'+esc(t.n)+'</b><small>'+esc(t.r||'')+'</small></span></figcaption></figure>'}).join('');
   document.getElementById('faq').innerHTML=D.faq.map(function(q){return'<details><summary>'+esc(q[0])+'<svg class="i"><use href="#pl"/></svg></summary><p>'+esc(q[1])+'</p></details>'}).join('');
 }
 function cfgApply(c){if(!c)return;var a=c.app||{};
@@ -617,7 +629,8 @@ function visit(){var f=[];try{if(sessionStorage.getItem('mp.sv'))return;sessionS
 var idle=window.requestIdleCallback||function(f){setTimeout(f,600)};
 function fxLoad(){if(window.MP_CUR&&!MP_CUR.fixed()&&!MP_CUR.local(1e5))MP_CUR.load(apply)}
 if(document.readyState==='complete')idle(function(){loadRemote();visit();fxLoad()});else addEventListener('load',function(){idle(function(){loadRemote();visit();fxLoad()})});
-document.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;
+document.addEventListener('click',function(e){var b=e.target.closest('.tv[data-yt]');if(b){var f=document.createElement('iframe');f.className='tv-f';f.src='https://www.youtube-nocookie.com/embed/'+b.getAttribute('data-yt')+'?autoplay=1&rel=0';f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;f.title=b.getAttribute('aria-label');b.replaceWith(f);return}
+  var a=e.target.closest('a');if(!a)return;
   if(a.hasAttribute('data-go')&&!noTrack&&!e.metaKey&&!e.ctrlKey){e.preventDefault();var h=a.href,done=false,go=function(){if(!done){done=true;location.href=h}};track(['go']).then(go);setTimeout(go,700)}
   else if(/^https:\/\/wa\.me\//.test(a.href))track(['wa'])});
 document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){L=b.getAttribute('data-l');try{localStorage.setItem('mp.site.l',L)}catch(e){}apply()})});
