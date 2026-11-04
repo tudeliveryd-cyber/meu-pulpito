@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v120';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v121';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1531,7 +1531,7 @@ try{WIDE.addEventListener('change',()=>{if(ready&&!blocked&&!E&&!PG&&!view.overl
 const SUBP=['profile','cur','devo','sug','man'];
 // Accesos directos del ícono instalado (mantener presionado en Android): ./#new, ./#bible, ./#agenda, ./#dic
 function pwaShortcut(){const h=(location.hash||'').slice(1);if(!h)return;try{history.replaceState(null,'',location.pathname)}catch(e){}
-  if(blocked)return;if(h==='new')newSermon();else if(['bible','agenda','dic','list'].includes(h))go(h)}
+  if(blocked)return;if(h==='new')newSermon();else if(['bible','agenda','dic','list','devo','sug','man','cur'].includes(h))go(h)}
 function go(tab){if(SUBP.includes(tab)&&!SUBP.includes(view.tab))view.prev=view.tab;view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0);$('#app').scrollTop=0}
 function render(anim){
   if(!ready)return;if(blocked){showBlocked();return}const sub=SUBP.includes(view.tab);$('#nav').hidden=sub&&!WIDE.matches;document.documentElement.classList.toggle('tabs',!sub);document.documentElement.classList.toggle('subp',sub);drawNav();
