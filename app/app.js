@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v103';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v104';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1465,7 +1465,7 @@ const view={tab:'home',overlay:null};
 let listState={q:'',f:'all',cat:'',mode:'s',nt:'',ser:''};
 const TABS=[['home','home','nav_home'],['list','doc','nav_list'],['bible','bible','nav_bible'],['dic','dict','nav_dic'],['agenda','cal','nav_agenda']];
 const WIDE=matchMedia('(min-width:768px) and (min-height:560px)');
-function drawNav(){$('#navIn').innerHTML=`<div class="nav-brand" aria-hidden="true"><span class="mark"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span><span class="wordmark"><b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b></span></div><button class="nav-new" data-act="new">${ic('plus')}<span>${esc(t('new_sermon'))}</span></button>`
+function drawNav(){$('#navIn').innerHTML=`<div class="nav-brand" aria-hidden="true"><span class="mark"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span><span class="wordmark"><b><span class="w1">MEU</span> <span class="w2">PÚLPITO</span></b></span><small class="nb-tag">${esc(t('tagline'))}</small></div><button class="nav-new" data-act="new">${ic('plus')}<span>${esc(t('new_sermon'))}</span></button>`
   +TABS.map(([k,i,l])=>`<button data-act="tab" data-k="${k}" ${view.tab===k||(k==='home'&&view.tab==='cur')?'aria-current="page"':''}>${ic(i)}<span>${esc(t(l))}</span></button>`).join('')
   +`<button class="nav-set" data-act="tab" data-k="profile" ${view.tab==='profile'?'aria-current="page"':''}>${ic('gear')}<span>${esc(t('nav_profile'))}</span></button>`}
 try{WIDE.addEventListener('change',()=>{if(ready&&!blocked&&!E&&!PG&&!view.overlay)render()})}catch(e){}

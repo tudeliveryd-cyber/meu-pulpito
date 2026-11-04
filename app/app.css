@@ -821,6 +821,9 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
   .nav .in>button svg{width:21px;height:21px}
   .nav-brand{display:flex!important;align-items:center;gap:10px;padding:0 8px 20px}
   .nav-brand .mark img{height:30px;width:auto;display:block}
+  .nav-brand .mark .b-d{display:none}html[data-mode="dark"] .nav-brand .mark .b-d{display:block}html[data-mode="dark"] .nav-brand .mark .b-l{display:none}
+  .nav-brand{flex-wrap:wrap;row-gap:7px}
+  .nav-brand .nb-tag{flex-basis:100%;font-family:var(--head);font-size:8px;font-weight:700;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
   .nav-brand .wordmark b{font-family:var(--head);font-size:15px;font-weight:800;letter-spacing:.01em;white-space:nowrap}
   .nav-brand .w2{color:var(--gold)}
   .nav .in>.nav-new{display:flex!important;background:var(--gold);color:#101827;margin-bottom:14px;font-weight:800}
