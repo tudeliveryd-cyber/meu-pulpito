@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v94';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v95';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1098,7 +1098,8 @@ function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.
    El plan de cada cuenta está en planos/{uid} y SOLO el administrador puede cambiarlo (reglas de Firestore).
    Precios, límites y el «período de pruebas» están en config/app, editables desde el panel.
    ========================================================= */
-const PCFG_DEF={test:true,gate:false,grace:3,warn:7,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:2,dic:3,cur:10}};
+const PCFG_DEF={test:true,gate:false,grace:3,warn:7,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:2,dic:3,cur:10},
+  pay:{bk:{bank:'Itaú',name:'Jean Carlos Borges de Araújo',acc:'',alias:'',doc:'8695734'},pix:{key:'017.836.190-90',name:'Jean Carlos Borges de Araújo',bank:'Nubank'},card:{m:'',t:'',a:''}}};
 let PCFG=Object.assign({},PCFG_DEF,ls.get('mp.pcfg',{}));
 function watchCfg(){try{firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);applyPlan();premWatch();if(ready&&!view.overlay&&!blocked)refreshBg()}},()=>{})}catch(e){}}
 const PMON={m:1,t:3,a:12};
@@ -1163,7 +1164,42 @@ function plansSheet(reason){if(!MC.fixed()&&!MC.local(1e5)){let done=0;const go=
     ${fx?`<p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_fx',{c:MC.name(MC.code(),prefs.ui)}))}</p>`:''}
     <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_cond'))} <a href="/legal.html#terminos" target="_blank" rel="noopener" style="text-decoration:underline">${esc(t('pl_terms'))}</a></p></div>`,{cls:'tall'});
   sh.addEventListener('click',e=>{if(e.target.closest('[data-pl-x]')){closeSheet();return}const b=e.target.closest('[data-pl-go]');if(b)planContact(b.dataset.plGo)})}
-function planContact(k){const c=curOrder()[0];const lm=locMoney(PCFG.p[k].pyg);const v=(lm?lm+' ('+money(PCFG.p[k].pyg,'pyg')+')':money(PCFG.p[k][c],c))+' '+t('pl_per_'+k);const em=(authU&&authU.email)||'';
+/* ---------- Formas de pago (datos que el administrador carga en el panel) ---------- */
+function payCfg(){const P=PCFG.pay||{};const bk=P.bk||{},pix=P.pix||{},card=P.card||{};
+  return{bk:(bk.alias||bk.acc||bk.doc)?bk:null,pix:pix.key?pix:null,card:['m','t','a'].some(k=>/^https:\/\//.test(card[k]||''))?card:null}}
+function copyTxt(v){try{navigator.clipboard.writeText(v).then(()=>toast(t('py_copied')),()=>toast(v))}catch(e){toast(v)}}
+function planContact(k){const C=payCfg();if(!C.bk&&!C.pix&&!(C.card&&C.card[k]))return planContactWa(k);
+  const x=PCFG.p[k];const cc=MC.code();const em=(authU&&authU.email)||'';const wa=String(PCFG.wa||'').replace(/\D/g,'');
+  const row=(lb,v,cp)=>v?`<div class="py-r"><span>${esc(lb)}</span><b>${esc(v)}</b>${cp?`<button class="iconbtn" data-cp="${esc(typeof cp==='string'?cp:v)}" aria-label="${esc(t('copy_txt'))}">${ic('copy')}</button>`:''}</div>`:'';
+  const secs=[];
+  if(C.bk)secs.push(['bk',`<div class="py-c"><div class="py-h">${ic('copy')}<b>${esc(t('py_bk'))}</b><span class="py-v">${esc(money(x.pyg,'pyg'))}</span></div>
+    ${row(t('py_bank'),C.bk.bank,0)}${row(t('py_holder'),C.bk.name,0)}${row(t('py_acc'),C.bk.acc,1)}${row('Alias',C.bk.alias,1)}${row(t('py_doc'),C.bk.doc,1)}${row(t('py_cur'),'Guaraní (₲)',0)}</div>`]);
+  if(C.pix)secs.push(['pix',`<div class="py-c"><div class="py-h">${ic('copy')}<b>Pix</b><span class="py-v">${esc(money(x.brl,'brl'))}</span></div>
+    ${row(t('py_pixkey'),C.pix.key,/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(C.pix.key)?C.pix.key.replace(/\D/g,''):1)}${row(t('py_holder'),C.pix.name,0)}${row(t('py_bank'),C.pix.bank,0)}${row(t('py_cur'),'Real (R$)',0)}</div>`]);
+  if(C.card&&/^https:\/\//.test(C.card[k]||''))secs.push(['card',`<div class="py-c"><div class="py-h">${ic('lock')}<b>${esc(t('py_card'))}</b><span class="py-v">${esc(money(x.pyg,'pyg'))}</span></div>
+    <p class="sub" style="margin:0;font-size:13px">${esc(t('py_card_d'))}</p><a class="btn dark block" href="${esc(C.card[k])}" target="_blank" rel="noopener">${esc(t('py_card_go'))}</a></div>`]);
+  const ord=cc==='BRL'?['pix','card','bk']:['bk','card','pix'];secs.sort((a,b)=>ord.indexOf(a[0])-ord.indexOf(b[0]));
+  const lm=locMoney(x.pyg);const vtxt=lm?lm+' ('+money(x.pyg,'pyg')+')':money(x[curOrder()[0]],curOrder()[0]);
+  const msg=t('py_sent_msg',{p:planName(k),v:vtxt+' '+t('pl_per_'+k),e:em});
+  const sh=openSheet(`<h3>${esc(t('pl_pay_t',{p:planName(k)}))}</h3><p class="pl-price" style="margin:0">${esc(vtxt)} <small>${esc(t('pl_per_'+k))}</small></p>
+    <p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('py_how'))}</p>
+    ${secs.map(x=>x[1]).join('')}
+    ${wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">${ic('chat')}${esc(t('py_sent'))}</a>`:''}
+    ${wa?`<a class="btn ghost block" href="https://wa.me/${wa}?text=${encodeURIComponent(t('pl_pay_msg',{p:planName(k),v:vtxt,e:em}))}" target="_blank" rel="noopener">${esc(t('py_other'))}</a>`:''}
+    <p class="sub" style="margin:0;font-size:12.5px">${esc(t('pl_cond'))}</p>`,{cls:'tall'});
+  sh.addEventListener('click',e=>{const b=e.target.closest('[data-cp]');if(b)copyTxt(b.dataset.cp)})}
+function admPay(){if(!isAdmin())return;const P=PCFG.pay||{};const bk=P.bk||{},pix=P.pix||{},card=P.card||{};
+  const f=(id,lb,v,ph,im)=>`<label class="fld"><span class="lb">${esc(lb)}</span><input class="inp" id="${id}" value="${esc(v||'')}" placeholder="${esc(ph||'')}" ${im?`inputmode="${im}"`:''} autocomplete="off"></label>`;
+  const sh=openSheet(`<h3>${esc(t('py_adm'))}</h3><p class="sub" style="margin:0;font-size:13.5px;line-height:1.5">${esc(t('py_adm_d'))}</p>
+    <span class="lbl">${esc(t('py_bk'))}</span>${f('pyBank',t('py_bank'),bk.bank,'Banco …')}${f('pyName',t('py_holder'),bk.name)}${f('pyAcc',t('py_acc'),bk.acc,'','numeric')}${f('pyAlias','Alias',bk.alias)}${f('pyDoc',t('py_doc'),bk.doc)}
+    <span class="lbl">Pix (Brasil)</span>${f('pxKey',t('py_pixkey'),pix.key)}${f('pxName',t('py_holder'),pix.name)}${f('pxBank',t('py_bank'),pix.bank)}
+    <span class="lbl">${esc(t('py_card'))}</span><p class="sub" style="margin:0;font-size:12.5px">${esc(t('py_card_adm'))}</p>${f('cdM',planName('m'),card.m,'https://…','url')}${f('cdT',planName('t'),card.t,'https://…','url')}${f('cdA',planName('a'),card.a,'https://…','url')}
+    <button class="btn gold block" id="pyGo">${esc(t('ad_save'))}</button>`,{cls:'tall'});
+  $('#pyGo',sh).onclick=async()=>{const g=id=>($('#'+id,sh).value||'').trim();const u=v=>/^https:\/\/\S+$/.test(v)?v:'';
+    for(const id of ['cdM','cdT','cdA'])if(g(id)&&!u(g(id))){toast(t('py_bad_link'));return}
+    const pay={bk:{bank:g('pyBank'),name:g('pyName'),acc:g('pyAcc'),alias:g('pyAlias'),doc:g('pyDoc')},pix:{key:g('pxKey'),name:g('pxName'),bank:g('pxBank')},card:{m:u(g('cdM')),t:u(g('cdT')),a:u(g('cdA'))}};
+    try{await firebase.firestore().collection('config').doc('app').set({pay,updated:Date.now()},{merge:true});PCFG.pay=pay;ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
+function planContactWa(k){const c=curOrder()[0];const lm=locMoney(PCFG.p[k].pyg);const v=(lm?lm+' ('+money(PCFG.p[k].pyg,'pyg')+')':money(PCFG.p[k][c],c))+' '+t('pl_per_'+k);const em=(authU&&authU.email)||'';
   const msg=t('pl_pay_msg',{p:planName(k),v,e:em});const wa=String(PCFG.wa||'').replace(/\D/g,'');
   const sh=openSheet(`<h3>${esc(t('pl_pay_t',{p:planName(k)}))}</h3><p class="pl-price" style="margin:0">${esc(v)}</p><p style="margin:0;line-height:1.5">${esc(t('pl_pay_d'))}</p>
     ${wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">${ic('chat')}${esc(t('pl_pay_wa'))}</a>`:''}
@@ -1232,7 +1268,7 @@ function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><
     <button class="btn gold block" id="acGo">${esc(t('ad_save'))}</button>`);
   $('#acGo',sh).onclick=async()=>{const n=v=>Math.max(0,parseInt(String(v).replace(/\D/g,''),10)||0);const p={m:{},t:{},a:{}};$$('[data-p]',sh).forEach(i=>{const [k,c]=i.dataset.p.split('.');p[k][c]=n(i.value)});
     const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,warn:n($('#acWn',sh).value),grace:n($('#acGr',sh).value),wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},updated:Date.now()};
-    try{await firebase.firestore().collection('config').doc('app').set(cfg);PCFG=Object.assign({},PCFG_DEF,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
+    try{await firebase.firestore().collection('config').doc('app').set(cfg,{merge:true});PCFG=Object.assign({},PCFG,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 
 /* ---------- Panel del sitio meupulpito.com (solo administrador) ---------- */
 async function admSite(){if(!isAdmin())return;let S={};try{const d=await firebase.firestore().collection('config').doc('site').get();S=d.exists?d.data():{}}catch(e){toast(t('adm_err'));return}
@@ -1332,6 +1368,7 @@ async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<
     <p class="sub" style="margin:0;font-size:13px;font-weight:600">${PCFG.gate?esc(t('ad_gate_on'))+' · ':''}${esc(t('ad_cnt',cnt))}${PCFG.test?' · '+esc(t('ad_test')):''}</p>
     ${PCFG.test?`<p class="pl-why" style="margin:0">${esc(t('ad_sell'))}</p>`:''}
     <button class="btn ghost block" data-act="admCfg">${ic('sliders')}${esc(t('ad_cfg'))}</button>
+    <button class="btn ghost block" data-act="admPay">${ic('copy')}${esc(t('py_adm'))}</button>
     <span class="lbl" style="margin-top:4px">${esc(t('as_sec'))}</span>
     <div class="adm-site"><button class="btn ghost" data-act="admSite">${ic('pen')}${esc(t('as_btn'))}</button><button class="btn ghost" data-act="admVis">${ic('user')}${esc(t('av_btn'))}</button></div>
     <p class="sub" style="margin:0;font-size:12.5px">${esc(t('as_note'))}</p>
@@ -1596,6 +1633,8 @@ Object.assign(I18N.es,{thx_t:'¡Gracias por adquirir el {p}!',thx_t2:'¡Gracias 
 Object.assign(I18N.pt,{thx_t:'Obrigado por adquirir o {p}!',thx_t2:'Obrigado por renovar o seu plano!',thx_s:'É uma alegria caminhar junto com você no seu ministério.',thx_until:'{p} ativo até {d}',thx_d:'Todas as ferramentas do Meu Púlpito já estão liberadas na sua conta. Que Deus abençoe cada mensagem que você vai preparar e pregar.',thx_go:'CONTINUAR'});
 Object.assign(I18N.es,{dn_t:'Su plan Premium terminó',dn_d:'Su cuenta pasó al plan gratis. Todos sus sermones siguen guardados. Para volver a usar todas las herramientas, renueve su plan.',dn_go:'VER PLANES',dn_no:'Seguir con el plan gratis'});
 Object.assign(I18N.pt,{dn_t:'Seu plano Premium terminou',dn_d:'Sua conta passou para o plano grátis. Todos os seus sermões continuam guardados. Para voltar a usar todas as ferramentas, renove o seu plano.',dn_go:'VER PLANOS',dn_no:'Continuar no plano grátis'});
+Object.assign(I18N.es,{py_adm:'Formas de pago',py_adm_d:'Estos datos aparecen para el pastor cuando toca «Elegir Premium». Deje en blanco lo que no use.',py_bk:'Transferencia (Paraguay)',py_bank:'Banco',py_holder:'Titular',py_acc:'Número de cuenta',py_doc:'Cédula',py_cur:'Moneda',py_pixkey:'Clave Pix',py_card:'Tarjeta de crédito o débito',py_card_d:'Pague con tarjeta en la página segura de pago.',py_card_go:'Pagar con tarjeta',py_card_adm:'Pegue el link de pago de cada plan (Bancard, Pagopar u otro). Debe empezar con https://',py_bad_link:'Revise los links: deben empezar con https://',py_copied:'Copiado',py_how:'Elija cómo pagar. Después envíe el comprobante por WhatsApp y activamos su plan.',py_sent:'Ya pagué · enviar comprobante',py_other:'Prefiero combinar por WhatsApp',py_sent_msg:'Hola, ya pagué el {p} de Meu Púlpito ({v}). Mi cuenta: {e}. Le envío el comprobante.'});
+Object.assign(I18N.pt,{py_adm:'Formas de pagamento',py_adm_d:'Estes dados aparecem para o pastor quando ele toca em «Escolher Premium». Deixe em branco o que não usar.',py_bk:'Transferência (Paraguai)',py_bank:'Banco',py_holder:'Titular',py_acc:'Número da conta',py_doc:'Cédula',py_cur:'Moeda',py_pixkey:'Chave Pix',py_card:'Cartão de crédito ou débito',py_card_d:'Pague com cartão na página segura de pagamento.',py_card_go:'Pagar com cartão',py_card_adm:'Cole o link de pagamento de cada plano (Bancard, Pagopar ou outro). Deve começar com https://',py_bad_link:'Confira os links: devem começar com https://',py_copied:'Copiado',py_how:'Escolha como pagar. Depois envie o comprovante pelo WhatsApp e ativamos o seu plano.',py_sent:'Já paguei · enviar comprovante',py_other:'Prefiro combinar pelo WhatsApp',py_sent_msg:'Olá, já paguei o {p} do Meu Púlpito ({v}). Minha conta: {e}. Segue o comprovante.'});
 const NEWS_VER='v90';
 const NEWS={es:[['10 versiones de la Biblia','En la Biblia, toque el nombre de la versión: 6 en español y 4 en portugués. Reina-Valera 1909 y Bíblia Livre son gratis; las demás, Premium.'],['Diccionarios más fáciles','Sugerencias de palabras, «¿Quiso decir?» cuando hay un error al escribir, y lo que existe en los otros diccionarios cuando la palabra no está en el que abrió.'],['Curiosidad del día','Cada día una curiosidad bíblica nueva en el Inicio y en Curiosidades, con historial de lo que ya abrió.'],['Agenda con vista del mes','Vea el mes entero, agregue una descripción y un recordatorio, y guarde la predicación en el calendario del celular.'],['Versículos relacionados','En la Biblia, elija un versículo y toque el ícono de enlace: verá los textos que se relacionan con él (referencias cruzadas).'],['Series de sermones','En el sermón toque «+ Serie» para agrupar mensajes. En Sermones → Series vea el avance de cada serie.'],['Grabe su predicación','En el Modo Predicar, toque el micrófono. Las grabaciones quedan en el celular y puede compartirlas.'],['Plan de lectura bíblica','En el Inicio elija un plan (la Biblia en un año, el NT en 90 días…) y marque cada día leído.'],['Nuevo Diccionario Arameo','Las palabras en arameo del Antiguo Testamento (partes de Daniel y Esdras), con su sentido, pronunciación y versículos.'],['Pregunte cualquier cosa de la Biblia','En Curiosidades: «¿cuántas veces aparece el número 40?» muestra el total, los libros y los versículos.'],['Busque en todos los diccionarios a la vez','En Diccionarios, una sola búsqueda en el Bíblico, el Hebreo, el Arameo y el Griego.'],['Aviso de su próxima predicación','Si tiene un culto en la Agenda esta semana, aparece arriba en el Inicio con «Predicar».'],['Búsqueda más inteligente en sus sermones','Por título, versículo o cualquier palabra del texto, sin importar acentos ni el orden.'],['Nueva pantalla de apertura','El app instalado abre con el logo de Meu Púlpito.']],
   pt:[['10 versões da Bíblia','Na Bíblia, toque no nome da versão: 4 em português e 6 em espanhol. Bíblia Livre e Reina-Valera 1909 são grátis; as outras, Premium.'],['Dicionários mais fáceis','Sugestões de palavras, «Você quis dizer?» quando há erro de digitação, e o que existe nos outros dicionários quando a palavra não está no que você abriu.'],['Curiosidade do dia','Todo dia uma curiosidade bíblica nova no Início e em Curiosidades, com histórico do que você já abriu.'],['Agenda com visão do mês','Veja o mês inteiro, adicione uma descrição e um lembrete, e salve a pregação no calendário do celular.'],['Versículos relacionados','Na Bíblia, escolha um versículo e toque no ícone de corrente: você verá os textos que se relacionam com ele (referências cruzadas).'],['Séries de sermões','No sermão toque em «+ Série» para agrupar mensagens. Em Sermões → Séries veja o andamento de cada série.'],['Grave sua pregação','No Modo Pregar, toque no microfone. As gravações ficam no celular e você pode compartilhá-las.'],['Plano de leitura bíblica','No Início escolha um plano (a Bíblia em um ano, o NT em 90 dias…) e marque cada dia lido.'],['Novo Dicionário Aramaico','As palavras em aramaico do Antigo Testamento (partes de Daniel e Esdras), com sentido, pronúncia e versículos.'],['Pergunte qualquer coisa da Bíblia','Em Curiosidades: «quantas vezes aparece o número 40?» mostra o total, os livros e os versículos.'],['Busque em todos os dicionários de uma vez','Em Dicionários, uma só busca no Bíblico, no Hebraico, no Aramaico e no Grego.'],['Aviso da sua próxima pregação','Se você tem um culto na Agenda nesta semana, ele aparece no topo do Início com «Pregar».'],['Busca mais inteligente nos seus sermões','Por título, versículo ou qualquer palavra do texto, sem se importar com acentos nem com a ordem.'],['Nova tela de abertura','O app instalado abre com o logo do Meu Púlpito.']]};
@@ -2700,7 +2739,7 @@ function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;vie
    Acciones (un solo manejador de toques)
    ========================================================= */
 const ACT={
-  admSite:()=>admSite(),admVis:()=>admVisits(),waEdit:()=>waSheet(false),
+  admSite:()=>admSite(),admVis:()=>admVisits(),admPay:()=>admPay(),waEdit:()=>waSheet(false),
   admWa:b=>{try{window.open(b.href,'_blank','noopener')}catch(e){location.href=b.href}const u=b.dataset.uid,k=b.dataset.k;const d=k==='wel'?{welSent:Date.now()}:{congSent:+b.dataset.u};try{firebase.firestore().collection('planos').doc(u).set(d,{merge:true}).catch(()=>{})}catch(e){}
     b.classList.remove('dark','gold');b.classList.add('ghost');b.innerHTML=ic('check')+esc(t(k==='wel'?'wa_wel_ok':'wa_cong_ok'))},
   privacy:()=>privacySheet(),delAcc:()=>deleteAccount(),admin:()=>adminPanel(),
