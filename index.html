@@ -257,6 +257,19 @@ section{scroll-margin-top:72px}
 .tq.has-v{padding-top:18px}
 
 /* preguntas */
+.rf-sec{padding-top:0}
+.rf-box{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;align-items:center;background:var(--navy);color:#fff;border-radius:28px;padding:48px;box-shadow:0 30px 70px rgba(11,18,32,.25)}
+.rf-box h2{color:#fff;margin:10px 0 12px}.rf-box>div>p,.rf-txt>p{color:rgba(255,255,255,.72);line-height:1.6;margin:0 0 22px}
+.rf-steps{list-style:none;margin:0 0 26px;padding:0;display:flex;flex-direction:column;gap:14px}
+.rf-steps li{display:flex;gap:14px;align-items:flex-start}.rf-steps b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--navy);font-family:var(--head);font-weight:800}
+.rf-steps li>span{display:flex;flex-direction:column;gap:2px;line-height:1.45}.rf-steps strong{color:#fff;font-family:var(--head)}.rf-steps li>span>span{color:rgba(255,255,255,.65);font-size:14.5px}
+.rf-cond{font-size:12.5px!important;color:rgba(255,255,255,.5)!important;margin:16px 0 0!important}
+.rf-wheel{position:relative;text-align:center}.rf-wheel svg{width:min(280px,70vw);height:auto;display:block;margin:0 auto}
+.rf-wheel #rfW{transform-origin:130px 130px;animation:rfspin 14s linear infinite}@keyframes rfspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.rf-wheel #rfW{animation:none}}
+.rf-pin{position:absolute;top:-8px;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent;border-top:24px solid #fff}
+.rf-wheel p{margin:18px 0 0;display:flex;flex-direction:column;gap:4px}.rf-wheel strong{font-family:var(--head);font-size:19px;color:var(--gold)}.rf-wheel p span{color:rgba(255,255,255,.7);font-size:14.5px;line-height:1.5}
+@media (max-width:860px){.rf-box{grid-template-columns:1fr;padding:30px 22px;gap:28px}.rf-wheel{order:-1}}
 .faq{max-width:780px;margin:0 auto;border-top:1px solid var(--line)}
 .ct{max-width:780px;margin:44px auto 0;padding:28px;border-radius:22px;background:#fff;box-shadow:0 0 0 1px var(--line) inset,0 10px 30px rgba(11,18,32,.06)}
 .ct h3{margin:0 0 6px;font-family:var(--head);font-size:22px;color:var(--ink)}.ct>p{margin:0 0 18px;color:var(--muted);line-height:1.55}
@@ -442,6 +455,28 @@ footer .soc svg{width:18px;height:18px}
     </div>
   </section>
 
+  <section class="sec rf-sec" id="indique">
+    <div class="wrap">
+      <div class="rf-box rv">
+        <div class="rf-txt">
+          <span class="eyebrow" data-t="ri_eye"></span><h2 data-t="ri_t"></h2><p data-t="ri_d"></p>
+          <ol class="rf-steps">
+            <li><b>1</b><span><strong data-t="ri_1t"></strong><span data-t="ri_1d"></span></span></li>
+            <li><b>2</b><span><strong data-t="ri_2t"></strong><span data-t="ri_2d"></span></span></li>
+            <li><b>3</b><span><strong data-t="ri_3t"></strong><span data-t="ri_3d"></span></span></li>
+          </ol>
+          <a class="btn gold" href="app/" data-go><span data-t="ri_go"></span><svg class="i"><use href="#ar"/></svg></a>
+          <p class="rf-cond" data-t="ri_cond"></p>
+        </div>
+        <div class="rf-wheel" aria-hidden="true">
+          <svg viewBox="0 0 260 260"><g id="rfW"></g><circle cx="130" cy="130" r="120" fill="none" stroke="#D6AD55" stroke-width="5"/><circle cx="130" cy="130" r="22" fill="#0B1220" stroke="#D6AD55" stroke-width="4"/></svg>
+          <span class="rf-pin"></span>
+          <p><strong data-t="ri_w_t"></strong><span data-t="ri_w_d"></span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="sec soft" id="preguntas">
     <div class="wrap">
       <div class="sec-h rv"><span class="eyebrow" data-t="q_eye"></span><h2 data-t="q_t"></h2></div>
@@ -529,7 +564,7 @@ var T={es:{
   p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
   ab_eye:'Quiénes somos',ab_t:'Hecho por un pastor, para pastores.',ab_d:'Meu Púlpito nació de la rutina de un pastor que prepara mensajes cada semana y predica en español y en portugués, a veces el mismo mensaje en los dos idiomas. Cada función fue pensada para lo que pasa de verdad entre el estudio y el púlpito: escribir con calma, estudiar el texto original y predicar con la mente libre.',ab_r:'Fundador de Meu Púlpito · Paraguay',
   t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',t_play:'Reproducir el testimonio',
-  q_eye:'Preguntas frecuentes',ct_t:'¿Todavía tiene una duda? Escríbanos',ct_d:'Respondemos por WhatsApp o por correo. Si ya usa la app, también puede hablar con el soporte en Configuración.',ct_n:'Su nombre',ct_w:'Su WhatsApp',ct_q:'Su mensaje',ct_go:'Enviar mensaje',ct_ok:'¡Mensaje enviado! Le responderemos pronto.',ct_err:'No se pudo enviar ahora. Intente de nuevo o escríbanos por WhatsApp.',ct_need:'Escriba su nombre y su mensaje.',ct_wait:'Su mensaje ya fue enviado. Espere un momento para enviar otro.',q_t:'Lo que más nos preguntan.',
+  q_eye:'Preguntas frecuentes',ri_eye:'Recomiende y gane',ri_t:'Recomiende 3 pastores y gane 1 mes gratis',ri_d:'¿Le gusta Meu Púlpito? Compártalo con otros pastores. Usted gana meses de Premium y ellos ganan un descuento en la primera compra.',ri_1t:'Comparta su enlace',ri_1d:'En la app, en Configuración → Recomiende a un pastor, está su enlace personal para enviar por WhatsApp.',ri_2t:'3 pastores activan el Premium',ri_2d:'Cuando 3 pastores crean su cuenta con su enlace y pagan un plan Premium…',ri_3t:'Usted gana 1 mes gratis',ri_3d:'…se suma 1 mes de Premium a su plan. Cada 3 pastores, 1 mes más.',ri_go:'Empezar ahora',ri_cond:'Vale solo para compras pagadas de pastores que crearon la cuenta con su enlace. Vea las condiciones en los Términos.',ri_w_t:'Ruleta de descuento',ri_w_d:'Quien entra por su enlace gira la ruleta una vez y gana de 5% a 50% de descuento en su primera compra.',ct_t:'¿Todavía tiene una duda? Escríbanos',ct_d:'Respondemos por WhatsApp o por correo. Si ya usa la app, también puede hablar con el soporte en Configuración.',ct_n:'Su nombre',ct_w:'Su WhatsApp',ct_q:'Su mensaje',ct_go:'Enviar mensaje',ct_ok:'¡Mensaje enviado! Le responderemos pronto.',ct_err:'No se pudo enviar ahora. Intente de nuevo o escríbanos por WhatsApp.',ct_need:'Escriba su nombre y su mensaje.',ct_wait:'Su mensaje ya fue enviado. Espere un momento para enviar otro.',q_t:'Lo que más nos preguntan.',
   faq:[['¿En qué dispositivos funciona?','En celular, tablet y computadora (iPhone, iPad, Android, Windows y Mac), desde el navegador. En la tablet y la computadora tiene un menú lateral y más espacio para estudiar. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
    ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones, la Reina-Valera 1909 y la Bíblia Livre quedan guardados en el celular, de modo que puede predicar aunque no tenga señal. Las demás versiones se descargan la primera vez que las abre.'],
    ['¿Qué versiones de la Biblia trae?','10 versiones: 6 en español (Reina-Valera 1909 y 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre y Biblia Libre para el Mundo) y 4 en portugués (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre y Bíblia Portuguesa Mundial), además del hebreo y el griego originales. En el plan gratis tiene la Reina-Valera 1909 y la Bíblia Livre; con Premium, todas.'],
@@ -573,7 +608,7 @@ var T={es:{
   p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
   ab_eye:'Quem somos',ab_t:'Feito por um pastor, para pastores.',ab_d:'O Meu Púlpito nasceu da rotina de um pastor que prepara mensagens toda semana e prega em português e em espanhol, às vezes a mesma mensagem nos dois idiomas. Cada função foi pensada para o que acontece de verdade entre o estudo e o púlpito: escrever com calma, estudar o texto original e pregar com a mente livre.',ab_r:'Fundador do Meu Púlpito · Paraguai',
   t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',t_play:'Reproduzir o depoimento',
-  q_eye:'Perguntas frequentes',ct_t:'Ainda tem dúvida? Escreva para nós',ct_d:'Respondemos pelo WhatsApp ou por e-mail. Se você já usa o app, também pode falar com o suporte em Configurações.',ct_n:'Seu nome',ct_w:'Seu WhatsApp',ct_q:'Sua mensagem',ct_go:'Enviar mensagem',ct_ok:'Mensagem enviada! Vamos responder em breve.',ct_err:'Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp.',ct_need:'Escreva seu nome e sua mensagem.',ct_wait:'Sua mensagem já foi enviada. Aguarde um pouco para enviar outra.',q_t:'O que mais nos perguntam.',
+  q_eye:'Perguntas frequentes',ri_eye:'Indique e ganhe',ri_t:'Indique 3 pastores e ganhe 1 mês grátis',ri_d:'Gosta do Meu Púlpito? Compartilhe com outros pastores. Você ganha meses de Premium e eles ganham um desconto na primeira compra.',ri_1t:'Compartilhe seu link',ri_1d:'No app, em Configurações → Indique um pastor, está o seu link pessoal para enviar pelo WhatsApp.',ri_2t:'3 pastores ativam o Premium',ri_2d:'Quando 3 pastores criam a conta pelo seu link e pagam um plano Premium…',ri_3t:'Você ganha 1 mês grátis',ri_3d:'…entra 1 mês de Premium no seu plano. A cada 3 pastores, mais 1 mês.',ri_go:'Começar agora',ri_cond:'Vale só para compras pagas de pastores que criaram a conta pelo seu link. Veja as condições nos Termos.',ri_w_t:'Roleta de desconto',ri_w_d:'Quem entra pelo seu link gira a roleta uma vez e ganha de 5% a 50% de desconto na primeira compra.',ct_t:'Ainda tem dúvida? Escreva para nós',ct_d:'Respondemos pelo WhatsApp ou por e-mail. Se você já usa o app, também pode falar com o suporte em Configurações.',ct_n:'Seu nome',ct_w:'Seu WhatsApp',ct_q:'Sua mensagem',ct_go:'Enviar mensagem',ct_ok:'Mensagem enviada! Vamos responder em breve.',ct_err:'Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp.',ct_need:'Escreva seu nome e sua mensagem.',ct_wait:'Sua mensagem já foi enviada. Aguarde um pouco para enviar outra.',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No celular, no tablet e no computador (iPhone, iPad, Android, Windows e Mac), pelo navegador. No tablet e no computador há um menu lateral e mais espaço para estudar. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
    ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões, a Bíblia Livre e a Reina-Valera 1909 ficam guardados no celular, então você pode pregar mesmo sem sinal. As outras versões são baixadas na primeira vez que você abre.'],
    ['Quais versões da Bíblia estão incluídas?','10 versões: 4 em português (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre e Bíblia Portuguesa Mundial) e 6 em espanhol (Reina-Valera 1909 e 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre e Biblia Libre para el Mundo), além do hebraico e do grego originais. No plano grátis você tem a Bíblia Livre e a Reina-Valera 1909; com o Premium, todas.'],
@@ -662,6 +697,10 @@ document.getElementById('ctF').addEventListener('submit',function(e){e.preventDe
   b.disabled=true;fb().then(function(o){return o.F.addDoc(o.F.collection(o.db,'contato'),{n:n.slice(0,80),wa:w.slice(0,30),q:q.slice(0,1500),l:L,at:Date.now()})}).then(function(){
     try{localStorage.setItem('mp.ct',String(Date.now()))}catch(x){}m.textContent=D.ct_ok;m.className='ct-msg ok';document.getElementById('ctQ').value='';b.disabled=false})
   .catch(function(){m.textContent=D.ct_err;m.className='ct-msg err';b.disabled=false})});
+(function(){var g=document.getElementById('rfW');if(!g)return;var P=[5,10,15,20,30,50],n=6,R=120,h='';
+  for(var i=0;i<n;i++){var a0=(i*60-90-30)*Math.PI/180,a1=((i+1)*60-90-30)*Math.PI/180;h+='<path d="M130,130 L'+(130+R*Math.cos(a0))+','+(130+R*Math.sin(a0))+' A'+R+','+R+' 0 0 1 '+(130+R*Math.cos(a1))+','+(130+R*Math.sin(a1))+' Z" fill="'+(i%2?'#16233F':'#D6AD55')+'"/>'}
+  for(i=0;i<n;i++){var a=(i*60-90)*Math.PI/180,x=130+78*Math.cos(a),y=130+78*Math.sin(a);h+='<text x="'+x+'" y="'+y+'" transform="rotate('+(i*60)+' '+x+' '+y+')" text-anchor="middle" dominant-baseline="middle" font-family="Inter,sans-serif" font-weight="800" font-size="19" fill="'+(i%2?'#fff':'#0B1220')+'">'+P[i]+'%</text>'}
+  g.innerHTML=h})();
 var idle=window.requestIdleCallback||function(f){setTimeout(f,600)};
 function fxLoad(){if(window.MP_CUR&&!MP_CUR.fixed()&&!MP_CUR.local(1e5))MP_CUR.load(apply)}
 if(document.readyState==='complete')idle(function(){loadRemote();visit();fxLoad()});else addEventListener('load',function(){idle(function(){loadRemote();visit();fxLoad()})});
