@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v88';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v89';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1062,7 +1062,7 @@ const isPremium=()=>planNow().premium;
 const money=(n,c)=>c==='brl'?'R$ '+n.toLocaleString('pt-BR'):'₲ '+n.toLocaleString('es-PY');
 const fmtDay=ts=>ts?new Date(ts).toLocaleDateString(prefs.ui==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'short',year:'numeric'}):'—';
 const addMonths=(ts,n)=>{const d=new Date(ts);d.setMonth(d.getMonth()+n);return d.getTime()};
-Object.assign(I18N.es,{pl_fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El precio oficial está en guaraníes; el pago se combina por WhatsApp.',pl_choose:'Elige tu plan',pl_terms:'Términos de uso',pl_sub:'Use Meu Púlpito gratis o desbloquee todas las herramientas con Premium.',pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MEJOR PRECIO · AHORRA CON EL PLAN ANUAL',
+Object.assign(I18N.es,{pl_fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.',pl_choose:'Elige tu plan',pl_terms:'Términos de uso',pl_sub:'Use Meu Púlpito gratis o desbloquee todas las herramientas con Premium.',pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MEJOR PRECIO · AHORRA CON EL PLAN ANUAL',
   pl_per_m:'por mes',pl_per_t:'cada 3 meses',pl_per_a:'por año',pl_save:'Ahorra {n}% frente al mensual',pl_eq:'equivale a {v} por mes',
   pl_go_free:'Continuar gratis',pl_go_m:'Elegir Premium Mensual',pl_go_t:'Elegir Premium Trimestral',pl_go_a:'Elegir Premium Anual',
   pl_f1:'Hasta {n} sermones',pl_f2:'Editor, Biblia y Agenda completos',pl_f3:'Modo Predicar básico',pl_f4:'Diccionarios: {n} artículos completos por día',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e historial',
@@ -1072,7 +1072,7 @@ Object.assign(I18N.es,{pl_fx:'Valores aproximados en {c}, según la cotización 
   pl_test:'Período de pruebas: todas las funciones están liberadas.',pl_lock_s:'El plan gratis permite hasta {n} sermones. Sus sermones no se pierden; para crear más, pase a Premium.',pl_lock_d:'El plan gratis permite {n} artículos completos por día en los diccionarios. Mañana se liberan de nuevo, o pase a Premium.',pl_lock_c:'Esta curiosidad es del plan Premium.',pl_lock_p:'Esta función del Modo Predicar es del plan Premium.',pl_see:'Ver planes',
   sub_t:'Mi suscripción',sub_plan:'Plan actual',sub_state:'Estado',sub_on:'Activa',sub_exp:'Vencida',sub_freeS:'Gratis',sub_since:'Contratado el',sub_until:'Vence el',sub_pays:'Pagos',sub_nopay:'Sin pagos registrados.',sub_change:'Cambiar de plan',sub_cancel:'Cancelar renovación',sub_cancel_d:'Su plan no se renueva solo: no hay nada que cancelar. Al vencer, vuelve al plan gratis y conserva sus datos.',sub_left:'{n} días restantes',
   ad_plan:'Plan',ad_cfg:'Precios y pruebas',ad_cfg_d:'Precios, límites del plan gratis, contacto y período de pruebas',ad_test:'Todo liberado para todos (período de pruebas)',ad_wa:'WhatsApp para pagos (con código de país)',ad_save:'Guardar',ad_saved:'Guardado',ad_setp:'Plan de {u}',ad_from:'Desde',ad_to:'Hasta',ad_amt:'Monto pagado',ad_note:'Nota (ej.: transferencia Itaú)',ad_act:'Activar',ad_free:'Pasar a gratis',ad_cnt:'{f} gratis · {tr} en prueba · {p} premium · {v} vencidas',ad_lim:'Límites del plan gratis: sermones · artículos por día · curiosidades',ad_done:'Plan actualizado',ad_gate:'Acceso solo con mi liberación',ad_days:'Días de aviso antes del vencimiento · días de gracia después',ad_soon:'Vence el {d}',ad_nsoon:'{n} plan(es) venciendo o en período de gracia: hable con ellos para renovar.',pv_renew:'Renovar',pv_soon:'Su plan Premium vence en {n} días',pv_today:'Su plan Premium vence hoy',pv_soon_d:'Vence el {d}. Renueve para seguir con todas las funciones.',pv_exp:'Su plan venció el {d}',pv_grace:'Le quedan {n} día(s) de gracia con Premium. Después vuelve al plan gratis; sus sermones no se pierden.',pv_free:'Volvió al plan gratis',pv_free_d:'Su Premium terminó. Sus sermones están todos guardados. Renueve cuando quiera para liberar todo de nuevo.',sub_grace:'En período de gracia',ad_gate_d:'Quien cree una cuenta queda esperando hasta que usted la libere en este panel.',ad_gate_on:'Acceso con liberación',ad_pend:'Esperando liberación',ad_npend:'{n} cuenta(s) esperando liberación. Toque «Activo» para liberar o «Bloqueado» para negar.',wt_t:'Su cuenta está esperando liberación',wt_d:'Meu Púlpito está en período de pruebas con acceso por invitación. Su cuenta ya fue creada; en cuanto el administrador la libere, se abre sola.',wt_acc:'Cuenta',wt_wa:'Pedir liberación por WhatsApp',wt_msg:'Hola, creé mi cuenta en Meu Púlpito y quiero pedir la liberación. Mi cuenta: {e}'});
-Object.assign(I18N.pt,{pl_fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O preço oficial é em guaranis; o pagamento é combinado pelo WhatsApp.',pl_choose:'Escolha seu plano',pl_terms:'Termos de uso',pl_sub:'Use o Meu Púlpito grátis ou libere todas as ferramentas com o Premium.',pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MELHOR PREÇO · ECONOMIZE COM O PLANO ANUAL',
+Object.assign(I18N.pt,{pl_fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O pagamento é combinado pelo WhatsApp.',pl_choose:'Escolha seu plano',pl_terms:'Termos de uso',pl_sub:'Use o Meu Púlpito grátis ou libere todas as ferramentas com o Premium.',pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MELHOR PREÇO · ECONOMIZE COM O PLANO ANUAL',
   pl_per_m:'por mês',pl_per_t:'a cada 3 meses',pl_per_a:'por ano',pl_save:'Economize {n}% em relação ao mensal',pl_eq:'equivale a {v} por mês',
   pl_go_free:'Continuar grátis',pl_go_m:'Escolher Premium Mensal',pl_go_t:'Escolher Premium Trimestral',pl_go_a:'Escolher Premium Anual',
   pl_f1:'Até {n} sermões',pl_f2:'Editor, Bíblia e Agenda completos',pl_f3:'Modo Pregar básico',pl_f4:'Dicionários: {n} artigos completos por dia',pl_f5:'{n} curiosidades bíblicas',pl_f6:'Favoritos e histórico',
@@ -1087,7 +1087,7 @@ const MC=window.MP_CUR||{code:()=>'',fixed:()=>true,local:()=>null,load:cb=>cb&&
 const curOrder=()=>{const c=MC.code();return c==='BRL'?['brl','pyg']:c==='PYG'?['pyg','brl']:prefs.ui==='pt'?['brl','pyg']:['pyg','brl']};
 // precio aproximado en la moneda del país (fuera de Paraguay y Brasil)
 const locMoney=pyg=>{const x=MC.local(pyg);return x?'≈ '+MC.fmt(x.v,x.c,prefs.ui):''};
-function priceLine(k){const lm=locMoney(PCFG.p[k].pyg);return(lm?[lm,money(PCFG.p[k].pyg,'pyg')]:curOrder().map(c=>money(PCFG.p[k][c],c))).join(' · ')}
+function priceLine(k){const c=curOrder()[0];return locMoney(PCFG.p[k].pyg)||money(PCFG.p[k][c],c)}
 function planSave(k){const m=PCFG.p.m,x=PCFG.p[k];const c=curOrder()[0];return Math.round((1-x[c]/(m[c]*PMON[k]))*100)}
 /* pantalla «Elige tu plan» */
 function plansSheet(reason){if(!MC.fixed()&&!MC.local(1e5)){let done=0;const go=()=>{if(!done){done=1;plansSheet(reason)}};MC.load(go);setTimeout(go,2500);return}
@@ -1097,9 +1097,9 @@ function plansSheet(reason){if(!MC.fixed()&&!MC.local(1e5)){let done=0;const go=
     return`<div class="pl-card ${k==='a'?'best':''}">${k==='a'?`<span class="pl-badge">${esc(t('pl_best'))}</span>`:''}
       <div class="pl-h"><b>${esc(planName(k))}</b>${cur?`<span class="tag ok">${esc(t('sub_on'))}</span>`:''}</div>
       ${fx?`<div class="pl-price">${esc(locMoney(x.pyg))} <small>${esc(t('pl_per_'+k))}</small></div>
-      <span class="sub">${esc(money(x.pyg,'pyg'))} ${esc(t('pl_per_'+k))}${k!=='m'?' · '+esc(t('pl_eq',{v:locMoney(x.pyg/PMON[k])})):''}</span>`
+      ${k!=='m'?`<span class="sub">${esc(t('pl_eq',{v:locMoney(x.pyg/PMON[k])}))}</span>`:''}`
       :`<div class="pl-price">${esc(money(x[c],c))} <small>${esc(t('pl_per_'+k))}</small></div>
-      <span class="sub">${esc(money(x[c==='brl'?'pyg':'brl'],c==='brl'?'pyg':'brl'))} ${esc(t('pl_per_'+k))}${k!=='m'?' · '+esc(t('pl_eq',{v:money(Math.round(x[c]/PMON[k]),c)})):''}</span>`}
+      ${k!=='m'?`<span class="sub">${esc(t('pl_eq',{v:money(Math.round(x[c]/PMON[k]),c)}))}</span>`:''}`}
       ${sv>0?`<span class="pl-save">${esc(t('pl_save',{n:sv}))}</span>`:''}
       ${k==='m'?feat([t('pl_p1'),t('pl_p2'),t('pl_p3'),t('pl_p4'),t('pl_p5'),t('pl_p6')]):''}
       <button class="btn ${k==='a'?'gold':'dark'} block" data-pl-go="${k}">${esc(t('pl_go_'+k))}</button></div>`};

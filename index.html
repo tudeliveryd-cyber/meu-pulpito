@@ -456,7 +456,7 @@ var T={es:{
    ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera; al confirmar el pago, su cuenta pasa a Premium.']],
   z_t:'Su próximo mensaje empieza aquí.',z_d:'Prepare, organice y predique con una herramienta hecha para el ministerio.',
   ft_d:'Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras y predique con confianza.',ft_p:'Producto',ft_c:'Contacto',ft_n:'Hecho para pastores, en español y portugués.',ft_t:'Términos de uso',ft_pr:'Privacidad',
-  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.',fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El precio oficial está en guaraníes; el pago se combina por WhatsApp.'
+  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.',fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.'
 },pt:{
   tag:'PREPARE. ORGANIZE. PREGUE.',n_feat:'Funções',n_plans:'Planos',n_faq:'Perguntas',n_go:'Acessar',
   h_eye:'Para pastores e pregadores',h_t:'Prepare e organize suas mensagens em <em>um só lugar.</em>',
@@ -499,7 +499,7 @@ var T={es:{
    ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira; ao confirmarmos o pagamento, sua conta passa a Premium.']],
   z_t:'Sua próxima mensagem começa aqui.',z_d:'Prepare, organize e pregue com uma ferramenta feita para o ministério.',
   ft_d:'Plataforma para pastores e pregadores: prepare sermões, estude as Escrituras e pregue com confiança.',ft_p:'Produto',ft_c:'Contato',ft_n:'Feito para pastores, em português e espanhol.',ft_t:'Termos de uso',ft_pr:'Privacidade',
-  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.',fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O preço oficial é em guaranis; o pagamento é combinado pelo WhatsApp.'
+  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.',fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O pagamento é combinado pelo WhatsApp.'
 }};
 var L='es';try{L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es')}catch(e){}
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
@@ -519,7 +519,7 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
     var pv=fx?lm(x.pyg):money(x[c],c);
     var msg=D.wa_plan.replace('{p}',D['pl_'+k]).replace('{v}',(fx?pv+' ('+money(x.pyg,'pyg')+')':pv)+' '+D['per_'+k]);
     return'<div class="plan'+(k==='a'?' best':'')+'">'+(k==='a'?'<span class="badge">'+esc(D.best)+'</span>':'')+
-      '<h3>'+esc(D['pl_'+k])+'</h3><div><div class="price">'+esc(pv)+'</div><div class="per">'+esc(D['per_'+k])+' · '+esc(fx?money(x.pyg,'pyg'):money(x[o],o))+'</div></div>'+
+      '<h3>'+esc(D['pl_'+k])+'</h3><div><div class="price">'+esc(pv)+'</div><div class="per">'+esc(D['per_'+k])+'</div></div>'+
       (k!=='m'?'<div class="eq">'+esc(D.eq.replace('{v}',fx?lm(x.pyg/MON[k]):money(Math.round(x[c]/MON[k]),c)))+'</div>':'')+
       (sv>0?'<span class="save">'+esc(D.save.replace('{n}',sv))+'</span>':'')+
       '<ul>'+(k==='m'?D.fp.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join(''):'<li>'+ck+'<span>'+esc(D.fp2)+'</span></li>')+'</ul>'+
