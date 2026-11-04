@@ -848,3 +848,11 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
   .sheet.tall{height:100%;max-height:100%;max-width:580px;border-radius:24px 0 0 24px;padding-top:max(16px,env(safe-area-inset-top,0px))}
 }
 @media (min-width:1100px){.mday .list{display:flex;flex-direction:column;gap:12px}}
+.wa-ask{display:flex;flex-direction:column;gap:14px;align-items:stretch;text-align:center}
+.wa-ask .pk-ic{align-self:center}
+.wa-ask h3{margin:0}
+.wa-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px}
+.wa-row .inp{height:48px}
+.adm-wa{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.adm-wa .btn.sm{height:34px;font-size:12.5px;padding:0 12px;text-decoration:none}
+.adm-wa .btn svg{width:16px;height:16px}

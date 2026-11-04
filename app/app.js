@@ -1008,18 +1008,18 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v91';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v92';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
 // Estadísticas: solo números (sermones, fechas, idioma). NUNCA el contenido de los sermones.
 function pushStats(force){if(!cols||!authU||localMode||!window.firebase)return;const now=Date.now();
-  const sig=liveS().length+'|'+liveN().length+'|'+agenda.length+'|'+(meta.name||'');const prev=ls.get('mp.stats.sig',{});
+  const sig=liveS().length+'|'+liveN().length+'|'+agenda.length+'|'+(meta.name||'')+'|'+(meta.wa||'');const prev=ls.get('mp.stats.sig',{});
   if(!force&&prev.sig===sig&&now-(prev.at||0)<6*3600e3)return;ls.set('mp.stats.sig',{sig,at:now});
   const ck='mp.created.'+authU.uid;const created=ls.get(ck,0)||now;ls.set(ck,created);
   const d={email:(authU.email||'').toLowerCase(),name:meta.name||'',lang:prefs.ui,sermons:liveS().length,
     preached:liveS().filter(isPreached).length,notes:liveN().length,events:agenda.length,
-    uses:ls.get('mp.uses',{}),seen:now,created,ver:APP_VER};
+    uses:ls.get('mp.uses',{}),seen:now,created,ver:APP_VER,wa:meta.wa||''};
   try{firebase.firestore().collection('stats').doc(authU.uid).set(d,{merge:true}).catch(()=>{})}catch(e){}}
 let planLoaded=false;
 const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planState.ok||PMON[planState.plan])));
@@ -1028,6 +1028,27 @@ function watchPlan(u){let first=true;try{firebase.firestore().collection('planos
     if(first){first=false;if(!d.exists&&freshAccount(u))trialStart(u);else welcomeCheck()}else welcomeCheck();trialTick()},()=>{})}catch(e){}}
 /* ---------- Prueba Premium automática de 72 horas para cuentas nuevas (una sola vez: las reglas de Firestore solo permiten crearla si la cuenta no tiene plan) ---------- */
 const TRIAL_MS=72*3600e3;
+/* ---------- WhatsApp del pastor (para bienvenida y avisos del plan, enviados por el administrador) ---------- */
+const WA_CC=[['595','Paraguay'],['55','Brasil'],['54','Argentina'],['591','Bolivia'],['598','Uruguay'],['56','Chile'],['51','Perú'],['57','Colombia'],['593','Ecuador'],['58','Venezuela'],['52','México'],['506','Costa Rica'],['503','El Salvador'],['502','Guatemala'],['504','Honduras'],['505','Nicaragua'],['507','Panamá'],['1','EE. UU. / Canadá'],['34','España'],['351','Portugal'],['39','Italia'],['44','Reino Unido'],['81','Japón']];
+function waDefCC(){const c=MC.code();return c==='PYG'?'595':c==='BRL'?'55':c==='ARS'?'54':c==='BOB'?'591':c==='UYU'?'598':c==='USD'?'1':c==='EUR'?'34':prefs.ui==='pt'?'55':'595'}
+function waNorm(cc,n){n=String(n||'').replace(/\D/g,'');if(n.startsWith(cc)&&n.length>cc.length+7)n=n.slice(cc.length);n=n.replace(/^0+/,'');return n.length>=6&&n.length<=13?'+'+cc+n:''}
+function waShow(v){const m=String(v||'').match(/^\+(\d+)$/);return m?v:''}
+function waSheet(required,done){const cur=meta.wa||'';const cc0=(WA_CC.find(([c])=>cur.startsWith('+'+c))||[waDefCC()])[0];const num0=cur?cur.slice(cc0.length+1):'';
+  const sh=openSheet(`<div class="wa-ask"><span class="pk-ic">${ic('chat')}</span><h3>${esc(t('wa_t'))}</h3><p class="sub" style="margin:0;font-size:14.5px;line-height:1.5">${esc(t('wa_d'))}</p>
+    <div class="wa-row"><select class="inp" id="waCC" aria-label="${esc(t('wa_cc'))}">${WA_CC.map(([c,n])=>`<option value="${c}" ${c===cc0?'selected':''}>+${c} ${esc(n)}</option>`).join('')}</select>
+    <input class="inp" id="waN" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="${esc(t('wa_ph'))}" value="${esc(num0)}"></div>
+    <p class="err" id="waErr" hidden></p>
+    <button class="btn gold block" id="waOk">${esc(t('wa_save'))}</button>${required?'':`<button class="btn ghost block" id="waNo">${esc(t('wa_later'))}</button>`}
+    <p class="sub" style="margin:0;font-size:12.5px;text-align:center">${esc(t('wa_priv'))}</p></div>`,{lock:required});
+  $('#waOk',sh).onclick=()=>{const v=waNorm($('#waCC',sh).value,$('#waN',sh).value);const e=$('#waErr',sh);if(!v){e.textContent=t('wa_bad');e.hidden=false;return}
+    meta.wa=v;putMeta();pushStats(true);closeSheet(sh.parentNode);toast(t('wa_ok'));done&&done();if(view.tab==='profile')render()};
+  const no=$('#waNo',sh);if(no)no.onclick=()=>{ls.set('mp.wa.later',Date.now());closeSheet(sh.parentNode);done&&done()};
+  setTimeout(()=>{try{$('#waN',sh).focus()}catch(e){}},80)}
+// Cuentas nuevas: obligatorio. Cuentas que ya existían: se pide una vez (puede dejarlo para después).
+function waCheck(){if(waCheck._t)return;waCheck._t=setInterval(()=>{if(!ready||blocked||E||!authU||localMode){return}
+  if(meta.wa||isAdmin()){clearInterval(waCheck._t);return}if($('.ov'))return;
+  const fresh=freshAccount(authU);if(!fresh&&ls.get('mp.wa.later',0)){clearInterval(waCheck._t);return}
+  clearInterval(waCheck._t);waSheet(fresh)},2500)}
 function freshAccount(u){try{const c=Date.parse(u.metadata&&u.metadata.creationTime);return c&&Date.now()-c<6*3600e3}catch(e){return false}}
 async function trialStart(u){const now=Date.now();try{await firebase.firestore().collection('planos').doc(u.uid).set({trialFrom:now,trial:now+TRIAL_MS,trialAuto:true,trialState:'active',updated:now})}catch(e){}}
 function welcomeCheck(){const p=planState||{};if(!p.trialAuto||meta.welcomed||ls.get('mp.wel.'+p.trialFrom,0)||!(+p.trial>Date.now()))return;if(welcomeCheck._on)return;welcomeCheck._on=1;
@@ -1248,6 +1269,13 @@ Object.assign(I18N.pt,{as_sec:'Site meupulpito.com',as_btn:'Textos e depoimentos
   av_7:'7 dias',av_30:'30 dias',av_today:'Hoje',av_visits:'Visitas',av_people:'Pessoas',av_go:'Tocaram Acessar',av_wa:'Tocaram WhatsApp',av_conv:'Foram ao app',av_per_day:'Visitas por dia',av_country:'País',av_from:'De onde vieram',av_lang:'Idioma',av_dev:'Aparelho',
   av_other:'Outros',av_direct:'Direto / outro',av_mobile:'Celular',av_desktop:'Computador',av_err:'Não foi possível carregar. Confira se publicou as regras novas do Firebase.',av_note:'Só números, sem dados das pessoas. Não conta as suas próprias visitas deste celular. «Pessoas» conta cada aparelho uma vez por dia.'});
 
+// Idioma del mensaje: Paraguay → español, Brasil → portugués; otros países, el idioma que usa en el app
+function waLang(r){const w=r.wa||'';return w.startsWith('+595')?'es':w.startsWith('+55')?'pt':(r.lang==='pt'?'pt':'es')}
+function waLink(r,k){const L=waLang(r);const p=(r.plan||{});const nm=(r.name||'').trim().replace(/^(pr|pra|pb|ev|rev)\.?\s+/i,'').split(/\s+/)[0]||'';
+  const trial=+p.trial>Date.now()&&!(PMON[p.plan]&&p.until>Date.now());
+  const msg=k==='wel'?t(trial?'wam_wel_tr':'wam_wel',{n:nm?' '+nm:'',d:fmtDayL(p.trial,L)},L):t('wam_cong',{n:nm?' '+nm:'',p:t('pl_'+(p.plan||'m'),null,L)||'Premium',d:fmtDayL(p.until,L)},L);
+  return'https://wa.me/'+String(r.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(msg)}
+const fmtDayL=(ts,L)=>ts?new Date(ts).toLocaleDateString(L==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'long',year:'numeric'}):'';
 async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
   let rows=[];try{const db=firebase.firestore();const[q,pq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get()]);
     const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
@@ -1266,7 +1294,9 @@ async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<
   const row=r=>{const nm=r.name||r.email||r.uid.slice(0,6);const bl=!!(r.plan&&r.plan.blocked);const ps=pst(r);const pl=r.plan||{};
     return`<div class="adm-row"><div style="flex:1;min-width:0"><b>${esc(nm)}</b><span class="sub" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(r.email||'')}</span>
       <span class="sub" style="font-size:12.5px">${esc(t('adm_n_serm',{n:r.sermons||0}))} · ${esc(t('adm_seen',{d:r.seen?relDate(r.seen):'—'}))} · ${esc((r.lang||'').toUpperCase())}</span>
-      <span style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">${pend(r)?`<span class="tag warn adm-pend">${esc(t('ad_pend'))}</span>`:''}${pst2(r)==='soon'?`<span class="tag warn">${esc(t('ad_soon',{d:fmtDay(pl.until)}))}</span>`:pst2(r)==='grace'?`<span class="tag warn">${esc(t('sub_grace'))} · ${esc(fmtDay(pl.until))}</span>`:ps==='tr'?`<span class="tag tr">${esc(t('tr_name'))}${pl.trialAuto?' '+esc(t('tr_auto')):''} · ${esc(t('tr_until',{d:fmtDay(pl.trial)}))}</span>`:ps==='p'?`<span class="tag ok">${esc(planName(pl.plan))} · ${esc(fmtDay(pl.until))}</span>`:ps==='v'?`<span class="tag warn">${esc(t('sub_exp'))} · ${esc(fmtDay(pl.until))}</span>`:`<span class="tag">${esc(t('pl_free'))}</span>`}<button class="lnk" data-act="admPlan" data-uid="${esc(r.uid)}" data-l="${esc(nm)}">${esc(t('ad_plan'))}</button></span></div>
+      <span style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">${pend(r)?`<span class="tag warn adm-pend">${esc(t('ad_pend'))}</span>`:''}${pst2(r)==='soon'?`<span class="tag warn">${esc(t('ad_soon',{d:fmtDay(pl.until)}))}</span>`:pst2(r)==='grace'?`<span class="tag warn">${esc(t('sub_grace'))} · ${esc(fmtDay(pl.until))}</span>`:ps==='tr'?`<span class="tag tr">${esc(t('tr_name'))}${pl.trialAuto?' '+esc(t('tr_auto')):''} · ${esc(t('tr_until',{d:fmtDay(pl.trial)}))}</span>`:ps==='p'?`<span class="tag ok">${esc(planName(pl.plan))} · ${esc(fmtDay(pl.until))}</span>`:ps==='v'?`<span class="tag warn">${esc(t('sub_exp'))} · ${esc(fmtDay(pl.until))}</span>`:`<span class="tag">${esc(t('pl_free'))}</span>`}<button class="lnk" data-act="admPlan" data-uid="${esc(r.uid)}" data-l="${esc(nm)}">${esc(t('ad_plan'))}</button></span>
+      ${r.wa?`<div class="adm-wa">${(()=>{const L=waLang(r);const k1=pl.welSent;const paid=PMON[pl.plan]&&pl.until>Date.now();const k2=paid&&pl.congSent===pl.until;
+        return`<a class="btn sm ${k1?'ghost':'dark'}" data-act="admWa" data-k="wel" data-uid="${esc(r.uid)}" href="${esc(waLink(r,'wel'))}" target="_blank" rel="noopener">${ic(k1?'check':'chat')}${esc(t(k1?'wa_wel_ok':'wa_wel',null))}</a>`+(paid?`<a class="btn sm ${k2?'ghost':'gold'}" data-act="admWa" data-k="cong" data-uid="${esc(r.uid)}" data-u="${pl.until}" href="${esc(waLink(r,'cong'))}" target="_blank" rel="noopener">${ic(k2?'check':'chat')}${esc(t(k2?'wa_cong_ok':'wa_cong'))}</a>`:'')+`<span class="sub" style="font-size:12px">${esc(r.wa)} · ${L.toUpperCase()}</span>`})()}</div>`:`<span class="sub" style="display:block;margin-top:6px;font-size:12px">${esc(t('wa_none'))}</span>`}</div>
       <div class="seg sm adm-seg" data-uid="${esc(r.uid)}"><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="0" aria-pressed="${!bl&&!pend(r)}">${esc(t('adm_on'))}</button><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="1" aria-pressed="${bl}">${esc(t('adm_off'))}</button></div></div>`};
   const el=$('#admBody',sh);if(!el)return;
   el.innerHTML=`<div class="stats"><div class="stat"><b>${tot}</b><span>${esc(t('adm_users'))}</span></div><div class="stat"><b>${a7}</b><span>${esc(t('adm_act7'))}</span></div><div class="stat"><b>${totS}</b><span>${esc(t('adm_serms'))}</span></div></div>
@@ -1302,7 +1332,7 @@ function startCloud(u){authU=u;localMode=false;loadLocal();
       add(sermons,'s');add(notes,'n');add(agenda,'a');
       const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
     cacheAll()}
-const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setTimeout(()=>MC.load(),3000);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin)setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setTimeout(()=>MC.load(),3000);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin)setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();waCheck();
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -1352,12 +1382,12 @@ function initStore(){
 /* =========================================================
    Hojas (sheets)
    ========================================================= */
-function openSheet(html,{host,cls='',onClose}={}){
+function openSheet(html,{host,cls='',onClose,lock}={}){
   const ov=document.createElement('div');ov.className='ov';ov.innerHTML=`<div class="sheet ${cls}" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
-  ov.addEventListener('click',e=>{if(e.target===ov)closeSheet(ov)});ov._onClose=onClose;
+  ov.addEventListener('click',e=>{if(e.target===ov&&!lock)closeSheet(ov)});ov._onClose=onClose;ov._lock=!!lock;
   (host||$('#layer')).appendChild(ov);return ov.firstElementChild}
 function closeSheet(ov){ov=ov||[...$$('.ov')].pop();if(!ov)return;const f=ov._onClose;ov.remove();f&&f()}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.ov'))closeSheet()});
+document.addEventListener('keydown',e=>{const o=[...$$('.ov')].pop();if(e.key==='Escape'&&o&&!o._lock)closeSheet()});
 
 /* =========================================================
    Navegación
@@ -1527,6 +1557,14 @@ function admPendCheck(force){if(!isAdmin()||localMode||ADMP.busy)return;if(!forc
 setInterval(()=>{if(document.visibilityState==='visible')admPendCheck()},90000);
 /* ---------- relatar un problema (WhatsApp o correo del administrador) ---------- */
 /* ---------- Novedades de la versión y Ayuda ---------- */
+Object.assign(I18N.es,{wa_t:'Su WhatsApp',wa_d:'Para darle la bienvenida, avisarle sobre su plan y ayudarle cuando lo necesite. No enviamos publicidad.',wa_cc:'País',wa_ph:'Número con código de área',wa_save:'Guardar',wa_later:'Ahora no',wa_priv:'Solo el equipo de Meu Púlpito ve este número.',wa_bad:'Revise el número: escriba el código de área y el número, sin el código del país.',wa_ok:'WhatsApp guardado',wa_add:'Agregar',wa_wel:'Enviar bienvenida',wa_wel_ok:'Bienvenida enviada',wa_cong:'Enviar felicitación',wa_cong_ok:'Felicitación enviada',wa_none:'Sin WhatsApp registrado',
+ wam_wel:'¡Hola{n}! Le damos la bienvenida a Meu Púlpito. ¡Qué alegría tenerle con nosotros! Aquí puede preparar sus sermones, estudiar con la Biblia y los diccionarios bíblico, hebreo, arameo y griego, y predicar desde el celular. Si tiene alguna duda, responda este mensaje. ¡Dios bendiga su ministerio!\n\nPr. Jean Carlos · Meu Púlpito',
+ wam_wel_tr:'¡Hola{n}! Le damos la bienvenida a Meu Púlpito. ¡Qué alegría tenerle con nosotros! Tiene Premium gratis hasta el {d} para conocer todo: las 10 versiones de la Biblia, los diccionarios bíblico, hebreo, arameo y griego, y el Modo Predicar. Si tiene alguna duda, responda este mensaje. ¡Dios bendiga su ministerio!\n\nPr. Jean Carlos · Meu Púlpito',
+ wam_cong:'¡Hola{n}! Felicitaciones por adquirir el {p} de Meu Púlpito. Su acceso Premium ya está activo hasta el {d}: sermones sin límite, las 10 versiones de la Biblia, los 4 diccionarios completos y el Modo Predicar avanzado. ¡Gracias por su confianza! Estoy a su disposición.\n\nPr. Jean Carlos · Meu Púlpito'});
+Object.assign(I18N.pt,{wa_t:'Seu WhatsApp',wa_d:'Para darmos as boas-vindas, avisar sobre o seu plano e ajudar quando você precisar. Não enviamos propaganda.',wa_cc:'País',wa_ph:'Número com DDD',wa_save:'Salvar',wa_later:'Agora não',wa_priv:'Só a equipe do Meu Púlpito vê este número.',wa_bad:'Confira o número: escreva o DDD e o número, sem o código do país.',wa_ok:'WhatsApp salvo',wa_add:'Adicionar',wa_wel:'Enviar boas-vindas',wa_wel_ok:'Boas-vindas enviadas',wa_cong:'Enviar parabéns',wa_cong_ok:'Parabéns enviados',wa_none:'Sem WhatsApp cadastrado',
+ wam_wel:'Olá{n}! Boas-vindas ao Meu Púlpito! Que alegria ter você conosco. Aqui você prepara seus sermões, estuda com a Bíblia e os dicionários bíblico, hebraico, aramaico e grego, e prega pelo celular. Qualquer dúvida, é só responder esta mensagem. Deus abençoe o seu ministério!\n\nPr. Jean Carlos · Meu Púlpito',
+ wam_wel_tr:'Olá{n}! Boas-vindas ao Meu Púlpito! Que alegria ter você conosco. Você tem Premium grátis até {d} para conhecer tudo: as 10 versões da Bíblia, os dicionários bíblico, hebraico, aramaico e grego, e o Modo Pregar. Qualquer dúvida, é só responder esta mensagem. Deus abençoe o seu ministério!\n\nPr. Jean Carlos · Meu Púlpito',
+ wam_cong:'Olá{n}! Parabéns por adquirir o {p} do Meu Púlpito. Seu acesso Premium já está ativo até {d}: sermões sem limite, as 10 versões da Bíblia, os 4 dicionários completos e o Modo Pregar avançado. Obrigado pela confiança! Estou à disposição.\n\nPr. Jean Carlos · Meu Púlpito'});
 const NEWS_VER='v90';
 const NEWS={es:[['10 versiones de la Biblia','En la Biblia, toque el nombre de la versión: 6 en español y 4 en portugués. Reina-Valera 1909 y Bíblia Livre son gratis; las demás, Premium.'],['Diccionarios más fáciles','Sugerencias de palabras, «¿Quiso decir?» cuando hay un error al escribir, y lo que existe en los otros diccionarios cuando la palabra no está en el que abrió.'],['Curiosidad del día','Cada día una curiosidad bíblica nueva en el Inicio y en Curiosidades, con historial de lo que ya abrió.'],['Agenda con vista del mes','Vea el mes entero, agregue una descripción y un recordatorio, y guarde la predicación en el calendario del celular.'],['Versículos relacionados','En la Biblia, elija un versículo y toque el ícono de enlace: verá los textos que se relacionan con él (referencias cruzadas).'],['Series de sermones','En el sermón toque «+ Serie» para agrupar mensajes. En Sermones → Series vea el avance de cada serie.'],['Grabe su predicación','En el Modo Predicar, toque el micrófono. Las grabaciones quedan en el celular y puede compartirlas.'],['Plan de lectura bíblica','En el Inicio elija un plan (la Biblia en un año, el NT en 90 días…) y marque cada día leído.'],['Nuevo Diccionario Arameo','Las palabras en arameo del Antiguo Testamento (partes de Daniel y Esdras), con su sentido, pronunciación y versículos.'],['Pregunte cualquier cosa de la Biblia','En Curiosidades: «¿cuántas veces aparece el número 40?» muestra el total, los libros y los versículos.'],['Busque en todos los diccionarios a la vez','En Diccionarios, una sola búsqueda en el Bíblico, el Hebreo, el Arameo y el Griego.'],['Aviso de su próxima predicación','Si tiene un culto en la Agenda esta semana, aparece arriba en el Inicio con «Predicar».'],['Búsqueda más inteligente en sus sermones','Por título, versículo o cualquier palabra del texto, sin importar acentos ni el orden.'],['Nueva pantalla de apertura','El app instalado abre con el logo de Meu Púlpito.']],
   pt:[['10 versões da Bíblia','Na Bíblia, toque no nome da versão: 4 em português e 6 em espanhol. Bíblia Livre e Reina-Valera 1909 são grátis; as outras, Premium.'],['Dicionários mais fáceis','Sugestões de palavras, «Você quis dizer?» quando há erro de digitação, e o que existe nos outros dicionários quando a palavra não está no que você abriu.'],['Curiosidade do dia','Todo dia uma curiosidade bíblica nova no Início e em Curiosidades, com histórico do que você já abriu.'],['Agenda com visão do mês','Veja o mês inteiro, adicione uma descrição e um lembrete, e salve a pregação no calendário do celular.'],['Versículos relacionados','Na Bíblia, escolha um versículo e toque no ícone de corrente: você verá os textos que se relacionam com ele (referências cruzadas).'],['Séries de sermões','No sermão toque em «+ Série» para agrupar mensagens. Em Sermões → Séries veja o andamento de cada série.'],['Grave sua pregação','No Modo Pregar, toque no microfone. As gravações ficam no celular e você pode compartilhá-las.'],['Plano de leitura bíblica','No Início escolha um plano (a Bíblia em um ano, o NT em 90 dias…) e marque cada dia lido.'],['Novo Dicionário Aramaico','As palavras em aramaico do Antigo Testamento (partes de Daniel e Esdras), com sentido, pronúncia e versículos.'],['Pergunte qualquer coisa da Bíblia','Em Curiosidades: «quantas vezes aparece o número 40?» mostra o total, os livros e os versículos.'],['Busque em todos os dicionários de uma vez','Em Dicionários, uma só busca no Bíblico, no Hebraico, no Aramaico e no Grego.'],['Aviso da sua próxima pregação','Se você tem um culto na Agenda nesta semana, ele aparece no topo do Início com «Pregar».'],['Busca mais inteligente nos seus sermões','Por título, versículo ou qualquer palavra do texto, sem se importar com acentos nem com a ordem.'],['Nova tela de abertura','O app instalado abre com o logo do Meu Púlpito.']]};
@@ -2375,6 +2413,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">${esc(meta.name||t('pastor'))}</b><span class="sub" style="overflow-wrap:anywhere">${esc(localMode?t('local_only'):authU?authU.email:'')}</span>${localMode?`<button class="linkbtn" data-act="toLogin">${esc(t('login_btn'))}</button>`:''}${meta.photo?`<button class="linkbtn" data-act="photoRm">${esc(t('photo_rm'))}</button>`:''}</div></div>
   <div class="pgrp">
     <div class="prow"><label class="k" for="pName">${esc(t('your_name'))}</label><input class="inp" id="pName" value="${esc(meta.name||'')}" placeholder="${esc(t('pastor'))}" style="max-width:220px;height:42px" data-input="pName"></div>
+    ${!localMode?`<div class="prow"><span class="k">WhatsApp</span><button class="btn sm ghost" data-act="waEdit">${meta.wa?esc(waShow(meta.wa)):esc(t('wa_add'))}</button></div>`:''}
     <div class="prow"><span class="k">${esc(t('language'))}</span>${seg('pUi',prefs.ui,[['es','Español'],['pt','Português']])}</div>
     <div class="prow"><span class="k">${esc(t('appearance'))}</span>${seg('pTheme',prefs.theme,[['light',t('light')],['dark',t('dark')],['auto',t('auto')]])}</div>
     <div class="prow"><span class="k">${esc(t('def_bible'))}</span><button class="btn sm ghost" data-act="pBibleSel">${esc(VNAME[vkey(prefs.bibleVer||prefs.ui)])}${ic('down')}</button></div>
@@ -2630,7 +2669,9 @@ function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;vie
    Acciones (un solo manejador de toques)
    ========================================================= */
 const ACT={
-  admSite:()=>admSite(),admVis:()=>admVisits(),
+  admSite:()=>admSite(),admVis:()=>admVisits(),waEdit:()=>waSheet(false),
+  admWa:b=>{try{window.open(b.href,'_blank','noopener')}catch(e){location.href=b.href}const u=b.dataset.uid,k=b.dataset.k;const d=k==='wel'?{welSent:Date.now()}:{congSent:+b.dataset.u};try{firebase.firestore().collection('planos').doc(u).set(d,{merge:true}).catch(()=>{})}catch(e){}
+    b.classList.remove('dark','gold');b.classList.add('ghost');b.innerHTML=ic('check')+esc(t(k==='wel'?'wa_wel_ok':'wa_cong_ok'))},
   privacy:()=>privacySheet(),delAcc:()=>deleteAccount(),admin:()=>adminPanel(),
   admBlock:async b=>{if(!isAdmin())return;const uid=b.dataset.uid,blk=b.dataset.b==='1';const seg=b.closest('.adm-seg');
     try{await firebase.firestore().collection('planos').doc(uid).set({blocked:blk,ok:!blk,updated:Date.now(),by:(authU.email||'')},{merge:true});const pe=b.closest('.adm-row');if(pe){const tg=pe.querySelector('.adm-pend');if(tg)tg.remove()}
