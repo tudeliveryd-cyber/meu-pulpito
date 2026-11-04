@@ -175,7 +175,7 @@ dict(cat='lug',q=('¿Cómo se llamaba el jardín donde vivían Adán y Eva?','Co
  a=('El huerto (jardín) del Edén.','O jardim do Éden.'),
  x=('Dios plantó un huerto en Edén, al oriente, y puso allí al hombre para que lo labrara y lo guardara. Un río salía de Edén y se repartía en cuatro brazos.','Deus plantou um jardim no Éden, ao oriente, e pôs ali o homem para cultivá-lo e guardá-lo. Um rio saía do Éden e se dividia em quatro braços.'),
  r=['0.2.8','0.2.10','0.2.15','0.3.23'],c=('Dos de los ríos mencionados, el Tigris (Hidekel) y el Éufrates, existen hasta hoy.','Dois dos rios mencionados, o Tigre (Hidequel) e o Eufrates, existem até hoje.')),
-dict(cat='lug',q=('¿Qué materiales se usaron para construir el arca de Noé?','Que materiais foram usados para construir a arca de Noé?'),
+dict(cat='obj',q=('¿Qué materiales se usaron para construir el arca de Noé?','Que materiais foram usados para construir a arca de Noé?'),
  a=('Madera de gofer, cubierta con brea por dentro y por fuera.','Madeira de gofer, coberta com betume por dentro e por fora.'),
  x=('No se sabe con certeza qué árbol era el «gofer»: la palabra aparece solo aquí en la Biblia. El arca tenía tres pisos, aposentos, una ventana y una puerta lateral.','Não se sabe com certeza que árvore era o «gofer»: a palavra aparece só aqui na Bíblia. A arca tinha três andares, compartimentos, uma janela e uma porta lateral.'),
  r=['0.6.14','0.6.15','0.6.16'],c=('La misma palabra hebrea traducida «brea» se relaciona con «cubrir», la raíz de «expiación».','A mesma palavra hebraica traduzida por «betume» está relacionada a «cobrir», a raiz de «expiação».')),
@@ -208,6 +208,7 @@ dict(cat='ens',q=('¿Qué simboliza el desierto en la Biblia?','O que o deserto 
  x=('Israel pasó 40 años en el desierto para ser probado y aprender a depender de Dios (Deuteronomio 8:2-3). Allí Dios dio el maná. Moisés encontró a Dios en la zarza en el desierto, Elías fue sostenido allí y Jesús fue tentado en el desierto.','Israel passou 40 anos no deserto para ser provado e aprender a depender de Deus (Deuteronômio 8:2-3). Ali Deus deu o maná. Moisés encontrou Deus na sarça no deserto, Elias foi sustentado ali e Jesus foi tentado no deserto.'),
  r=['4.8.2','1.16.35','1.3.1','10.19.4','39.4.1','27.2.14'],crit=('El significado depende del contexto de cada pasaje.','O significado depende do contexto de cada passagem.'),c=('Juan el Bautista predicó en el desierto, cumpliendo Isaías 40:3: «Voz que clama en el desierto».','João Batista pregou no deserto, cumprindo Isaías 40:3: «Voz do que clama no deserto».')),
 ]
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'curiosidades-2.py'),encoding='utf-8').read());C+=N
 # validar referencias en las dos Biblias
 def ok(B,r):
     b,c,v=map(int,r.split('-')[0].split('.'))
@@ -219,6 +220,6 @@ for i,e in enumerate(C):
         assert ok(RV,r),('es',e['q'][0],r)
     for r in e['r']:
         assert ok(BL,r),('pt',e['q'][0],r)
-out={'src':'Meu Púlpito · estadísticas contadas en la Reina-Valera 1909 y la Bíblia Livre del app','cats':{'est':['Estadísticas de la Biblia','Estatísticas da Bíblia'],'rec':['Récords bíblicos','Recordes bíblicos'],'per':['Personajes bíblicos','Personagens bíblicos'],'acon':['Acontecimientos bíblicos','Acontecimentos bíblicos'],'lug':['Lugares y objetos','Lugares e objetos'],'ens':['Significados y enseñanzas','Significados e ensinos']},'e':C}
+out={'src':'Meu Púlpito · estadísticas contadas en la Reina-Valera 1909 y la Bíblia Livre del app','cats':{'est':['Estadísticas de la Biblia','Estatísticas da Bíblia'],'rec':['Récords bíblicos','Recordes bíblicos'],'per':['Personajes bíblicos','Personagens bíblicos'],'acon':['Acontecimientos bíblicos','Acontecimentos bíblicos'],'lug':['Lugares y ciudades','Lugares e cidades'],'cos':['Costumbres y tradiciones','Costumes e tradições'],'obj':['Objetos bíblicos','Objetos bíblicos'],'ani':['Animales y naturaleza','Animais e natureza'],'ens':['Significados y enseñanzas','Significados e ensinos'],'hist':['Curiosidades históricas','Curiosidades históricas']},'e':C}
 json.dump(out,open(R+'/curiosidades.json','w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
 print(len(C),'curiosidades',wRV,wBL,pRV,pBL)
