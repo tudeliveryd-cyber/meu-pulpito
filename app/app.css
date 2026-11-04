@@ -790,3 +790,6 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .mc i{position:absolute;left:50%;bottom:5px;transform:translateX(-50%);min-width:6px;height:6px;border-radius:3px;background:var(--gold);font:700 9px/6px var(--head);color:transparent}
 .ev .hd{position:relative}.ev-desc{font-size:12.5px!important;white-space:pre-wrap}
 .ev{position:relative}.ev-cal{position:absolute;top:8px;right:8px}.ev-cal svg{width:18px;height:18px}
+.dx-other{display:flex;flex-direction:column;gap:8px;margin-top:-14px}
+.dx-note{margin:0 0 12px;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;font-size:14px;line-height:1.55;color:var(--fg)}
+.dx-note .lnk{display:inline;padding:0;margin-left:4px}
