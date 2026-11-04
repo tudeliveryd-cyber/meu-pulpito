@@ -873,3 +873,7 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
   html.tabs .ov>.sheet:not(.tall),html.subp .ov>.sheet:not(.tall){border-radius:24px;max-height:86%}
   html.tabs .ov:has(.sheet.tall),html.subp .ov:has(.sheet.tall){padding:0;align-items:stretch}
 }
+
+.rf-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--chip);box-shadow:0 0 0 1px var(--line) inset}
+.rf-link span{flex:1;min-width:0;font-weight:700;font-size:14.5px;overflow-wrap:anywhere}
+.dp-ok{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.4;color:var(--muted)}.dp-ok input{width:22px;height:22px;flex:none;margin:0}
