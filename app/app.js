@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v119';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v120';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1755,7 +1755,10 @@ const minLoad=(k,f)=>MIN[k]?Promise.resolve(MIN[k]):(MIN[k+'p']||(MIN[k+'p']=fet
 const mL=()=>prefs.ui==='pt'?1:0;
 const MAN_FREE=['ceia','enfermos'];
 let DV={d:null},SG={k:null},MN={k:null};
-function doy(dt){const d=dt||new Date();const s=new Date(d.getFullYear(),0,1);return Math.min(365,Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate())-s)/864e5)+1)}
+// dia do devocional (1–365); no ano bissexto o 29 de fevereiro repete o dia 28 e o resto do ano segue igual
+const isLeap=y=>y%4===0&&(y%100!==0||y%400===0);
+function doy(dt){const d=dt||new Date();const y=d.getFullYear();let n=Math.floor((new Date(y,d.getMonth(),d.getDate())-new Date(y,0,1))/864e5)+1;if(isLeap(y)&&n>=60)n--;return Math.min(365,Math.max(1,n))}
+function doyDate(n){const y=new Date().getFullYear();return new Date(y,0,n+(isLeap(y)&&n>=60?1:0))}
 function vText(ref,L){const B=BIB[vkey(prefs.bibleVer||L)]||BIB[vkey(L)];const m=String(ref).match(/^(\d+)\.(\d+)\.(\d+)(?:-(\d+))?$/);if(!B||!m)return'';const c=(B[+m[1]]||[])[+m[2]-1]||[];const out=[];for(let v=+m[3];v<=(+m[4]||+m[3]);v++)if(c[v-1])out.push(c[v-1]);return out.join(' ')}
 const eref=(r,L)=>`<button class="tag eref" data-eref="${esc(refStr(r,L))}">${esc(refStr(r,L))}</button>`;
 function minNeedBible(){const L=lxLang();const k=vkey(prefs.bibleVer||L);if(!BIB[k])loadBible(prefs.bibleVer||L).then(()=>{if(['devo','sug','man'].includes(view.tab))render()}).catch(()=>{})}
@@ -1767,9 +1770,9 @@ function devoCardHtml(){const L=lxLang(),l=mL();if(!MIN.dv){if(!devoCardHtml._l)
   return`<button class="dv-card" data-act="tab" data-k="devo"><span class="dv-k">${ic('bible')}${esc(t('dv_today'))}${read?` · ${esc(t('dv_read'))}`:''}</span><b>${esc(e.t[l])}</b><span>${esc(refStr(e.v,L))}</span></button>`}
 function devoHtml(){const L=lxLang(),l=mL();if(!MIN.dv)return minHead(t('dv_t'))+`<div class="empty"><p style="margin:0">${esc(t('dx_load'))}</p></div>`;
   minNeedBible();const n=DV.d||doy();const e=MIN.dv.e[n-1];const today=n===doy();if(today)ls.set('mp.dv.read',todayISO());
-  const d=new Date(new Date().getFullYear(),0,n);const vt=vText(e.v,L);
+  const d=doyDate(n);const vt=vText(e.v,L);
   return minHead(t('dv_t'))+`<div class="dv-page">
-   <div class="between"><button class="iconbtn" data-dv="prev" aria-label="${esc(t('dv_prev'))}" ${n<=1?'disabled':''}>${ic('back')}</button><span class="dv-date">${esc(today?t('dv_today'):d.toLocaleDateString(L==='pt'?'pt-BR':'es',{day:'numeric',month:'long'}))}</span><button class="iconbtn" data-dv="next" aria-label="${esc(t('dv_next'))}" ${n>=365?'disabled':''}>${ic('next')}</button></div>
+   <div class="between"><button class="iconbtn" data-dv="prev" aria-label="${esc(t('dv_prev'))}" ${n<=1?'disabled':''}>${ic('back')}</button><span class="dv-date">${esc((today?t('dv_today')+' · ':'')+d.toLocaleDateString(L==='pt'?'pt-BR':'es',{weekday:'long',day:'numeric',month:'long'}))}</span><button class="iconbtn" data-dv="next" aria-label="${esc(t('dv_next'))}" ${n>=365?'disabled':''}>${ic('next')}</button></div>
    <h2 class="dv-title">${esc(e.t[l])}</h2>
    <blockquote class="dv-verse">${vt?esc(vt):esc(t('dx_load'))}<cite>${eref(e.v,L)} <small>${esc(verLabel(prefs.bibleVer||L))}</small></cite></blockquote>
    <p class="dv-text">${esc(e.r[l])}</p>
