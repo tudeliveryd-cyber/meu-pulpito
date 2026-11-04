@@ -767,3 +767,14 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .wel-gift{display:flex;align-items:center;gap:10px;background:var(--hero);color:#fff;border-radius:16px;padding:14px 16px;text-align:left;box-shadow:inset 0 0 0 1.5px var(--gold)}.wel-gift svg{width:26px;height:26px;color:var(--gold);fill:var(--gold);flex:none}.wel-gift b{font-family:var(--head);font-size:16px;line-height:1.35}
 .wel .btn{margin-top:6px;letter-spacing:.03em}.wel-n{font-size:12.5px!important;color:var(--muted)}
 .banner.trial .tx svg{width:15px;height:15px;color:var(--gold);fill:var(--gold);vertical-align:-2px}
+/* PREMIUM: candado y aviso */
+.prem{display:inline-flex;align-items:center;gap:4px;background:var(--hero);color:#D6AD55;font-family:var(--head);font-weight:800;font-size:10.5px;letter-spacing:.08em;border-radius:6px;padding:3px 7px;vertical-align:2px}
+.prem svg{width:11px!important;height:11px!important}.prem.sm{margin-left:6px}
+.pk{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:6px 2px}
+.pk-ic{width:56px;height:56px;border-radius:50%;background:var(--hero);color:#D6AD55;display:grid;place-items:center}.pk-ic svg{width:26px;height:26px}
+.pk h3{margin:0;font-family:var(--head);font-size:19px}.pk p{margin:0;line-height:1.55;font-size:15px;color:var(--muted)}.pk .pk-why{color:var(--fg);font-weight:600}
+.pk-card{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--surface);border:1px dashed var(--gold);border-radius:14px;padding:12px 14px;color:var(--fg);font:inherit;cursor:pointer}
+.pk-card>svg{width:20px;height:20px;color:var(--gold-ink);flex:none;margin-top:2px}.pk-card>span{display:flex;flex-direction:column;gap:3px}.pk-card b{font-family:var(--head);font-size:14.5px}.pk-card span span{font-size:13px;color:var(--muted)}
+.pg-rec.lk{opacity:.7}
+.tag svg{width:13px;height:13px;vertical-align:-2px}
+.dx-free{display:flex;align-items:center;gap:10px;width:100%;background:var(--surface);border:1px dashed var(--gold);border-radius:14px;padding:10px 12px;color:var(--muted);font:inherit;font-size:13px;text-align:left;cursor:pointer}.dx-free>svg{width:17px;height:17px;color:var(--gold-ink);flex:none}.dx-free>span:first-of-type{flex:1}
