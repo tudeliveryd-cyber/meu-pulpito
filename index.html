@@ -101,10 +101,12 @@ body.has-bar .hero{padding-top:calc(env(safe-area-inset-top,0px) + 186px)}
 .lang button{border:0;background:none;color:rgba(255,255,255,.65);font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.06em;height:28px;padding:0 10px;border-radius:14px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--navy)}
 .nav .btn{height:42px;padding:0 20px;font-size:14.5px}
-@media (max-width:1020px){.nav .wrap{gap:16px}.nav ul{gap:16px}.nav ul a{font-size:13.5px}.nav .brand small{display:none}}
+@media (max-width:1020px){.nav .wrap{gap:16px}.nav ul{gap:16px}.nav ul a{font-size:13.5px}}
+@media (min-width:781px) and (max-width:1020px){.nav .brand small{display:none}}
 @media (max-width:780px){.nav ul{display:none}.nav .lang{margin-left:auto}}
 @media (max-width:420px){.nav .btn{height:38px;padding:0 14px;font-size:13.5px}.lang button{padding:0 9px}.brand b{font-size:14px}.brand img{height:28px;width:auto}.nav .wrap{gap:10px}}
-@media (max-width:480px){.brand small{display:none}.brand b{font-size:15px;white-space:nowrap}.brand img{height:32px}.nav .btn{padding:0 16px}.nav .wrap{gap:12px}}
+@media (max-width:480px){.brand small{font-size:6.4px;letter-spacing:.06em;margin-top:3px;white-space:nowrap}.nav .lang button{padding:0 8px}.brand b{font-size:15px;white-space:nowrap}.brand img{height:32px}.nav .btn{padding:0 16px}.nav .wrap{gap:12px}}
+@media (max-width:380px){.nav .brand{gap:8px}.nav .brand img{height:27px}.nav .brand b{font-size:13.5px}.nav .brand small{font-size:5.8px;letter-spacing:.05em}.nav .lang button{padding:0 7px;font-size:11px}.nav .btn{padding:0 12px;font-size:13px}.nav .wrap{gap:8px}}
 
 /* portada */
 .hero{position:relative;background:var(--navy);color:#C5CCDA;overflow:hidden;padding:calc(env(safe-area-inset-top,0px) + 140px) 0 0}
