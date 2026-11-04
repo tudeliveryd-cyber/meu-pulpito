@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v109';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v110';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1052,7 +1052,7 @@ function pushStats(force){if(!cols||!authU||localMode||!window.firebase)return;c
   const d={email:(authU.email||'').toLowerCase(),name:meta.name||'',lang:prefs.ui,sermons:liveS().length,
     preached:liveS().filter(isPreached).length,notes:liveN().length,events:agenda.length,
     uses:ls.get('mp.uses',{}),seen:now,created,ver:APP_VER,wa:meta.wa||''};
-  if(freshAccount(authU)){const r=refIn();if(r)d.ref=r}
+  if(freshAccount(authU)){const r=refIn();if(r){d.ref=r;if(!meta.refBy){meta.refBy=r;putMeta()}}}
   try{firebase.firestore().collection('stats').doc(authU.uid).set(d,{merge:true}).catch(()=>{})}catch(e){}}
 let planLoaded=false;
 const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planState.ok||PMON[planState.plan])));
@@ -1184,10 +1184,13 @@ function plansSheet(reason,retried){if(!retried&&!MC.fixed()&&!MC.local(1e5)){le
       :`<div class="pl-price">${esc(money(x[c],c))} <small>${esc(t('pl_per_'+k))}</small></div>
       ${k!=='m'?`<span class="sub">${esc(t('pl_eq',{v:money(Math.round(x[c]/PMON[k]),c)}))}</span>`:''}`}
       ${sv>0?`<span class="pl-save">${esc(t('pl_save',{n:sv}))}</span>`:''}
+      ${rolDisc()?`<span class="pl-save rl-tag">${esc(t('rl_card',{p:rolDisc(),v:fx?locMoney(rolPrice(x.pyg,'pyg',rolDisc())):money(rolPrice(x[c],c,rolDisc()),c)}))}</span>`:''}
       ${k==='m'?feat([t('pl_p1'),t('pl_p7'),t('pl_p2'),t('pl_p3'),t('pl_p4'),t('pl_p5'),t('pl_p6')]):''}
       <button class="btn ${k==='a'?'gold':'dark'} block" data-pl-go="${k}">${esc(t('pl_go_'+k))}</button></div>`};
   const sh=openSheet(`<div class="pl-wrap"><div class="between"><h3 class="pl-t">${esc(t('pl_choose'))}</h3><button class="iconbtn" data-pl-x aria-label="${esc(t('close'))}">${ic('x')}</button></div>
     ${reason?`<p class="pl-why">${esc(reason)}</p>`:`<p class="sub" style="margin:0;font-size:14.5px">${esc(t('pl_sub'))}</p>`}
+    ${meta.refBy&&!ROL&&!planNow().pays.length&&authU&&!localMode?`<button class="pk-card" data-pl-rl>${ic('star')}<span><b>${esc(t('rl_t'))}</b><span>${esc(t('rl_d'))}</span></span></button>`:''}
+    ${rolDisc()?`<p class="pl-testn">${ic('check')}${esc(t('rl_have',{p:rolDisc()}))}</p>`:''}
     ${N.test?`<p class="pl-testn">${ic('check')}${esc(t('pl_test'))}</p>`:N.trial?`<p class="pl-testn">${ic('check')}${esc(t('tr_on',{d:fmtDay(N.trialEnd)}))}</p>`:''}
     ${!N.paid&&!N.trial&&!N.trialEnd&&!N.test&&PCFG.wa?`<a class="btn ghost block" href="https://wa.me/${esc(String(PCFG.wa).replace(/\D/g,''))}?text=${encodeURIComponent(t('tr_ask_msg',{e:(authU&&authU.email)||''}))}" target="_blank" rel="noopener">${ic('chat')}${esc(t('tr_ask'))}</a>`:''}
     <div class="pl-grid">
@@ -1197,13 +1200,13 @@ function plansSheet(reason,retried){if(!retried&&!MC.fixed()&&!MC.local(1e5)){le
     ${card('m')}${card('t')}${card('a')}</div>
     ${fx?`<p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_fx',{c:MC.name(MC.code(),prefs.ui)}))}</p>`:''}
     <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('pl_cond'))} <a href="/legal.html#terminos" target="_blank" rel="noopener" style="text-decoration:underline">${esc(t('pl_terms'))}</a></p></div>`,{cls:'tall'});
-  sh.addEventListener('click',e=>{if(e.target.closest('[data-pl-x]')){closeSheet();return}const b=e.target.closest('[data-pl-go]');if(b)planContact(b.dataset.plGo)})}
+  sh.addEventListener('click',e=>{if(e.target.closest('[data-pl-x]')){closeSheet();return}if(e.target.closest('[data-pl-rl]')){closeSheet();rolSheet();return}const b=e.target.closest('[data-pl-go]');if(b)planContact(b.dataset.plGo)})}
 /* ---------- Formas de pago (datos que el administrador carga en el panel) ---------- */
 function payCfg(){const P=PCFG.pay||{};const bk=P.bk||{},pix=P.pix||{},card=P.card||{};
   return{bk:(bk.alias||bk.acc||bk.doc)?bk:null,pix:pix.key?pix:null,card:['m','t','a'].some(k=>/^https:\/\//.test(card[k]||''))?card:null}}
 function copyTxt(v){try{navigator.clipboard.writeText(v).then(()=>toast(t('py_copied')),()=>toast(v))}catch(e){toast(v)}}
 function planContact(k){const C=payCfg();if(!C.bk&&!C.pix&&!(C.card&&C.card[k]))return planContactWa(k);
-  const x=PCFG.p[k];const cc=MC.code();const em=(authU&&authU.email)||'';const wa=String(PCFG.wa||'').replace(/\D/g,'');
+  const DS=rolDisc();const x0=PCFG.p[k];const x=DS?{pyg:rolPrice(x0.pyg,'pyg',DS),brl:rolPrice(x0.brl,'brl',DS)}:x0;const cc=MC.code();const em=(authU&&authU.email)||'';const wa=String(PCFG.wa||'').replace(/\D/g,'');
   const row=(lb,v,cp)=>v?`<div class="py-r"><span>${esc(lb)}</span><b>${esc(v)}</b>${cp?`<button class="iconbtn" data-cp="${esc(typeof cp==='string'?cp:v)}" aria-label="${esc(t('copy_txt'))}">${ic('copy')}</button>`:''}</div>`:'';
   const secs=[];
   if(C.bk)secs.push(['bk',`<div class="py-c"><div class="py-h">${ic('copy')}<b>${esc(t('py_bk'))}</b><span class="py-v">${esc(money(x.pyg,'pyg'))}</span></div>
@@ -1214,10 +1217,11 @@ function planContact(k){const C=payCfg();if(!C.bk&&!C.pix&&!(C.card&&C.card[k]))
     <p class="sub" style="margin:0;font-size:13px">${esc(t('py_card_d'))}</p><a class="btn dark block" href="${esc(C.card[k])}" target="_blank" rel="noopener">${esc(t('py_card_go'))}</a></div>`]);
   const ord=cc==='BRL'?['pix','card','bk']:['bk','card','pix'];secs.sort((a,b)=>ord.indexOf(a[0])-ord.indexOf(b[0]));
   const lm=locMoney(x.pyg);const vtxt=lm?lm+' ('+money(x.pyg,'pyg')+')':money(x[curOrder()[0]],curOrder()[0]);
-  const msg=t('py_sent_msg',{p:planName(k),v:vtxt+' '+t('pl_per_'+k),e:em});
+  const msg=t('py_sent_msg',{p:planName(k),v:vtxt+' '+t('pl_per_'+k),e:em})+(DS?'\n'+t('rl_msg',{p:DS}):'');
   const sh=openSheet(`<h3>${esc(t('pl_pay_t',{p:planName(k)}))}</h3><p class="pl-price" style="margin:0">${esc(vtxt)} <small>${esc(t('pl_per_'+k))}</small></p>
+    ${DS?`<p class="pl-testn" style="margin:0">${ic('check')}${esc(t('rl_have',{p:DS}))}</p>`:''}
     <p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('py_how'))}</p>
-    ${secs.map(x=>x[1]).join('')}
+    ${secs.map(x=>x[1]).join('')}${DS&&secs.some(x=>x[0]==='card')?`<p class="sub" style="margin:0;font-size:12.5px">${esc(t('rl_card_note'))}</p>`:''}
     ${wa?`<a class="btn gold block" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">${ic('chat')}${esc(t('py_sent'))}</a>`:''}
     ${wa?`<a class="btn ghost block" href="https://wa.me/${wa}?text=${encodeURIComponent(t('pl_pay_msg',{p:planName(k),v:vtxt,e:em}))}" target="_blank" rel="noopener">${esc(t('py_other'))}</a>`:''}
     <p class="sub" style="margin:0;font-size:12.5px">${esc(t('pl_cond'))}</p>`,{cls:'tall'});
@@ -1284,7 +1288,7 @@ async function admPlan(uid,label){const db=firebase.firestore();let cur={};try{c
   let trN=7;$('#apTd',sh).onclick=e=>{const b=e.target.closest('[data-n]');if(!b)return;trN=+b.dataset.n;$$('#apTd button',sh).forEach(x=>x.setAttribute('aria-pressed',String(x===b)))};
   $('#apTrGo',sh).onclick=async()=>{const until=Date.now()+trN*864e5;try{await db.collection('planos').doc(uid).set({trial:until,trialFrom:Date.now(),trialAuto:false,ok:true,blocked:false,updated:Date.now()},{merge:true});closeSheet();toast(t('atr_done',{d:fmtDay(until)}));adminPanel()}catch(e){toast(t('adm_err'))}};
   const te=$('#apTrEnd',sh);if(te)te.onclick=async()=>{try{await db.collection('planos').doc(uid).set({trial:Date.now()-1000,updated:Date.now()},{merge:true});closeSheet();toast(t('ad_done'));adminPanel()}catch(e){toast(t('adm_err'))}};
-  const sync=()=>{const f=new Date($('#apF',sh).value+'T12:00:00').getTime()||Date.now();$('#apT',sh).value=iso(addMonths(f,PMON[k]));const c=$('#apC',sh).value;$('#apA',sh).value=PCFG.p[k][c]};
+  const sync=()=>{const f=new Date($('#apF',sh).value+'T12:00:00').getTime()||Date.now();$('#apT',sh).value=iso(addMonths(f,PMON[k]));const c=$('#apC',sh).value;const rp=ROLS[uid]&&!(Array.isArray(cur.pays)&&cur.pays.length)?+ROLS[uid].p:0;$('#apA',sh).value=rp?rolPrice(PCFG.p[k][c],c,rp):PCFG.p[k][c];const nt=$('#apN',sh);if(rp&&nt&&!nt.value)nt.value=t('rl_adm',{p:rp})};
   $('#apK',sh).onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;$$('#apK button',sh).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const tr=b.dataset.k==='trial';$('#apTr',sh).hidden=!tr;$('#apPay',sh).hidden=tr;if(tr)return;k=b.dataset.k;sync()};
   $('#apF',sh).onchange=sync;$('#apC',sh).onchange=sync;sync();
   $('#apGo',sh).onclick=async()=>{const since=new Date($('#apF',sh).value+'T00:00:00').getTime();const until=new Date($('#apT',sh).value+'T23:59:59').getTime();if(!since||!until||until<=since){toast(t('dict_err'));return}
@@ -1299,10 +1303,10 @@ function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><
     <span class="lbl">${esc(t('ad_lim'))}</span><div class="ac-row ac3"><input class="inp" id="acS" value="${F.serm}" inputmode="numeric"><input class="inp" id="acD" value="${F.dic}" inputmode="numeric"><input class="inp" id="acC" value="${F.cur}" inputmode="numeric"></div>
     <span class="lbl">${esc(t('ad_days'))}</span><div class="ac-row ac3" style="grid-template-columns:1fr 1fr"><input class="inp" id="acWn" value="${PCFG.warn??7}" inputmode="numeric" aria-label="aviso"><input class="inp" id="acGr" value="${PCFG.grace??3}" inputmode="numeric" aria-label="gracia"></div>
     <label class="fld"><span class="lb">${esc(t('ad_wa'))}</span><input class="inp" id="acW" value="${esc(PCFG.wa||'')}" placeholder="595981234567" inputmode="tel"></label>
-    <label class="fld"><span class="lb">${esc(t('rf_cfg'))}</span><input class="inp" id="acRf" value="${+PCFG.refDays||30}" inputmode="numeric"></label>
+    <label class="fld"><span class="lb">${esc(t('rf_cfg'))}</span><input class="inp" id="acRf" value="${refN()}" inputmode="numeric"></label>
     <button class="btn gold block" id="acGo">${esc(t('ad_save'))}</button>`);
   $('#acGo',sh).onclick=async()=>{const n=v=>Math.max(0,parseInt(String(v).replace(/\D/g,''),10)||0);const p={m:{},t:{},a:{}};$$('[data-p]',sh).forEach(i=>{const [k,c]=i.dataset.p.split('.');p[k][c]=n(i.value)});
-    const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,warn:n($('#acWn',sh).value),grace:n($('#acGr',sh).value),wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},refDays:Math.min(365,n($('#acRf',sh).value)||30),updated:Date.now()};
+    const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,warn:n($('#acWn',sh).value),grace:n($('#acGr',sh).value),wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},refN:Math.min(20,n($('#acRf',sh).value)||3),updated:Date.now()};
     try{await firebase.firestore().collection('config').doc('app').set(cfg,{merge:true});PCFG=Object.assign({},PCFG,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 
 /* ---------- Panel del sitio meupulpito.com (solo administrador) ---------- */
@@ -1384,7 +1388,8 @@ function waLink(r,k){const L=waLang(r);const p=(r.plan||{});const nm=(r.name||''
   return'https://wa.me/'+String(r.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(msg)}
 const fmtDayL=(ts,L)=>ts?new Date(ts).toLocaleDateString(L==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'long',year:'numeric'}):'';
 async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
-  let rows=[];try{const db=firebase.firestore();const[q,pq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get()]);
+  let rows=[];try{const db=firebase.firestore();const[q,pq,rq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get(),db.collection('roleta').get().catch(()=>({docs:[]}))]);
+    ROLS={};rq.docs.forEach(d=>ROLS[d.id]=d.data());
     const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
   catch(e){const el=$('#admBody',sh);if(el)el.innerHTML=`<p class="sub" style="margin:0">${esc(t('adm_err'))}</p>`;return}
   if(!sh.isConnected)return;rows.sort((a,b)=>(b.seen||0)-(a.seen||0));
@@ -1398,11 +1403,17 @@ async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<
   const cnt={f:0,p:0,v:0,tr:0};rows.forEach(r=>cnt[pst(r)]++);const nSoon=rows.filter(r=>pst2(r)==='soon'||pst2(r)==='grace').length;
   const pend=r=>r.email!==ADMIN_EMAIL&&!(r.plan&&(r.plan.ok||r.plan.blocked||PMON[r.plan.plan]));const np=rows.filter(pend).length;
   rows.sort((a,b)=>(pend(b)?1:0)-(pend(a)?1:0));
-  const byCode={};rows.forEach(r=>byCode[r.uid.slice(0,8)]=r);const refCnt={};rows.forEach(r=>{if(r.ref&&byCode[r.ref])refCnt[r.ref]=(refCnt[r.ref]||0)+1});const rdays=+PCFG.refDays||30;
-  const refHtml=r=>{const pl=r.plan||{};const by=r.ref&&byCode[r.ref];const nc=refCnt[r.uid.slice(0,8)];let h='';
-    if(by){const bn=by.name||by.email||by.uid.slice(0,6);h+=`<span class="tag">${esc(t('rf_by',{n:bn}))}</span>`;
-      if(pl.refPaid)h+=`<span class="tag ok">${esc(t('rf_paid'))}</span>`;else if(PMON[pl.plan]&&(pl.pays||[]).length)h+=`<button class="btn sm gold" data-act="admRef" data-uid="${esc(r.uid)}" data-to="${esc(by.uid)}">${ic('star')}${esc(t('rf_give',{d:rdays,n:bn}))}</button>`}
-    if(nc)h+=`<span class="tag ok">${esc(t('rf_cnt',{n:nc}))}</span>`;return h?`<span style="display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap">${h}</span>`:''};
+  const byCode={};rows.forEach(r=>byCode[r.uid.slice(0,8)]=r);const RN=refN();
+  const bought=r=>{const p=r.plan||{};return Array.isArray(p.pays)&&p.pays.length>0};
+  const refCnt={},refBuy={};rows.forEach(r=>{if(r.ref&&byCode[r.ref]){refCnt[r.ref]=(refCnt[r.ref]||0)+1;if(bought(r))refBuy[r.ref]=(refBuy[r.ref]||0)+1}});
+  // o pastor que indicou vê no app quantos dos indicados já compraram
+  try{const db=firebase.firestore();Object.entries(refBuy).forEach(([c,n])=>{const x=byCode[c];if(x&&(x.plan||{}).refBuy!==n)db.collection('planos').doc(x.uid).set({refBuy:n},{merge:true}).catch(()=>{})})}catch(e){}
+  const refHtml=r=>{const by=r.ref&&byCode[r.ref];const code=r.uid.slice(0,8);const nc=refCnt[code],nb=refBuy[code]||0;let h='';
+    if(by){const bn=by.name||by.email||by.uid.slice(0,6);h+=`<span class="tag">${esc(t('rf_by',{n:bn}))}</span>`}
+    const rl=ROLS[r.uid];if(rl&&!bought(r))h+=`<span class="tag tr">${esc(t('rl_adm',{p:rl.p}))}</span>`;
+    if(nc){h+=`<span class="tag ok">${esc(t('rf_cnt',{n:nc,b:nb}))}</span>`;const due=Math.floor(nb/RN)-(+(r.plan||{}).refMonths||0);
+      if(due>0)h+=`<button class="btn sm gold" data-act="admRef" data-to="${esc(r.uid)}">${ic('star')}${esc(t('rf_give',{n:r.name||r.email||''}))}</button>`}
+    return h?`<span style="display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap">${h}</span>`:''};
   const row=r=>{const nm=r.name||r.email||r.uid.slice(0,6);const bl=!!(r.plan&&r.plan.blocked);const ps=pst(r);const pl=r.plan||{};
     return`<div class="adm-row"><div style="flex:1;min-width:0"><b>${esc(nm)}</b><span class="sub" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(r.email||'')}</span>
       <span class="sub" style="font-size:12.5px">${esc(t('adm_n_serm',{n:r.sermons||0}))} · ${esc(t('adm_seen',{d:r.seen?relDate(r.seen):'—'}))} · ${esc((r.lang||'').toUpperCase())}</span>
@@ -1445,7 +1456,7 @@ function startCloud(u){authU=u;localMode=false;loadLocal();
       add(sermons,'s');add(notes,'n');add(agenda,'a');
       const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
     cacheAll()}
-const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setTimeout(()=>MC.load(),3000);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin&&!(authU&&freshAccount(authU)))setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();waCheck();depoCheck();
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setTimeout(()=>MC.load(),3000);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin&&!(authU&&freshAccount(authU)))setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();waCheck();depoCheck();rolCheck();
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -1734,20 +1745,57 @@ const REF_RX=/^[A-Za-z0-9]{6,12}$/;
 const refCode=()=>authU?authU.uid.slice(0,8):'';
 const refLink=()=>'https://meupulpito.com/?r='+refCode();
 function refIn(){const r=ls.get('mp.ref',null);if(!r||!REF_RX.test(r.c||'')||Date.now()-(r.at||0)>60*864e5)return'';return r.c===refCode()?'':r.c}
-function refSheet(){if(localMode||!authU){toLogin();return}const L=refLink();const n=+PCFG.refDays||30;const got=+(planState&&planState.refGot)||0;const msg=t('rf_msg',{l:L});
+const refN=()=>Math.max(1,+PCFG.refN||3);
+function refSheet(){if(localMode||!authU){toLogin();return}const L=refLink();const n=refN();const P=planState||{};const got=+P.refMonths||0,buy=+P.refBuy||0;const msg=t('rf_msg',{l:L});
+  const left=n-(buy%n);
   const sh=openSheet(`<h3>${esc(t('rf_t'))}</h3><p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('rf_d',{n}))}</p>
+    <div class="rf-steps">${Array.from({length:n},(_,i)=>`<span class="${i<buy%n?'on':''}">${ic(i<buy%n?'check':'user')}</span>`).join('')}</div>
+    <p class="sub" style="margin:0;font-size:13px;text-align:center">${esc(t('rf_prog',{b:buy%n,n,l:left}))}</p>
     <div class="rf-link"><span>${esc(L.replace('https://',''))}</span><button class="btn sm ghost" id="rfCp">${ic('copy')}${esc(t('rf_copy'))}</button></div>
     <div class="two"><a class="btn dark" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">${ic('chat')}WhatsApp</a><button class="btn gold" id="rfSh">${ic('share')}${esc(t('rf_share'))}</button></div>
     ${got?`<p class="pl-testn" style="margin:0">${ic('check')}${esc(t('rf_got',{n:got}))}</p>`:''}
     <p class="sub" style="margin:0;font-size:12.5px;line-height:1.45">${esc(t('rf_how',{n}))}</p>`);
   $('#rfCp',sh).onclick=()=>copyText(L).then(()=>toast(t('rf_copied')));
   $('#rfSh',sh).onclick=()=>{if(navigator.share)navigator.share({title:'Meu Púlpito',text:t('rf_msg0'),url:L}).catch(()=>{});else copyText(msg).then(()=>toast(t('rf_copied')))}}
-async function admRef(uid,to){const db=firebase.firestore();const n=+PCFG.refDays||30;const ms=n*864e5;
+let ROLS={};
+// 1 mês de Premium para quem indicou (a cada N indicados que compraram)
+async function admRef(to){const db=firebase.firestore();
   try{const d=await db.collection('planos').doc(to).get();const c=d.exists?d.data():{};const now=Date.now();
-    const upd=PMON[c.plan]&&c.until>now?{until:c.until+ms}:{trial:Math.max(now,+c.trial||0)+ms,trialFrom:now,trialAuto:false,ok:true};
-    upd.refGot=firebase.firestore.FieldValue.increment(n);upd.updated=now;
-    await db.collection('planos').doc(to).set(upd,{merge:true});await db.collection('planos').doc(uid).set({refPaid:to,updated:now},{merge:true});
-    closeSheet();toast(t('rf_given',{n}));adminPanel()}catch(e){toast(t('adm_err'))}}
+    const upd=PMON[c.plan]&&c.until>now?{until:addMonths(c.until,1)}:{trial:Math.max(now,+c.trial||0)+30*864e5,trialFrom:now,trialAuto:false,ok:true};
+    upd.refMonths=firebase.firestore.FieldValue.increment(1);upd.updated=now;
+    await db.collection('planos').doc(to).set(upd,{merge:true});closeSheet();toast(t('rf_given'));adminPanel()}catch(e){toast(t('adm_err'))}}
+/* ---------- Roleta de desconto: para quem entrou pelo link de um pastor ---------- */
+const RL_P=[5,10,15,20,30,50],RL_W=[35,30,18,10,5,2];
+let ROL=null;
+function rolGet(){if(!authU||localMode)return Promise.resolve(null);const k='mp.rol.'+authU.uid;const c=ls.get(k,null);if(c){ROL=c;return Promise.resolve(c)}
+  return firebase.firestore().collection('roleta').doc(authU.uid).get().then(d=>{ROL=d.exists?d.data():null;if(ROL)ls.set(k,ROL);return ROL}).catch(()=>null)}
+// desconto válido: ganhou na roleta e ainda não fez nenhum pagamento
+function rolDisc(){const N=planNow();return ROL&&RL_P.includes(+ROL.p)&&!N.pays.length?+ROL.p:0}
+const rolPrice=(v,c,p)=>{const x=v*(100-p)/100;return c==='pyg'?Math.round(x/1000)*1000:Math.round(x)};
+function rolWheel(){const n=RL_P.length,R=120,cx=130,cy=130;const seg=(i)=>{const a0=(i*360/n-90-180/n)*Math.PI/180,a1=((i+1)*360/n-90-180/n)*Math.PI/180;
+    return`M${cx},${cy} L${cx+R*Math.cos(a0)},${cy+R*Math.sin(a0)} A${R},${R} 0 0 1 ${cx+R*Math.cos(a1)},${cy+R*Math.sin(a1)} Z`};
+  const lab=i=>{const a=(i*360/n-90)*Math.PI/180;return[cx+78*Math.cos(a),cy+78*Math.sin(a),i*360/n]};
+  return`<div class="rl-box"><span class="rl-pin" aria-hidden="true"></span><svg class="rl-w" viewBox="0 0 260 260" aria-hidden="true"><g class="rl-g">
+    ${RL_P.map((p,i)=>`<path d="${seg(i)}" class="${i%2?'a':'b'}"/>`).join('')}
+    ${RL_P.map((p,i)=>{const[x,y,r]=lab(i);return`<text class="${i%2?'a':'b'}" x="${x}" y="${y}" transform="rotate(${r} ${x} ${y})" text-anchor="middle" dominant-baseline="middle">${p}%</text>`}).join('')}
+    <circle cx="130" cy="130" r="${R}" class="rl-rim"/></g><circle cx="130" cy="130" r="22" class="rl-hub"/></svg></div>`}
+async function rolSheet(){if(!authU||localMode||!meta.refBy)return;await rolGet();
+  const done=p=>`<p class="rl-res">${esc(t('rl_won',{p}))}</p><p class="sub" style="margin:0;font-size:13.5px;line-height:1.5;text-align:center">${esc(t('rl_use'))}</p><button class="btn gold block" data-rl="plans">${esc(t('rl_see'))}</button>`;
+  const sh=openSheet(`<h3 style="text-align:center">${esc(t('rl_t'))}</h3><p class="sub" style="margin:0;text-align:center;font-size:14px;line-height:1.5">${esc(t('rl_d'))}</p>
+    ${rolWheel()}<div id="rlOut">${ROL?done(ROL.p):`<button class="btn gold block" id="rlGo">${esc(t('rl_go'))}</button>`}</div>
+    <p class="sub" style="margin:0;font-size:11.5px;text-align:center">${esc(t('rl_note'))}</p>`,{cls:'ns'});
+  const g=$('.rl-g',sh);const n=RL_P.length;const angle=i=>-(i*360/n);
+  if(ROL){g.style.transform=`rotate(${angle(RL_P.indexOf(+ROL.p))}deg)`}
+  sh.addEventListener('click',e=>{if(e.target.closest('[data-rl=plans]')){closeSheet();plansSheet()}});
+  const go=$('#rlGo',sh);if(go)go.onclick=async()=>{go.disabled=true;
+    const ex=await rolGet();let p;if(ex)p=+ex.p;else{let r=Math.random()*RL_W.reduce((a,b)=>a+b,0);let i=0;while(r>=RL_W[i]){r-=RL_W[i];i++}p=RL_P[i];
+      try{await firebase.firestore().collection('roleta').doc(authU.uid).set({p,at:Date.now(),ref:String(meta.refBy).slice(0,12)});ROL={p,at:Date.now()};ls.set('mp.rol.'+authU.uid,ROL)}catch(err){go.disabled=false;toast(t('rl_err'));return}}
+    const i=RL_P.indexOf(p);g.style.transition='transform 4.6s cubic-bezier(.12,.7,.1,1)';g.style.transform=`rotate(${360*6+angle(i)}deg)`;
+    setTimeout(()=>{const o=$('#rlOut',sh);if(o)o.innerHTML=done(p);if(ROL)render()},4800)}}
+function rolCheck(){if(rolCheck._t)return;let n=0;rolCheck._t=setInterval(()=>{if(++n>40){clearInterval(rolCheck._t);return}
+  if(!ready||blocked||E||!authU||localMode)return;if(!meta.refBy||isAdmin()){if(n>8)clearInterval(rolCheck._t);return}
+  if(ls.get('mp.rol.seen.'+authU.uid,0)){clearInterval(rolCheck._t);rolGet();return}
+  if($('.ov')||view.overlay)return;clearInterval(rolCheck._t);ls.set('mp.rol.seen.'+authU.uid,1);rolSheet()},3000)}
 /* ---------- Depoimentos ---------- */
 function depoSheet(auto){if(localMode||!authU){toLogin();return}let sent=false;
   const sh=openSheet(`<h3>${esc(t(auto?'dp_ask':'dp_t'))}</h3><p class="sub" style="margin:0;font-size:14px;line-height:1.5">${esc(t('dp_d'))}</p>
@@ -1770,20 +1818,20 @@ function depoCheck(){if(depoCheck._t)return;let n=0;depoCheck._t=setInterval(()=
   const ck=ls.get('mp.created.'+authU.uid,0);if(!ck||Date.now()-ck<5*864e5||liveS().length<5)return;
   if($('.ov')||view.tab!=='home'||view.overlay)return;
   clearInterval(depoCheck._t);depoSheet(true)},4000)}
-Object.assign(I18N.es,{dx_aln:'«{w}» no aparece como traducción en este diccionario. En los versículos donde aparece, el texto original trae:',dx_via:'Resultados para «{w}», la forma de diccionario de la palabra buscada.',rf_t:'Recomiende a un pastor',rf_d:'Comparta Meu Púlpito con otros pastores. Por cada pastor que cree su cuenta con su enlace y active un plan Premium, usted gana {n} días de Premium gratis.',rf_copy:'Copiar',rf_copied:'Enlace copiado',rf_share:'Compartir',
+Object.assign(I18N.es,{dx_aln:'«{w}» no aparece como traducción en este diccionario. En los versículos donde aparece, el texto original trae:',dx_via:'Resultados para «{w}», la forma de diccionario de la palabra buscada.',rf_t:'Recomiende a un pastor',rf_d:'A cada {n} pastores que creen su cuenta con su enlace y activen un plan Premium, usted gana 1 mes de Premium gratis. Y quien entra por su enlace gira la ruleta y gana un descuento en su primera compra.',rf_copy:'Copiar',rf_copied:'Enlace copiado',rf_share:'Compartir',
   rf_msg0:'Pastor, le recomiendo Meu Púlpito: una app para preparar, organizar y predicar sus sermones, con Biblia y diccionarios. Pruébela gratis:',rf_msg:'Pastor, le recomiendo Meu Púlpito: una app para preparar, organizar y predicar sus sermones, con Biblia y diccionarios. Pruébela gratis: {l}',
-  rf_got:'Ya ganó {n} días de Premium por recomendaciones. ¡Gracias!',rf_how:'Los días se suman a su plan cuando el pastor recomendado activa un plan Premium. Si usted está en el plan gratis, recibe {n} días de Premium.',
-  rf_by:'Recomendado por {n}',rf_cnt:'Recomendó a {n}',rf_give:'Dar {d} días a {n}',rf_sure:'¿Confirmar? Toque de nuevo',rf_given:'Listo: {n} días de Premium entregados',rf_paid:'Premio de recomendación entregado',rf_cfg:'Días de Premium por cada recomendación',rf_btn:'Recomiende a un pastor',rf_btn_d:'Gane días de Premium compartiendo la app',
+  rf_got:'Ya ganó {n} mes(es) de Premium por recomendaciones. ¡Gracias!',rf_how:'El mes se suma a su plan cuando se completan {n} compras de pastores recomendados por usted. Si está en el plan gratis, recibe 30 días de Premium.',
+  rf_by:'Recomendado por {n}',rf_cnt:'Recomendó a {n} · {b} compraron',rf_give:'Dar 1 mes a {n}',rf_sure:'¿Confirmar? Toque de nuevo',rf_given:'Listo: 1 mes de Premium entregado',rf_paid:'Premio de recomendación entregado',rf_cfg:'Compras de recomendados para ganar 1 mes gratis',rf_btn:'Recomiende a un pastor',rf_btn_d:'Gane días de Premium compartiendo la app',
   dp_t:'Deje su testimonio',dp_ask:'¿Le está gustando Meu Púlpito?',dp_d:'Cuéntenos en pocas palabras cómo la app le ayuda en su ministerio. Con su autorización, su testimonio puede aparecer en el sitio meupulpito.com.',dp_ph:'Ejemplo: Ahora preparo mis sermones en la mitad del tiempo y predico más tranquilo…',dp_n:'Su nombre (como quiere que aparezca)',dp_r:'Iglesia y ciudad (opcional)',dp_auth:'Autorizo publicar mi testimonio con mi nombre en el sitio de Meu Púlpito.',dp_send:'Enviar testimonio',dp_later:'Ahora no',dp_short:'Escriba un poco más, por favor',dp_n_need:'Escriba su nombre',dp_thx:'¡Gracias por su testimonio! Dios le bendiga.',dp_err:'No se pudo enviar ahora. Revise su internet e intente de nuevo.',dp_btn:'Deje su testimonio',dp_btn_d:'Cuéntenos cómo la app le ayuda',
   dp_recv:'Testimonios recibidos en la app ({n})',dp_use:'Usar en el sitio',dp_used:'Ya está en la lista',dp_noauth:'Sin autorización para publicar',dp_added:'Agregado a la lista. Toque Guardar para publicarlo.',
-  ve_t:'Su correo de administrador no está verificado',ve_d:'Verificarlo protege el panel. Toque el botón, abra el correo que llegará a {e} y toque el enlace. Después cierre sesión y entre de nuevo.',ve_go:'Enviar correo de verificación',ve_sent:'Correo enviado. Revise también la carpeta de spam.',ve_ok:'Correo de administrador verificado'});
-Object.assign(I18N.pt,{dx_aln:'«{w}» não aparece como tradução neste dicionário. Nos versículos onde ela aparece, o texto original traz:',dx_via:'Resultados para «{w}», a forma de dicionário da palavra buscada.',rf_t:'Indique um pastor',rf_d:'Compartilhe o Meu Púlpito com outros pastores. Para cada pastor que criar a conta pelo seu link e ativar um plano Premium, você ganha {n} dias de Premium grátis.',rf_copy:'Copiar',rf_copied:'Link copiado',rf_share:'Compartilhar',
+  ve_t:'Su correo de administrador no está verificado',ve_d:'Verificarlo protege el panel. Toque el botón, abra el correo que llegará a {e} y toque el enlace. Después cierre sesión y entre de nuevo.',ve_go:'Enviar correo de verificación',ve_sent:'Correo enviado. Revise también la carpeta de spam.',ve_ok:'Correo de administrador verificado',rf_prog:'{b} de {n} pastores recomendados ya compraron. Faltan {l} para su próximo mes gratis.',rl_t:'Ruleta de descuento',rl_d:'Usted llegó por la recomendación de un pastor. Gire la ruleta y gane un descuento en su primera compra del Premium.',rl_go:'Girar la ruleta',rl_won:'¡Usted ganó {p}% de descuento!',rl_use:'El descuento vale para su primera compra de cualquier plan Premium. Ya aparece en los precios.',rl_see:'Ver los planes',rl_note:'Un solo giro por cuenta. El descuento vale solo para la primera compra.',rl_err:'No se pudo girar ahora. Revise su internet e intente de nuevo.',rl_card:'Con su descuento de {p}%: {v} en la primera compra',rl_have:'Usted tiene {p}% de descuento en su primera compra (ruleta de recomendación).',rl_msg:'Descuento de la ruleta: {p}% (primera compra).',rl_card_note:'El descuento de la ruleta vale para transferencia y Pix. Con tarjeta, consulte por WhatsApp.',rl_adm:'Ruleta: {p}% en la 1ª compra'});
+Object.assign(I18N.pt,{dx_aln:'«{w}» não aparece como tradução neste dicionário. Nos versículos onde ela aparece, o texto original traz:',dx_via:'Resultados para «{w}», a forma de dicionário da palavra buscada.',rf_t:'Indique um pastor',rf_d:'A cada {n} pastores que criarem a conta pelo seu link e ativarem um plano Premium, você ganha 1 mês de Premium grátis. E quem entra pelo seu link gira a roleta e ganha um desconto na primeira compra.',rf_copy:'Copiar',rf_copied:'Link copiado',rf_share:'Compartilhar',
   rf_msg0:'Pastor, recomendo o Meu Púlpito: um app para preparar, organizar e pregar seus sermões, com Bíblia e dicionários. Experimente grátis:',rf_msg:'Pastor, recomendo o Meu Púlpito: um app para preparar, organizar e pregar seus sermões, com Bíblia e dicionários. Experimente grátis: {l}',
-  rf_got:'Você já ganhou {n} dias de Premium por indicações. Obrigado!',rf_how:'Os dias são somados ao seu plano quando o pastor indicado ativa um plano Premium. Se você está no plano grátis, recebe {n} dias de Premium.',
-  rf_by:'Indicado por {n}',rf_cnt:'Indicou {n}',rf_give:'Dar {d} dias a {n}',rf_sure:'Confirmar? Toque de novo',rf_given:'Pronto: {n} dias de Premium entregues',rf_paid:'Prêmio da indicação entregue',rf_cfg:'Dias de Premium por cada indicação',rf_btn:'Indique um pastor',rf_btn_d:'Ganhe dias de Premium compartilhando o app',
+  rf_got:'Você já ganhou {n} mês(es) de Premium por indicações. Obrigado!',rf_how:'O mês é somado ao seu plano quando completam {n} compras de pastores indicados por você. Se você está no plano grátis, recebe 30 dias de Premium.',
+  rf_by:'Indicado por {n}',rf_cnt:'Indicou {n} · {b} compraram',rf_give:'Dar 1 mês a {n}',rf_sure:'Confirmar? Toque de novo',rf_given:'Pronto: 1 mês de Premium entregue',rf_paid:'Prêmio da indicação entregue',rf_cfg:'Compras de indicados para ganhar 1 mês grátis',rf_btn:'Indique um pastor',rf_btn_d:'Ganhe dias de Premium compartilhando o app',
   dp_t:'Deixe seu depoimento',dp_ask:'Está gostando do Meu Púlpito?',dp_d:'Conte em poucas palavras como o app ajuda no seu ministério. Com a sua autorização, o depoimento pode aparecer no site meupulpito.com.',dp_ph:'Exemplo: Agora preparo meus sermões na metade do tempo e prego mais tranquilo…',dp_n:'Seu nome (como quer que apareça)',dp_r:'Igreja e cidade (opcional)',dp_auth:'Autorizo publicar meu depoimento com meu nome no site do Meu Púlpito.',dp_send:'Enviar depoimento',dp_later:'Agora não',dp_short:'Escreva um pouco mais, por favor',dp_n_need:'Escreva seu nome',dp_thx:'Obrigado pelo seu depoimento! Deus abençoe.',dp_err:'Não foi possível enviar agora. Verifique a internet e tente de novo.',dp_btn:'Deixe seu depoimento',dp_btn_d:'Conte como o app ajuda você',
   dp_recv:'Depoimentos recebidos no app ({n})',dp_use:'Usar no site',dp_used:'Já está na lista',dp_noauth:'Sem autorização para publicar',dp_added:'Adicionado à lista. Toque em Salvar para publicar.',
-  ve_t:'Seu e-mail de administrador não está verificado',ve_d:'Verificar protege o painel. Toque no botão, abra o e-mail que vai chegar em {e} e toque no link. Depois saia da conta e entre de novo.',ve_go:'Enviar e-mail de verificação',ve_sent:'E-mail enviado. Olhe também a pasta de spam.',ve_ok:'E-mail de administrador verificado'});
+  ve_t:'Seu e-mail de administrador não está verificado',ve_d:'Verificar protege o painel. Toque no botão, abra o e-mail que vai chegar em {e} e toque no link. Depois saia da conta e entre de novo.',ve_go:'Enviar e-mail de verificação',ve_sent:'E-mail enviado. Olhe também a pasta de spam.',ve_ok:'E-mail de administrador verificado',rf_prog:'{b} de {n} pastores indicados já compraram. Faltam {l} para o seu próximo mês grátis.',rl_t:'Roleta de desconto',rl_d:'Você chegou pela indicação de um pastor. Gire a roleta e ganhe um desconto na sua primeira compra do Premium.',rl_go:'Girar a roleta',rl_won:'Você ganhou {p}% de desconto!',rl_use:'O desconto vale para a sua primeira compra de qualquer plano Premium. Já aparece nos preços.',rl_see:'Ver os planos',rl_note:'Um giro só por conta. O desconto vale apenas para a primeira compra.',rl_err:'Não foi possível girar agora. Verifique a internet e tente de novo.',rl_card:'Com seu desconto de {p}%: {v} na primeira compra',rl_have:'Você tem {p}% de desconto na primeira compra (roleta da indicação).',rl_msg:'Desconto da roleta: {p}% (primeira compra).',rl_card_note:'O desconto da roleta vale para transferência e Pix. No cartão, consulte pelo WhatsApp.',rl_adm:'Roleta: {p}% na 1ª compra'});
 /* ---------- bienvenida (primera vez) ---------- */
 const ONB=[['__logo','ob0t','ob0d'],['plus','ob1t','ob1d'],['lectern','ob2t','ob2d'],['dict','ob3t','ob3d'],['cal','ob4t','ob4d']];
 function onboarding(){let i=0;const sh=openSheet(`<div class="ob"><div id="obIn"></div><div class="ob-dots">${ONB.map((_,k)=>`<i data-k="${k}"></i>`).join('')}</div>
@@ -2653,7 +2701,7 @@ async function deleteAccount(){const sh=openSheet(`<h3 style="color:var(--danger
       try{await firebase.firestore().collection('stats').doc(u.uid).delete()}catch(e){}try{await firebase.firestore().collection('depo').doc(u.uid).delete()}catch(e){}await u.delete();
       const uid=u.uid;Object.keys(localStorage).filter(k=>k.startsWith('pulpito.')&&k.includes(uid)).forEach(k=>localStorage.removeItem(k));
       try{indexedDB.deleteDatabase('meupulpito')}catch(e){}
-      unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;authU=null;sermons=[];agenda=[];notes=[];planState=null;planLoaded=false;cfgLoaded=false;lastPrem=null;blocked=false;waCheck._t=0;depoCheck._t=0;welcomeCheck._on=0;thxCheck._on=null;notes=[];closeSheet();showLogin();toast(t('del_done'))}
+      unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;authU=null;sermons=[];agenda=[];notes=[];planState=null;planLoaded=false;cfgLoaded=false;lastPrem=null;blocked=false;waCheck._t=0;depoCheck._t=0;rolCheck._t=0;ROL=null;welcomeCheck._on=0;thxCheck._on=null;notes=[];closeSheet();showLogin();toast(t('del_done'))}
     catch(e){go.disabled=false;go.textContent=t('del_go');err(t(e&&e.code==='auth/requires-recent-login'?'del_relog':'e_gen'))}}}
 function importSheet(){const sh=openSheet(`<h3>${esc(t('restore'))}</h3><p class="sub" style="margin:0">${esc(t('restore_d'))}</p><textarea class="inp" id="impTa" rows="6"></textarea><button class="btn gold block" id="impGo">${esc(t('import'))}</button>`);
   $('#impGo',sh).onclick=()=>{let o;try{o=JSON.parse($('#impTa',sh).value.trim())}catch(e){toast(t('bad_paste'));return}
@@ -2879,7 +2927,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{const u=b.dataset.u;ls.set(/^tr/.test(u)?'mp.trx.'+u.slice(2):'mp.pvx.'+u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),refer:()=>refSheet(),depo:()=>depoSheet(false),admRef:b=>{if(!b.dataset.sure){b.dataset.sure='1';const o=b.innerHTML;b.textContent=t('rf_sure');setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.innerHTML=o}},3000);return}b.disabled=true;admRef(b.dataset.uid,b.dataset.to)},veSend:b=>{b.disabled=true;try{authU.sendEmailVerification().then(()=>toast(t('ve_sent')),()=>{b.disabled=false;toast(t('adm_err'))})}catch(e){b.disabled=false}},onb:()=>{closeSheet();onboarding()},help:()=>helpSheet(),news:()=>newsSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{const u=b.dataset.u;ls.set(/^tr/.test(u)?'mp.trx.'+u.slice(2):'mp.pvx.'+u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),refer:()=>refSheet(),depo:()=>depoSheet(false),admRef:b=>{if(!b.dataset.sure){b.dataset.sure='1';const o=b.innerHTML;b.textContent=t('rf_sure');setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.innerHTML=o}},3000);return}b.disabled=true;admRef(b.dataset.to)},veSend:b=>{b.disabled=true;try{authU.sendEmailVerification().then(()=>toast(t('ve_sent')),()=>{b.disabled=false;toast(t('adm_err'))})}catch(e){b.disabled=false}},onb:()=>{closeSheet();onboarding()},help:()=>helpSheet(),news:()=>newsSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},
@@ -2929,7 +2977,7 @@ const ACT={
   impOpen:()=>importSheet(),autoBak:()=>autoBakSheet(),
   lockT:b=>{if((b.dataset.v==='on')!==!!lockCfg())lockSetup()},
   bioT:b=>{const c=lockCfg();if(c&&(b.dataset.v==='on')!==!!c.bio)bioAvailable().then(ok=>ok?bioToggle():toast(t('bio_fail')))},
-  logout:async()=>{unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;try{await firebase.auth().signOut()}catch(e){}authU=null;sermons=[];agenda=[];planState=null;planLoaded=false;cfgLoaded=false;lastPrem=null;blocked=false;waCheck._t=0;depoCheck._t=0;welcomeCheck._on=0;thxCheck._on=null;notes=[];view.tab='home';view.prev=null;showLogin()},
+  logout:async()=>{unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;try{await firebase.auth().signOut()}catch(e){}authU=null;sermons=[];agenda=[];planState=null;planLoaded=false;cfgLoaded=false;lastPrem=null;blocked=false;waCheck._t=0;depoCheck._t=0;rolCheck._t=0;ROL=null;welcomeCheck._on=0;thxCheck._on=null;notes=[];view.tab='home';view.prev=null;showLogin()},
   toLogin:()=>toLogin()
 };
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-keep]');if(b&&E)e.preventDefault()});

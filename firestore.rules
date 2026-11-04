@@ -50,6 +50,15 @@ service cloud.firestore {
         && request.resource.data.ok is bool;
       allow delete: if request.auth != null && request.auth.uid == uid;
     }
+    // Roleta de desconto de quem entrou pelo link de um pastor: um giro só (o resultado não pode ser trocado pelo usuário).
+    match /roleta/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['p','at','ref'])
+        && request.resource.data.p in [5,10,15,20,30,50]
+        && request.resource.data.ref is string && request.resource.data.ref.size() <= 12;
+      allow update, delete: if isAdmin();
+    }
     match /planos/{uid} {
       allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
       allow write: if isAdmin();
