@@ -2,11 +2,14 @@
 # Fuentes: STEPBible.org (TBESH, TBESG, TAHOT, TAGNT) — CC BY 4.0, Tyndale House Cambridge
 # Glosas traducidas al español y portugués: gl/map.json (traducción revisada de las glosas de STEP)
 import json,re,collections,os,sys
-SP='/tmp/claude-0/-home-claude/bc3af29e-25b3-57fb-8d3a-55ee1453ea10/scratchpad/build/'
+SP="/tmp/claude-0/-home-claude/bc3af29e-25b3-57fb-8d3a-55ee1453ea10/scratchpad/build/"
 OUT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','app','biblia','lex')
 os.makedirs(OUT,exist_ok=True)
 raw=json.load(open(SP+'lexraw.json'))
 gmap={k.lower():v for k,v in json.load(open(SP+'gl/map.json')).items()}
+# glosas dos números que só existem divididos em sentidos no léxico (H0310a…), traduzidas à mão
+GX=dict(gmap)
+for k,v in json.load(open(SP+'gl/extra.json')).items():GX.setdefault(k.lower(),v)
 es2pt={}
 for en,(es,pt) in gmap.items():
     es2pt.setdefault(es.lower(),pt)
@@ -18,13 +21,17 @@ def tr_gloss(g):
     g=(g or '').strip()
     if not g:return None,None
     k=g.lower()
-    if k in gmap:return gmap[k]
+    if k in GX:return GX[k]
     # varias glosas separadas por "|" o "/"
     for sep in ('|','/',', '):
         if sep in g:
             ps=[x.strip() for x in g.split(sep) if x.strip()]
-            if ps and all(p.lower() in gmap for p in ps):
-                return ' / '.join(gmap[p.lower()][0] for p in ps),' / '.join(gmap[p.lower()][1] for p in ps)
+            if ps and all(p.lower() in GX for p in ps):
+                return ' / '.join(GX[p.lower()][0] for p in ps),' / '.join(GX[p.lower()][1] for p in ps)
+    # "son: descendant" = glosa principal: sentido no contexto
+    if ':' in g:
+        h=g.split(':')[0].strip().lower()
+        if h in GX:return GX[h]
     return None,None
 
 ART_EN=re.compile(r'^(the|a|an|o)\s+')

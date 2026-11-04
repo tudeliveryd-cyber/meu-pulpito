@@ -115,6 +115,13 @@ def addkw(d,num,ws):
         if x[0]==num:x[8]=' '.join(sorted(set((x[8] or '').split())|set(ws)))
 addkw(gr,1577,['igreja','iglesia'])   # ἐκκλησία
 addkw(he,530,['fé','fe'])             # אֱמוּנָה (Hab 2:4)
+# pronomes: quem busca «vós», «lhe», «vosotros» encontra a palavra do original
+for n,ws in ((1473,'eu me mim comigo yo mí conmigo'),(4771,'tu te ti contigo você tú'),(846,'ele ela lhe lhes eles elas él ella ellos ellas le les'),
+             (2249,'nós nos conosco nosotros'),(5210,'vós vos vocês convosco vosotros vosotras os'),(1699,'meu minha mío mía'),(4674,'teu tua tuyo tuya'),
+             (2251,'nosso nossa nuestro nuestra'),(5212,'vosso vossa vuestro vuestra')):addkw(gr,n,ws.split())
+addkw(he,1961,['haver','houve','haber','hubo','acontecer','acontecer','suceder'])
+addkw(gr,1096,['haver','houve','haber','hubo','acontecer','suceder'])
+for n,ws in ((589,'eu yo'),(595,'eu yo'),(859,'tu você vós vocês tú vosotros'),(1931,'ele ela él ella'),(1992,'eles elas ellos ellas'),(587,'nós nosotros')):addkw(he,n,ws.split())
 
 # nombres propios arameos: los que STEPBible describe como «Aramaic of …»
 ar=set()
