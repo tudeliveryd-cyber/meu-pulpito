@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v96';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v97';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1099,7 +1099,7 @@ function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.
    Precios, límites y el «período de pruebas» están en config/app, editables desde el panel.
    ========================================================= */
 const PCFG_DEF={test:true,gate:false,grace:3,warn:7,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:2,dic:3,cur:10},
-  pay:{bk:{bank:'Itaú',name:'Jean Carlos Borges de Araújo',acc:'',alias:'',doc:'8695734'},pix:{key:'017.836.190-90',name:'Jean Carlos Borges de Araújo',bank:'Nubank'},card:{m:'',t:'',a:''}}};
+  pay:{bk:{bank:'Itaú',name:'Jean Carlos Borges de Araújo',acc:'',alias:'8695734-1',doc:'8695734'},pix:{key:'017.836.190-90',name:'Jean Carlos Borges de Araújo',bank:'Nubank'},card:{m:'',t:'',a:''}}};
 let PCFG=Object.assign({},PCFG_DEF,ls.get('mp.pcfg',{}));
 function watchCfg(){try{firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);applyPlan();premWatch();if(ready&&!view.overlay&&!blocked)refreshBg()}},()=>{})}catch(e){}}
 const PMON={m:1,t:3,a:12};
@@ -1173,7 +1173,7 @@ function planContact(k){const C=payCfg();if(!C.bk&&!C.pix&&!(C.card&&C.card[k]))
   const row=(lb,v,cp)=>v?`<div class="py-r"><span>${esc(lb)}</span><b>${esc(v)}</b>${cp?`<button class="iconbtn" data-cp="${esc(typeof cp==='string'?cp:v)}" aria-label="${esc(t('copy_txt'))}">${ic('copy')}</button>`:''}</div>`:'';
   const secs=[];
   if(C.bk)secs.push(['bk',`<div class="py-c"><div class="py-h">${ic('copy')}<b>${esc(t('py_bk'))}</b><span class="py-v">${esc(money(x.pyg,'pyg'))}</span></div>
-    ${row(t('py_bank'),C.bk.bank,0)}${row(t('py_holder'),C.bk.name,0)}${row(t('py_acc'),C.bk.acc,1)}${row('Alias',C.bk.alias,1)}${row(t('py_doc'),C.bk.doc,1)}${row(t('py_cur'),'Guaraní (₲)',0)}</div>`]);
+    ${row(t('py_bank'),C.bk.bank,0)}${row(t('py_holder'),C.bk.name,0)}${row(t('py_acc'),C.bk.acc,1)}${row(/^\d{6,9}-\d$/.test(C.bk.alias||'')?'Alias (RUC)':'Alias',C.bk.alias,1)}${row(t('py_doc'),C.bk.doc,1)}${row(t('py_cur'),'Guaraní (₲)',0)}</div>`]);
   if(C.pix)secs.push(['pix',`<div class="py-c"><div class="py-h">${ic('copy')}<b>Pix</b><span class="py-v">${esc(money(x.brl,'brl'))}</span></div>
     ${row(t('py_pixkey'),C.pix.key,/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(C.pix.key)?C.pix.key.replace(/\D/g,''):1)}${row(t('py_holder'),C.pix.name,0)}${row(t('py_bank'),C.pix.bank,0)}${row(t('py_cur'),'Real (R$)',0)}</div>`]);
   if(C.card&&/^https:\/\//.test(C.card[k]||''))secs.push(['card',`<div class="py-c"><div class="py-h">${ic('lock')}<b>${esc(t('py_card'))}</b><span class="py-v">${esc(money(x.pyg,'pyg'))}</span></div>
