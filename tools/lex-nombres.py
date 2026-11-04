@@ -109,11 +109,23 @@ for x in he['e']:
     if x[0]==4899:
         kw=set((x[8] or '').split())|{'cristo','messias','mesías','messiah'};x[8]=' '.join(sorted(kw))
 
+# palabras con que Almeida/Reina-Valera traducen estos términos
+def addkw(d,num,ws):
+    for x in d['e']:
+        if x[0]==num:x[8]=' '.join(sorted(set((x[8] or '').split())|set(ws)))
+addkw(gr,1577,['igreja','iglesia'])   # ἐκκλησία
+addkw(he,530,['fé','fe'])             # אֱמוּנָה (Hab 2:4)
+
 # nombres propios arameos: los que STEPBible describe como «Aramaic of …»
 ar=set()
 for f in glob.glob(os.path.join(LEX,'he-[0-9]*.json')):
     for k,v in json.load(open(f)).items():
         if 'Aramaic of' in (v.get('me') or ''):ar.add(int(k))
+# y los que Strong marca como «(Aramaic)»
+SH=json.load(open(os.path.join(LEX,'..','strong-he.json')))
+SH=SH.get('d',SH)
+for k,v in SH.items():
+    if (v[4] or '').startswith('(Aramaic)'):ar.add(int(k))
 he['ar']=sorted(n for n in ar if any(x[0]==n and not x[3].startswith('A:') for x in he['e']))
 
 for d,p in ((he,hp),(gr,gp)):

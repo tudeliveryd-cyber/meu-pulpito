@@ -271,7 +271,7 @@ const DXT={es:{
   dx_bn:'{n} artículos',dx_wn:'{n} palabras',dx_fav:'Favoritos',dx_hist:'Historial',dx_hclr:'Borrar historial',dx_nofav:'Todavía no guardó favoritos. Abra una palabra y toque la estrella.',dx_nohist:'Sus búsquedas aparecerán aquí.',
   dx_ph_b:'Buscar persona, lugar, tema…',dx_ph_h:'Palabra en español, portugués, hebreo o H7225',dx_ph_g:'Palabra en español, portugués, griego o G26',
   dx_hint_b:'Busque por nombre (Moisés, Jerusalén), tema (gracia, pacto) o costumbre (Pascua, diezmo).',dx_hint_l:'Busque por palabra en español o portugués, por la palabra original o por el número de Strong.',
-  dx_load:'Cargando el diccionario…',dx_err:'No se pudo cargar. Revise la conexión.',dx_none:'Sin resultados.',dx_none_here:'No está en este diccionario. Lo encontramos en:',dx_jesus:'Jesús (Ἰησοῦς) es la forma griega del nombre hebreo Yehoshúa / Yeshúa (el mismo de Josué), que significa «el Señor es salvación».',dx_more:'Buscando también en inglés…',
+  dx_load:'Cargando el diccionario…',dx_err:'No se pudo cargar. Revise la conexión.',dx_none:'Sin resultados.',dx_sug:'Sugerencias',dx_dym:'¿Quiso decir?',dx_none_here:'No está en este diccionario. Lo encontramos en:',dx_jesus:'Jesús (Ἰησοῦς) es la forma griega del nombre hebreo Yehoshúa / Yeshúa (el mismo de Josué), que significa «el Señor es salvación».',dx_more:'Buscando también en inglés…',
   dx_na:'No disponible en las fuentes.',dx_tr:'Traducción',dx_cat:'Categoría gramatical',dx_pron:'Pronunciación',dx_pron_n:'La sílaba tónica va en mayúsculas.',dx_pron_g:'El acento marca la sílaba tónica.',
   dx_mean:'Significados',dx_mean_n:'Una misma palabra puede tener sentidos distintos según el pasaje. Lea el contexto de cada texto.',dx_ctx:'Cómo se traduce según el contexto',dx_ctx_n:'Veces que aparece con cada sentido en la Biblia.',
   dx_root:'Raíz y formación',dx_strong:'Definición de Strong',dx_kjv:'Usos en la traducción',dx_hist_c:'Contexto histórico y cultural',dx_hist_na:'Las fuentes léxicas no traen contexto histórico para esta palabra.',
@@ -289,7 +289,7 @@ const DXT={es:{
   dx_bn:'{n} artigos',dx_wn:'{n} palavras',dx_fav:'Favoritos',dx_hist:'Histórico',dx_hclr:'Apagar histórico',dx_nofav:'Você ainda não salvou favoritos. Abra uma palavra e toque na estrela.',dx_nohist:'Suas buscas vão aparecer aqui.',
   dx_ph_b:'Buscar pessoa, lugar, tema…',dx_ph_h:'Palavra em português, espanhol, hebraico ou H7225',dx_ph_g:'Palavra em português, espanhol, grego ou G26',
   dx_hint_b:'Busque por nome (Moisés, Jerusalém), tema (graça, aliança) ou costume (Páscoa, dízimo).',dx_hint_l:'Busque por palavra em português ou espanhol, pela palavra original ou pelo número de Strong.',
-  dx_load:'Carregando o dicionário…',dx_err:'Não foi possível carregar. Confira a conexão.',dx_none:'Nenhum resultado.',dx_none_here:'Não está neste dicionário. Encontramos em:',dx_jesus:'Jesus (Ἰησοῦς) é a forma grega do nome hebraico Yehoshúa / Yeshúa (o mesmo de Josué), que significa “o Senhor é salvação”.',dx_more:'Buscando também em inglês…',
+  dx_load:'Carregando o dicionário…',dx_err:'Não foi possível carregar. Confira a conexão.',dx_none:'Nenhum resultado.',dx_sug:'Sugestões',dx_dym:'Você quis dizer?',dx_none_here:'Não está neste dicionário. Encontramos em:',dx_jesus:'Jesus (Ἰησοῦς) é a forma grega do nome hebraico Yehoshúa / Yeshúa (o mesmo de Josué), que significa “o Senhor é salvação”.',dx_more:'Buscando também em inglês…',
   dx_na:'Não disponível nas fontes.',dx_tr:'Tradução',dx_cat:'Categoria gramatical',dx_pron:'Pronúncia',dx_pron_n:'A sílaba tônica está em maiúsculas.',dx_pron_g:'O acento marca a sílaba tônica.',
   dx_mean:'Significados',dx_mean_n:'Uma mesma palavra pode ter sentidos diferentes conforme a passagem. Leia o contexto de cada texto.',dx_ctx:'Como é traduzida conforme o contexto',dx_ctx_n:'Vezes que aparece com cada sentido na Bíblia.',
   dx_root:'Raiz e formação',dx_strong:'Definição de Strong',dx_kjv:'Usos na tradução',dx_hist_c:'Contexto histórico e cultural',dx_hist_na:'As fontes léxicas não trazem contexto histórico para esta palavra.',
@@ -399,7 +399,7 @@ function dxLoad(k){const p=k==='b'?Promise.all([bibIdx(),loadPreg()]):Promise.al
   return p.then(()=>{DX.err[k]=false},()=>{DX.err[k]=true})}
 function dxResHtml(k){const ready=k==='b'?!!BIX:!!LXI[k];const q=DX.q[k];const L=lxLang();
   if(!ready)return`<div class="empty"><p style="margin:0">${esc(t(DX.err[k]?'dx_err':'dx_load'))}</p>${DX.err[k]?`<button class="btn dark" data-dx="retry">${esc(t('go_on'))}</button>`:''}</div>`;
-  if(!q.trim()){const H=dxHists().filter(h=>h.k===k).slice(0,8);return`<p class="sub" style="margin:0;line-height:1.55">${esc(t(k==='b'?'dx_hint_b':'dx_hint_l'))}</p>${H.length?`<div class="sd-es">${H.map(h=>`<span class="dx-hc"><button data-dx="hq" data-i="${dxHists().indexOf(h)}">${esc(h.q)}</button></span>`).join('')}</div>`:''}`}
+  if(!q.trim()){const H=dxHists().filter(h=>h.k===k).slice(0,8);return`<p class="sub" style="margin:0;line-height:1.55">${esc(t(k==='b'?'dx_hint_b':'dx_hint_l'))}</p>${H.length?`<div class="sd-es">${H.map(h=>`<span class="dx-hc"><button data-dx="hq" data-i="${dxHists().indexOf(h)}">${esc(h.q)}</button></span>`).join('')}</div>`:''}${dxSugHtml(k,'dx_sug',(DX_SUG[k]||{})[L]||[])}`}
   if(k==='b'){const pr=pregSearch(q);const r=bibSearch(q);const C=lxCache(L);
     const ph=pr.map(i=>{const e=PREG.e[i];const pt=L==='pt';const m=pt?e[2]:e[3];return`<button data-dx="open" data-k="p" data-id="${i}"><b>${esc(t('dx_preg'))}</b><span class="dx-ti">${esc(pt?e[0]:e[1])}</span><span>${esc(m.length>120?m.slice(0,120).replace(/\s+\S*$/,'')+'…':m)}</span></button>`}).join('');
     const qn=norm(q).replace(/[^a-z0-9]+/g,' ').trim();const viaAl=BIX.al[qn]?BIX.al[qn].toLowerCase():'';
@@ -408,9 +408,26 @@ function dxResHtml(k){const ready=k==='b'?!!BIX:!!LXI[k];const q=DX.q[k];const L
     return`<div class="res">${ph}${bh}</div>`}
   const r=lxSearch(k,q);const jn=isHe(k)&&/^(jesus|jesus cristo|jesucristo|yeshua|yeshua)$/.test(norm(q).replace(/[^a-z]+/g,' ').trim())?`<p class="dx-note">${esc(t('dx_jesus'))} <button class="lnk" data-dx="open" data-k="g" data-id="2424">G2424 Ἰησοῦς</button></p>`:'';
   if(!r.length){if(DX.busy)return`<div class="empty"><p style="margin:0">${esc(t('dx_more'))}</p></div>`;const o=dxOther(k,q);
-    return jn+`<div class="empty"><p style="margin:0">${esc(t(o?'dx_none_here':'dx_none'))}</p></div>`+o}
+    return jn+`<div class="empty"><p style="margin:0">${esc(t(o?'dx_none_here':'dx_none'))}</p></div>`+(o||dxSugHtml(k,'dx_dym',dxNear(k,q)))}
   return jn+`<div class="res">${r.map(e=>lxRow(k,e)).join('')}</div>`}
 function lxRow(k,e){const L=lxLang();const g=(L==='pt'?e[6]||e[5]:e[5]||e[6])||'';return`<button data-dx="open" data-k="${k}" data-id="${e[0]}"><b><span class="sd-num sm">${isHe(k)?'H':'G'}${e[0]}</span> ${esc(lxCat(e[3],L))}</b><span class="dx-lrow"><span class="dx-lem" ${isHe(k)?'dir="rtl" lang="he"':'lang="grc"'}>${esc(e[1])}</span><span class="dx-trl">${esc(e[2].replace(/\./g,''))}</span></span><span>${g?esc(g):`<span class="sub">${esc(e[4])} (en)</span>`}${e[7]?` <small>· ${esc(t('dx_x_times',{n:e[7]}))}</small>`:''}</span></button>`}
+// Sugerencias de búsqueda: palabras de estudio y predicación que existen en cada diccionario
+const DX_SUG={
+ h:{pt:['amor','graça','paz','fé','salvação','aliança','misericórdia','santo','glória','espírito','coração','alma','justiça','louvar','bênção','Senhor','ungido','Jesus','Davi','Sião'],
+    es:['amor','gracia','paz','fe','salvación','pacto','misericordia','santo','gloria','espíritu','corazón','alma','justicia','alabar','bendición','Señor','ungido','Jesús','David','Sion']},
+ a:{pt:['rei','reino','Deus','céu','sonho','sabedoria','mistério','fogo','leão','imagem','ouro','decreto','Daniel','Babilônia','Nabucodonosor','Jerusalém','casa','adorar'],
+    es:['rey','reino','Dios','cielo','sueño','sabiduría','misterio','fuego','león','imagen','oro','decreto','Daniel','Babilonia','Nabucodonosor','Jerusalén','casa','adorar']},
+ g:{pt:['amor','graça','fé','paz','igreja','evangelho','espírito','salvação','reino','palavra','esperança','alegria','poder','perdão','arrependimento','glória','Jesus','Cristo'],
+    es:['amor','gracia','fe','paz','iglesia','evangelio','espíritu','salvación','reino','palabra','esperanza','gozo','poder','perdón','arrepentimiento','gloria','Jesús','Cristo']}};
+function dxSugHtml(k,tl,W){W=W.filter(w=>lxSearch(k,w).length);if(!W.length)return'';
+  return`<div class="dx-sug"><span class="sect">${esc(t(tl))}</span><div class="sd-es">${W.map(w=>`<span class="dx-hc"><button data-dx="sq" data-k="${k}" data-q="${esc(w)}">${esc(w)}</button></span>`).join('')}</div></div>`}
+// «¿Quiso decir…?»: palabras del diccionario parecidas a lo escrito (errores de tipeo)
+function dxEd(a,b,m){if(Math.abs(a.length-b.length)>m)return m+1;let p=[...Array(b.length+1).keys()];
+  for(let i=1;i<=a.length;i++){const c=[i];let lo=i;for(let j=1;j<=b.length;j++){c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));if(c[j]<lo)lo=c[j]}if(lo>m)return m+1;p=c}return p[b.length]}
+function dxNear(k,q){const d=LXI[k];if(!d)return[];const L=lxLang();const qn=norm(q).replace(/[^a-z]+/g,'');if(qn.length<3)return[];
+  const m=qn.length>5?2:1;const best={};
+  d.e.forEach(r=>{const g=(L==='pt'?r[6]||r[5]:r[5]||r[6])||'';g.split(/[^A-Za-zÀ-ÿ]+/).forEach(w=>{if(w.length<3)return;const wn=norm(w);if(wn===qn)return;const e=dxEd(qn,wn,m);if(e<=m){const sc=e*100000-r[7];if(!best[wn]||sc<best[wn].s)best[wn]={w:w.toLowerCase(),s:sc}}})});
+  return Object.values(best).sort((a,b)=>a.s-b.s).slice(0,6).map(x=>x.w)}
 // Sin resultados en este diccionario: mostrar lo que hay en los otros
 function dxOther(k,q){const L=lxLang();const T={h:'dx_h',a:'dx_ar',g:'dx_g'};let h='';
   ['h','a','g'].filter(x=>x!==k&&LXI[x]).forEach(x=>{const r=lxSearch(x,q).slice(0,3);if(r.length)h+=`<span class="sect">${esc(t(T[x]))}</span><div class="res">${r.map(e=>lxRow(x,e)).join('')}</div>`});
@@ -436,6 +453,7 @@ function dxMount(host){host.innerHTML=dxHtml();
     else if(a==='close'){closeSheet()}
     else if(a==='retry'){DX.err[DX.k]=false;dxMount(host)}
     else if(a==='open'){const k=b.dataset.k;if(DX.view==='dic'&&DX.k&&DX.q[DX.k])dxHistAdd(DX.k,DX.q[DX.k]);else if(DX.view!=='dic'&&(DX.qa||'').trim()){const hk=b.closest('.dx-allsec')&&b.closest('.dx-allsec').querySelector('[data-dx=seeall]');if(hk)dxHistAdd(hk.dataset.k,DX.qa)}dxOpen(k,b.dataset.id)}
+    else if(a==='sq'){const k=b.dataset.k,q=b.dataset.q;DX.k=k;DX.view='dic';DX.q[k]=q;dxMount(host);dxQuery(host,k,q)}
     else if(a==='hq'){const h=dxHists()[+b.dataset.i];if(!h)return;DX.k=h.k;DX.view='dic';DX.q[h.k]=h.q;dxMount(host);dxQuery(host,h.k,h.q)}
     else if(a==='hdel'){dxHists().splice(+b.dataset.i,1);putMeta();dxMount(host)}
     else if(a==='hclr'){meta.dicHist=[];putMeta();dxMount(host)}
@@ -977,7 +995,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v83';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v84';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}

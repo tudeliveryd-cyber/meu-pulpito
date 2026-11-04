@@ -793,3 +793,5 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .dx-other{display:flex;flex-direction:column;gap:8px;margin-top:-14px}
 .dx-note{margin:0 0 12px;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;font-size:14px;line-height:1.55;color:var(--fg)}
 .dx-note .lnk{display:inline;padding:0;margin-left:4px}
+.dx-sug{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.dx-res .empty+.dx-sug{margin-top:-14px}
