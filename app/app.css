@@ -856,3 +856,4 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .adm-wa{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
 .adm-wa .btn.sm{height:34px;font-size:12.5px;padding:0 12px;text-decoration:none}
 .adm-wa .btn svg{width:16px;height:16px}
+.thx-l{text-align:left;align-self:stretch;margin:0}

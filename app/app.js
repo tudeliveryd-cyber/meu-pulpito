@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v92';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v93';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1025,7 +1025,7 @@ let planLoaded=false;
 const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planState.ok||PMON[planState.plan])));
 function applyPlan(){const b=!!(planState&&planState.blocked)||waitingOk();if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
 function watchPlan(u){let first=true;try{firebase.firestore().collection('planos').doc(u.uid).onSnapshot(d=>{planState=d.exists?d.data():null;planLoaded=true;applyPlan();
-    if(first){first=false;if(!d.exists&&freshAccount(u))trialStart(u);else welcomeCheck()}else welcomeCheck();trialTick()},()=>{})}catch(e){}}
+    if(first){first=false;if(!d.exists&&freshAccount(u))trialStart(u);else welcomeCheck()}else welcomeCheck();thxCheck();trialTick()},()=>{})}catch(e){}}
 /* ---------- Prueba Premium automática de 72 horas para cuentas nuevas (una sola vez: las reglas de Firestore solo permiten crearla si la cuenta no tiene plan) ---------- */
 const TRIAL_MS=72*3600e3;
 /* ---------- WhatsApp del pastor (para bienvenida y avisos del plan, enviados por el administrador) ---------- */
@@ -1051,6 +1051,22 @@ function waCheck(){if(waCheck._t)return;waCheck._t=setInterval(()=>{if(!ready||b
   clearInterval(waCheck._t);waSheet(fresh)},2500)}
 function freshAccount(u){try{const c=Date.parse(u.metadata&&u.metadata.creationTime);return c&&Date.now()-c<6*3600e3}catch(e){return false}}
 async function trialStart(u){const now=Date.now();try{await firebase.firestore().collection('planos').doc(u.uid).set({trialFrom:now,trial:now+TRIAL_MS,trialAuto:true,trialState:'active',updated:now})}catch(e){}}
+// Agradecimiento al activar un plan pago (una vez por cada activación o renovación)
+function thxCheck(){const p=planState||{};if(isAdmin()||!PMON[p.plan]||!(+p.until>Date.now()))return;const key=String(p.until);
+  if(meta.thx===key||ls.get('mp.thx.'+key,0)||thxCheck._on===key)return;
+  const lp=(p.pays||[]).slice(-1)[0];const at=(lp&&lp.at)||p.updated||0;if(at&&Date.now()-at>7*864e5){meta.thx=key;putMeta();return} // planes activados antes de esta función: no mostrar
+  thxCheck._on=key;
+  const go=()=>{if(blocked||E){setTimeout(go,4000);return}if($('.ov')){setTimeout(go,2500);return}
+    const ren=(p.pays||[]).length>1;const L=prefs.ui;
+    const sh=openSheet(`<div class="wel"><span class="mark wel-mk"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
+      <h2>${esc(t(ren?'thx_t2':'thx_t',{p:planName(p.plan)}))}</h2><p class="wel-s">${esc(t('thx_s'))}</p>
+      <div class="wel-gift">${ic('star')}<b>${esc(t('thx_until',{p:planName(p.plan),d:fmtDay(p.until)}))}</b></div>
+      <ul class="pl-f thx-l">${['pl_p1','pl_p7','pl_p2','pl_p3','pl_p4','pl_p5'].map(k=>`<li>${ic('check')}<span>${esc(t(k))}</span></li>`).join('')}</ul>
+      <p>${esc(t('thx_d'))}</p>
+      <button class="btn gold block" id="thxGo">${esc(t('thx_go'))}</button>
+      <p class="wel-n">Pr. Jean Carlos · Meu Púlpito</p></div>`,{cls:'big ns',onClose:()=>{meta.thx=key;ls.set('mp.thx.'+key,1);putMeta()}});
+    $('#thxGo',sh).onclick=()=>closeSheet()};
+  setTimeout(go,900)}
 function welcomeCheck(){const p=planState||{};if(!p.trialAuto||meta.welcomed||ls.get('mp.wel.'+p.trialFrom,0)||!(+p.trial>Date.now()))return;if(welcomeCheck._on)return;welcomeCheck._on=1;
   setTimeout(()=>{if(blocked)return;while($('.ov'))closeSheet();
     const sh=openSheet(`<div class="wel"><span class="mark wel-mk"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>
@@ -1565,6 +1581,8 @@ Object.assign(I18N.pt,{wa_t:'Seu WhatsApp',wa_d:'Para darmos as boas-vindas, avi
  wam_wel:'Olá{n}! Boas-vindas ao Meu Púlpito! Que alegria ter você conosco. Aqui você prepara seus sermões, estuda com a Bíblia e os dicionários bíblico, hebraico, aramaico e grego, e prega pelo celular. Qualquer dúvida, é só responder esta mensagem. Deus abençoe o seu ministério!\n\nPr. Jean Carlos · Meu Púlpito',
  wam_wel_tr:'Olá{n}! Boas-vindas ao Meu Púlpito! Que alegria ter você conosco. Você tem Premium grátis até {d} para conhecer tudo: as 10 versões da Bíblia, os dicionários bíblico, hebraico, aramaico e grego, e o Modo Pregar. Qualquer dúvida, é só responder esta mensagem. Deus abençoe o seu ministério!\n\nPr. Jean Carlos · Meu Púlpito',
  wam_cong:'Olá{n}! Parabéns por adquirir o {p} do Meu Púlpito. Seu acesso Premium já está ativo até {d}: sermões sem limite, as 10 versões da Bíblia, os 4 dicionários completos e o Modo Pregar avançado. Obrigado pela confiança! Estou à disposição.\n\nPr. Jean Carlos · Meu Púlpito'});
+Object.assign(I18N.es,{thx_t:'¡Gracias por adquirir el {p}!',thx_t2:'¡Gracias por renovar su plan!',thx_s:'Es una alegría caminar junto a usted en su ministerio.',thx_until:'{p} activo hasta el {d}',thx_d:'Todas las herramientas de Meu Púlpito ya están liberadas en su cuenta. Que Dios bendiga cada mensaje que va a preparar y predicar.',thx_go:'CONTINUAR'});
+Object.assign(I18N.pt,{thx_t:'Obrigado por adquirir o {p}!',thx_t2:'Obrigado por renovar o seu plano!',thx_s:'É uma alegria caminhar junto com você no seu ministério.',thx_until:'{p} ativo até {d}',thx_d:'Todas as ferramentas do Meu Púlpito já estão liberadas na sua conta. Que Deus abençoe cada mensagem que você vai preparar e pregar.',thx_go:'CONTINUAR'});
 const NEWS_VER='v90';
 const NEWS={es:[['10 versiones de la Biblia','En la Biblia, toque el nombre de la versión: 6 en español y 4 en portugués. Reina-Valera 1909 y Bíblia Livre son gratis; las demás, Premium.'],['Diccionarios más fáciles','Sugerencias de palabras, «¿Quiso decir?» cuando hay un error al escribir, y lo que existe en los otros diccionarios cuando la palabra no está en el que abrió.'],['Curiosidad del día','Cada día una curiosidad bíblica nueva en el Inicio y en Curiosidades, con historial de lo que ya abrió.'],['Agenda con vista del mes','Vea el mes entero, agregue una descripción y un recordatorio, y guarde la predicación en el calendario del celular.'],['Versículos relacionados','En la Biblia, elija un versículo y toque el ícono de enlace: verá los textos que se relacionan con él (referencias cruzadas).'],['Series de sermones','En el sermón toque «+ Serie» para agrupar mensajes. En Sermones → Series vea el avance de cada serie.'],['Grabe su predicación','En el Modo Predicar, toque el micrófono. Las grabaciones quedan en el celular y puede compartirlas.'],['Plan de lectura bíblica','En el Inicio elija un plan (la Biblia en un año, el NT en 90 días…) y marque cada día leído.'],['Nuevo Diccionario Arameo','Las palabras en arameo del Antiguo Testamento (partes de Daniel y Esdras), con su sentido, pronunciación y versículos.'],['Pregunte cualquier cosa de la Biblia','En Curiosidades: «¿cuántas veces aparece el número 40?» muestra el total, los libros y los versículos.'],['Busque en todos los diccionarios a la vez','En Diccionarios, una sola búsqueda en el Bíblico, el Hebreo, el Arameo y el Griego.'],['Aviso de su próxima predicación','Si tiene un culto en la Agenda esta semana, aparece arriba en el Inicio con «Predicar».'],['Búsqueda más inteligente en sus sermones','Por título, versículo o cualquier palabra del texto, sin importar acentos ni el orden.'],['Nueva pantalla de apertura','El app instalado abre con el logo de Meu Púlpito.']],
   pt:[['10 versões da Bíblia','Na Bíblia, toque no nome da versão: 4 em português e 6 em espanhol. Bíblia Livre e Reina-Valera 1909 são grátis; as outras, Premium.'],['Dicionários mais fáceis','Sugestões de palavras, «Você quis dizer?» quando há erro de digitação, e o que existe nos outros dicionários quando a palavra não está no que você abriu.'],['Curiosidade do dia','Todo dia uma curiosidade bíblica nova no Início e em Curiosidades, com histórico do que você já abriu.'],['Agenda com visão do mês','Veja o mês inteiro, adicione uma descrição e um lembrete, e salve a pregação no calendário do celular.'],['Versículos relacionados','Na Bíblia, escolha um versículo e toque no ícone de corrente: você verá os textos que se relacionam com ele (referências cruzadas).'],['Séries de sermões','No sermão toque em «+ Série» para agrupar mensagens. Em Sermões → Séries veja o andamento de cada série.'],['Grave sua pregação','No Modo Pregar, toque no microfone. As gravações ficam no celular e você pode compartilhá-las.'],['Plano de leitura bíblica','No Início escolha um plano (a Bíblia em um ano, o NT em 90 dias…) e marque cada dia lido.'],['Novo Dicionário Aramaico','As palavras em aramaico do Antigo Testamento (partes de Daniel e Esdras), com sentido, pronúncia e versículos.'],['Pergunte qualquer coisa da Bíblia','Em Curiosidades: «quantas vezes aparece o número 40?» mostra o total, os livros e os versículos.'],['Busque em todos os dicionários de uma vez','Em Dicionários, uma só busca no Bíblico, no Hebraico, no Aramaico e no Grego.'],['Aviso da sua próxima pregação','Se você tem um culto na Agenda nesta semana, ele aparece no topo do Início com «Pregar».'],['Busca mais inteligente nos seus sermões','Por título, versículo ou qualquer palavra do texto, sem se importar com acentos nem com a ordem.'],['Nova tela de abertura','O app instalado abre com o logo do Meu Púlpito.']]};
