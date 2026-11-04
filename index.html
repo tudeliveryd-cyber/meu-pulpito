@@ -34,8 +34,8 @@ try{if((window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||na
 {"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://meupulpito.com/#org","name":"Meu Púlpito","url":"https://meupulpito.com/","logo":"https://meupulpito.com/app/icon-512.png","email":"contato@meupulpito.com","sameAs":["https://www.instagram.com/meupulpito"]},
 {"@type":"WebSite","@id":"https://meupulpito.com/#site","url":"https://meupulpito.com/","name":"Meu Púlpito","inLanguage":["es","pt-BR"],"publisher":{"@id":"https://meupulpito.com/#org"}},
-{"@type":"SoftwareApplication","name":"Meu Púlpito","applicationCategory":"LifestyleApplication","operatingSystem":"iOS, Android, Web","url":"https://meupulpito.com/app/","inLanguage":["es","pt-BR"],"description":"Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras con la Biblia y los diccionarios bíblico, hebreo, arameo y griego, y predique desde el celular.","publisher":{"@id":"https://meupulpito.com/#org"},
- "offers":[{"@type":"Offer","name":"Gratis","price":"0","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Mensual","price":"45000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Trimestral","price":"120000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Anual","price":"350000","priceCurrency":"PYG"}]}
+{"@type":"SoftwareApplication","name":"Meu Púlpito","applicationCategory":"ReferenceApplication","operatingSystem":"iOS, Android, Web","url":"https://meupulpito.com/app/","inLanguage":["es","pt-BR"],"description":"Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras con la Biblia y los diccionarios bíblico, hebreo, arameo y griego, y predique desde el celular.","publisher":{"@id":"https://meupulpito.com/#org"},
+ "offers":[{"@type":"Offer","name":"Gratis","price":"0","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Mensual","price":"45000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Trimestral","price":"120000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Anual","price":"350000","priceCurrency":"PYG"},{"@type":"Offer","name":"Premium Mensal","price":"35","priceCurrency":"BRL"},{"@type":"Offer","name":"Premium Trimestral","price":"95","priceCurrency":"BRL"},{"@type":"Offer","name":"Premium Anual","price":"270","priceCurrency":"BRL"}]}
 ]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -363,13 +363,13 @@ footer .soc svg{width:18px;height:18px}
     </div>
   </section>
 
-  <section class="sec devs-sec" id="aparelhos">
+  <section class="sec devs-sec" id="dispositivos">
     <div class="wrap">
       <div class="sec-h rv"><span class="eyebrow" data-t="dv_eye"></span><h2 data-t="dv_t"></h2><p data-t="dv_d"></p></div>
       <div class="devs rv" aria-hidden="true">
         <div class="dv-pc"><div class="dv-scr"><img data-img="dev-pc" alt="" width="1440" height="900"></div><div class="dv-base"></div></div>
         <div class="dv-tab"><img data-img="dev-tab" alt="" width="1180" height="820"></div>
-        <div class="dv-ph"><img data-img="preach" alt="" width="390" height="844"></div>
+        <div class="dv-ph"><img data-img="editor" alt="" width="390" height="844"></div>
       </div>
       <div class="dv-cap">
         <div class="rv"><svg class="i"><use href="#lap"/></svg><h3 data-t="dv1_t"></h3><p data-t="dv1_d"></p></div>
@@ -468,7 +468,7 @@ var T={es:{
   h_eye:'Para pastores y predicadores',h_t:'Prepare y organice sus mensajes en <em>un solo lugar.</em>',
   h_d:'Meu Púlpito es una plataforma para preparar sermones, estudiar las Escrituras y organizar sus mensajes, desde el primer bosquejo hasta el púlpito.',
   h_b1:'Acceder a la plataforma',h_b2:'Conocer las funciones',f1:'Español y portugués',f2:'Celular, tablet y computadora',f3:'Sus sermones, solo suyos',
-  fe_eye:'Funciones',fe_t:'Todo lo que necesita, desde la preparación hasta la predicación.',fe_d:'Herramientas pensadas para el trabajo pastoral de cada semana, sin pantallas de más.',
+  fe_eye:'Funciones',fe_t:'Todo lo que necesita, desde la preparación hasta la predicación.',fe_d:'Herramientas pensadas para el trabajo pastoral de cada semana, sin pantallas innecesarias.',
   a_t:'Preparación de sermones',a_d:'Escriba con libertad y deje que la estructura aparezca sola: título, texto base, puntos y conclusión, en una hoja limpia que se guarda mientras usted escribe.',
   a_l:['Inserte versículos y el texto bíblico se coloca automáticamente','Series de sermones con el avance de cada una','Modelos de bosquejo: expositivo, temático, evangelístico y más','Categorías, favoritos y versiones anteriores de cada sermón','Dictado por voz para registrar ideas rápidamente'],
   b_t:'Modo Predicar',b_d:'Su sermón en pantalla completa, con letra grande y una lectura cómoda para el púlpito.',
@@ -476,14 +476,14 @@ var T={es:{
   c_t:'Biblia',c_d:'Lea, busque y compare 10 versiones en español y portugués, además del hebreo y el griego originales.',
   c_l:['Cambie de versión con un toque: 6 en español y 4 en portugués','Versículos relacionados (referencias cruzadas)','Búsqueda por referencia o por palabra','Compare un versículo en varias versiones','Toque una palabra del original para ver su significado','Inserte el texto en el sermón con un toque'],
   c_tags:['Reina-Valera 1909','Reina-Valera 1865','Palabra de Dios para ti','Biblia en Español Sencillo','Versión Biblia Libre','Biblia Libre para el Mundo','Bíblia Livre','Bíblia Livre TR','Nova Versão de Acesso Livre','Bíblia Portuguesa Mundial','Textus Receptus (griego)','Códice de Leningrado (hebreo)'],c_note:'Plan gratis: Reina-Valera 1909 y Bíblia Livre. Las demás versiones, con Premium.',
-  d_t:'Diccionarios Bíblico, Hebreo, Arameo y Griego',d_d:'Cuatro diccionarios independientes, con fuentes indicadas y en el idioma que usted usa.',
+  d_t:'Diccionarios Bíblico, Hebreo, Arameo y Griego',d_d:'Cuatro diccionarios independientes, con las fuentes indicadas y en el idioma que usted usa; cuando el artículo original está en inglés, aparece traducido automáticamente.',
   d_l:['Busque en español, en portugués, en el idioma original o por número de Strong','Sugerencias de palabras y «¿Quiso decir?» cuando hay un error al escribir','Si la palabra no está en ese diccionario, le mostramos dónde sí está','Artículos con contexto histórico, contexto bíblico e importancia espiritual','Vea cómo se traduce cada palabra según el contexto','Consulte e inserte en el sermón sin cerrar lo que está escribiendo'],
   d_tags:['Diccionario Bíblico','Diccionario Hebreo','Diccionario Arameo','Diccionario Griego'],
   e_t:'Curiosidades bíblicas',e_d:'Casi 100 preguntas verificadas con referencias, una curiosidad nueva cada día con historial, y cuántas veces aparece cualquier palabra o número en toda la Biblia.',
   g_t:'Agenda',g_d:'Programe dónde y cuándo va a predicar, con vista del mes, descripción y recordatorio en el calendario del celular. Su próxima predicación aparece en el Inicio.',rp_t:'Plan de lectura bíblica',rp_d:'La Biblia en un año, el Nuevo Testamento en 90 días, los Evangelios en 30 días o Salmos y Proverbios en 60 días. Marque cada día leído y prepare un sermón con la lectura.',
   h2_t:'Biblioteca personal',h2_d:'Guarde estudios, ilustraciones, frases e ideas, también por voz, para usar en sus próximos sermones.',
   s_eye:'Cómo empezar',s_t:'Comience en pocos minutos.',
-  s1_t:'Cree su cuenta',s1_d:'Solo necesita un correo y una contraseña. Sus sermones quedan guardados en su cuenta.',
+  s1_t:'Cree su cuenta',s1_d:'Solo necesita un correo y una contraseña. Si quiere, deje su WhatsApp para recibir la bienvenida y los avisos de su plan. Sus sermones quedan guardados en su cuenta.',
   s2_t:'Instálelo en su celular',s2_d:'En la pantalla de acceso, toque «Instalar la aplicación» y siga los pasos. Queda en su pantalla de inicio y se abre como una aplicación.',
   s3_t:'Prepare y predique',s3_d:'Escriba su mensaje, estúdielo con la Biblia y los diccionarios, y predíquelo desde la misma pantalla.',
   p_eye:'Planes',p_t:'Elija el plan que mejor se adapta a su ministerio.',p_d:'Al crear su cuenta, tiene 3 días de Premium gratis. Después elija: seguir gratis o pasar a Premium.',
@@ -501,18 +501,18 @@ var T={es:{
    ['¿Qué versiones de la Biblia trae?','10 versiones: 6 en español (Reina-Valera 1909 y 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre y Biblia Libre para el Mundo) y 4 en portugués (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre y Bíblia Portuguesa Mundial), además del hebreo y el griego originales. En el plan gratis tiene la Reina-Valera 1909 y la Bíblia Livre; con Premium, todas.'],
    ['¿Quién puede ver mis sermones?','Solo usted. Cada sermón queda protegido en su cuenta y nadie más tiene acceso a su contenido, tampoco el equipo de Meu Púlpito.'],
    ['¿Puedo predicar el mismo mensaje en español y en portugués?','Sí. En el Modo Predicar puede cambiar el idioma del sermón; la traducción se guarda en el mismo sermón y los versículos se toman de la Biblia del otro idioma. Recomendamos revisarla antes de predicar.'],
-   ['¿Puedo probar Premium antes de pagar?','Sí. Al crear su cuenta recibe 3 días de Premium gratis, con todas las funciones liberadas. No pedimos tarjeta y no hay cobros automáticos: al terminar, su cuenta pasa sola al plan gratis y no pierde nada.'],
+   ['¿Puedo probar Premium antes de pagar?','Sí. Al crear su cuenta recibe 3 días de Premium gratis, con todas las funciones habilitadas. No pedimos tarjeta y no hay cobros automáticos: al terminar, su cuenta pasa sola al plan gratis y no pierde nada.'],
    ['¿Qué pasa si mi plan vence?','Recibe un aviso antes del vencimiento. Si no renueva, vuelve al plan gratis y todos sus sermones siguen guardados.'],
-   ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera. Si está en otro país, el sitio le muestra el valor aproximado en su moneda y acordamos el pago por WhatsApp. Al confirmar el pago, su cuenta pasa a Premium.']],
+   ['¿Cómo pago el plan Premium?','Elija el plan en la aplicación: aparecen los datos para transferencia bancaria (Paraguay), Pix (Brasil) o, si está disponible, un enlace de pago con tarjeta. Después envíe el comprobante por WhatsApp. Si está en otro país, el sitio le muestra el valor aproximado en su moneda. Cuando confirmamos el pago, su cuenta pasa a Premium.']],
   z_t:'Su próximo mensaje empieza aquí.',z_d:'Prepare, organice y predique con una herramienta hecha para el ministerio.',
   ft_d:'Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras y predique con confianza.',ft_p:'Producto',ft_c:'Contacto',ft_n:'Hecho para pastores, en español y portugués.',ft_t:'Términos de uso',ft_pr:'Privacidad',
-  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.',cm_t:'Compare los planes',cm_h:['','Gratis','Premium'],cm:[['Sermones','Hasta {s}','Sin límite'],['Biblia','Reina-Valera 1909 y Bíblia Livre','Las 10 versiones y comparación completa'],['Hebreo y griego originales',1,1],['Diccionarios Bíblico, Hebreo, Arameo y Griego','{d} artículos completos por día','Sin límite'],['Curiosidades bíblicas','{c} y la curiosidad del día','Todas'],['«¿Cuántas veces aparece?» en la Biblia','Total y libros','Con la lista de versículos'],['Versículos relacionados','Los 3 primeros','Lista completa'],['Modo Predicar','Básico','Traducción ES/PT, desplazamiento automático y grabación'],['Series de sermones',0,1],['Modelos de PDF','PDF para imprimir','Todos los modelos'],['Agenda, plan de lectura y biblioteca',1,1]],fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.'
+  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.',cm_t:'Compare los planes',cm_h:['','Gratis','Premium'],cm_yes:'Incluido',cm_no:'No incluido',cm:[['Sermones','Hasta {s}','Sin límite'],['Biblia','Reina-Valera 1909 y Bíblia Livre','10 versiones y comparación completa'],['Hebreo y griego originales',1,1],['Los 4 diccionarios','{d} artículos completos por día','Sin límite'],['Curiosidades bíblicas','{c} curiosidades y la del día','Todas'],['«¿Cuántas veces aparece?»','Total y libros','Con la lista de versículos'],['Versículos relacionados','Los 3 primeros','Lista completa'],['Modo Predicar','Básico','Traducción, avance automático y grabación'],['Series de sermones',0,1],['Modelos de PDF','PDF para imprimir','Todos los modelos'],['Agenda, plan de lectura y biblioteca',1,1]],fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.'
 },pt:{
   tag:'PREPARE. ORGANIZE. PREGUE.',n_feat:'Funções',n_plans:'Planos',n_faq:'Perguntas',n_about:'Quem somos',dv_eye:'Em todos os seus aparelhos',dv_t:'Prepare no computador. Pregue pelo celular.',dv_d:'A mesma conta no celular, no tablet e no computador. Seus sermões sincronizam sozinhos: comece em um e continue no outro.',dv1_t:'Computador',dv1_d:'Tela ampla com menu lateral, ideal para estudar e escrever com calma.',dv2_t:'Tablet',dv2_d:'Bíblia e dicionários com mais espaço, também para pregar no púlpito.',dv3_t:'Celular',dv3_d:'Tudo na palma da mão, com o Modo Pregar pronto para o culto.',n_go:'Acessar',
   h_eye:'Para pastores e pregadores',h_t:'Prepare e organize suas mensagens em <em>um só lugar.</em>',
   h_d:'O Meu Púlpito é uma plataforma para preparar sermões, estudar as Escrituras e organizar suas mensagens, do primeiro esboço até o púlpito.',
   h_b1:'Acessar a plataforma',h_b2:'Conhecer as funções',f1:'Português e espanhol',f2:'Celular, tablet e computador',f3:'Seus sermões, só seus',
-  fe_eye:'Funções',fe_t:'Tudo o que você precisa, da preparação à pregação.',fe_d:'Ferramentas pensadas para o trabalho pastoral de cada semana, sem telas a mais.',
+  fe_eye:'Funções',fe_t:'Tudo o que você precisa, da preparação à pregação.',fe_d:'Ferramentas pensadas para o trabalho pastoral de cada semana, sem telas desnecessárias.',
   a_t:'Preparação de sermões',a_d:'Escreva com liberdade e deixe a estrutura aparecer sozinha: título, texto base, pontos e conclusão, numa folha limpa que é salva enquanto você escreve.',
   a_l:['Insira versículos e o texto bíblico é colocado automaticamente','Séries de sermões com o andamento de cada uma','Modelos de esboço: expositivo, temático, evangelístico e mais','Categorias, favoritos e versões anteriores de cada sermão','Ditado por voz para registrar ideias rapidamente'],
   b_t:'Modo Pregar',b_d:'Seu sermão em tela cheia, com letra grande e uma leitura confortável para o púlpito.',
@@ -520,15 +520,15 @@ var T={es:{
   c_t:'Bíblia',c_d:'Leia, busque e compare 10 versões em português e espanhol, além do hebraico e do grego originais.',
   c_l:['Troque de versão com um toque: 4 em português e 6 em espanhol','Versículos relacionados (referências cruzadas)','Busca por referência ou por palavra','Compare um versículo em várias versões','Toque numa palavra do original para ver o significado','Insira o texto no sermão com um toque'],
   c_tags:['Bíblia Livre','Bíblia Livre TR','Nova Versão de Acesso Livre','Bíblia Portuguesa Mundial','Reina-Valera 1909','Reina-Valera 1865','Palabra de Dios para ti','Biblia en Español Sencillo','Versión Biblia Libre','Biblia Libre para el Mundo','Textus Receptus (grego)','Códice de Leningrado (hebraico)'],c_note:'Plano grátis: Bíblia Livre e Reina-Valera 1909. As outras versões, com o Premium.',
-  d_t:'Dicionários Bíblico, Hebraico, Aramaico e Grego',d_d:'Quatro dicionários independentes, com as fontes indicadas e no idioma que você usa.',
-  d_l:['Busque em português, em espanhol, no idioma original ou pelo número de Strong','Sugestões de palavras e «Você quis dizer?» quando há erro de digitação','Se a palavra não está naquele dicionário, mostramos onde ela está','Artigos com contexto histórico, contexto bíblico e importância espiritual','Veja como cada palavra é traduzida conforme o contexto','Consulte e insira no sermão sem fechar o que está escrevendo'],
+  d_t:'Dicionários Bíblico, Hebraico, Aramaico e Grego',d_d:'Quatro dicionários independentes, com as fontes indicadas e no idioma que você usa; quando o artigo original está em inglês, ele aparece traduzido automaticamente.',
+  d_l:['Busque em português, em espanhol, no idioma original ou pelo número de Strong','Sugestões de palavras e “Você quis dizer?” quando há erro de digitação','Se a palavra não estiver naquele dicionário, mostramos onde ela está','Artigos com contexto histórico, contexto bíblico e importância espiritual','Veja como cada palavra é traduzida conforme o contexto','Consulte e insira no sermão sem fechar o que está escrevendo'],
   d_tags:['Dicionário Bíblico','Dicionário Hebraico','Dicionário Aramaico','Dicionário Grego'],
   e_t:'Curiosidades bíblicas',e_d:'Quase 100 perguntas verificadas com referências, uma curiosidade nova a cada dia com histórico, e quantas vezes qualquer palavra ou número aparece em toda a Bíblia.',
   g_t:'Agenda',g_d:'Programe onde e quando vai pregar, com visão do mês, descrição e lembrete no calendário do celular. Sua próxima pregação aparece no Início.',rp_t:'Plano de leitura bíblica',rp_d:'A Bíblia em um ano, o Novo Testamento em 90 dias, os Evangelhos em 30 dias ou Salmos e Provérbios em 60 dias. Marque cada dia lido e prepare um sermão com a leitura.',
   h2_t:'Biblioteca pessoal',h2_d:'Guarde estudos, ilustrações, frases e ideias, também por voz, para usar nos próximos sermões.',
   s_eye:'Como começar',s_t:'Comece em poucos minutos.',
-  s1_t:'Crie sua conta',s1_d:'Você só precisa de um e-mail e uma senha. Seus sermões ficam guardados na sua conta.',
-  s2_t:'Instale no celular',s2_d:'Na tela de acesso, toque em «Instalar o aplicativo» e siga os passos. Ele fica na sua tela de início e abre como um aplicativo.',
+  s1_t:'Crie sua conta',s1_d:'Você só precisa de um e-mail e uma senha. Se quiser, deixe seu WhatsApp para receber as boas-vindas e os avisos do seu plano. Seus sermões ficam guardados na sua conta.',
+  s2_t:'Instale no celular',s2_d:'Na tela de acesso, toque em “Instalar o aplicativo” e siga os passos. Ele fica na sua tela de início e abre como um aplicativo.',
   s3_t:'Prepare e pregue',s3_d:'Escreva sua mensagem, estude com a Bíblia e os dicionários, e pregue na mesma tela.',
   p_eye:'Planos',p_t:'Escolha o plano que combina com o seu ministério.',p_d:'Ao criar sua conta, você tem 3 dias de Premium grátis. Depois escolha: continuar grátis ou passar para o Premium.',
   pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para sempre',per_m:'por mês',per_t:'a cada 3 meses',per_a:'por ano',eq:'equivale a {v} por mês',save:'Economize {n}%',best:'Melhor preço',
@@ -542,15 +542,15 @@ var T={es:{
   q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No celular, no tablet e no computador (iPhone, iPad, Android, Windows e Mac), pelo navegador. No tablet e no computador há um menu lateral e mais espaço para estudar. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
    ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões, a Bíblia Livre e a Reina-Valera 1909 ficam guardados no celular, então você pode pregar mesmo sem sinal. As outras versões são baixadas na primeira vez que você abre.'],
-   ['Quais versões da Bíblia o app tem?','10 versões: 4 em português (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre e Bíblia Portuguesa Mundial) e 6 em espanhol (Reina-Valera 1909 e 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre e Biblia Libre para el Mundo), além do hebraico e do grego originais. No plano grátis você tem a Bíblia Livre e a Reina-Valera 1909; com o Premium, todas.'],
+   ['Quais versões da Bíblia estão incluídas?','10 versões: 4 em português (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre e Bíblia Portuguesa Mundial) e 6 em espanhol (Reina-Valera 1909 e 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre e Biblia Libre para el Mundo), além do hebraico e do grego originais. No plano grátis você tem a Bíblia Livre e a Reina-Valera 1909; com o Premium, todas.'],
    ['Quem pode ver meus sermões?','Só você. Cada sermão fica protegido na sua conta e ninguém mais tem acesso ao conteúdo, nem a equipe do Meu Púlpito.'],
    ['Posso pregar a mesma mensagem em português e em espanhol?','Sim. No Modo Pregar você troca o idioma do sermão; a tradução fica guardada no mesmo sermão e os versículos vêm da Bíblia do outro idioma. Recomendamos revisar antes de pregar.'],
    ['Posso testar o Premium antes de pagar?','Sim. Ao criar sua conta você ganha 3 dias de Premium grátis, com todas as funções liberadas. Não pedimos cartão e não há cobranças automáticas: ao terminar, sua conta passa sozinha para o plano grátis e você não perde nada.'],
    ['O que acontece se meu plano vencer?','Você recebe um aviso antes do vencimento. Se não renovar, volta ao plano grátis e todos os seus sermões continuam guardados.'],
-   ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira. Se estiver em outro país, o site mostra o valor aproximado na sua moeda e combinamos o pagamento pelo WhatsApp. Ao confirmarmos o pagamento, sua conta passa a Premium.']],
+   ['Como pago o plano Premium?','Escolha o plano no aplicativo: aparecem os dados para Pix (Brasil), transferência bancária (Paraguai) ou, se disponível, um link de pagamento com cartão. Depois envie o comprovante pelo WhatsApp. Se estiver em outro país, o site mostra o valor aproximado na sua moeda. Quando confirmamos o pagamento, sua conta passa a Premium.']],
   z_t:'Sua próxima mensagem começa aqui.',z_d:'Prepare, organize e pregue com uma ferramenta feita para o ministério.',
   ft_d:'Plataforma para pastores e pregadores: prepare sermões, estude as Escrituras e pregue com confiança.',ft_p:'Produto',ft_c:'Contato',ft_n:'Feito para pastores, em português e espanhol.',ft_t:'Termos de uso',ft_pr:'Privacidade',
-  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.',cm_t:'Compare os planos',cm_h:['','Grátis','Premium'],cm:[['Sermões','Até {s}','Sem limite'],['Bíblia','Bíblia Livre e Reina-Valera 1909','As 10 versões e comparação completa'],['Hebraico e grego originais',1,1],['Dicionários Bíblico, Hebraico, Aramaico e Grego','{d} artigos completos por dia','Sem limite'],['Curiosidades bíblicas','{c} e a curiosidade do dia','Todas'],['«Quantas vezes aparece?» na Bíblia','Total e livros','Com a lista de versículos'],['Versículos relacionados','Os 3 primeiros','Lista completa'],['Modo Pregar','Básico','Tradução PT/ES, rolagem automática e gravação'],['Séries de sermões',0,1],['Modelos de PDF','PDF para imprimir','Todos os modelos'],['Agenda, plano de leitura e biblioteca',1,1]],fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O pagamento é combinado pelo WhatsApp.'
+  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.',cm_t:'Compare os planos',cm_h:['','Grátis','Premium'],cm_yes:'Incluído',cm_no:'Não incluído',cm:[['Sermões','Até {s}','Sem limite'],['Bíblia','Bíblia Livre e Reina-Valera 1909','10 versões e comparação completa'],['Hebraico e grego originais',1,1],['Os 4 dicionários','{d} artigos completos por dia','Sem limite'],['Curiosidades bíblicas','{c} curiosidades e a do dia','Todas'],['“Quantas vezes aparece?”','Total e livros','Com a lista de versículos'],['Versículos relacionados','Os 3 primeiros','Lista completa'],['Modo Pregar','Básico','Tradução, rolagem e gravação'],['Séries de sermões',0,1],['Modelos de PDF','PDF para imprimir','Todos os modelos'],['Agenda, plano de leitura e biblioteca',1,1]],fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O pagamento é combinado pelo WhatsApp.'
 }};
 var L='es';try{L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es')}catch(e){}
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
@@ -561,12 +561,12 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
   document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');if(D[k]!=null)el.innerHTML=k==='h_t'?D[k]:esc(D[k])});
   document.querySelectorAll('[data-list]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-list')].map(function(x){return'<li>'+ck+'<span>'+esc(x)+'</span></li>'}).join('')});
   document.querySelectorAll('[data-tags]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-tags')].map(function(x){return'<span>'+esc(x)+'</span>'}).join('')});
-  document.querySelectorAll('[data-img]').forEach(function(el){var u='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=4';if(el.getAttribute('src')===u)return;var im=document.createElement('img');im.setAttribute('data-img',el.getAttribute('data-img'));im.alt='';im.width=el.getAttribute('width')||390;im.height=el.getAttribute('height')||844;im.decoding='async';im.src=u;el.replaceWith(im)});
+  document.querySelectorAll('[data-img]').forEach(function(el){var u='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=4';if(el.getAttribute('src')===u)return;var im=document.createElement('img');im.setAttribute('data-img',el.getAttribute('data-img'));im.alt='';im.width=el.getAttribute('width')||390;im.height=el.getAttribute('height')||844;im.decoding='async';if(!el.closest('.hero'))im.loading='lazy';im.src=u;el.replaceWith(im)});
   document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-l')===L))});
   var MC=window.MP_CUR,cc=MC?MC.code():'',c=cc==='BRL'?'brl':cc==='PYG'?'pyg':L==='pt'?'brl':'pyg',o=c==='brl'?'pyg':'brl';
   // fuera de Paraguay y Brasil: valor aproximado en la moneda del país (precio oficial en guaraníes)
   var lm=function(pyg){var x=MC&&MC.local(pyg);return x?'≈ '+MC.fmt(x.v,x.c,L):''},fx=!!lm(1e5);
-  var card=function(k){var x=PRICE[k],sv=k==='m'?0:Math.round((1-x.pyg/(PRICE.m.pyg*MON[k]))*100);
+  var card=function(k){var x=PRICE[k],sv=k==='m'?0:Math.round((1-x[c]/(PRICE.m[c]*MON[k]))*100);
     var pv=fx?lm(x.pyg):money(x[c],c);
     var msg=D.wa_plan.replace('{p}',D['pl_'+k]).replace('{v}',(fx?pv+' ('+money(x.pyg,'pyg')+')':pv)+' '+D['per_'+k]);
     return'<div class="plan'+(k==='a'?' best':'')+'">'+(k==='a'?'<span class="badge">'+esc(D.best)+'</span>':'')+
@@ -575,8 +575,8 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
       (sv>0?'<span class="save">'+esc(D.save.replace('{n}',sv))+'</span>':'')+
       '<ul>'+(k==='m'?D.fp.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join(''):'<li>'+ck+'<span>'+esc(D.fp2)+'</span></li>')+'</ul>'+
       '<a class="btn '+(k==='a'?'gold':'dark')+'" href="https://wa.me/'+WA+'?text='+encodeURIComponent(msg)+'" target="_blank" rel="noopener">'+esc(D['go_'+k])+'</a></div>'};
-  document.getElementById('plans').innerHTML='<div class="plan"><h3>'+esc(D.pl_free)+'</h3><div><div class="price">'+esc(fx?MC.fmt(0,cc,L):money(0,c))+'</div><div class="per">'+esc(D.per_f)+'</div></div><ul>'+D.ff.map(function(f){return'<li>'+ck+'<span>'+esc(f.replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))+'</span></li>'}).join('')+'</ul><a class="btn out" href="app/" data-go>'+esc(D.go_f)+'</a></div>'+card('m')+card('t')+card('a');
-  var cv=function(v){return v===1?ck:v===0?'<span class="no">—</span>':esc(String(v).replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))};
+  document.getElementById('plans').innerHTML='<div class="plan"><h3>'+esc(D.pl_free)+'</h3><div><div class="price">'+esc(D.pl_free)+'</div><div class="per">'+esc(D.per_f)+'</div></div><ul>'+D.ff.filter(function(f){return!((/\{d\}/.test(f)&&!FREE.dic)||(/\{c\}/.test(f)&&!FREE.cur))}).map(function(f){return'<li>'+ck+'<span>'+esc(f.replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))+'</span></li>'}).join('')+'</ul><a class="btn out" href="app/" data-go>'+esc(D.go_f)+'</a></div>'+card('m')+card('t')+card('a');
+  var cv=function(v){return v===1?'<span aria-label="'+esc(D.cm_yes)+'">'+ck+'</span>':v===0?'<span class="no" aria-label="'+esc(D.cm_no)+'">—</span>':esc(String(v).replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))};
   document.getElementById('cmpTbl').innerHTML=[D.cm_h].concat(D.cm).map(function(r,i){return'<div class="cmp-r" role="row">'+r.map(function(x,j){return'<div role="'+(i?'cell':'columnheader')+'">'+(i||j?cv(x):'')+'</div>'}).join('')+'</div>'}).join('');
   var fn=document.getElementById('fxNote');fn.hidden=!fx;if(fx)fn.textContent=D.fx.replace('{c}',MC.name(cc,L));
   document.getElementById('waFoot').href='https://wa.me/'+WA;document.getElementById('waFab').href='https://wa.me/'+WA+'?text='+encodeURIComponent(D.wa_hi);
@@ -591,7 +591,7 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
 }
 function cfgApply(c){if(!c)return;var a=c.app||{};
   ['m','t','a'].forEach(function(k){var x=a.p&&a.p[k];if(x&&+x.pyg>0&&+x.brl>0)PRICE[k]={pyg:+x.pyg,brl:+x.brl}});
-  if(a.wa&&/^\d{8,15}$/.test(a.wa))WA=a.wa;if(a.free)FREE={serm:+a.free.serm||5,dic:+a.free.dic||0,cur:+a.free.cur||0};
+  if(a.wa&&/^\d{8,15}$/.test(a.wa))WA=a.wa;if(a.free)FREE={serm:+a.free.serm||2,dic:+a.free.dic||0,cur:+a.free.cur||0};
   if(c.site)SITE=c.site}
 try{cfgApply(JSON.parse(localStorage.getItem('mp.site.cfg')||'null'))}catch(e){}
 apply();
