@@ -883,3 +883,5 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .rl-rim{fill:none;stroke:#D6AD55;stroke-width:5}.rl-hub{fill:#0B1220;stroke:#D6AD55;stroke-width:4}
 .rl-pin{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:24px solid var(--fg);z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
 .rl-res{margin:4px 0 0;text-align:center;font-family:var(--head);font-weight:800;font-size:22px;color:var(--gold-ink)}html[data-mode="dark"] .rl-res{color:var(--gold)}
+.rl-old{margin:0 0 -6px;font-size:14px;color:var(--muted);text-decoration:line-through}
+.rl-pay{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:rgba(214,173,85,.14);box-shadow:0 0 0 1px rgba(214,173,85,.45) inset}.rl-pay>.i{color:var(--gold);flex:none;margin-top:2px}.rl-pay span{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted);line-height:1.4}.rl-pay b{color:var(--fg);font-size:14.5px}
