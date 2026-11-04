@@ -367,7 +367,7 @@ function bibSearch(q){const d=BIX;if(!d)return[];const qn=norm(q).replace(/[^a-z
   return out.sort((a,b)=>b[1]-a[1]||d.e[b[0]][1]-d.e[a[0]][1]).slice(0,50).map(x=>x[0])}
 /* Diccionario del predicador (escrito en ES/PT): va primero en el Bíblico y aparece como explicación pastoral en hebreo/griego */
 let PREG=null,PREGP=null;
-function loadPreg(){if(PREG)return Promise.resolve(PREG);if(!PREGP)PREGP=fetch('biblia/dic-pregador.json?v=4').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
+function loadPreg(){if(PREG)return Promise.resolve(PREG);if(!PREGP)PREGP=fetch('biblia/dic-pregador.json?v=5').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
     d.ix=d.e.map(e=>[[e[0],...e[6]].map(norm),[e[1],...e[7]].map(norm)]);d.byN={};d.e.forEach((e,i)=>e[4].forEach(o=>{(d.byN[o[0]]=d.byN[o[0]]||[]).push([i,o])}));return PREG=d}).catch(e=>{PREGP=null;throw e});return PREGP}
 function pregSearch(q){if(!PREG)return[];const qn=norm(q.trim());if(qn.length<2)return[];const out=[];
   PREG.ix.forEach((ix,i)=>{const sc=ws=>Math.max(0,...ws.map(w=>w===qn?6:w.startsWith(qn)?5:(qn.length>2&&w.split(' ').some(x=>x.startsWith(qn)))?3:0));const s=Math.max(sc(ix[0]),sc(ix[1]));if(s)out.push([i,s])});
@@ -1008,7 +1008,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v105';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v106';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
