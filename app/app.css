@@ -812,7 +812,7 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
    ========================================================= */
 .nav-brand,.nav-new,.nav-set{display:none!important}
 .h-col,.mwrap,.mcal,.mday{display:contents}
-@media (min-width:768px){
+@media (min-width:768px) and (min-height:560px){
   :root{--side:208px}
   .nav{top:0;bottom:0;right:auto;width:var(--side);border-top:0;border-right:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 22px) 12px calc(env(safe-area-inset-bottom,0px) + 18px) max(12px,env(safe-area-inset-left,0px))!important;overflow-y:auto}
   .nav .in{height:100%!important;max-width:none;display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:0!important}
@@ -832,7 +832,7 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
   html.tabs .toast,html.subp .toast{left:calc(50% + var(--side) / 2);bottom:28px}
   .vbar{left:calc(50% + var(--side) / 2);bottom:24px}
 }
-@media (min-width:1100px){
+@media (min-width:1100px) and (min-height:560px){
   :root{--side:236px}
   .view{padding-left:40px;padding-right:40px}
   .view[data-tab=home] .wrap,.view[data-tab=list] .wrap,.view[data-tab=dic] .wrap,.view[data-tab=agenda] .wrap,.view[data-tab=cur] .wrap{max-width:1080px}
