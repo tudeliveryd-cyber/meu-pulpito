@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v116';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v117';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1382,7 +1382,7 @@ Object.assign(I18N.pt,{as_sec:'Site meupulpito.com',as_btn:'Textos e depoimentos
 // Idioma del mensaje: Paraguay → español, Brasil → portugués; otros países, el idioma que usa en el app
 function remK(r){const p=r.plan||{};const n=Date.now();if(!PMON[p.plan]||!p.until)return'';const wn=(+PCFG.warn||7)*864e5;
   if(p.until>n)return p.until-n<wn?'s'+p.until:'';return n-p.until<30*864e5?'e'+p.until:''}
-function waLang(r){const w=r.wa||'';return w.startsWith('+595')?'es':w.startsWith('+55')?'pt':(r.lang==='pt'?'pt':'es')}
+function waLang(r){if(r.lang==='pt'||r.lang==='es')return r.lang;const w=r.wa||'';return w.startsWith('+55')?'pt':'es'}
 function waLink(r,k){const L=waLang(r);const p=(r.plan||{});const nm=(r.name||'').trim().replace(/^(pr|pra|pb|ev|rev)\.?\s+/i,'').split(/\s+/)[0]||'';
   const trial=+p.trial>Date.now()&&!(PMON[p.plan]&&p.until>Date.now());
   if(k==='rem'){const exp=p.until<=Date.now();return'https://wa.me/'+String(r.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(t(exp?'wam_exp':'wam_rem',{n:nm?' '+nm:'',p:t('pl_'+p.plan,null,L),d:fmtDayL(p.until,L)},L))}

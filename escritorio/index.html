@@ -102,7 +102,8 @@ function sheet(html){const ov=document.createElement('div');ov.className='ov';ov
 const closeSheets=()=>$$('.ov').forEach(o=>o.remove());
 function sure(b,txt){if(b.dataset.sure)return true;b.dataset.sure=1;const o=b.innerHTML;b.textContent=txt||'Confirmar? Toque de novo';setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.innerHTML=o}},3000);return false}
 const waNum=w=>String(w||'').replace(/\D/g,'');
-const waLang=r=>{const w=String(r.wa||'');return w.startsWith('+595')||w.startsWith('595')?'es':w.startsWith('+55')||w.startsWith('55')?'pt':(r.lang==='pt'?'pt':'es')};
+// idioma da mensagem: o idioma que o pastor usa no app; se não souber, pelo país do WhatsApp
+const waLang=r=>{if(r.lang==='pt'||r.lang==='es')return r.lang;const w=String(r.wa||'');return w.startsWith('+55')||w.startsWith('55')?'pt':'es'};
 const first=n=>String(n||'').trim().replace(/^(pr|pra|pb|ev|rev)\.?\s+/i,'').split(/\s+/)[0]||'';
 
 firebase.initializeApp(window.FIREBASE_CONFIG);const auth=firebase.auth(),db=firebase.firestore();
@@ -238,11 +239,26 @@ function payForm(uid){const p=P(uid),rl=D.roleta[uid],first=!realPays(uid).lengt
     const pay={at:Date.now(),plan:k,amt:+String($('#pa',sh).value).replace(/\D/g,'')||0,cur:$('#pc',sh).value,note:$('#pn',sh).value.trim(),from:since,to:until};if($('#ptst',sh).checked)pay.test=true;
     try{await db.collection('planos').doc(uid).set({plan:k,since,until,status:'active',ok:true,blocked:false,updated:Date.now(),pays:firebase.firestore.FieldValue.arrayUnion(pay)},{merge:true});
       D.planos[uid]=Object.assign({},P(uid),{plan:k,since,until,ok:true,blocked:false,pays:[...(P(uid).pays||[]),pay]});closeSheets();toast('Plano ativado');draw()}catch(e){toast('Não foi possível salvar')}}}
-function trialForm(uid){let n=7;const sh=sheet(`<h3>Teste grátis · ${esc(byName(uid))}</h3><div class="seg" id="tn">${[1,3,7,15,30].map(x=>`<button type="button" data-n="${x}" aria-pressed="${x===7}">${x===1?'24 h':x+' dias'}</button>`).join('')}</div>
-   <button class="btn gold" id="tg" style="height:46px">Dar teste</button>${+P(uid).trial>Date.now()?`<button class="btn red" id="te">Encerrar o teste atual</button>`:''}<button class="btn ghost" id="tx">Cancelar</button>`);
+function trialForm(uid){let n=7;const p=P(uid),r=D.stats.find(x=>x.id===uid)||{};const paid=PMON[p.plan]&&p.until>Date.now();const onlyTest=!realPays(uid).length;
+  const sh=sheet(`<h3>Teste grátis · ${esc(byName(uid))}</h3>
+   ${paid?`<p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.45">Esta conta está com o <b>Premium ${PNAME[p.plan]} até ${esc(fmtD(p.until))}</b>. Enquanto esse plano estiver ativo, o teste não aparece.</p>
+     <label class="row" style="gap:10px;font-weight:600;color:var(--ink);font-size:14px"><input type="checkbox" id="tend" ${onlyTest?'checked':''} style="width:22px;height:22px;flex:none">Encerrar o plano atual e deixar só o teste${onlyTest?' (o plano era de teste)':''}</label>`:''}
+   <div class="seg" id="tn">${[1,3,7,15,30].map(x=>`<button type="button" data-n="${x}" aria-pressed="${x===7}">${x===1?'24 h':x+' dias'}</button>`).join('')}</div>
+   <button class="btn gold" id="tg" style="height:46px">Dar teste</button>${+p.trial>Date.now()?`<button class="btn red" id="te">Encerrar o teste atual</button>`:''}<button class="btn ghost" id="tx">Cancelar</button>`);
   $('#tn',sh).onclick=e=>{const b=e.target.closest('[data-n]');if(!b)return;n=+b.dataset.n;$$('#tn button',sh).forEach(x=>x.setAttribute('aria-pressed',x===b))};$('#tx',sh).onclick=closeSheets;
-  $('#tg',sh).onclick=()=>{closeSheets();setPlan(uid,{trial:Date.now()+n*864e5,trialFrom:Date.now(),trialAuto:false,ok:true,blocked:false},'Teste ativado até '+fmtD(Date.now()+n*864e5))};
+  $('#tg',sh).onclick=async()=>{const until=Date.now()+n*864e5;const d={trial:until,trialFrom:Date.now(),trialAuto:false,ok:true,blocked:false};const end=$('#tend',sh);if(end&&end.checked)Object.assign(d,{plan:'free',until:0,status:'free'});
+    closeSheets();await setPlan(uid,d,'Teste ativado até '+fmtD(until));trialDone(r,until)};
   const te=$('#te',sh);if(te)te.onclick=()=>{closeSheets();setPlan(uid,{trial:Date.now()-1000},'Teste encerrado')}}
+// depois de dar o teste: avisar o pastor pelo WhatsApp, no idioma dele
+function trialDone(r,until){const pt=waLang(r)==='pt',nm=first(r.name);const dd=new Date(until);
+  const msg=pt?`Olá${nm?' '+nm:''}! Aqui é do Meu Púlpito. Liberamos para você um teste grátis do Premium até ${dd.toLocaleDateString('pt-BR',{day:'numeric',month:'long'})}. Aproveite todas as ferramentas: Bíblias, dicionários, Modo Pregar e muito mais. Qualquer dúvida, estamos aqui!`
+    :`¡Hola${nm?' '+nm:''}! Le escribimos de Meu Púlpito. Le liberamos una prueba gratis del Premium hasta el ${dd.toLocaleDateString('es',{day:'numeric',month:'long'})}. Aproveche todas las herramientas: Biblias, diccionarios, Modo Predicar y mucho más. ¡Cualquier duda, estamos aquí!`;
+  const w=waNum(r.wa);const sh=sheet(`<h3>Teste concedido</h3><p style="margin:0;color:var(--text);line-height:1.5"><b>${esc(r.name||r.email||'')}</b> tem o Premium liberado até <b>${esc(fmtD(until))}</b>. Ele já vê isso no app.</p>
+    <div style="background:#F6F7FA;border-radius:12px;padding:12px;font-size:14px;line-height:1.45;color:var(--ink)">${esc(msg)}</div>
+    ${w?`<a class="btn gold" style="height:46px" target="_blank" rel="noopener" href="https://wa.me/${w}?text=${encodeURIComponent(msg)}">${ic('chat')}Avisar pelo WhatsApp</a>`:'<p style="margin:0;font-size:13px;color:var(--muted)">Este pastor não informou WhatsApp.</p>'}
+    ${D.rules?`<button class="btn dark" id="tdS">${ic('chat')}Avisar pelo suporte do app</button>`:''}<button class="btn ghost" id="tdX">Fechar</button>`);
+  $('#tdX',sh).onclick=closeSheets;const sb=$('#tdS',sh);if(sb)sb.onclick=async()=>{sb.disabled=true;const now=Date.now(),ref=db.collection('suporte').doc(r.id);
+    try{await ref.collection('m').doc('a'+now.toString(36)).set({t:msg,f:'a',at:now});await ref.set({uu:firebase.firestore.FieldValue.increment(1),ua:0,last:msg.slice(0,200),at:now,n:(r.name||'').slice(0,80),e:(r.email||'').slice(0,120),l:pt?'pt':'es'},{merge:true});toast('Aviso enviado no app');closeSheets()}catch(e){sb.disabled=false;toast('Não foi possível enviar')}}}
 
 /* ---------- Pagamentos ---------- */
 function vPag(){const pays=allPays(),months={};pays.forEach(p=>{const k=monthKey(p.at);(months[k]=months[k]||[]).push(p)});const sn=soon(),n=Date.now();
