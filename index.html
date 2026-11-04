@@ -8,7 +8,7 @@
 try{if((window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone)location.replace('app/')}catch(e){}
 </script>
 <title>Meu Púlpito · Prepare, organice y predique</title>
-<meta name="description" content="Meu Púlpito es una plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras con la Biblia y los diccionarios bíblico, hebreo, arameo y griego, y predique desde el celular.">
+<meta name="description" content="Meu Púlpito es una plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras con 10 versiones de la Biblia y los diccionarios bíblico, hebreo, arameo y griego, y predique desde el celular.">
 <meta name="theme-color" content="#0B1220">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="app/icon-192.png">
@@ -95,8 +95,9 @@ body.has-bar .hero{padding-top:calc(env(safe-area-inset-top,0px) + 186px)}
 .lang button{border:0;background:none;color:rgba(255,255,255,.65);font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.06em;height:28px;padding:0 10px;border-radius:14px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--navy)}
 .nav .btn{height:42px;padding:0 20px;font-size:14.5px}
-@media (max-width:900px){.nav ul{display:none}.nav .lang{margin-left:auto}}
-@media (max-width:420px){.nav .btn{display:none}}
+@media (max-width:1020px){.nav .wrap{gap:16px}.nav ul{gap:16px}.nav ul a{font-size:13.5px}.nav .brand small{display:none}}
+@media (max-width:780px){.nav ul{display:none}.nav .lang{margin-left:auto}}
+@media (max-width:420px){.nav .btn{height:38px;padding:0 14px;font-size:13.5px}.lang button{padding:0 9px}.brand b{font-size:14px}.brand img{height:28px;width:auto}.nav .wrap{gap:10px}}
 @media (max-width:480px){.brand small{display:none}.brand b{font-size:15px;white-space:nowrap}.brand img{height:32px}.nav .btn{padding:0 16px}.nav .wrap{gap:12px}}
 
 /* portada */
@@ -132,7 +133,7 @@ section{scroll-margin-top:72px}
 .sec-h{max-width:720px;margin:0 auto 72px;text-align:center}
 .sec-h h2{font-size:clamp(30px,3.6vw,44px);line-height:1.12;font-weight:800;margin-top:14px;text-wrap:balance}
 .sec-h p{margin-top:18px;font-size:18px;color:var(--muted);text-wrap:pretty}
-@media (max-width:700px){.sec{padding:84px 0}.sec-h{margin-bottom:52px}}
+@media (max-width:700px){.sec{padding:64px 0}.sec-h{margin-bottom:40px}.more{margin-top:64px}.feat+.feat{margin-top:28px!important}.feat{gap:32px!important}.ft-media .phone{width:230px!important}}
 
 /* funciones */
 .feat{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;padding:28px 0}
@@ -153,7 +154,7 @@ section{scroll-margin-top:72px}
 @media (max-width:860px){.feat{grid-template-columns:1fr;gap:44px}.feat.rev .ft-media{order:0}.feat+.feat{margin-top:40px}.ft-media .phone{width:250px}}
 
 /* más herramientas */
-.more{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:96px}
+.more{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:96px}
 .tool{background:#fff;border-radius:22px;box-shadow:0 0 0 1px var(--line) inset;overflow:hidden;display:flex;flex-direction:column}
 .tool .shot{background:var(--navy);height:270px;overflow:hidden;display:flex;justify-content:center;align-items:flex-start;padding-top:28px}
 .tool .shot .phone{position:relative;flex:none;width:220px;border-radius:34px;padding:7px;box-shadow:0 0 0 1px rgba(255,255,255,.08) inset}
@@ -162,7 +163,36 @@ section{scroll-margin-top:72px}
 .tool h3{font-size:20px;font-weight:800;margin-bottom:8px}
 .tool p{font-size:15.5px;color:var(--muted);line-height:1.55}
 .tool .ico{width:250px;height:250px;margin:auto;display:flex;align-items:center;justify-content:center}
-@media (max-width:900px){.more{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto}}
+@media (max-width:1060px){.more{grid-template-columns:repeat(2,1fr);max-width:760px;margin-left:auto;margin-right:auto}}
+@media (max-width:600px){.more{grid-template-columns:1fr;max-width:480px}}
+.devs{position:relative;max-width:1040px;margin:0 auto;padding:0 0 4% 0}
+.dv-pc{width:76%;margin:0 auto}
+.dv-scr{background:#05080F;border-radius:16px 16px 0 0;padding:1.4%;box-shadow:0 0 0 1px #2A3550 inset,0 30px 70px rgba(11,18,32,.28)}
+.dv-scr img{width:100%;height:auto;border-radius:6px}
+.dv-base{height:14px;margin:0 -5%;background:linear-gradient(#D5D9E1,#AEB4C0);border-radius:0 0 14px 14px;box-shadow:0 14px 30px rgba(11,18,32,.18)}
+.dv-tab{position:absolute;left:0;bottom:0;width:36%;background:#05080F;border-radius:18px;padding:1.3%;box-shadow:0 0 0 1px #2A3550 inset,0 24px 60px rgba(11,18,32,.35)}
+.dv-tab img{width:100%;height:auto;border-radius:10px}
+.dv-ph{position:absolute;right:1%;bottom:0;width:15%;background:#05080F;border-radius:24px;padding:.9%;box-shadow:0 0 0 1px #2A3550 inset,0 24px 60px rgba(11,18,32,.35)}
+.dv-ph img{width:100%;height:auto;border-radius:18px}
+.dv-cap{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.dv-cap>div{text-align:center}
+.dv-cap .i{width:26px;height:26px;color:var(--gold-2);margin:0 auto 10px}
+.dv-cap h3{font-size:19px;font-weight:800;margin-bottom:6px}
+.dv-cap p{font-size:15.5px;color:var(--muted);line-height:1.55}
+@media (max-width:700px){.devs{padding-bottom:10%}.dv-pc{width:92%}.dv-tab{width:44%;bottom:-2%}.dv-ph{width:20%;bottom:-2%}.dv-cap{grid-template-columns:1fr;gap:28px;margin-top:48px}.dv-scr{border-radius:10px 10px 0 0}.dv-base{height:9px}.dv-tab{border-radius:12px}.dv-ph{border-radius:14px}.dv-ph img{border-radius:10px}}
+.ft-note{margin-top:14px;font-size:14px;color:var(--muted)}
+.cmp{max-width:860px;margin:56px auto 0}
+.cmp h3{font-size:22px;font-weight:800;text-align:center;margin-bottom:20px}
+.cmp-t{border-radius:18px;box-shadow:0 0 0 1px var(--line) inset;overflow:hidden;background:#fff}
+.cmp-r{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);align-items:stretch;border-top:1px solid var(--line)}
+.cmp-r:first-child{border-top:0;background:var(--soft)}
+.cmp-r>div{padding:13px 16px;font-size:14.5px;line-height:1.45;color:var(--text);display:flex;align-items:center;overflow-wrap:break-word}
+.cmp-r>div:first-child{font-family:var(--head);font-weight:700;color:var(--ink)}
+.cmp-r>div:last-child{background:var(--gold-soft)}
+.cmp-r:first-child>div{font-family:var(--head);font-weight:800;color:var(--ink);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.cmp-r .i{width:18px;height:18px;color:var(--gold-2)}
+.cmp-r .no{color:#A0A8B8}
+@media (max-width:560px){.cmp-r{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr)}.cmp-r>div{padding:11px 10px;font-size:13px}.cmp-r:first-child>div{font-size:11px}}
 
 /* pasos */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
@@ -170,7 +200,7 @@ section{scroll-margin-top:72px}
 .step .n{width:40px;height:40px;border-radius:12px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;font-size:16px;margin-bottom:20px}
 .step h3{font-size:19px;font-weight:800;margin-bottom:8px}
 .step p{font-size:15.5px;color:var(--muted)}
-@media (max-width:860px){.steps{grid-template-columns:1fr;max-width:520px;margin:0 auto}}
+@media (max-width:700px){.steps{grid-template-columns:1fr;max-width:520px;margin:0 auto}}
 
 /* planes */
 .plans{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch}
@@ -253,7 +283,7 @@ footer .soc svg{width:18px;height:18px}
   <symbol id="ar" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="pl" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
-  <symbol id="dev" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="dev" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol><symbol id="lap" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></symbol><symbol id="tab" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M11 17h2"/></symbol>
   <symbol id="lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
   <symbol id="ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></symbol>
   <symbol id="chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
@@ -269,6 +299,7 @@ footer .soc svg{width:18px;height:18px}
       <li><a href="#funciones" data-t="n_feat"></a></li>
       <li><a href="#planes" data-t="n_plans"></a></li>
       <li><a href="#preguntas" data-t="n_faq"></a></li>
+      <li><a href="#sobre" data-t="n_about"></a></li>
     </ul>
     <div class="lang" role="group" aria-label="Idioma"><button data-l="es">ES</button><button data-l="pt">PT</button></div>
     <a class="btn gold" href="app/" data-go data-t="n_go"></a>
@@ -314,8 +345,8 @@ footer .soc svg{width:18px;height:18px}
       </article>
 
       <article class="feat rv">
-        <div class="ft-media"><div class="phone"><img data-img="bible" alt="" width="390" height="844"></div></div>
-        <div class="ft-text"><span class="ft-num">03</span><h3 data-t="c_t"></h3><p data-t="c_d"></p><ul class="ft-list" data-list="c_l"></ul><div class="ft-tags" data-tags="c_tags"></div></div>
+        <div class="ft-media"><div class="phone"><img data-img="bver" alt="" width="390" height="844"></div></div>
+        <div class="ft-text"><span class="ft-num">03</span><h3 data-t="c_t"></h3><p data-t="c_d"></p><ul class="ft-list" data-list="c_l"></ul><div class="ft-tags" data-tags="c_tags"></div><p class="ft-note" data-t="c_note"></p></div>
       </article>
 
       <article class="feat rev rv">
@@ -325,8 +356,25 @@ footer .soc svg{width:18px;height:18px}
 
       <div class="more">
         <div class="tool rv"><div class="shot"><div class="phone"><img data-img="cur" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="e_t"></h3><p data-t="e_d"></p></div></div>
-        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="agenda" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="g_t"></h3><p data-t="g_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="agmonth" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="g_t"></h3><p data-t="g_d"></p></div></div>
+        <div class="tool rv"><div class="shot"><div class="phone"><img data-img="plan" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="rp_t"></h3><p data-t="rp_d"></p></div></div>
         <div class="tool rv"><div class="shot"><div class="phone"><img data-img="lib" alt="" width="390" height="844"></div></div><div class="tx"><h3 data-t="h2_t"></h3><p data-t="h2_d"></p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec devs-sec" id="aparelhos">
+    <div class="wrap">
+      <div class="sec-h rv"><span class="eyebrow" data-t="dv_eye"></span><h2 data-t="dv_t"></h2><p data-t="dv_d"></p></div>
+      <div class="devs rv" aria-hidden="true">
+        <div class="dv-pc"><div class="dv-scr"><img data-img="dev-pc" alt="" width="1440" height="900"></div><div class="dv-base"></div></div>
+        <div class="dv-tab"><img data-img="dev-tab" alt="" width="1180" height="820"></div>
+        <div class="dv-ph"><img data-img="preach" alt="" width="390" height="844"></div>
+      </div>
+      <div class="dv-cap">
+        <div class="rv"><svg class="i"><use href="#lap"/></svg><h3 data-t="dv1_t"></h3><p data-t="dv1_d"></p></div>
+        <div class="rv"><svg class="i"><use href="#tab"/></svg><h3 data-t="dv2_t"></h3><p data-t="dv2_d"></p></div>
+        <div class="rv"><svg class="i"><use href="#dev"/></svg><h3 data-t="dv3_t"></h3><p data-t="dv3_d"></p></div>
       </div>
     </div>
   </section>
@@ -366,6 +414,7 @@ footer .soc svg{width:18px;height:18px}
       <div class="sec-h rv"><span class="eyebrow" data-t="p_eye"></span><h2 data-t="p_t"></h2><p data-t="p_d"></p></div>
       <div class="plans rv" id="plans"></div>
       <p class="cond" id="fxNote" hidden></p>
+      <div class="cmp rv"><h3 data-t="cm_t"></h3><div class="cmp-t" id="cmpTbl" role="table"></div></div>
       <p class="cond"><span data-t="p_cond"></span> <a href="legal.html#terminos" style="text-decoration:underline" data-t="ft_t"></a></p>
     </div>
   </section>
@@ -415,7 +464,7 @@ var WA='595983879344',FREE={serm:2,dic:3,cur:10},SITE={};
 // Formato: {q:'texto tal como lo dijo', n:'Nombre', r:'Iglesia · Ciudad'}. La sección aparece sola cuando hay al menos uno.
 var TESTI=[];
 var T={es:{
-  tag:'PREPARA. ORGANIZA. PREDICA.',n_feat:'Funciones',n_plans:'Planes',n_faq:'Preguntas',n_go:'Acceder',
+  tag:'PREPARA. ORGANIZA. PREDICA.',n_feat:'Funciones',n_plans:'Planes',n_faq:'Preguntas',n_about:'Quiénes somos',dv_eye:'En todos sus dispositivos',dv_t:'Prepare en la computadora. Predique desde el celular.',dv_d:'La misma cuenta en el celular, la tablet y la computadora. Sus sermones se sincronizan solos: empiece en uno y siga en otro.',dv1_t:'Computadora',dv1_d:'Pantalla amplia con menú lateral, ideal para estudiar y escribir con calma.',dv2_t:'Tablet',dv2_d:'Biblia y diccionarios con más espacio, también para predicar desde el púlpito.',dv3_t:'Celular',dv3_d:'Todo en la palma de la mano, con el Modo Predicar listo para el culto.',n_go:'Acceder',
   h_eye:'Para pastores y predicadores',h_t:'Prepare y organice sus mensajes en <em>un solo lugar.</em>',
   h_d:'Meu Púlpito es una plataforma para preparar sermones, estudiar las Escrituras y organizar sus mensajes, desde el primer bosquejo hasta el púlpito.',
   h_b1:'Acceder a la plataforma',h_b2:'Conocer las funciones',f1:'Español y portugués',f2:'iPhone, Android y computadora',f3:'Sus sermones, solo suyos',
@@ -424,41 +473,42 @@ var T={es:{
   a_l:['Inserte versículos y el texto bíblico se coloca automáticamente','Series de sermones con el avance de cada una','Modelos de bosquejo: expositivo, temático, evangelístico y más','Categorías, favoritos y versiones anteriores de cada sermón','Dictado por voz para registrar ideas rápidamente'],
   b_t:'Modo Predicar',b_d:'Su sermón en pantalla completa, con letra grande y una lectura cómoda para el púlpito.',
   b_l:['Grabe su predicación en audio','Tamaño de letra y espaciado ajustables','Cronómetro con tiempo objetivo','Avance por partes y desplazamiento automático','Cambie el sermón entre español y portugués sin crear una copia'],
-  c_t:'Biblia',c_d:'Lea, busque y compare versiones en español, portugués y en los idiomas originales.',
-  c_l:['Versículos relacionados (referencias cruzadas)','Búsqueda por referencia o por palabra','Compare un versículo en varias versiones','Toque una palabra del original para ver su significado','Inserte el texto en el sermón con un toque'],
-  c_tags:['Reina-Valera 1909','Reina-Valera 1865','Bíblia Livre','Nova Versão de Acesso Livre','Textus Receptus','Códice de Leningrado'],
+  c_t:'Biblia',c_d:'Lea, busque y compare 10 versiones en español y portugués, además del hebreo y el griego originales.',
+  c_l:['Cambie de versión con un toque: 6 en español y 4 en portugués','Versículos relacionados (referencias cruzadas)','Búsqueda por referencia o por palabra','Compare un versículo en varias versiones','Toque una palabra del original para ver su significado','Inserte el texto en el sermón con un toque'],
+  c_tags:['Reina-Valera 1909','Reina-Valera 1865','Palabra de Dios para ti','Biblia en Español Sencillo','Versión Biblia Libre','Biblia Libre para el Mundo','Bíblia Livre','Bíblia Livre TR','Nova Versão de Acesso Livre','Bíblia Portuguesa Mundial','Textus Receptus (griego)','Códice de Leningrado (hebreo)'],c_note:'Plan gratis: Reina-Valera 1909 y Bíblia Livre. Las demás versiones, con Premium.',
   d_t:'Diccionarios Bíblico, Hebreo, Arameo y Griego',d_d:'Cuatro diccionarios independientes, con fuentes indicadas y en el idioma que usted usa.',
-  d_l:['Busque en español, en portugués, en el idioma original o por número de Strong','Vea cómo se traduce cada palabra según el contexto','Personajes, lugares, costumbres y conceptos de la Biblia','Consulte e inserte en el sermón sin cerrar lo que está escribiendo'],
+  d_l:['Busque en español, en portugués, en el idioma original o por número de Strong','Sugerencias de palabras y «¿Quiso decir?» cuando hay un error al escribir','Si la palabra no está en ese diccionario, le mostramos dónde sí está','Artículos con contexto histórico, contexto bíblico e importancia espiritual','Vea cómo se traduce cada palabra según el contexto','Consulte e inserte en el sermón sin cerrar lo que está escribiendo'],
   d_tags:['Diccionario Bíblico','Diccionario Hebreo','Diccionario Arameo','Diccionario Griego'],
-  e_t:'Curiosidades bíblicas',e_d:'Casi 100 preguntas verificadas con referencias, una curiosidad por día y cuántas veces aparece cualquier palabra o número en toda la Biblia. Funciona sin conexión.',
-  g_t:'Agenda',g_d:'Programe dónde y cuándo va a predicar, con vista mensual y recordatorio en el calendario del celular. Lleve el historial de cada mensaje y siga un plan de lectura bíblica.',
+  e_t:'Curiosidades bíblicas',e_d:'Casi 100 preguntas verificadas con referencias, una curiosidad nueva cada día con historial, y cuántas veces aparece cualquier palabra o número en toda la Biblia.',
+  g_t:'Agenda',g_d:'Programe dónde y cuándo va a predicar, con vista del mes, descripción y recordatorio en el calendario del celular. Su próxima predicación aparece en el Inicio.',rp_t:'Plan de lectura bíblica',rp_d:'La Biblia en un año, el Nuevo Testamento en 90 días, los Evangelios en 30 días o Salmos y Proverbios en 60 días. Marque cada día leído y prepare un sermón con la lectura.',
   h2_t:'Biblioteca personal',h2_d:'Guarde estudios, ilustraciones, frases e ideas, también por voz, para usar en sus próximos sermones.',
   s_eye:'Cómo empezar',s_t:'Comience en pocos minutos.',
   s1_t:'Cree su cuenta',s1_d:'Solo necesita un correo y una contraseña. Sus sermones quedan guardados en su cuenta.',
   s2_t:'Instálelo en su celular',s2_d:'En la pantalla de acceso, toque «Instalar la aplicación» y siga los pasos. Queda en su pantalla de inicio y se abre como una aplicación.',
   s3_t:'Prepare y predique',s3_d:'Escriba su mensaje, estúdielo con la Biblia y los diccionarios, y predíquelo desde la misma pantalla.',
   p_eye:'Planes',p_t:'Elija el plan que mejor se adapta a su ministerio.',p_d:'Al crear su cuenta, tiene 3 días de Premium gratis. Después elija: seguir gratis o pasar a Premium.',
-  pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para siempre',per_m:'por mes',per_t:'cada 3 meses',per_a:'por año',eq:'equivale a {v} por mes',save:'Ahorre {n}%',best:'Mejor precio · ahorre con el plan anual',
+  pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para siempre',per_m:'por mes',per_t:'cada 3 meses',per_a:'por año',eq:'equivale a {v} por mes',save:'Ahorre {n}%',best:'Mejor precio',
   go_f:'Comenzar gratis',go_m:'Elegir Premium Mensual',go_t:'Elegir Premium Trimestral',go_a:'Elegir Premium Anual',
-  ff:['Hasta {s} sermones','Biblia, Agenda y plan de lectura','Modo Predicar básico','Diccionarios: {d} artículos por día','{c} curiosidades bíblicas'],
-  fp:['Sermones sin límite','Los 4 diccionarios sin límite','Todas las curiosidades y la lista completa de versículos','Modo Predicar avanzado: traducción ES/PT y grabación','Series de sermones y todos los modelos de PDF'],
+  ff:['Hasta {s} sermones','Biblia: Reina-Valera 1909 y Bíblia Livre','Agenda, plan de lectura y biblioteca','Modo Predicar básico','Diccionarios: {d} artículos completos por día','{c} curiosidades bíblicas'],
+  fp:['Sermones sin límite','Las 10 versiones de la Biblia y la comparación completa','Los 4 diccionarios sin límite','Todas las curiosidades y la lista completa de versículos','Modo Predicar avanzado: traducción ES/PT, desplazamiento automático y grabación','Series de sermones y todos los modelos de PDF'],
   fp2:'Los mismos beneficios del Premium Mensual',
   p_cond:'El acceso Premium dura el período pagado y la renovación no es automática: le avisamos antes del vencimiento. Si no renueva, vuelve al plan gratis y conserva todos sus sermones.',
   ab_eye:'Quiénes somos',ab_t:'Hecho por un pastor, para pastores.',ab_d:'Meu Púlpito nació de la rutina de un pastor que prepara mensajes cada semana y predica en español y en portugués, a veces el mismo mensaje en los dos idiomas. Cada función fue pensada para lo que pasa de verdad entre el estudio y el púlpito: escribir con calma, estudiar el texto original y predicar con la mente libre.',ab_r:'Fundador de Meu Púlpito · Paraguay',
   t_eye:'Testimonios',t_t:'Lo que dicen los pastores que ya lo usan.',
   q_eye:'Preguntas frecuentes',q_t:'Lo que más nos preguntan.',
   faq:[['¿En qué dispositivos funciona?','En iPhone, Android y computadora, desde el navegador. En el celular puede agregarlo a la pantalla de inicio y se abre como una aplicación.'],
-   ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones y las Biblias quedan guardados en el celular, de modo que puede predicar aunque no tenga señal.'],
+   ['¿Necesito conexión a internet?','Para entrar y sincronizar, sí. Sus sermones, la Reina-Valera 1909 y la Bíblia Livre quedan guardados en el celular, de modo que puede predicar aunque no tenga señal. Las demás versiones se descargan la primera vez que las abre.'],
+   ['¿Qué versiones de la Biblia trae?','10 versiones: 6 en español (Reina-Valera 1909 y 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre y Biblia Libre para el Mundo) y 4 en portugués (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre y Bíblia Portuguesa Mundial), además del hebreo y el griego originales. En el plan gratis tiene la Reina-Valera 1909 y la Bíblia Livre; con Premium, todas.'],
    ['¿Quién puede ver mis sermones?','Solo usted. Cada sermón queda protegido en su cuenta y nadie más tiene acceso a su contenido, tampoco el equipo de Meu Púlpito.'],
    ['¿Puedo predicar el mismo mensaje en español y en portugués?','Sí. En el Modo Predicar puede cambiar el idioma del sermón; la traducción se guarda en el mismo sermón y los versículos se toman de la Biblia del otro idioma. Recomendamos revisarla antes de predicar.'],
    ['¿Puedo probar Premium antes de pagar?','Sí. Al crear su cuenta recibe 3 días de Premium gratis, con todas las funciones liberadas. No pedimos tarjeta y no hay cobros automáticos: al terminar, su cuenta pasa sola al plan gratis y no pierde nada.'],
    ['¿Qué pasa si mi plan vence?','Recibe un aviso antes del vencimiento. Si no renueva, vuelve al plan gratis y todos sus sermones siguen guardados.'],
-   ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera; al confirmar el pago, su cuenta pasa a Premium.']],
+   ['¿Cómo pago el plan Premium?','Elija el plan y envíe el pedido por WhatsApp. Puede pagar por transferencia, Pix o billetera. Si está en otro país, el sitio le muestra el valor aproximado en su moneda y acordamos el pago por WhatsApp. Al confirmar el pago, su cuenta pasa a Premium.']],
   z_t:'Su próximo mensaje empieza aquí.',z_d:'Prepare, organice y predique con una herramienta hecha para el ministerio.',
   ft_d:'Plataforma para pastores y predicadores: prepare sermones, estudie las Escrituras y predique con confianza.',ft_p:'Producto',ft_c:'Contacto',ft_n:'Hecho para pastores, en español y portugués.',ft_t:'Términos de uso',ft_pr:'Privacidad',
-  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.',fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.'
+  wa_plan:'Hola, quiero contratar el {p} de Meu Púlpito ({v}).',wa_hi:'Hola, quiero saber más sobre Meu Púlpito.',cm_t:'Compare los planes',cm_h:['','Gratis','Premium'],cm:[['Sermones','Hasta {s}','Sin límite'],['Biblia','Reina-Valera 1909 y Bíblia Livre','Las 10 versiones y comparación completa'],['Hebreo y griego originales',1,1],['Diccionarios Bíblico, Hebreo, Arameo y Griego','{d} artículos completos por día','Sin límite'],['Curiosidades bíblicas','{c} y la curiosidad del día','Todas'],['«¿Cuántas veces aparece?» en la Biblia','Total y libros','Con la lista de versículos'],['Versículos relacionados','Los 3 primeros','Lista completa'],['Modo Predicar','Básico','Traducción ES/PT, desplazamiento automático y grabación'],['Series de sermones',0,1],['Modelos de PDF','PDF para imprimir','Todos los modelos'],['Agenda, plan de lectura y biblioteca',1,1]],fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.'
 },pt:{
-  tag:'PREPARE. ORGANIZE. PREGUE.',n_feat:'Funções',n_plans:'Planos',n_faq:'Perguntas',n_go:'Acessar',
+  tag:'PREPARE. ORGANIZE. PREGUE.',n_feat:'Funções',n_plans:'Planos',n_faq:'Perguntas',n_about:'Quem somos',dv_eye:'Em todos os seus aparelhos',dv_t:'Prepare no computador. Pregue pelo celular.',dv_d:'A mesma conta no celular, no tablet e no computador. Seus sermões sincronizam sozinhos: comece em um e continue no outro.',dv1_t:'Computador',dv1_d:'Tela ampla com menu lateral, ideal para estudar e escrever com calma.',dv2_t:'Tablet',dv2_d:'Bíblia e dicionários com mais espaço, também para pregar no púlpito.',dv3_t:'Celular',dv3_d:'Tudo na palma da mão, com o Modo Pregar pronto para o culto.',n_go:'Acessar',
   h_eye:'Para pastores e pregadores',h_t:'Prepare e organize suas mensagens em <em>um só lugar.</em>',
   h_d:'O Meu Púlpito é uma plataforma para preparar sermões, estudar as Escrituras e organizar suas mensagens, do primeiro esboço até o púlpito.',
   h_b1:'Acessar a plataforma',h_b2:'Conhecer as funções',f1:'Português e espanhol',f2:'iPhone, Android e computador',f3:'Seus sermões, só seus',
@@ -467,39 +517,40 @@ var T={es:{
   a_l:['Insira versículos e o texto bíblico é colocado automaticamente','Séries de sermões com o andamento de cada uma','Modelos de esboço: expositivo, temático, evangelístico e mais','Categorias, favoritos e versões anteriores de cada sermão','Ditado por voz para registrar ideias rapidamente'],
   b_t:'Modo Pregar',b_d:'Seu sermão em tela cheia, com letra grande e uma leitura confortável para o púlpito.',
   b_l:['Grave sua pregação em áudio','Tamanho da letra e espaçamento ajustáveis','Cronômetro com tempo-alvo','Avanço por partes e rolagem automática','Troque o sermão entre português e espanhol sem criar uma cópia'],
-  c_t:'Bíblia',c_d:'Leia, busque e compare versões em português, espanhol e nos idiomas originais.',
-  c_l:['Versículos relacionados (referências cruzadas)','Busca por referência ou por palavra','Compare um versículo em várias versões','Toque numa palavra do original para ver o significado','Insira o texto no sermão com um toque'],
-  c_tags:['Bíblia Livre','Nova Versão de Acesso Livre','Reina-Valera 1909','Reina-Valera 1865','Textus Receptus','Códice de Leningrado'],
+  c_t:'Bíblia',c_d:'Leia, busque e compare 10 versões em português e espanhol, além do hebraico e do grego originais.',
+  c_l:['Troque de versão com um toque: 4 em português e 6 em espanhol','Versículos relacionados (referências cruzadas)','Busca por referência ou por palavra','Compare um versículo em várias versões','Toque numa palavra do original para ver o significado','Insira o texto no sermão com um toque'],
+  c_tags:['Bíblia Livre','Bíblia Livre TR','Nova Versão de Acesso Livre','Bíblia Portuguesa Mundial','Reina-Valera 1909','Reina-Valera 1865','Palabra de Dios para ti','Biblia en Español Sencillo','Versión Biblia Libre','Biblia Libre para el Mundo','Textus Receptus (grego)','Códice de Leningrado (hebraico)'],c_note:'Plano grátis: Bíblia Livre e Reina-Valera 1909. As outras versões, com o Premium.',
   d_t:'Dicionários Bíblico, Hebraico, Aramaico e Grego',d_d:'Quatro dicionários independentes, com as fontes indicadas e no idioma que você usa.',
-  d_l:['Busque em português, em espanhol, no idioma original ou pelo número de Strong','Veja como cada palavra é traduzida conforme o contexto','Personagens, lugares, costumes e conceitos da Bíblia','Consulte e insira no sermão sem fechar o que está escrevendo'],
+  d_l:['Busque em português, em espanhol, no idioma original ou pelo número de Strong','Sugestões de palavras e «Você quis dizer?» quando há erro de digitação','Se a palavra não está naquele dicionário, mostramos onde ela está','Artigos com contexto histórico, contexto bíblico e importância espiritual','Veja como cada palavra é traduzida conforme o contexto','Consulte e insira no sermão sem fechar o que está escrevendo'],
   d_tags:['Dicionário Bíblico','Dicionário Hebraico','Dicionário Aramaico','Dicionário Grego'],
-  e_t:'Curiosidades bíblicas',e_d:'Quase 100 perguntas verificadas com referências, uma curiosidade por dia e quantas vezes qualquer palavra ou número aparece em toda a Bíblia. Funciona sem internet.',
-  g_t:'Agenda',g_d:'Programe onde e quando vai pregar, com visão mensal e lembrete no calendário do celular. Mantenha o histórico de cada mensagem e siga um plano de leitura bíblica.',
+  e_t:'Curiosidades bíblicas',e_d:'Quase 100 perguntas verificadas com referências, uma curiosidade nova a cada dia com histórico, e quantas vezes qualquer palavra ou número aparece em toda a Bíblia.',
+  g_t:'Agenda',g_d:'Programe onde e quando vai pregar, com visão do mês, descrição e lembrete no calendário do celular. Sua próxima pregação aparece no Início.',rp_t:'Plano de leitura bíblica',rp_d:'A Bíblia em um ano, o Novo Testamento em 90 dias, os Evangelhos em 30 dias ou Salmos e Provérbios em 60 dias. Marque cada dia lido e prepare um sermão com a leitura.',
   h2_t:'Biblioteca pessoal',h2_d:'Guarde estudos, ilustrações, frases e ideias, também por voz, para usar nos próximos sermões.',
   s_eye:'Como começar',s_t:'Comece em poucos minutos.',
   s1_t:'Crie sua conta',s1_d:'Você só precisa de um e-mail e uma senha. Seus sermões ficam guardados na sua conta.',
   s2_t:'Instale no celular',s2_d:'Na tela de acesso, toque em «Instalar o aplicativo» e siga os passos. Ele fica na sua tela de início e abre como um aplicativo.',
   s3_t:'Prepare e pregue',s3_d:'Escreva sua mensagem, estude com a Bíblia e os dicionários, e pregue na mesma tela.',
   p_eye:'Planos',p_t:'Escolha o plano que combina com o seu ministério.',p_d:'Ao criar sua conta, você tem 3 dias de Premium grátis. Depois escolha: continuar grátis ou passar para o Premium.',
-  pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para sempre',per_m:'por mês',per_t:'a cada 3 meses',per_a:'por ano',eq:'equivale a {v} por mês',save:'Economize {n}%',best:'Melhor preço · economize com o plano anual',
+  pl_free:'Grátis',pl_m:'Premium Mensal',pl_t:'Premium Trimestral',pl_a:'Premium Anual',per_f:'para sempre',per_m:'por mês',per_t:'a cada 3 meses',per_a:'por ano',eq:'equivale a {v} por mês',save:'Economize {n}%',best:'Melhor preço',
   go_f:'Começar grátis',go_m:'Escolher Premium Mensal',go_t:'Escolher Premium Trimestral',go_a:'Escolher Premium Anual',
-  ff:['Até {s} sermões','Bíblia, Agenda e plano de leitura','Modo Pregar básico','Dicionários: {d} artigos por dia','{c} curiosidades bíblicas'],
-  fp:['Sermões sem limite','Os 4 dicionários sem limite','Todas as curiosidades e a lista completa de versículos','Modo Pregar avançado: tradução PT/ES e gravação','Séries de sermões e todos os modelos de PDF'],
+  ff:['Até {s} sermões','Bíblia: Bíblia Livre e Reina-Valera 1909','Agenda, plano de leitura e biblioteca','Modo Pregar básico','Dicionários: {d} artigos completos por dia','{c} curiosidades bíblicas'],
+  fp:['Sermões sem limite','As 10 versões da Bíblia e a comparação completa','Os 4 dicionários sem limite','Todas as curiosidades e a lista completa de versículos','Modo Pregar avançado: tradução PT/ES, rolagem automática e gravação','Séries de sermões e todos os modelos de PDF'],
   fp2:'Os mesmos benefícios do Premium Mensal',
   p_cond:'O acesso Premium dura o período pago e a renovação não é automática: avisamos antes do vencimento. Se não renovar, volta ao plano grátis e mantém todos os seus sermões.',
   ab_eye:'Quem somos',ab_t:'Feito por um pastor, para pastores.',ab_d:'O Meu Púlpito nasceu da rotina de um pastor que prepara mensagens toda semana e prega em português e em espanhol, às vezes a mesma mensagem nos dois idiomas. Cada função foi pensada para o que acontece de verdade entre o estudo e o púlpito: escrever com calma, estudar o texto original e pregar com a mente livre.',ab_r:'Fundador do Meu Púlpito · Paraguai',
   t_eye:'Depoimentos',t_t:'O que dizem os pastores que já usam.',
   q_eye:'Perguntas frequentes',q_t:'O que mais nos perguntam.',
   faq:[['Em quais aparelhos funciona?','No iPhone, Android e computador, pelo navegador. No celular, você pode adicionar à tela de início e ele abre como um aplicativo.'],
-   ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões e as Bíblias ficam guardados no celular, então você pode pregar mesmo sem sinal.'],
+   ['Preciso de internet?','Para entrar e sincronizar, sim. Seus sermões, a Bíblia Livre e a Reina-Valera 1909 ficam guardados no celular, então você pode pregar mesmo sem sinal. As outras versões são baixadas na primeira vez que você abre.'],
+   ['Quais versões da Bíblia o app tem?','10 versões: 4 em português (Bíblia Livre, Bíblia Livre TR, Nova Versão de Acesso Livre e Bíblia Portuguesa Mundial) e 6 em espanhol (Reina-Valera 1909 e 1865, Palabra de Dios para ti, Biblia en Español Sencillo, Versión Biblia Libre e Biblia Libre para el Mundo), além do hebraico e do grego originais. No plano grátis você tem a Bíblia Livre e a Reina-Valera 1909; com o Premium, todas.'],
    ['Quem pode ver meus sermões?','Só você. Cada sermão fica protegido na sua conta e ninguém mais tem acesso ao conteúdo, nem a equipe do Meu Púlpito.'],
    ['Posso pregar a mesma mensagem em português e em espanhol?','Sim. No Modo Pregar você troca o idioma do sermão; a tradução fica guardada no mesmo sermão e os versículos vêm da Bíblia do outro idioma. Recomendamos revisar antes de pregar.'],
    ['Posso testar o Premium antes de pagar?','Sim. Ao criar sua conta você ganha 3 dias de Premium grátis, com todas as funções liberadas. Não pedimos cartão e não há cobranças automáticas: ao terminar, sua conta passa sozinha para o plano grátis e você não perde nada.'],
    ['O que acontece se meu plano vencer?','Você recebe um aviso antes do vencimento. Se não renovar, volta ao plano grátis e todos os seus sermões continuam guardados.'],
-   ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira; ao confirmarmos o pagamento, sua conta passa a Premium.']],
+   ['Como pago o plano Premium?','Escolha o plano e envie o pedido pelo WhatsApp. Você pode pagar por Pix, transferência ou carteira. Se estiver em outro país, o site mostra o valor aproximado na sua moeda e combinamos o pagamento pelo WhatsApp. Ao confirmarmos o pagamento, sua conta passa a Premium.']],
   z_t:'Sua próxima mensagem começa aqui.',z_d:'Prepare, organize e pregue com uma ferramenta feita para o ministério.',
   ft_d:'Plataforma para pastores e pregadores: prepare sermões, estude as Escrituras e pregue com confiança.',ft_p:'Produto',ft_c:'Contato',ft_n:'Feito para pastores, em português e espanhol.',ft_t:'Termos de uso',ft_pr:'Privacidade',
-  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.',fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O pagamento é combinado pelo WhatsApp.'
+  wa_plan:'Olá, quero contratar o {p} do Meu Púlpito ({v}).',wa_hi:'Olá, quero saber mais sobre o Meu Púlpito.',cm_t:'Compare os planos',cm_h:['','Grátis','Premium'],cm:[['Sermões','Até {s}','Sem limite'],['Bíblia','Bíblia Livre e Reina-Valera 1909','As 10 versões e comparação completa'],['Hebraico e grego originais',1,1],['Dicionários Bíblico, Hebraico, Aramaico e Grego','{d} artigos completos por dia','Sem limite'],['Curiosidades bíblicas','{c} e a curiosidade do dia','Todas'],['«Quantas vezes aparece?» na Bíblia','Total e livros','Com a lista de versículos'],['Versículos relacionados','Os 3 primeiros','Lista completa'],['Modo Pregar','Básico','Tradução PT/ES, rolagem automática e gravação'],['Séries de sermões',0,1],['Modelos de PDF','PDF para imprimir','Todos os modelos'],['Agenda, plano de leitura e biblioteca',1,1]],fx:'Valores aproximados em {c}, pela cotação do dia (ExchangeRate-API). O pagamento é combinado pelo WhatsApp.'
 }};
 var L='es';try{L=localStorage.getItem('mp.site.l')||((navigator.language||'').toLowerCase().indexOf('pt')===0?'pt':'es')}catch(e){}
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
@@ -510,7 +561,7 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
   document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');if(D[k]!=null)el.innerHTML=k==='h_t'?D[k]:esc(D[k])});
   document.querySelectorAll('[data-list]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-list')].map(function(x){return'<li>'+ck+'<span>'+esc(x)+'</span></li>'}).join('')});
   document.querySelectorAll('[data-tags]').forEach(function(el){el.innerHTML=D[el.getAttribute('data-tags')].map(function(x){return'<span>'+esc(x)+'</span>'}).join('')});
-  document.querySelectorAll('[data-img]').forEach(function(el){var u='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=3';if(el.getAttribute('src')===u)return;var im=document.createElement('img');im.setAttribute('data-img',el.getAttribute('data-img'));im.alt='';im.width=390;im.height=844;im.decoding='async';im.src=u;el.replaceWith(im)});
+  document.querySelectorAll('[data-img]').forEach(function(el){var u='img/'+el.getAttribute('data-img')+'-'+L+'.jpg?v=4';if(el.getAttribute('src')===u)return;var im=document.createElement('img');im.setAttribute('data-img',el.getAttribute('data-img'));im.alt='';im.width=el.getAttribute('width')||390;im.height=el.getAttribute('height')||844;im.decoding='async';im.src=u;el.replaceWith(im)});
   document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-l')===L))});
   var MC=window.MP_CUR,cc=MC?MC.code():'',c=cc==='BRL'?'brl':cc==='PYG'?'pyg':L==='pt'?'brl':'pyg',o=c==='brl'?'pyg':'brl';
   // fuera de Paraguay y Brasil: valor aproximado en la moneda del país (precio oficial en guaraníes)
@@ -525,6 +576,8 @@ function apply(){var D=T[L];document.documentElement.lang=L==='pt'?'pt-BR':'es';
       '<ul>'+(k==='m'?D.fp.map(function(f){return'<li>'+ck+'<span>'+esc(f)+'</span></li>'}).join(''):'<li>'+ck+'<span>'+esc(D.fp2)+'</span></li>')+'</ul>'+
       '<a class="btn '+(k==='a'?'gold':'dark')+'" href="https://wa.me/'+WA+'?text='+encodeURIComponent(msg)+'" target="_blank" rel="noopener">'+esc(D['go_'+k])+'</a></div>'};
   document.getElementById('plans').innerHTML='<div class="plan"><h3>'+esc(D.pl_free)+'</h3><div><div class="price">'+esc(fx?MC.fmt(0,cc,L):money(0,c))+'</div><div class="per">'+esc(D.per_f)+'</div></div><ul>'+D.ff.map(function(f){return'<li>'+ck+'<span>'+esc(f.replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))+'</span></li>'}).join('')+'</ul><a class="btn out" href="app/" data-go>'+esc(D.go_f)+'</a></div>'+card('m')+card('t')+card('a');
+  var cv=function(v){return v===1?ck:v===0?'<span class="no">—</span>':esc(String(v).replace('{s}',FREE.serm).replace('{d}',FREE.dic).replace('{c}',FREE.cur))};
+  document.getElementById('cmpTbl').innerHTML=[D.cm_h].concat(D.cm).map(function(r,i){return'<div class="cmp-r" role="row">'+r.map(function(x,j){return'<div role="'+(i?'cell':'columnheader')+'">'+(i||j?cv(x):'')+'</div>'}).join('')+'</div>'}).join('');
   var fn=document.getElementById('fxNote');fn.hidden=!fx;if(fx)fn.textContent=D.fx.replace('{c}',MC.name(cc,L));
   document.getElementById('waFoot').href='https://wa.me/'+WA;document.getElementById('waFab').href='https://wa.me/'+WA+'?text='+encodeURIComponent(D.wa_hi);
   var H=(SITE.hero||{})[L]||{};if(H.t)document.querySelector('[data-t=h_t]').textContent=H.t;if(H.d)document.querySelector('[data-t=h_d]').textContent=H.d;

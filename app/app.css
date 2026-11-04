@@ -805,3 +805,46 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .bv-tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
 .bv-tx b{font-size:15px}.bv-tx small{color:var(--muted);font-size:12.5px}
 .bv-n{font-size:12px;color:var(--muted);font-weight:600;margin-left:4px}
+
+/* =========================================================
+   v91 · iPad y computadora: menú lateral y contenido más ancho
+   (en el celular todo queda igual)
+   ========================================================= */
+.nav-brand,.nav-new,.nav-set{display:none!important}
+.h-col,.mwrap,.mcal,.mday{display:contents}
+@media (min-width:768px){
+  :root{--side:208px}
+  .nav{top:0;bottom:0;right:auto;width:var(--side);border-top:0;border-right:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 22px) 12px calc(env(safe-area-inset-bottom,0px) + 18px) max(12px,env(safe-area-inset-left,0px))!important;overflow-y:auto}
+  .nav .in{height:100%!important;max-width:none;display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:0!important}
+  .nav .in>button{height:46px!important;flex:none;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 14px;border-radius:12px;font-size:14.5px;font-weight:700;color:var(--muted)}
+  .nav .in>button[aria-current="page"]{background:var(--chip);color:var(--fg)}
+  .nav .in>button svg{width:21px;height:21px}
+  .nav-brand{display:flex!important;align-items:center;gap:10px;padding:0 8px 20px}
+  .nav-brand .mark img{height:30px;width:auto;display:block}
+  .nav-brand .wordmark b{font-family:var(--head);font-size:15px;font-weight:800;letter-spacing:.01em;white-space:nowrap}
+  .nav-brand .w2{color:var(--gold)}
+  .nav .in>.nav-new{display:flex!important;background:var(--gold);color:#101827;margin-bottom:14px;font-weight:800}
+  .nav .in>.nav-new svg{stroke:#101827!important}
+  .nav .in>.nav-set{display:flex!important;margin-top:auto}
+  html.tabs #app,html.subp #app{padding-left:var(--side)}
+  .view{padding-top:calc(env(safe-area-inset-top,0px) + 30px);padding-bottom:48px}
+  .topbrand{display:none!important}
+  html.tabs .toast,html.subp .toast{left:calc(50% + var(--side) / 2);bottom:28px}
+  .vbar{left:calc(50% + var(--side) / 2);bottom:24px}
+}
+@media (min-width:1100px){
+  :root{--side:236px}
+  .view{padding-left:40px;padding-right:40px}
+  .view[data-tab=home] .wrap,.view[data-tab=list] .wrap,.view[data-tab=dic] .wrap,.view[data-tab=agenda] .wrap,.view[data-tab=cur] .wrap{max-width:1080px}
+  .view[data-tab=bible] .wrap{max-width:880px}
+  .view[data-tab=home] .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px 28px;align-items:start}
+  .view[data-tab=home] .wrap>*{grid-column:1/-1}
+  .view[data-tab=home] .wrap>.h-col{grid-column:auto;display:flex;flex-direction:column;gap:18px;min-width:0}
+  .view[data-tab=home] .h-col .favrow{flex-wrap:wrap;overflow:visible}
+  .mwrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start}
+  .mcal,.mday{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .dx-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .ov:has(.sheet.tall){justify-content:flex-end;align-items:stretch}
+  .sheet.tall{height:100%;max-height:100%;max-width:580px;border-radius:24px 0 0 24px;padding-top:max(16px,env(safe-area-inset-top,0px))}
+}
+@media (min-width:1100px){.mday .list{display:flex;flex-direction:column;gap:12px}}
