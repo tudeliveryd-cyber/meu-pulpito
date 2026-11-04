@@ -144,10 +144,11 @@ const pend=r=>(r.email||'')!==ADMIN&&!(P(r.id).ok||P(r.id).blocked||PMON[P(r.id)
 function allPays(){const out=[];D.stats.forEach(r=>(P(r.id).pays||[]).forEach(p=>out.push(Object.assign({uid:r.id,name:r.name||r.email},p))));
   Object.keys(D.planos).forEach(id=>{if(!D.stats.find(r=>r.id===id))(D.planos[id].pays||[]).forEach(p=>out.push(Object.assign({uid:id,name:id.slice(0,6)},p)))});return out.sort((a,b)=>(b.at||0)-(a.at||0))}
 function monthKey(ts){const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
-function sums(list){const s={pyg:0,brl:0,n:list.length};list.forEach(p=>{s[p.cur==='brl'?'brl':'pyg']+=+p.amt||0});return s}
+function sums(list){list=list.filter(p=>!p.test);const s={pyg:0,brl:0,n:list.length};list.forEach(p=>{s[p.cur==='brl'?'brl':'pyg']+=+p.amt||0});return s}
+const realPays=uid=>(P(uid).pays||[]).filter(p=>!p.test);
 const byName=uid=>{const r=D.stats.find(x=>x.id===uid);return r?(r.name||r.email||uid.slice(0,6)):uid.slice(0,6)};
 function refData(){const by={};D.stats.forEach(r=>by[r.id.slice(0,8)]=r);const rs={};const N=Math.max(1,+D.cfg.refN||3);
-  D.stats.forEach(r=>{if(!r.ref||!by[r.ref])return;const o=rs[r.ref]=rs[r.ref]||{who:by[r.ref],list:[],bought:0};o.list.push(r);if((P(r.id).pays||[]).length)o.bought++});
+  D.stats.forEach(r=>{if(!r.ref||!by[r.ref])return;const o=rs[r.ref]=rs[r.ref]||{who:by[r.ref],list:[],bought:0};o.list.push(r);if(realPays(r.id).length)o.bought++});
   Object.values(rs).forEach(o=>{o.given=+P(o.who.id).refMonths||0;o.due=Math.floor(o.bought/N)-o.given});return{rs:Object.values(rs).sort((a,b)=>b.due-a.due||b.bought-a.bought),N}}
 function soon(){const n=Date.now(),wn=(+D.cfg.warn||7)*864e5;return D.stats.filter(r=>{const p=P(r.id);return PMON[p.plan]&&p.until&&p.until-n<wn&&p.until>n-30*864e5}).sort((a,b)=>P(a.id).until-P(b.id).until)}
 
@@ -212,7 +213,7 @@ function vPastores(m){const n=Date.now();
    <div class="card"><div class="list">${list.length?list.map(r=>{const p=P(r.id),s=state(r),[c,l]=STAG[s];const rl=D.roleta[r.id];
      return`<div class="it">${ic('user')}<span class="b"><b>${esc(r.name||r.email||r.id.slice(0,6))}</b><span class="s">${esc(r.email||'')}${r.wa?' · '+esc(r.wa):''}</span>
       <span class="s">${r.sermons||0} sermões · visto ${esc(rel(r.seen))} · desde ${esc(fmtD(r.created))} · ${esc((r.lang||'').toUpperCase())}</span>
-      <span class="tags">${pend(r)?'<span class="tag warn">Aguardando liberação</span>':''}${p.blocked?'<span class="tag bad">Bloqueado</span>':''}<span class="tag ${c}">${l}${s==='pago'||s==='carencia'||s==='vencido'?' · '+PNAME[p.plan]+' até '+fmtD(p.until):s==='teste'?' até '+fmtD(p.trial):''}</span>${rl&&!(p.pays||[]).length?`<span class="tag gold">Roleta: ${rl.p}% na 1ª compra</span>`:''}${r.ref?`<span class="tag">Indicado por ${esc(byName((D.stats.find(x=>x.id.slice(0,8)===r.ref)||{}).id||r.ref))}</span>`:''}</span>
+      <span class="tags">${pend(r)?'<span class="tag warn">Aguardando liberação</span>':''}${p.blocked?'<span class="tag bad">Bloqueado</span>':''}<span class="tag ${c}">${l}${s==='pago'||s==='carencia'||s==='vencido'?' · '+PNAME[p.plan]+' até '+fmtD(p.until):s==='teste'?' até '+fmtD(p.trial):''}</span>${rl&&!realPays(r.id).length?`<span class="tag gold">Roleta: ${rl.p}% na 1ª compra</span>`:''}${r.ref?`<span class="tag">Indicado por ${esc(byName((D.stats.find(x=>x.id.slice(0,8)===r.ref)||{}).id||r.ref))}</span>`:''}</span>
       <span class="btns"><button class="btn gold" data-pay="${esc(r.id)}">${ic('cash')}Registrar pagamento</button><button class="btn ghost" data-trial="${esc(r.id)}">Dar teste</button>
        ${(r.email||'')===ADMIN?'':pend(r)||p.blocked?`<button class="btn dark" data-ok="${esc(r.id)}">${ic('check')}Liberar</button>`:`<button class="btn red" data-blk="${esc(r.id)}">Bloquear</button>`}
        ${waNum(r.wa)?`<a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/${waNum(r.wa)}">${ic('chat')}WhatsApp</a>`:''}</span></span></div>`}).join(''):'<div class="empty">Nenhum pastor encontrado.</div>'}</div></div>`;
@@ -222,18 +223,19 @@ function vPastores(m){const n=Date.now();
   m.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>setPlan(b.dataset.ok,{ok:true,blocked:false}));
   m.querySelectorAll('[data-blk]').forEach(b=>b.onclick=()=>{if(sure(b))setPlan(b.dataset.blk,{blocked:true,ok:false})})}
 async function setPlan(uid,d,msg){try{await db.collection('planos').doc(uid).set(Object.assign({updated:Date.now()},d),{merge:true});D.planos[uid]=Object.assign({},P(uid),d);toast(msg||'Salvo');draw()}catch(e){toast('Não foi possível salvar')}}
-function payForm(uid){const p=P(uid),rl=D.roleta[uid],first=!(p.pays||[]).length,disc=rl&&first?+rl.p:0;let k=PMON[p.plan]?p.plan:'m';
+function payForm(uid){const p=P(uid),rl=D.roleta[uid],first=!realPays(uid).length,disc=rl&&first?+rl.p:0;let k=PMON[p.plan]?p.plan:'m';
   const from=PMON[p.plan]&&p.until>Date.now()?isoDay(p.until+43200000):isoDay(Date.now());const price=(k,c)=>{const v=+((D.cfg.p||{})[k]||{})[c]||({m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}}[k][c]);return disc?(c==='pyg'?Math.floor(v*(100-disc)/100/1000)*1000:Math.floor(v*(100-disc)/100)):v};
   const sh=sheet(`<h3>Registrar pagamento · ${esc(byName(uid))}</h3>${disc?`<p class="tag gold" style="align-self:flex-start">Desconto da roleta: ${disc}% (primeira compra)</p>`:''}
     <div class="seg" id="pk">${['m','t','a'].map(x=>`<button type="button" data-k="${x}" aria-pressed="${x===k}">${PNAME[x]}</button>`).join('')}</div>
     <div class="two"><label class="f">Começa em<input class="inp" type="date" id="pf" value="${from}"></label><label class="f">Vence em<input class="inp" type="date" id="pt"></label></div>
     <div class="two"><label class="f">Valor<input class="inp" id="pa" inputmode="numeric"></label><label class="f">Moeda<select class="inp" id="pc"><option value="pyg">₲ Guarani</option><option value="brl">R$ Real</option></select></label></div>
     <label class="f">Observação<input class="inp" id="pn" value="${disc?'Roleta: '+disc+'% na 1ª compra':''}"></label>
+    <label class="row" style="gap:10px;font-weight:600;color:var(--ink);font-size:14px"><input type="checkbox" id="ptst" style="width:22px;height:22px;flex:none">Teste ou cortesia (não conta como venda)</label>
     <button class="btn gold" id="pg" style="height:46px">${ic('check')}Ativar plano</button><button class="btn ghost" id="px">Cancelar</button>`);
   const sync=()=>{const f=new Date($('#pf',sh).value+'T12:00:00').getTime()||Date.now();$('#pt',sh).value=isoDay(addMonths(f,PMON[k]));$('#pa',sh).value=price(k,$('#pc',sh).value)};
   $('#pk',sh).onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;k=b.dataset.k;$$('#pk button',sh).forEach(x=>x.setAttribute('aria-pressed',x===b));sync()};$('#pf',sh).onchange=sync;$('#pc',sh).onchange=sync;sync();$('#px',sh).onclick=closeSheets;
   $('#pg',sh).onclick=async()=>{const since=new Date($('#pf',sh).value+'T00:00:00').getTime(),until=new Date($('#pt',sh).value+'T23:59:59').getTime();if(!since||!until||until<=since){toast('Confira as datas');return}
-    const pay={at:Date.now(),plan:k,amt:+String($('#pa',sh).value).replace(/\D/g,'')||0,cur:$('#pc',sh).value,note:$('#pn',sh).value.trim(),from:since,to:until};
+    const pay={at:Date.now(),plan:k,amt:+String($('#pa',sh).value).replace(/\D/g,'')||0,cur:$('#pc',sh).value,note:$('#pn',sh).value.trim(),from:since,to:until};if($('#ptst',sh).checked)pay.test=true;
     try{await db.collection('planos').doc(uid).set({plan:k,since,until,status:'active',ok:true,blocked:false,updated:Date.now(),pays:firebase.firestore.FieldValue.arrayUnion(pay)},{merge:true});
       D.planos[uid]=Object.assign({},P(uid),{plan:k,since,until,ok:true,blocked:false,pays:[...(P(uid).pays||[]),pay]});closeSheets();toast('Plano ativado');draw()}catch(e){toast('Não foi possível salvar')}}}
 function trialForm(uid){let n=7;const sh=sheet(`<h3>Teste grátis · ${esc(byName(uid))}</h3><div class="seg" id="tn">${[1,3,7,15,30].map(x=>`<button type="button" data-n="${x}" aria-pressed="${x===7}">${x===1?'24 h':x+' dias'}</button>`).join('')}</div>
@@ -250,15 +252,23 @@ function vPag(){const pays=allPays(),months={};pays.forEach(p=>{const k=monthKey
    <div class="card" style="margin-top:0"><h3>Vencendo e vencidos</h3><div class="list" style="margin-top:6px">${sn.length?sn.map(r=>{const p=P(r.id),exp=p.until<=n;return`<div class="it">${ic('cash')}<span class="b"><b>${esc(r.name||r.email)}</b><span class="s">${PNAME[p.plan]} · ${exp?'venceu':'vence'} em ${esc(fmtD(p.until))}</span></span>
      ${waNum(r.wa)?`<a class="btn ${exp?'dark':'gold'}" target="_blank" rel="noopener" href="https://wa.me/${waNum(r.wa)}?text=${encodeURIComponent(remMsg(r))}">${ic('chat')}Lembrar</a>`:'<span class="tag">sem WhatsApp</span>'}</div>`}).join(''):'<div class="empty">Nenhum plano vencendo nos próximos dias.</div>'}</div></div>
    <div class="card"><h3>Por mês</h3><table><tr><th>Mês</th><th class="r">Pagamentos</th><th class="r">Guarani</th><th class="r">Real</th></tr>${Object.keys(months).sort().reverse().map(k=>{const s=sums(months[k]);const [y,mm]=k.split('-');return`<tr><td>${new Date(+y,+mm-1,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}</td><td class="r">${s.n}</td><td class="r">${money(s.pyg,'pyg')}</td><td class="r">${s.brl?money(s.brl,'brl'):'—'}</td></tr>`}).join('')||'<tr><td colspan="4" class="empty">Nenhum pagamento registrado.</td></tr>'}</table></div>
-   <div class="card"><h3>Todos os pagamentos</h3><div class="list" style="margin-top:6px">${pays.length?pays.slice(0,200).map(p=>`<div class="it">${ic('check')}<span class="b"><b>${esc(p.name)}</b><span class="s">${esc(fmtD(p.at))} · ${PNAME[p.plan]||p.plan}${p.note?' · '+esc(p.note):''}</span></span><b>${money(p.amt,p.cur)}</b></div>`).join(''):'<div class="empty">Nenhum pagamento ainda.</div>'}</div></div>`}
+   <div class="card"><div class="between"><h3>Todos os pagamentos</h3>${pays.some(p=>!p.test)?`<button class="btn ghost" data-alltest>Marcar todos como teste</button>`:''}</div>
+     <p style="margin:6px 0 0;font-size:13px;color:var(--muted)">Pagamentos marcados como teste ou cortesia não entram nos totais nem contam nas indicações.</p>
+     <div class="list" style="margin-top:6px">${pays.length?pays.slice(0,200).map(p=>`<div class="it" style="${p.test?'opacity:.6':''}">${ic('check')}<span class="b"><b>${esc(p.name)}</b> ${p.test?'<span class="tag">Teste</span>':''}<span class="s">${esc(fmtD(p.at))} · ${PNAME[p.plan]||p.plan}${p.note?' · '+esc(p.note):''}</span>
+       <span class="btns"><button class="btn ghost" data-ptest="${esc(p.uid)}" data-at="${p.at}">${p.test?'Contar como venda':'Marcar como teste'}</button></span></span><b style="${p.test?'text-decoration:line-through':''}">${money(p.amt,p.cur)}</b></div>`).join(''):'<div class="empty">Nenhum pagamento ainda.</div>'}</div></div>`}
+async function markTest(list,on){const by={};list.forEach(p=>(by[p.uid]=by[p.uid]||[]).push(+p.at));
+  try{for(const uid of Object.keys(by)){const pays=(P(uid).pays||[]).map(x=>by[uid].includes(+x.at)?Object.assign({},x,on?{test:true}:{test:false}):x).map(x=>{if(!x.test){const y=Object.assign({},x);delete y.test;return y}return x});
+      await db.collection('planos').doc(uid).set({pays,updated:Date.now()},{merge:true});D.planos[uid]=Object.assign({},P(uid),{pays})}toast('Salvo');draw()}catch(e){toast('Não foi possível salvar')}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ptest]');if(b){const p=allPays().find(x=>x.uid===b.dataset.ptest&&+x.at===+b.dataset.at);if(p)markTest([p],!p.test)}
+  const a=e.target.closest('[data-alltest]');if(a){if(!sure(a,'Marcar TODOS como teste? Toque de novo'))return;markTest(allPays().filter(p=>!p.test),true)}});
 
 /* ---------- Indicações ---------- */
 function vInd(){const {rs,N}=refData();const rl=Object.entries(D.roleta).sort((a,b)=>(b[1].at||0)-(a[1].at||0));
   return`<h2>Indicações</h2><p style="margin:-6px 0 12px;color:var(--muted);font-size:14px">A cada ${N} indicados que compram, quem indicou ganha 1 mês grátis.</p>
    <div class="card" style="margin-top:0"><div class="list">${rs.length?rs.map(o=>`<div class="it">${ic('star')}<span class="b"><b>${esc(o.who.name||o.who.email)}</b><span class="s">Indicou ${o.list.length} · ${o.bought} compraram · ${o.given} mês(es) já entregue(s)</span>
-     <span class="s">${o.list.map(r=>esc(r.name||r.email)+((P(r.id).pays||[]).length?' (comprou)':'')).join(', ')}</span></span>
+     <span class="s">${o.list.map(r=>esc(r.name||r.email)+(realPays(r.id).length?' (comprou)':'')).join(', ')}</span></span>
      ${o.due>0?`<button class="btn gold" data-ref="${esc(o.who.id)}">${ic('star')}Dar 1 mês</button>`:`<span class="tag">${N-(o.bought%N)} para o próximo</span>`}</div>`).join(''):'<div class="empty">Ninguém se cadastrou por indicação ainda.</div>'}</div></div>
-   <div class="card"><h3>Roleta de desconto</h3><div class="list" style="margin-top:6px">${rl.length?rl.map(([id,r])=>`<div class="it">${ic('star')}<span class="b"><b>${esc(byName(id))}</b><span class="s">${esc(fmtD(r.at))} · ${(P(id).pays||[]).length?'já usou na compra':'ainda não comprou'}</span></span><span class="tag gold">${r.p}%</span></div>`).join(''):'<div class="empty">Ninguém girou a roleta ainda.</div>'}</div></div>`}
+   <div class="card"><h3>Roleta de desconto</h3><div class="list" style="margin-top:6px">${rl.length?rl.map(([id,r])=>`<div class="it">${ic('star')}<span class="b"><b>${esc(byName(id))}</b><span class="s">${esc(fmtD(r.at))} · ${realPays(id).length?'já usou na compra':'ainda não comprou'}</span></span><span class="tag gold">${r.p}%</span></div>`).join(''):'<div class="empty">Ninguém girou a roleta ainda.</div>'}</div></div>`}
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-ref]');if(!b)return;if(!sure(b))return;b.disabled=true;const to=b.dataset.ref;
   try{const c=P(to),now=Date.now();const upd=PMON[c.plan]&&c.until>now?{until:addMonths(c.until,1)}:{trial:Math.max(now,+c.trial||0)+30*864e5,trialFrom:now,trialAuto:false,ok:true};
     upd.refMonths=firebase.firestore.FieldValue.increment(1);upd.updated=now;await db.collection('planos').doc(to).set(upd,{merge:true});
