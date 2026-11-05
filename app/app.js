@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v122';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v123';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1133,9 +1133,9 @@ function showBlocked(){$('#nav').hidden=true;document.documentElement.classList.
    Precios, límites y el «período de pruebas» están en config/app, editables desde el panel.
    ========================================================= */
 const PCFG_DEF={test:true,gate:false,grace:3,warn:7,wa:'',p:{m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}},free:{serm:2,dic:3,cur:10},
-  pay:{bk:{bank:'Itaú',name:'Jean Carlos Borges de Araújo',acc:'',alias:'8695734-1',doc:'8695734'},pix:{key:'017.836.190-90',name:'Jean Carlos Borges de Araújo',bank:'Nubank'},card:{m:'',t:'',a:''}}};
+  pay:{}};  // dados de pagamento: só na configuração do painel (Formas de pagamento), não no código
 let PCFG=Object.assign({},PCFG_DEF,ls.get('mp.pcfg',{}));
-function watchCfg(){try{unsubs.push(firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists&&isAdmin()&&!d.data().pay&&!watchCfg._mig){watchCfg._mig=1;d.ref.set({pay:PCFG_DEF.pay},{merge:true}).catch(()=>{})}if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);cfgLoaded=true;applyPlan();premWatch();if(ready&&!view.overlay&&!blocked)refreshBg()}},()=>{}))}catch(e){}}
+function watchCfg(){try{unsubs.push(firebase.firestore().collection('config').doc('app').onSnapshot(d=>{if(d.exists&&isAdmin()&&!d.data().pay&&!watchCfg._mig){watchCfg._mig=1;const old=(ls.get('mp.pcfg',{})||{}).pay;if(old&&(old.bk||old.pix))d.ref.set({pay:old},{merge:true}).catch(()=>{})}if(d.exists){PCFG=Object.assign({},PCFG_DEF,d.data());PCFG.p=Object.assign({},PCFG_DEF.p,PCFG.p||{});PCFG.free=Object.assign({},PCFG_DEF.free,PCFG.free||{});ls.set('mp.pcfg',PCFG);cfgLoaded=true;applyPlan();premWatch();if(ready&&!view.overlay&&!blocked)refreshBg()}},()=>{}))}catch(e){}}
 const PMON={m:1,t:3,a:12};
 function planNow(){const p=planState||{};const until=p.until||0;const now=Date.now();const gr=(+PCFG.grace||0)*864e5;
   const active=PMON[p.plan]&&until>now;const grace=!!(PMON[p.plan]&&until&&until<=now&&until+gr>now);const paid=active||grace;
@@ -1764,6 +1764,36 @@ const eref=(r,L)=>`<button class="tag eref" data-eref="${esc(refStr(r,L))}">${es
 function minNeedBible(){const L=lxLang();const k=vkey(prefs.bibleVer||L);if(!BIB[k])loadBible(prefs.bibleVer||L).then(()=>{if(['devo','sug','man'].includes(view.tab))render()}).catch(()=>{})}
 function minHead(title){return`<div class="subhead"><button class="iconbtn" data-act="back" aria-label="${esc(t('close'))}">${ic('back')}</button><h1 class="h">${esc(title)}</h1></div>`}
 function minNewSermon(title,html){if(!canNewSermon())return;[...$$('.ov')].filter(o=>!o._lock).forEach(o=>closeSheet(o));openEditor(null,{id:uid(),html:`<h1>${esc(title)}</h1>${html}`,lang:'',category:'',fav:false,created:Date.now(),log:[],v:2})}
+/* Devocional como imagem para Status (1080×1920) e Instagram (1080×1350) */
+function loadImg(src){return new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=src})}
+function wrapLines(ctx,text,maxW){const words=String(text).split(/\s+/);const lines=[];let cur='';words.forEach(w=>{const tst=cur?cur+' '+w:w;if(ctx.measureText(tst).width>maxW&&cur){lines.push(cur);cur=w}else cur=tst});if(cur)lines.push(cur);return lines}
+async function dvImage(n,fmt){const L=lxLang(),l=mL();const e=MIN.dv&&MIN.dv.e[n-1];if(!e)return;try{await loadBible(prefs.bibleVer||L)}catch(x){}
+  try{await Promise.all(['800 64px Manrope','600 32px Inter','400 56px Literata','700 38px Manrope'].map(f=>document.fonts.load(f)))}catch(x){}
+  const W=1080,H=fmt==='st'?1920:1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+  const g=c.createLinearGradient(0,0,W,H);g.addColorStop(0,'#0B1220');g.addColorStop(.55,'#13213D');g.addColorStop(1,'#0B1220');c.fillStyle=g;c.fillRect(0,0,W,H);
+  const rg=c.createRadialGradient(W*.85,H*.1,10,W*.85,H*.1,W*.75);rg.addColorStop(0,'rgba(214,173,85,.22)');rg.addColorStop(1,'rgba(214,173,85,0)');c.fillStyle=rg;c.fillRect(0,0,W,H);
+  const M=96,gold='#D6AD55',top=fmt==='st'?200:110,bottom=H-(fmt==='st'?260:190);
+  const d=doyDate(n).toLocaleDateString(L==='pt'?'pt-BR':'es',{day:'numeric',month:'long'});
+  const vt='«'+(vText(e.v,L)||'')+'»';
+  // medir o bloco: cabeçalho, título, linha, versículo e referência
+  c.font="800 68px Manrope, Inter, sans-serif";const tl=wrapLines(c,e.t[l],W-2*M).slice(0,3);
+  const headH=52+40+40+tl.length*82+40+6+60;const refH=40+90;
+  let fs=fmt==='st'?66:56,lines=[];const room=bottom-top-headH-refH;
+  for(;fs>=34;fs-=2){c.font=`400 ${fs}px Literata, Georgia, serif`;lines=wrapLines(c,vt,W-2*M);if(lines.length*fs*1.45<=room)break}
+  const blockH=headH+lines.length*fs*1.45+refH;let y=top+Math.max(0,(bottom-top-blockH)/2)+40;
+  c.textBaseline='alphabetic';c.fillStyle=gold;c.font="800 34px Manrope, Inter, sans-serif";c.fillText(t('dv_today').toUpperCase(),M,y);
+  c.fillStyle='rgba(255,255,255,.6)';c.font="600 32px Inter, sans-serif";c.fillText(d.charAt(0).toUpperCase()+d.slice(1),M,y+52);y+=52+40+40+60;
+  c.fillStyle='#fff';c.font="800 68px Manrope, Inter, sans-serif";tl.forEach(x=>{c.fillText(x,M,y);y+=82});
+  y+=4;c.fillStyle=gold;c.fillRect(M,y-30,120,6);y+=60;
+  c.fillStyle='#fff';c.font=`400 ${fs}px Literata, Georgia, serif`;lines.forEach(x=>{c.fillText(x,M,y);y+=fs*1.45});
+  y+=20;c.fillStyle=gold;c.font="700 40px Manrope, Inter, sans-serif";c.fillText(refStr(e.v,L),M,y);c.fillStyle='rgba(255,255,255,.55)';c.font="500 28px Inter, sans-serif";c.fillText(verLabel(prefs.bibleVer||L),M,y+46);
+  const fy=H-(fmt==='st'?170:110);c.fillStyle='rgba(255,255,255,.12)';c.fillRect(M,fy-56,W-2*M,2);
+  try{const mk=await loadImg('mark.png');const mh=86,mw=mk.width*mh/mk.height;c.drawImage(mk,M,fy-20,mw,mh);
+    c.font="800 40px Manrope, Inter, sans-serif";c.fillStyle='#fff';c.fillText('MEU',M+mw+22,fy+30);const w1=c.measureText('MEU ').width;c.fillStyle=gold;c.fillText('PÚLPITO',M+mw+22+w1,fy+30);
+    c.fillStyle='rgba(255,255,255,.6)';c.font="600 26px Inter, sans-serif";c.fillText('meupulpito.com',M+mw+22,fy+68)}catch(x){c.fillStyle='#fff';c.font="800 40px Manrope, sans-serif";c.fillText('MEU PÚLPITO · meupulpito.com',M,fy+40)}
+  const blob=await new Promise(ok=>cv.toBlob(ok,'image/png'));const name=`devocional-${n}-${fmt==='st'?'status':'instagram'}.png`;const file=new File([blob],name,{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:e.t[l]+' — meupulpito.com'})}catch(x){}return}
+  const url=URL.createObjectURL(blob);const sh=openSheet(`<h3>${esc(t('dv_img_t'))}</h3><img src="${url}" alt="" style="width:100%;border-radius:14px"><p class="sub" style="margin:0;font-size:13px">${esc(t('dv_img_save'))}</p><a class="btn gold block" href="${url}" download="${name}">${ic('dl')}${esc(t('dv_img_dl'))}</a><button class="btn ghost block" data-act="sheetClose">${esc(t('close'))}</button>`)}
 /* Devocional */
 function devoCardHtml(){const L=lxLang(),l=mL();if(!MIN.dv){if(!devoCardHtml._l){devoCardHtml._l=1;minLoad('dv','devocional.json').then(()=>{if(view.tab==='home'&&!view.overlay)refreshBg()}).catch(()=>{})}return''}
   const e=MIN.dv.e[doy()-1];if(!e)return'';const read=ls.get('mp.dv.read','')===todayISO();
@@ -1778,7 +1808,7 @@ function devoHtml(){const L=lxLang(),l=mL();if(!MIN.dv)return minHead(t('dv_t'))
    <p class="dv-text">${esc(e.r[l])}</p>
    <div class="dv-box"><span class="lbl">${esc(t('dv_app'))}</span><p>${esc(e.a[l])}</p></div>
    <div class="dv-box pray"><span class="lbl">${esc(t('dv_pray'))}</span><p>${esc(e.o[l])}</p></div>
-   <div class="row" style="gap:8px;flex-wrap:wrap">${!today?`<button class="btn sm ghost" data-dv="today">${esc(t('dv_go_today'))}</button>`:''}<button class="btn sm ghost" data-dv="share">${ic('share')}${esc(t('cu_share'))}</button><button class="btn sm gold" data-dv="serm">${ic('pen')}${esc(t('dv_serm'))}</button></div>
+   <div class="row" style="gap:8px;flex-wrap:wrap">${!today?`<button class="btn sm ghost" data-dv="today">${esc(t('dv_go_today'))}</button>`:''}<button class="btn sm ghost" data-dv="share">${ic('share')}${esc(t('cu_share'))}</button><button class="btn sm ghost" data-dv="st">${ic('cam')}${esc(t('dv_img_st'))}</button><button class="btn sm ghost" data-dv="ig">${ic('cam')}${esc(t('dv_img_ig'))}</button><button class="btn sm gold" data-dv="serm">${ic('pen')}${esc(t('dv_serm'))}</button></div>
    <p class="sub" style="font-size:12px;margin:0">${esc(t('dv_day',{n}))}</p></div>`}
 /* Sugestões de pregação */
 function sugHtml(){const L=lxLang(),l=mL();if(!MIN.sg)return minHead(t('sg_t'))+`<div class="empty"><p style="margin:0">${esc(t('dx_load'))}</p></div>`;
@@ -1806,6 +1836,7 @@ document.addEventListener('click',e=>{const L=lxLang(),l=mL();
   const dv=e.target.closest('[data-dv]');if(dv&&view.tab==='devo'){const a=dv.dataset.dv,n=DV.d||doy();const ent=MIN.dv&&MIN.dv.e[n-1];
     if(a==='prev'){DV.d=Math.max(1,n-1);render();scrollTo(0,0)}else if(a==='next'){DV.d=Math.min(365,n+1);render();scrollTo(0,0)}else if(a==='today'){DV.d=null;render()}
     else if(a==='share'&&ent){const vt=vText(ent.v,L);const txt=[ent.t[l],'',vt?'«'+vt+'» — '+refStr(ent.v,L):refStr(ent.v,L),'',ent.r[l],'',t('dv_app')+': '+ent.a[l],'','— '+t('dv_t')+' · Meu Púlpito','https://meupulpito.com'].join('\n');if(navigator.share)navigator.share({text:txt}).catch(()=>{});else copyText(txt).then(()=>toast(t('copied')))}
+    else if((a==='st'||a==='ig')&&ent){dv.disabled=true;dvImage(n,a).finally(()=>{dv.disabled=false})}
     else if(a==='serm'&&ent)minNewSermon(ent.t[l],`<p>${esc(t('rp_base'))}: ${esc(refStr(ent.v,L))}</p><p>${esc(ent.r[l])}</p><p><br></p>`);return}
   const sg=e.target.closest('[data-sg]');if(sg&&view.tab==='sug'){const a=sg.dataset.sg;
     if(a==='occ'){SG.k=sg.dataset.k;render();scrollTo(0,0)}else if(a==='back'){SG.k=null;render()}else if(a==='lock')planGate('sug')
@@ -1815,12 +1846,12 @@ document.addEventListener('click',e=>{const L=lxLang(),l=mL();
     if(a==='open'){const k=mn.dataset.k;if(!isPremium()&&!MAN_FREE.includes(k)){planGate('man');return}MN.k=k;render();scrollTo(0,0)}else if(a==='back'){MN.k=null;render()}
     else if(a==='copy'&&c){const f=c.falas[+mn.dataset.i];copyText(f.x[l]).then(()=>toast(t('copied')))}
     else if(a==='doc'&&c)minNewSermon(c.n[l],`<h2>${esc(t('mn_ord'))}</h2><ol>${c.ordem.map(x=>`<li><b>${esc(x.t[l])}</b> — ${esc(x.d[l])}</li>`).join('')}</ol><h2>${esc(t('mn_txt'))}</h2><p>${c.textos.map(r=>esc(refStr(r,L))).join(' · ')}</p>${c.falas.map(f=>`<h2>${esc(f.t[l])}</h2><p>${esc(f.x[l]).replace(/\n/g,'<br>')}</p>`).join('')}`);return}});
-Object.assign(I18N.es,{dv_t:'Devocional diario',dv_today:'Devocional de hoy',dv_read:'leído',dv_prev:'Día anterior',dv_next:'Día siguiente',dv_go_today:'Volver a hoy',dv_app:'Para hoy',dv_pray:'Oración',dv_serm:'Preparar un sermón',dv_day:'Día {n} de 365',
+Object.assign(I18N.es,{dv_img_st:'Imagen para Estado',dv_img_ig:'Imagen para Instagram',dv_img_t:'Imagen del devocional',dv_img_save:'Toque y mantenga la imagen para guardarla, o use el botón de descargar.',dv_img_dl:'Descargar imagen',dv_t:'Devocional diario',dv_today:'Devocional de hoy',dv_read:'leído',dv_prev:'Día anterior',dv_next:'Día siguiente',dv_go_today:'Volver a hoy',dv_app:'Para hoy',dv_pray:'Oración',dv_serm:'Preparar un sermón',dv_day:'Día {n} de 365',
   sg_t:'Sugerencias de predicación',sg_d:'Ideas para cada ocasión: tema, texto base, tres puntos y aplicación. Úselas como punto de partida para su propio mensaje.',sg_all:'Todas las ocasiones',sg_ap:'Aplicación',sg_use:'Usar como base del sermón',sg_unlock:'Ver con Premium',
   mn_t:'Manual del ministro',mn_d:'Modelos para ceremonias y momentos pastorales: preparación, orden del culto, textos bíblicos y palabras sugeridas. Adapte cada modelo a su iglesia.',mn_all:'Todas las ceremonias',mn_prep:'Preparación',mn_ord:'Orden del culto (sugerido)',mn_txt:'Textos bíblicos',mn_fal:'Palabras sugeridas',mn_obs:'Cuidados pastorales',mn_doc:'Crear un guion editable',mn_model:'Modelo sugerido. Ajuste los nombres, el orden y las palabras a su iglesia.',
   mn_cat_fam:'Familia',mn_cat_fun:'Luto y consuelo',mn_cat_ord:'Ordenación e instalación',mn_cat_ded:'Consagraciones y dedicaciones',mn_cat_igreja:'Iglesia y ordenanzas',
   min_sec:'Para su ministerio',sg_home:'Santa Cena, evangelismo, jóvenes, bodas y más',mn_home:'Bodas, 15 años, cultos fúnebres, bautismo, consagraciones',pk_sug:'Vea todas las sugerencias de predicación para cada ocasión.',pk_man:'Acceda a todos los modelos del Manual del ministro: bodas, cultos fúnebres, consagraciones y más.'});
-Object.assign(I18N.pt,{dv_t:'Devocional diário',dv_today:'Devocional de hoje',dv_read:'lido',dv_prev:'Dia anterior',dv_next:'Próximo dia',dv_go_today:'Voltar para hoje',dv_app:'Para hoje',dv_pray:'Oração',dv_serm:'Preparar um sermão',dv_day:'Dia {n} de 365',
+Object.assign(I18N.pt,{dv_img_st:'Imagem para Status',dv_img_ig:'Imagem para Instagram',dv_img_t:'Imagem do devocional',dv_img_save:'Toque e segure a imagem para salvar, ou use o botão de baixar.',dv_img_dl:'Baixar imagem',dv_t:'Devocional diário',dv_today:'Devocional de hoje',dv_read:'lido',dv_prev:'Dia anterior',dv_next:'Próximo dia',dv_go_today:'Voltar para hoje',dv_app:'Para hoje',dv_pray:'Oração',dv_serm:'Preparar um sermão',dv_day:'Dia {n} de 365',
   sg_t:'Sugestões de pregação',sg_d:'Ideias para cada ocasião: tema, texto base, três pontos e aplicação. Use como ponto de partida para a sua própria mensagem.',sg_all:'Todas as ocasiões',sg_ap:'Aplicação',sg_use:'Usar como base do sermão',sg_unlock:'Ver com Premium',
   mn_t:'Manual do ministro',mn_d:'Modelos para cerimônias e momentos pastorais: preparação, ordem do culto, textos bíblicos e palavras sugeridas. Adapte cada modelo à sua igreja.',mn_all:'Todas as cerimônias',mn_prep:'Preparação',mn_ord:'Ordem do culto (sugerida)',mn_txt:'Textos bíblicos',mn_fal:'Palavras sugeridas',mn_obs:'Cuidados pastorais',mn_doc:'Criar um roteiro editável',mn_model:'Modelo sugerido. Ajuste os nomes, a ordem e as palavras à sua igreja.',
   mn_cat_fam:'Família',mn_cat_fun:'Luto e consolo',mn_cat_ord:'Consagração e posse',mn_cat_ded:'Consagrações e dedicações',mn_cat_igreja:'Igreja e ordenanças',
