@@ -58,6 +58,7 @@ textarea.inp{height:auto;padding:10px 12px;resize:vertical;line-height:1.4}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 16px;border-radius:12px;font-size:14px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:9px 6px;border-top:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:700;border-top:0}td.r,th.r{text-align:right}
 @media (max-width:760px){.chat{grid-template-columns:1fr}.chat.open .cl{display:none}.chat:not(.open) .conv{display:none}.two{grid-template-columns:1fr}}
+.k.on{box-shadow:0 0 0 1.5px #2E9D63 inset}.k.on b{color:#2E9D63}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#2E9D63;margin-right:8px;box-shadow:0 0 0 4px rgba(46,157,99,.18);vertical-align:1px}
 </style>
 </head>
 <body>
@@ -132,7 +133,7 @@ async function load(){const [st,pl,ro,de,su,co,cf]=await Promise.all(['stats','p
   D.stats=st;D.planos={};(pl||[]).forEach(p=>D.planos[p.id]=p);D.roleta={};(ro||[]).forEach(r=>D.roleta[r.id]=r);D.depo=(de||[]).sort((a,b)=>(b.at||0)-(a.at||0));
   D.suporte=(su||[]).sort((a,b)=>(b.at||0)-(a.at||0));D.contato=(co||[]).sort((a,b)=>(b.at||0)-(a.at||0));D.rules=!!su;
   D.cfg={};D.site={};(cf||[]).forEach(c=>{if(c.id==='app')D.cfg=c;if(c.id==='site')D.site=c});
-  try{const v=await db.collection('siteStats').doc(today()).get();D.visits=v.exists?v.data():{}}catch(e){D.visits=null}
+  live();try{const v=await db.collection('siteStats').doc(today()).get();D.visits=v.exists?v.data():{}}catch(e){D.visits=null}
   draw()}
 setInterval(()=>{if(document.visibilityState==='visible'&&auth.currentUser&&TAB!=='pastores')refreshMsgs()},30000);
 async function refreshMsgs(){const [su,co]=await Promise.all([get('suporte'),get('contato')]);if(su)D.suporte=su.sort((a,b)=>(b.at||0)-(a.at||0));if(co)D.contato=co.sort((a,b)=>(b.at||0)-(a.at||0));drawTabs();if(TAB==='resumo')draw();if(TAB==='atend'&&!CONV)draw()}
@@ -159,6 +160,12 @@ function draw(){drawTabs();const m=$('#main');clearInterval(poll);
   if(!D.rules&&TAB!=='pastores')m.insertAdjacentHTML('afterbegin',`<div class="card" style="margin-top:0;background:#FEF3C7;box-shadow:none"><b>Falta colar as regras novas no Firebase.</b><span class="s" style="display:block;font-size:13px;margin-top:4px">Sem elas o atendimento, os depoimentos e a roleta não gravam. Abra o Firebase → Firestore Database → Regras.</span></div>`)}
 
 /* ---------- Resumo ---------- */
+const SECN={home:'Início',list:'Sermões',bible:'Bíblia',dic:'Dicionários',agenda:'Agenda',devo:'Devocional',sug:'Sugestões',man:'Manual',lic:'Lições',il:'Ilustrações',igr:'Minha Igreja',cur:'Curiosidades',profile:'Configurações',editor:'Escrevendo sermão',pregar:'Pregando'};
+const isOn=r=>(r.email||'')!==ADMIN&&Date.now()-(+r.on||0)<5*6e4;
+const agoMin=ts=>{const m=Math.floor((Date.now()-(+ts||0))/6e4);return m<1?'agora mesmo':'há '+m+' min'};
+const dayStart=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
+let LIVE=null,LIVEt=0;function live(){if(LIVE)return;try{LIVE=db.collection('stats').onSnapshot(q=>{D.stats=q.docs.map(d=>Object.assign({id:d.id},d.data()));clearTimeout(LIVEt);LIVEt=setTimeout(()=>{if(TAB==='resumo'||TAB==='pastores')draw()},800)},()=>{})}catch(x){}}
+setInterval(()=>{if(TAB==='resumo')draw()},60e3);
 function vResumo(){const n=Date.now(),S=D.stats,cnt={pago:0,carencia:0,teste:0,vencido:0,gratis:0};S.forEach(r=>cnt[state(r)]++);
   const pays=allPays(),mk=monthKey(n),pm=new Date(n);pm.setMonth(pm.getMonth()-1);const pk=monthKey(pm.getTime());
   const cur=sums(pays.filter(p=>monthKey(p.at)===mk)),prv=sums(pays.filter(p=>monthKey(p.at)===pk));
@@ -170,12 +177,15 @@ function vResumo(){const n=Date.now(),S=D.stats,cnt={pago:0,carencia:0,teste:0,v
   return`<h2>Resumo</h2><div class="grid">
    <div class="k gold"><span>Recebido este mês</span><b>${money(cur.pyg,'pyg')}</b><em>${cur.brl?money(cur.brl,'brl')+' · ':''}${cur.n} pagamento(s)</em></div>
    <div class="k"><span>Mês passado</span><b>${money(prv.pyg,'pyg')}</b><em>${prv.brl?money(prv.brl,'brl')+' · ':''}${prv.n} pagamento(s)</em></div>
+   <div class="k on"><span>Online agora</span><b>${S.filter(isOn).length}</b><em>${S.filter(r=>(r.email||'')!==ADMIN&&(+r.seen||0)>=dayStart()).length} usaram hoje</em></div>
    <div class="k"><span>Pastores cadastrados</span><b>${S.length}</b><em>${nw} novos nesta semana</em></div>
    <div class="k"><span>Usaram nos últimos 7 dias</span><b>${act}</b><em>${S.length?Math.round(act/S.length*100):0}% do total</em></div>
    <div class="k"><span>Premium ativos</span><b>${cnt.pago}</b><em>${cnt.carencia} em carência · ${cnt.vencido} vencidos</em></div>
    <div class="k"><span>Em teste grátis</span><b>${cnt.teste}</b><em>${cnt.gratis} no plano grátis</em></div>
    <div class="k"><span>Visitas do site hoje</span><b>${V?fmtN(V.v||0):'—'}</b><em>${V?fmtN(V.u||0)+' pessoas · '+fmtN(V.go||0)+' abriram o app':''}</em></div>
    <div class="k"><span>Mensagens</span><b>${u}</b><em>não lidas</em></div></div>
+   <div class="card"><h3><span class="dot"></span>Online agora</h3><div class="list" style="margin-top:6px">${(()=>{const O=S.filter(isOn).sort((a,b)=>(b.on||0)-(a.on||0));return O.length?O.map(r=>`<div class="it">${ic('user')}<span class="b"><b>${esc(r.name||r.email||'Pastor')}</b><span class="s">${esc(SECN[r.sec]||r.sec||'No app')} · ${esc(agoMin(r.on))} · ${esc((r.lang||'').toUpperCase())}</span></span><span class="tag ok">online</span></div>`).join(''):'<div class="empty">Ninguém usando o app neste momento.</div>'})()}</div>
+     <p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">Atualiza sozinho. Conta quem abriu o app nos últimos 5 minutos (versão 139 em diante).</p></div>
    <div class="card"><h3>Para fazer</h3><div class="list" style="margin-top:6px">${todo.length?todo.map(([t,i,l])=>`<div class="it" style="cursor:pointer" data-go="${t}">${ic(i)}<span class="b"><b>${esc(l)}</b></span><span style="color:var(--muted);font-size:20px">›</span></div>`).join(''):'<div class="empty">Tudo em dia.</div>'}</div></div>`}
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){TAB=g.dataset.go;history.replaceState(null,'','#'+TAB);draw();scrollTo(0,0)}});
 
@@ -214,7 +224,7 @@ function vPastores(m){const n=Date.now();
    <select class="inp" id="f" style="width:auto">${[['','Todos'],['pend','Aguardando liberação'],['pago','Premium'],['teste','Em teste'],['carencia','Em carência'],['vencido','Vencidos'],['gratis','Grátis']].map(([v,l])=>`<option value="${v}" ${F===v?'selected':''}>${l}</option>`).join('')}</select></div>
    <div class="card"><div class="list">${list.length?list.map(r=>{const p=P(r.id),s=state(r),[c,l]=STAG[s];const rl=D.roleta[r.id];
      return`<div class="it">${ic('user')}<span class="b"><b>${esc(r.name||r.email||r.id.slice(0,6))}</b><span class="s">${esc(r.email||'')}${r.wa?' · '+esc(r.wa):''}</span>
-      <span class="s">${r.sermons||0} sermões · visto ${esc(rel(r.seen))} · desde ${esc(fmtD(r.created))} · ${esc((r.lang||'').toUpperCase())}</span>
+      <span class="s">${isOn(r)?'<b style="color:#2E9D63">● online</b> · ':''}${r.sermons||0} sermões · visto ${esc(rel(r.seen))} · desde ${esc(fmtD(r.created))} · ${esc((r.lang||'').toUpperCase())}</span>
       <span class="tags">${pend(r)?'<span class="tag warn">Aguardando liberação</span>':''}${p.blocked?'<span class="tag bad">Bloqueado</span>':''}<span class="tag ${c}">${l}${s==='pago'||s==='carencia'||s==='vencido'?' · '+PNAME[p.plan]+' até '+fmtD(p.until):s==='teste'?' até '+fmtD(p.trial):''}</span>${rl&&!realPays(r.id).length?`<span class="tag gold">Roleta: ${rl.p}% na 1ª compra</span>`:''}${r.ref?`<span class="tag">Indicado por ${esc(byName((D.stats.find(x=>x.id.slice(0,8)===r.ref)||{}).id||r.ref))}</span>`:''}</span>
       <span class="btns"><button class="btn gold" data-pay="${esc(r.id)}">${ic('cash')}Registrar pagamento</button><button class="btn ghost" data-trial="${esc(r.id)}">Dar teste</button>
        ${(r.email||'')===ADMIN?'':pend(r)||p.blocked?`<button class="btn dark" data-ok="${esc(r.id)}">${ic('check')}Liberar</button>`:`<button class="btn red" data-blk="${esc(r.id)}">Bloquear</button>`}

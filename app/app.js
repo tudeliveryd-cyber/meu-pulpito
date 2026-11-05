@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v138';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v139';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1054,6 +1054,10 @@ function pushStats(force){if(!cols||!authU||localMode||!window.firebase)return;c
     uses:ls.get('mp.uses',{}),seen:now,created,ver:APP_VER,wa:meta.wa||''};
   if(freshAccount(authU)){const r=refIn();if(r){d.ref=r;if(!meta.refBy){meta.refBy=r;putMeta()}}}
   try{firebase.firestore().collection('stats').doc(authU.uid).set(d,{merge:true}).catch(()=>{})}catch(e){}}
+/* presença: avisa a cada 2 min, só com o app aberto na tela, que o pastor está usando (para o Escritório ver quem está online) */
+function beat(force){if(!authU||localMode||!window.firebase||document.hidden)return;const now=Date.now();if(!force&&now-(beat._at||0)<55e3)return;beat._at=now;
+  const sec=E?'editor':PG?'pregar':view.tab||'home';try{firebase.firestore().collection('stats').doc(authU.uid).set({on:now,seen:now,sec,ver:APP_VER},{merge:true}).catch(()=>{})}catch(e){}}
+setInterval(()=>beat(),120e3);document.addEventListener('visibilitychange',()=>{if(!document.hidden)beat(true)});
 let planLoaded=false;
 const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planState.ok||PMON[planState.plan])));
 function applyPlan(){const b=!!(planState&&planState.blocked)||waitingOk();if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
@@ -1484,7 +1488,7 @@ const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.dele
     unsubs.push(subCol(cols.n,()=>notes,a=>{notes=a},()=>refreshBg()));
     unsubs.push(cols.m.onSnapshot(d=>{if(d.exists){const r=d.data();if((r.updated||0)>=(meta.updated||0)){meta=r;fixMeta();cacheAll();refreshBg()}else putMeta()}else if(meta.updated)putMeta()},()=>{}));
   };
-  listen(+ls.get(PK,0)||0);watchPlan(u);watchCfg();supWatch(u);
+  listen(+ls.get(PK,0)||0);watchPlan(u);setTimeout(()=>beat(true),5000);watchCfg();supWatch(u);
 }
 // Entrar con cuenta desde el modo sin cuenta: si el sistema de cuentas no cargó, lo intenta cargar de nuevo
 function loadScript(u){return new Promise((ok,ko)=>{const sc=document.createElement('script');sc.src=u;sc.onload=ok;sc.onerror=ko;document.head.appendChild(sc);setTimeout(ko,12000)})}
@@ -3535,7 +3539,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
     <a class="ig-link" href="https://instagram.com/meupulpito" target="_blank" rel="noopener">${ic('ig')}<span>@meupulpito</span></a>
     <span class="fb-v">${esc(t('ver_l'))} 1.0 · © ${new Date().getFullYear()}<br>${esc(t('dev_by'))} <b style="color:var(--gold-ink)">Araújo Tech</b></span></div>`}
 const PRIV={es:[['Sus sermones son suyos','Todo lo que escribe en Meu Púlpito (sermones, agenda, biblioteca y notas) le pertenece. Se usa solo para que la aplicación funcione y para que usted lo vea en cualquier dispositivo donde entre con su cuenta.'],
- ['Qué guardamos','Su correo, su nombre y su foto (si los agrega), su número de WhatsApp (si lo informa; se usa solo para la bienvenida y los avisos de su plan), sus sermones, agenda, biblioteca, notas y preferencias de lectura, el plan contratado, su historial de pagos y los mensajes que usted envía al soporte. También guardamos estadísticas de uso sin contenido (por ejemplo, cuántos sermones tiene), para mejorar el servicio.'],
+ ['Qué guardamos','Su correo, su nombre y su foto (si los agrega), su número de WhatsApp (si lo informa; se usa solo para la bienvenida y los avisos de su plan), sus sermones, agenda, biblioteca, notas y preferencias de lectura, el plan contratado, su historial de pagos y los mensajes que usted envía al soporte. También guardamos estadísticas de uso sin contenido (por ejemplo, cuántos sermones tiene, cuándo usó la app por última vez y en qué sección estaba), para dar soporte y mejorar el servicio.'],
  ['Dónde se guarda','En los servidores de Google Firebase, protegidos por su contraseña. Además queda una copia en su celular para que funcione sin internet. Las grabaciones de audio del Modo Predicar quedan solo en su celular y no se suben a la nube.'],
  ['Quién puede verlo','Solo usted, con su cuenta. Las reglas de seguridad impiden que otros usuarios, y también el administrador desde la aplicación, lean el contenido de sus sermones. El responsable técnico se compromete a no acceder a su contenido, salvo que usted lo pida para recibir ayuda o que la ley lo exija.'],
  ['Lo que no hacemos','No vendemos sus datos, no mostramos publicidad y no usamos sus sermones para nada que no sea la aplicación.'],
@@ -3548,7 +3552,7 @@ const PRIV={es:[['Sus sermones son suyos','Todo lo que escribe en Meu Púlpito (
  ['Contacto','Para cualquier consulta sobre sus datos, escriba a contato@meupulpito.com.'],
  ['Cambios','Si esta política cambia, le avisaremos en la app. La versión completa también está en meupulpito.com/legal.html.']],
  pt:[['Seus sermões são seus','Tudo o que você escreve no Meu Púlpito (sermões, agenda, biblioteca e notas) pertence a você. É usado só para o aplicativo funcionar e para você ver em qualquer aparelho em que entrar com sua conta.'],
- ['O que guardamos','Seu e-mail, seu nome e sua foto (se você colocar), seu número de WhatsApp (se informar; usado só para as boas-vindas e os avisos do seu plano), seus sermões, agenda, biblioteca, notas e preferências de leitura, o plano contratado, seu histórico de pagamentos e as mensagens que você envia ao suporte. Também guardamos estatísticas de uso sem conteúdo (por exemplo, quantos sermões você tem), para melhorar o serviço.'],
+ ['O que guardamos','Seu e-mail, seu nome e sua foto (se você colocar), seu número de WhatsApp (se informar; usado só para as boas-vindas e os avisos do seu plano), seus sermões, agenda, biblioteca, notas e preferências de leitura, o plano contratado, seu histórico de pagamentos e as mensagens que você envia ao suporte. Também guardamos estatísticas de uso sem conteúdo (por exemplo, quantos sermões você tem, quando usou o app pela última vez e em que seção estava), para dar suporte e melhorar o serviço.'],
  ['Onde fica guardado','Nos servidores do Google Firebase, protegidos pela sua senha. Também fica uma cópia no seu celular para funcionar sem internet. As gravações de áudio do Modo Pregar ficam só no seu celular e não vão para a nuvem.'],
  ['Quem pode ver','Só você, com a sua conta. As regras de segurança impedem que outros usuários, e também o administrador pelo aplicativo, leiam o conteúdo dos seus sermões. O responsável técnico se compromete a não acessar o seu conteúdo, a não ser que você peça para receber ajuda ou que a lei exija.'],
  ['O que não fazemos','Não vendemos seus dados, não mostramos propaganda e não usamos seus sermões para nada além do aplicativo.'],
