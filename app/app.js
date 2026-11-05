@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v144';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v145';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -2932,6 +2932,10 @@ async function autoBakSheet(){const L=await snapList();
    O vídeo não fica guardado no app: no fim ele compartilha ou salva na Galeria.
    ========================================================= */
 const VD_MAX=10*60e3;
+// divide o texto em trechos curtos: cada trecho é uma linha do teleprompter e uma legenda do vídeo
+function vdChunks(text){const out=[];String(text||'').split(/\n\s*\n/).forEach((par,pi)=>{const W=par.replace(/\s+/g,' ').trim().split(' ').filter(Boolean);let cur=[];
+  const push=()=>{if(cur.length){out.push({t:cur.join(' '),p:pi>0&&!out.some(x=>x.pi===pi),pi});cur=[]}};
+  W.forEach(w=>{cur.push(w);const len=cur.join(' ').length;if(len>=34||(/[.!?;:]$/.test(w)&&len>=14)||(/,$/.test(w)&&len>=24))push()});push()});return out}
 const vdClean=x=>String(x||'').replace(/[*_]/g,'').replace(/\n{3,}/g,'\n\n').trim();
 const vdDevo=e=>{const L=lxLang(),l=mL();const vt=vText(e.v,L);return[e.t[l],'',vt?vt+' ('+refStr(e.v,L)+')':refStr(e.v,L),'',e.r[l],'',e.a[l]].join('\n')};
 function videoSheet(txt){if(!isPremium()){planGate('vid');return}const pr=ls.get('mp.vd',{});
@@ -2948,39 +2952,47 @@ function videoSheet(txt){if(!isPremium()){planGate('vid');return}const pr=ls.get
   $('#vdGo',sh).onclick=()=>{const v=ta.value.trim();const p=ls.get('mp.vd',{});p.last=v.slice(0,20000);ls.set('mp.vd',p);closeSheet();vdOpen(v)}}
 async function vdOpen(text){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){toast(t('vd_nosup'));return}
-  const P=Object.assign({fs:30,sp:3,face:'user'},ls.get('mp.vd',{}));
+  const P=Object.assign({fs:30,sp:3,face:'user',cc:true},ls.get('mp.vd',{}));const CH=vdChunks(text);if(!CH.length)P.cc=false;
   const ov=document.createElement('div');ov.className='vr';ov.setAttribute('role','dialog');ov.setAttribute('aria-label',t('vd_t'));
   ov.innerHTML=`<video class="vr-cam" playsinline muted autoplay></video>
-   <div class="vr-top"><button class="vr-ib" data-v="x" aria-label="${esc(t('close'))}">${ic('x')}</button><span class="vr-tm" hidden><i></i><b>0:00</b></span><button class="vr-ib" data-v="flip" aria-label="${esc(t('vd_flip'))}">${ic('undo')}</button></div>
-   <div class="vr-pr" data-v="pause"><div class="vr-tx">${text?esc(text).replace(/\n/g,'<br>'):''}</div></div>
+   <div class="vr-top"><button class="vr-ib" data-v="x" aria-label="${esc(t('close'))}">${ic('x')}</button><span class="vr-tm" hidden><i></i><b>0:00</b></span><span class="row" style="gap:8px">${CH.length?`<button class="vr-ib vr-cc" data-v="cc" aria-pressed="${!!P.cc}" aria-label="${esc(t('vd_cc'))}">CC</button>`:''}<button class="vr-ib" data-v="flip" aria-label="${esc(t('vd_flip'))}">${ic('undo')}</button></span></div>
+   <div class="vr-cap" hidden></div>
+   <div class="vr-pr" data-v="pause"><div class="vr-tx">${CH.map((c,i)=>`<span class="vr-c${c.p?' p':''}${i?'':' on'}">${esc(c.t)}</span>`).join('')}</div></div>
    <div class="vr-cd" hidden></div>
    <div class="vr-bot"><div class="vr-adj"><span>${esc(t('vd_speed'))}</span><div class="row"><button class="vr-ib sm" data-v="sp-" aria-label="−">−</button><b class="vr-sp"></b><button class="vr-ib sm" data-v="sp+" aria-label="+">+</button></div></div>
      <button class="vr-rec" data-v="rec" aria-label="${esc(t('vd_rec'))}"><i></i></button>
      <div class="vr-adj"><span>${esc(t('vd_size'))}</span><div class="row"><button class="vr-ib sm" data-v="fs-" aria-label="A−">A−</button><button class="vr-ib sm" data-v="fs+" aria-label="A+">A+</button></div></div></div>
-   <p class="vr-hint">${esc(text?t('vd_tap'):t('vd_notext'))}</p>`;
+   <p class="vr-hint">${esc(CH.length?t('vd_tap'):t('vd_notext'))}</p>`;
   document.body.appendChild(ov);document.documentElement.classList.add('vr-on');
-  const cam=$('.vr-cam',ov),pr=$('.vr-pr',ov),tx=$('.vr-tx',ov),tm=$('.vr-tm',ov),cd=$('.vr-cd',ov);
-  if(!text)pr.hidden=true;
+  const cam=$('.vr-cam',ov),pr=$('.vr-pr',ov),tx=$('.vr-tx',ov),tm=$('.vr-tm',ov),cd=$('.vr-cd',ov),capEl=$('.vr-cap',ov);const spans=$$('.vr-c',ov);let cur=0,cv=null,cx=null,drawT=0;
+  if(!CH.length)pr.hidden=true;
   let stream=null,mr=null,chunks=[],t0=0,tick=0,raf=0,y=0,paused=false,last=0,wake=null,busy=false,url='';
-  const save=()=>{const p=ls.get('mp.vd',{});p.fs=P.fs;p.sp=P.sp;p.face=P.face;ls.set('mp.vd',p)};
-  const style=()=>{tx.style.fontSize=P.fs+'px';$('.vr-sp',ov).textContent=P.sp;cam.classList.toggle('mir',P.face==='user')};style();
+  const save=()=>{const p=ls.get('mp.vd',{});p.fs=P.fs;p.sp=P.sp;p.face=P.face;if(CH.length)p.cc=P.cc;ls.set('mp.vd',p)};
+  const showCap=()=>{const on=P.cc&&CH.length;capEl.hidden=!on;if(on)capEl.textContent=CH[cur].t;const b=$('.vr-cc',ov);if(b)b.setAttribute('aria-pressed',String(!!P.cc))};
+  const style=()=>{tx.style.fontSize=P.fs+'px';tx.style.paddingTop=Math.round(pr.clientHeight*0.28)+'px';$('.vr-sp',ov).textContent=P.sp;cam.classList.toggle('mir',P.face==='user');showCap()};
+  // trecho que está na linha de leitura (um pouco acima do meio da faixa)
+  const readAt=()=>{const line=y+pr.clientHeight*0.28+P.fs*0.7;let i=cur;while(i+1<spans.length&&spans[i+1].offsetTop<=line)i++;while(i>0&&spans[i].offsetTop>line)i--;
+    if(i!==cur){spans[cur]&&spans[cur].classList.remove('on');cur=i;spans[cur].classList.add('on');showCap()}};style();
   const stopCam=()=>{if(stream)stream.getTracks().forEach(x=>x.stop());stream=null};
   async function start(){stopCam();try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:P.face,width:{ideal:1080},height:{ideal:1920}},audio:{echoCancellation:true,noiseSuppression:true}})}
     catch(e){toast(t('vd_perm'));close();return false}if(!ov.isConnected){stopCam();return false}cam.srcObject=stream;try{await cam.play()}catch(e){}return true}
-  const scroll=ts=>{if(!last)last=ts;const dt=(ts-last)/1000;last=ts;if(!paused){y+=P.sp*14*dt;const mx=Math.max(0,tx.scrollHeight-pr.clientHeight*0.35);if(y>mx)y=mx;tx.style.transform=`translateY(${-y}px)`}raf=requestAnimationFrame(scroll)};
+  const scroll=ts=>{if(!last)last=ts;const dt=(ts-last)/1000;last=ts;if(!paused){y+=P.sp*14*dt;const mx=Math.max(0,tx.scrollHeight-pr.clientHeight*0.5);if(y>mx)y=mx;tx.style.transform=`translateY(${-y}px)`;readAt()}raf=requestAnimationFrame(scroll)};
   const fmt=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
-  function close(){cancelAnimationFrame(raf);clearInterval(tick);if(mr){mr.onstop=null;try{if(mr.state!=='inactive')mr.stop()}catch(e){}}stopCam();if(url)URL.revokeObjectURL(url);try{wake&&wake.release()}catch(e){}
+  function close(){cancelAnimationFrame(raf);cancelAnimationFrame(drawT);clearInterval(tick);if(mr){mr.onstop=null;try{if(mr.state!=='inactive')mr.stop()}catch(e){}}stopCam();if(url)URL.revokeObjectURL(url);try{wake&&wake.release()}catch(e){}
     ov.remove();document.documentElement.classList.remove('vr-on')}
   async function rec(){if(busy||!stream)return;busy=true;
     for(const n of [3,2,1]){cd.hidden=false;cd.textContent=n;await new Promise(r=>setTimeout(r,800));if(!ov.isConnected)return}cd.hidden=true;
     const mime=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9,opus','video/webm'].find(m=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(m))||'';
-    try{mr=new MediaRecorder(stream,Object.assign({videoBitsPerSecond:4e6},mime?{mimeType:mime}:{}))}catch(e){busy=false;toast(t('vd_nosup'));return}
+    let rs=stream;cur=0;spans.forEach((x,i)=>x.classList.toggle('on',!i));showCap();
+    if(P.cc&&CH.length){const w=cam.videoWidth||1080,h=cam.videoHeight||1920;cv=document.createElement('canvas');cv.width=w;cv.height=h;cx=cv.getContext('2d');
+      if(cv.captureStream){const draw=()=>{vdFrame(cx,cam,w,h,CH[cur].t);drawT=requestAnimationFrame(draw)};draw();rs=new MediaStream([...cv.captureStream(30).getVideoTracks(),...stream.getAudioTracks()])}else{toast(t('vd_cc_no'));cv=null}}
+    try{mr=new MediaRecorder(rs,Object.assign({videoBitsPerSecond:4e6},mime?{mimeType:mime}:{}))}catch(e){cancelAnimationFrame(drawT);busy=false;toast(t('vd_nosup'));return}
     chunks=[];mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};mr.onstop=done;mr.start(1000);
     try{wake=await navigator.wakeLock?.request('screen')}catch(e){}
     t0=Date.now();y=0;paused=false;last=0;pr.classList.remove('paused');tx.style.transform='translateY(0)';ov.classList.add('rec');tm.hidden=false;$('b',tm).textContent='0:00';
     tick=setInterval(()=>{const ms=Date.now()-t0;$('b',tm).textContent=fmt(ms);if(ms>=VD_MAX){toast(t('vd_max'));stop()}},250);
     cancelAnimationFrame(raf);if(text)raf=requestAnimationFrame(scroll);busy=false}
-  function stop(){if(!mr||mr.state!=='recording')return;clearInterval(tick);cancelAnimationFrame(raf);ov.classList.remove('rec');try{mr.stop()}catch(e){}}
+  function stop(){if(!mr||mr.state!=='recording')return;clearInterval(tick);cancelAnimationFrame(raf);ov.classList.remove('rec');try{mr.stop()}catch(e){}setTimeout(()=>cancelAnimationFrame(drawT),300)}
   function done(){const type=(mr&&mr.mimeType)||(chunks[0]&&chunks[0].type)||'video/mp4';const blob=new Blob(chunks,{type});chunks=[];stopCam();try{wake&&wake.release()}catch(e){}
     if(!blob.size){toast(t('vd_err'));start();return}
     const ext=/mp4/.test(type)?'mp4':'webm';const nw=new Date();const name='meu-pulpito-'+todayISO()+'-'+String(nw.getHours()).padStart(2,'0')+String(nw.getMinutes()).padStart(2,'0')+'.'+ext;
@@ -2994,6 +3006,7 @@ async function vdOpen(text){
   ov.addEventListener('click',async e=>{const b=e.target.closest('[data-v]');if(!b)return;const v=b.dataset.v;
     if(v==='x'){if(mr&&mr.state==='recording'&&!confirmTap(b))return;close()}
     else if(v==='x2'){if(!b.dataset.sure){b.dataset.sure='1';b.textContent=t('vd_discard');setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent=t('close')}},3000);return}close()}
+    else if(v==='cc'){if(mr&&mr.state==='recording')return;P.cc=!P.cc;save();showCap();toast(t(P.cc?'vd_cc_on':'vd_cc_off'))}
     else if(v==='flip'){if(mr&&mr.state==='recording')return;P.face=P.face==='user'?'environment':'user';save();style();start()}
     else if(v==='rec'){if(mr&&mr.state==='recording')stop();else rec()}
     else if(v==='pause'){if(!(mr&&mr.state==='recording'))return;paused=!paused;pr.classList.toggle('paused',paused)}
@@ -3003,18 +3016,24 @@ async function vdOpen(text){
       if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]})}catch(err){if(err&&err.name!=='AbortError')vdDl(f)}}else vdDl(f)}
     else if(v==='again'){close();vdOpen(text)}});
   await start()}
+// um quadro do vídeo com a legenda embaixo (fundo escuro arredondado, letra branca)
+function vdFrame(cx,cam,w,h,txt){cx.drawImage(cam,0,0,w,h);if(!txt)return;const fs=Math.round(Math.min(w,h)*0.058);cx.font=`700 ${fs}px -apple-system,"Inter",system-ui,sans-serif`;cx.textAlign='center';cx.textBaseline='middle';
+  const max=w*0.84,W=txt.split(' '),L=[];let ln='';W.forEach(x=>{const tr=ln?ln+' '+x:x;if(cx.measureText(tr).width>max&&ln){L.push(ln);ln=x}else ln=tr});if(ln)L.push(ln);
+  const lh=fs*1.3,bh=L.length*lh+fs*0.7,bw=Math.min(w*0.92,Math.max(...L.map(x=>cx.measureText(x).width))+fs*1.2),bx=(w-bw)/2,by=h*0.8-bh/2,r=fs*0.45;
+  cx.fillStyle='rgba(0,0,0,.62)';cx.beginPath();if(cx.roundRect)cx.roundRect(bx,by,bw,bh,r);else cx.rect(bx,by,bw,bh);cx.fill();
+  cx.fillStyle='#fff';L.forEach((x,i)=>cx.fillText(x,w/2,by+fs*0.35+lh*(i+0.5)))}
 function vdDl(f){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
 Object.assign(I18N.es,{vd_t:'Video con teleprompter',vd_home:'Grabe un mensaje leyendo el texto en la pantalla',vd_d:'Escriba o pegue el texto. Va pasando cerca de la cámara mientras usted habla mirando al frente, y el video queda listo para enviar por WhatsApp o publicar.',
   vd_from_dv:'Devocional de hoy',vd_from_s:'De un sermón',vd_pick:'Elija el sermón',vd_ph:'Texto del mensaje…',vd_open:'Abrir la cámara',vd_tip:'El video no queda guardado en la app. Para guardarlo en la Galería, toque «Compartir o guardar» y elija «Guardar video».',
   vd_nosup:'No es posible grabar video en este navegador.',vd_perm:'No pude usar la cámara. Revise el permiso de cámara y micrófono en Ajustes → Safari.',vd_err:'No se grabó el video. Intente de nuevo.',
   vd_rec:'Grabar',vd_flip:'Cambiar de cámara',vd_speed:'Velocidad',vd_size:'Letra',vd_tap:'Toque el texto para pausarlo mientras graba',vd_notext:'Sin texto: solo la cámara',vd_max:'Se alcanzó el límite de 10 minutos',
-  vd_ready:'Video listo',vd_share:'Compartir o guardar',vd_again:'Grabar de nuevo',vd_discard:'¿Descartar? Toque de nuevo',vd_act:'Grabar en video',
+  vd_ready:'Video listo',vd_share:'Compartir o guardar',vd_again:'Grabar de nuevo',vd_discard:'¿Descartar? Toque de nuevo',vd_act:'Grabar en video',vd_cc:'Subtítulos',vd_cc_on:'Subtítulos activados: el texto que lee aparece en el video',vd_cc_off:'Subtítulos desactivados',vd_cc_no:'Este aparato no permite subtítulos en el video. Se grabará sin ellos.',
   pk_vid:'Grabe mensajes en video leyendo el texto en la pantalla, listos para WhatsApp e Instagram.'});
 Object.assign(I18N.pt,{vd_t:'Vídeo com teleprompter',vd_home:'Grave uma mensagem lendo o texto na tela',vd_d:'Escreva ou cole o texto. Ele vai passando perto da câmera enquanto você fala olhando para frente, e o vídeo fica pronto para enviar no WhatsApp ou postar.',
   vd_from_dv:'Devocional de hoje',vd_from_s:'De um sermão',vd_pick:'Escolha o sermão',vd_ph:'Texto da mensagem…',vd_open:'Abrir a câmera',vd_tip:'O vídeo não fica guardado no app. Para guardar na Galeria, toque em «Compartilhar ou salvar» e escolha «Salvar vídeo».',
   vd_nosup:'Não é possível gravar vídeo neste navegador.',vd_perm:'Não consegui usar a câmera. Confira a permissão de câmera e microfone em Ajustes → Safari.',vd_err:'O vídeo não foi gravado. Tente de novo.',
   vd_rec:'Gravar',vd_flip:'Trocar de câmera',vd_speed:'Velocidade',vd_size:'Letra',vd_tap:'Toque no texto para pausar enquanto grava',vd_notext:'Sem texto: só a câmera',vd_max:'Chegou ao limite de 10 minutos',
-  vd_ready:'Vídeo pronto',vd_share:'Compartilhar ou salvar',vd_again:'Gravar de novo',vd_discard:'Descartar? Toque de novo',vd_act:'Gravar em vídeo',
+  vd_ready:'Vídeo pronto',vd_share:'Compartilhar ou salvar',vd_again:'Gravar de novo',vd_discard:'Descartar? Toque de novo',vd_act:'Gravar em vídeo',vd_cc:'Legendas',vd_cc_on:'Legendas ligadas: o texto que você lê aparece no vídeo',vd_cc_off:'Legendas desligadas',vd_cc_no:'Este aparelho não permite legendas no vídeo. Vai gravar sem elas.',
   pk_vid:'Grave mensagens em vídeo lendo o texto na tela, prontas para o WhatsApp e o Instagram.'});
 
 /* =========================================================
