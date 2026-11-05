@@ -90,7 +90,7 @@ L('Hc 3:17-18',
     'Qual é a diferença entre estar contente porque tudo vai bem e ter a alegria do Senhor?'),
    ('¿Qué cosas suelen robarnos el gozo en la semana?',
     'Que coisas costumam roubar a nossa alegria durante a semana?'),
-   ('¿Cómo puede la oración y la Palabra renovar nuestra alegría?',
+   ('¿Cómo pueden la oración y la Palabra renovar nuestra alegría?',
     'Como a oração e a Palavra podem renovar a nossa alegria?'),
    ('¿Alguien quiere compartir un momento difícil en que Dios le dio gozo?',
     'Alguém quer compartilhar um momento difícil em que Deus lhe deu alegria?')],
@@ -443,7 +443,7 @@ L('Mt 6:31-34',
     'El Salmo 55:22 dice: «Echa sobre Jehová tu carga, y él te sustentará». Muchas veces cargamos solos lo que Dios nos invita a entregarle. Echar la carga es un acto concreto: nombrar en oración cada preocupación y dejarla en sus manos. Él no promete quitar todo problema, pero sí sostenernos.',
     'O Salmo 55:22 diz: “Entrega tuas preocupações ao SENHOR, e ele te sustentará”. Muitas vezes carregamos sozinhos o que Deus nos convida a entregar a ele. Lançar o fardo é um ato concreto: nomear em oração cada preocupação e deixá-la em suas mãos. Ele não promete tirar todo problema, mas promete nos sustentar.','Sl 55:22'),
    ('Descanso en Jesús','Descanso em Jesus',
-    'Jesús invita: «Venid á mí todos los que estáis trabajados y cargados, que yo os haré descansar». La ansiedad nos agota, porque nos hace vivir mañana los problemas de hoy y los de pasado mañana. En la presencia de Jesús encontramos descanso para el alma. Buscar ayuda de hermanos y, cuando sea necesario, de profesionales, también es una forma de cuidar la vida que Dios nos dio.',
+    'Jesús invita: «Venid á mí todos los que estáis trabajados y cargados, que yo os haré descansar». La ansiedad nos agota, porque nos hace vivir hoy los problemas de mañana y de pasado mañana. En la presencia de Jesús encontramos descanso para el alma. Buscar ayuda de hermanos y, cuando sea necesario, de profesionales, también es una forma de cuidar la vida que Dios nos dio.',
     'Jesus convida: “Vinde a mim todos vós que estais cansados e sobrecarregados, e eu vos farei descansar”. A ansiedade nos esgota, porque nos faz viver hoje os problemas de amanhã e de depois de amanhã. Na presença de Jesus encontramos descanso para a alma. Buscar ajuda de irmãos e, quando necessário, de profissionais, também é uma forma de cuidar da vida que Deus nos deu.','Mt 11:28')],
   [('¿Qué preocupaciones mencionó Jesús en este texto? ¿Cuáles serían las de hoy?',
     'Que preocupações Jesus mencionou neste texto? Quais seriam as de hoje?'),
@@ -620,7 +620,202 @@ L('Rm 15:13',
   ('Dios de esperanza, llénanos de todo gozo y paz en la fe. Gracias porque Tus misericordias son nuevas cada mañana. Mantén nuestra alma anclada en Cristo hasta el día en que enjugues toda lágrima. Amén.',
    'Deus da esperança, enche-nos de toda alegria e paz na fé. Obrigado porque as tuas misericórdias são novas a cada manhã. Mantém a nossa alma ancorada em Cristo até o dia em que enxugarás toda lágrima. Amém.'))
 
-# ================================================================ FIM DOS DADOS
+# ================================================================ Juventude com propósito
+S('jovens','Juventud con propósito','Juventude com propósito',
+  'Seis estudios para grupos de jóvenes sobre identidad, pureza, amistades, llamado, uso del tiempo y firmeza en la fe.',
+  'Seis estudos para grupos de jovens sobre identidade, pureza, amizades, chamado, uso do tempo e firmeza na fé.')
+
+L('2Co 5:17',
+  ('Mi identidad en Cristo','Minha identidade em Cristo'),
+  ('Descubrir que nuestra verdadera identidad no depende de la opinión de los demás, sino de lo que Dios dice de nosotros en Cristo.',
+   'Descobrir que a nossa verdadeira identidade não depende da opinião dos outros, mas do que Deus diz sobre nós em Cristo.'),
+  ('Si tuvieran que describirse en tres palabras, ¿cuáles usarían?',
+   'Se vocês tivessem que se descrever em três palavras, quais usariam?'),
+  ('Muchos jóvenes buscan saber quiénes son en el lugar equivocado: en la cantidad de seguidores, en la apariencia, en las notas del colegio, en lo que dicen los amigos o en los errores del pasado. Pero todo eso cambia. Pablo nos da una noticia que transforma: «si alguno está en Cristo, nueva criatura es: las cosas viejas pasaron; he aquí todas son hechas nuevas». En Cristo recibimos una identidad nueva y firme. Hoy veremos tres verdades sobre quiénes somos para Dios.',
+   'Muitos jovens procuram saber quem são no lugar errado: na quantidade de seguidores, na aparência, nas notas da escola, no que os amigos dizem ou nos erros do passado. Mas tudo isso muda. Paulo nos dá uma notícia que transforma: “se alguém está em Cristo, uma nova criatura é; as coisas velhas já passaram, eis que tudo se fez novo”. Em Cristo recebemos uma identidade nova e firme. Hoje veremos três verdades sobre quem somos para Deus.'),
+  [('Hijos de Dios','Filhos de Deus',
+    'Juan 1:12 dice que a todos los que recibieron a Jesús, a los que creen en su nombre, les dio potestad de ser hechos hijos de Dios. No somos un número más ni un accidente. Somos hijos amados de un Padre que nos conoce. Esta es la base de nuestra identidad: no lo que hacemos, sino de quién somos.',
+    'João 1:12 diz que a todos os que receberam Jesus, aos que creem em seu nome, ele deu o poder de serem feitos filhos de Deus. Não somos mais um número nem um acidente. Somos filhos amados de um Pai que nos conhece. Essa é a base da nossa identidade: não o que fazemos, mas de quem somos.','Jo 1:12'),
+   ('Hechos de manera maravillosa','Feitos de modo maravilhoso',
+    'En el Salmo 139 David alaba a Dios por la manera en que lo formó, y dice: «maravillosas son tus obras». En una época en que muchos jóvenes se comparan y no aceptan su cuerpo o su historia, este salmo nos recuerda que Dios no se equivocó al crearnos. Cuidar de nosotros mismos y agradecer a Dios es parte de la fe.',
+    'No Salmo 139 Davi louva a Deus porque foi feito “de um jeito assombroso e maravilhoso”. Numa época em que muitos jovens se comparam e não aceitam o próprio corpo ou a própria história, este salmo nos lembra que Deus não errou ao nos criar. Cuidar de nós mesmos e agradecer a Deus faz parte da fé.','Sl 139:14'),
+   ('Creados con propósito','Criados com propósito',
+    'Efesios 2:10 dice: «somos hechura suya, criados en Cristo Jesús para buenas obras, las cuales Dios preparó para que anduviésemos en ellas». No solo fuimos salvados de algo, sino para algo. Dios tiene buenas obras preparadas para cada joven. Nuestra identidad en Cristo nos lleva a vivir con propósito.',
+    'Efésios 2:10 diz: “nós fomos feitos por ele, criados em Cristo Jesus para as boas obras, que Deus preparou para que nelas andássemos”. Não fomos apenas salvos de algo, mas para algo. Deus tem boas obras preparadas para cada jovem. A nossa identidade em Cristo nos leva a viver com propósito.','Ef 2:10')],
+  [('¿En qué cosas suelen buscar los jóvenes su valor e identidad?',
+    'Em que coisas os jovens costumam buscar o seu valor e a sua identidade?'),
+   ('¿Qué significa ser una «nueva criatura» en Cristo?',
+    'O que significa ser uma “nova criatura” em Cristo?'),
+   ('¿Cómo afecta la comparación en las redes sociales a la forma en que nos vemos?',
+    'Como a comparação nas redes sociais afeta a forma como nos vemos?'),
+   ('¿Cuál de las tres verdades de hoy necesitan creer más en este momento?',
+    'Qual das três verdades de hoje vocês precisam crer mais neste momento?')],
+  ('Escriba en una hoja o en el celular «Soy hijo de Dios, nueva criatura y creado con propósito», y léalo cada mañana esta semana.',
+   'Escreva em uma folha ou no celular “Sou filho de Deus, nova criatura e criado com propósito”, e leia isso toda manhã nesta semana.'),
+  '1Pe 2:9',
+  ('Padre, gracias porque en Cristo somos nuevas criaturas y Tus hijos amados. Líbranos de buscar nuestro valor en la opinión de los demás. Ayúdanos a vivir el propósito que preparaste para nosotros. Amén.',
+   'Pai, obrigado porque em Cristo somos novas criaturas e teus filhos amados. Livra-nos de buscar o nosso valor na opinião dos outros. Ajuda-nos a viver o propósito que preparaste para nós. Amém.'))
+
+L('Sl 119:9-10',
+  ('Pureza en un mundo sin límites','Pureza em um mundo sem limites'),
+  ('Animar a los jóvenes a vivir en pureza sexual y de corazón, guiados por la Palabra y con decisiones concretas.',
+   'Animar os jovens a viver em pureza sexual e de coração, guiados pela Palavra e com decisões concretas.'),
+  ('¿Qué mensajes sobre el amor y la sexualidad escuchan con más frecuencia en la música, las series o las redes?',
+   'Que mensagens sobre amor e sexualidade vocês ouvem com mais frequência nas músicas, séries ou redes?'),
+  ('El salmista hace una pregunta muy actual: «¿Con qué limpiará el joven su camino?». Y responde: «Con guardar tu palabra». Hoy los jóvenes reciben constantemente mensajes que dicen que todo está permitido y que la pureza es algo anticuado. Pero Dios diseñó la sexualidad como algo bueno, para ser vivido dentro del matrimonio. La pureza no es solo evitar ciertas cosas; es buscar a Dios de todo corazón. Hoy veremos por qué la pureza importa y cómo vivirla.',
+   'O salmista faz uma pergunta muito atual: “Com que um rapaz purificará o seu caminho?”. E responde: “Sendo obediente conforme a tua palavra”. Hoje os jovens recebem constantemente mensagens dizendo que tudo é permitido e que a pureza é coisa ultrapassada. Mas Deus criou a sexualidade como algo bom, para ser vivido dentro do casamento. A pureza não é apenas evitar certas coisas; é buscar a Deus de todo o coração. Hoje veremos por que a pureza importa e como vivê-la.'),
+  [('Es la voluntad de Dios','É a vontade de Deus',
+    'Pablo escribe: «la voluntad de Dios es vuestra santificación: que os apartéis de fornicación». Muchos jóvenes preguntan cuál es la voluntad de Dios para su vida. Aquí hay una respuesta clara: vivir en santidad y honra. La pureza no es una regla para quitarnos la alegría, sino un camino para proteger el corazón y las futuras relaciones.',
+    'Paulo escreve: “esta é a vontade de Deus: a vossa santificação, que não pratiqueis pecado sexual”. Muitos jovens perguntam qual é a vontade de Deus para a sua vida. Aqui há uma resposta clara: viver em santidade e honra. A pureza não é uma regra para tirar a nossa alegria, mas um caminho para proteger o coração e os relacionamentos futuros.','1Ts 4:3-4'),
+   ('Huir y seguir','Fugir e seguir',
+    'Pablo aconsejó al joven Timoteo: «Huye también los deseos juveniles; y sigue la justicia, la fe, la caridad, la paz». Hay tentaciones que no se enfrentan, se huye de ellas: apagar una pantalla, salir de un lugar, terminar una conversación. Pero no basta con huir; también hay que seguir lo bueno, junto con otros que aman a Dios.',
+    'Paulo aconselhou o jovem Timóteo: “Foge também dos desejos da juventude; e segue a justiça, a fé, o amor, e a paz”. Há tentações que não se enfrentam; delas se foge: desligar uma tela, sair de um lugar, encerrar uma conversa. Mas não basta fugir; também é preciso seguir o que é bom, junto com outros que amam a Deus.','2Tm 2:22'),
+   ('El cuerpo es templo del Espíritu','O corpo é templo do Espírito',
+    'Pablo pregunta: «¿O ignoráis que vuestro cuerpo es templo del Espíritu Santo?». Y recuerda que fuimos comprados por precio. Nuestro cuerpo no es solo nuestro; pertenece a Dios, que pagó por nosotros con la sangre de Cristo. Por eso lo cuidamos y glorificamos a Dios con él. Y si alguien ha fallado, en Cristo hay perdón y un nuevo comienzo.',
+    'Paulo pergunta: “Ou não sabeis que vosso corpo é templo do Espírito Santo?”. E lembra que fomos comprados por alto preço. O nosso corpo não é só nosso; pertence a Deus, que pagou por nós com o sangue de Cristo. Por isso cuidamos dele e glorificamos a Deus com ele. E se alguém falhou, em Cristo há perdão e um novo começo.','1Co 6:19-20')],
+  [('¿Por qué la pureza parece tan difícil para los jóvenes de hoy?',
+    'Por que a pureza parece tão difícil para os jovens de hoje?'),
+   ('¿Qué significa en la práctica «huir» de los deseos juveniles?',
+    'O que significa na prática “fugir” dos desejos da juventude?'),
+   ('¿Cómo cambia nuestra forma de ver el cuerpo saber que es templo del Espíritu Santo?',
+    'Como muda a nossa forma de ver o corpo saber que ele é templo do Espírito Santo?'),
+   ('¿Qué límites prácticos pueden ayudar a un joven a vivir en pureza?',
+    'Que limites práticos podem ajudar um jovem a viver em pureza?'),
+   ('¿Qué le dirían a un joven que siente que ya falló y que no tiene remedio?',
+    'O que vocês diriam a um jovem que sente que já falhou e que não tem mais jeito?')],
+  ('Defina esta semana un límite concreto para proteger su pureza (en el celular, en las salidas o en el noviazgo) y comparta ese compromiso con un líder de confianza.',
+   'Defina nesta semana um limite concreto para proteger a sua pureza (no celular, nos passeios ou no namoro) e compartilhe esse compromisso com um líder de confiança.'),
+  'Mt 5:8',
+  ('Señor, queremos buscarte de todo corazón y guardar Tu Palabra. Limpia nuestro camino, danos fuerza para huir de lo que nos aparta de Ti y ayúdanos a glorificarte con nuestro cuerpo. Amén.',
+   'Senhor, queremos buscar-te de todo o coração e obedecer à tua Palavra. Purifica o nosso caminho, dá-nos força para fugir do que nos afasta de ti e ajuda-nos a te glorificar com o nosso corpo. Amém.'))
+
+L('1Sm 18:1-3',
+  ('Amistades que edifican','Amizades que edificam'),
+  ('Aprender a elegir y cultivar amistades que nos acerquen a Dios y a ser un buen amigo para otros.',
+   'Aprender a escolher e cultivar amizades que nos aproximem de Deus e a ser um bom amigo para os outros.'),
+  ('¿Qué cualidad valoran más en un amigo?',
+   'Que qualidade vocês mais valorizam em um amigo?'),
+  ('La amistad entre Jonatán y David es una de las más conocidas de la Biblia. Jonatán era hijo del rey Saúl; David era un joven pastor que acababa de vencer a Goliat. Aun así, la Biblia dice que el alma de Jonatán quedó ligada a la de David, y que lo amó como a su propia alma. Hicieron un pacto de amistad. Los amigos influyen mucho en nuestras decisiones, para bien o para mal. Hoy veremos cómo elegir buenos amigos y cómo ser uno de ellos.',
+   'A amizade entre Jônatas e Davi é uma das mais conhecidas da Bíblia. Jônatas era filho do rei Saul; Davi era um jovem pastor que tinha acabado de vencer Golias. Mesmo assim, a Bíblia diz que a alma de Jônatas se apegou à de Davi, e que ele o amou como à sua própria alma. Eles fizeram uma aliança de amizade. Os amigos influenciam muito as nossas decisões, para o bem ou para o mal. Hoje veremos como escolher bons amigos e como ser um deles.'),
+  [('Con quién andamos','Com quem andamos',
+    'Proverbios 13:20 dice: «El que anda con los sabios, sabio será; mas el que se allega á los necios, será quebrantado». Con el tiempo nos parecemos a las personas con quienes pasamos más tiempo. Esto no significa rechazar a quienes no conocen a Dios, sino tener cuidado de quién tiene la mayor influencia sobre nuestras decisiones.',
+    'Provérbios 13:20 diz: “Quem anda com os sábios se torna sábio; mas aquele que acompanha os tolos sofrerá”. Com o tempo nos parecemos com as pessoas com quem passamos mais tempo. Isso não significa rejeitar quem não conhece a Deus, mas tomar cuidado com quem tem mais influência sobre as nossas decisões.','Pv 13:20'),
+   ('Las malas compañías','As más companhias',
+    'Pablo advierte: «No erréis: las malas conversaciones corrompen las buenas costumbres». Muchos jóvenes que crecieron en la iglesia se alejaron de Dios por una amistad que los llevó a otro camino. A veces amar a Dios exige tomar distancia de ciertas personas o grupos, aunque nos duela.',
+    'Paulo adverte: “Não erreis. As más companhias corrompem os bons costumes”. Muitos jovens que cresceram na igreja se afastaram de Deus por causa de uma amizade que os levou para outro caminho. Às vezes amar a Deus exige tomar distância de certas pessoas ou grupos, mesmo que doa.','1Co 15:33'),
+   ('Ser un amigo fiel','Ser um amigo fiel',
+    'Proverbios 17:17 dice: «En todo tiempo ama el amigo; y el hermano para la angustia es nacido». Además de buscar buenos amigos, debemos ser buenos amigos: leales, presentes en los momentos difíciles, que no divulgan secretos y que animan al otro a seguir a Jesús, como Jonatán hizo con David.',
+    'Provérbios 17:17 diz: “O amigo ama em todo tempo, e o irmão nasce para ajudar na angústia”. Além de buscar bons amigos, devemos ser bons amigos: leais, presentes nos momentos difíceis, que não espalham segredos e que animam o outro a seguir Jesus, como Jônatas fez com Davi.','Pv 17:17')],
+  [('¿Qué hizo especial la amistad entre Jonatán y David?',
+    'O que tornou especial a amizade entre Jônatas e Davi?'),
+   ('¿Cómo nos influyen los amigos sin que nos demos cuenta?',
+    'Como os amigos nos influenciam sem que percebamos?'),
+   ('¿Cómo podemos ser luz para amigos que no conocen a Dios sin dejarnos arrastrar por ellos?',
+    'Como podemos ser luz para amigos que não conhecem a Deus sem nos deixar levar por eles?'),
+   ('¿Qué tipo de amigo son ustedes para los demás?',
+    'Que tipo de amigo vocês são para os outros?')],
+  ('Agradezca esta semana a un amigo que le acerca a Dios y busque a alguien del grupo que esté solo para ofrecerle su amistad.',
+   'Agradeça nesta semana a um amigo que aproxima você de Deus e procure alguém do grupo que esteja sozinho para oferecer a sua amizade.'),
+  'Pv 27:17',
+  ('Señor Jesús, gracias por los amigos que nos acercan a Ti. Danos sabiduría para elegir nuestras amistades y haznos amigos fieles, que animen a otros a seguirte. Amén.',
+   'Senhor Jesus, obrigado pelos amigos que nos aproximam de ti. Dá-nos sabedoria para escolher as nossas amizades e faze-nos amigos fiéis, que animem outros a te seguir. Amém.'))
+
+L('Jr 1:5-8',
+  ('Llamados desde jóvenes','Chamados desde jovens'),
+  ('Ayudar a los jóvenes a entender que Dios los llama y los capacita para servirle desde ahora.',
+   'Ajudar os jovens a entender que Deus os chama e os capacita para servi-lo desde agora.'),
+  ('Cuando eran niños, ¿qué querían ser de grandes?',
+   'Quando eram crianças, o que vocês queriam ser quando crescessem?'),
+  ('Cuando Dios llamó a Jeremías, le dijo que lo conocía desde antes de formarlo en el vientre y que lo había dado por profeta a las naciones. Jeremías respondió con miedo: «He aquí, no sé hablar, porque soy niño». Pero Dios le dijo que no pusiera su edad como excusa, porque él lo enviaría y estaría con él para librarlo. Muchos jóvenes piensan que servir a Dios es cosa de adultos. Hoy veremos que Dios llama a los jóvenes y quiere usarlos ahora.',
+   'Quando Deus chamou Jeremias, disse que o conhecia antes de formá-lo no ventre e que o tinha dado por profeta às nações. Jeremias respondeu com medo: “Eis que não sei falar, pois sou um menino”. Mas Deus lhe disse que não usasse a idade como desculpa, porque ele o enviaria e estaria com ele para livrá-lo. Muitos jovens pensam que servir a Deus é coisa de adultos. Hoje veremos que Deus chama os jovens e quer usá-los agora.'),
+  [('Escuchar la voz de Dios','Ouvir a voz de Deus',
+    'Samuel era un muchacho cuando Dios lo llamó de noche. Al principio no reconoció la voz, pero luego respondió: «Habla, que tu siervo oye». El llamado empieza escuchando. Dios habla por su Palabra, en la oración y por medio de líderes maduros. Un joven que aprende a escuchar a Dios estará listo para obedecer.',
+    'Samuel era um menino quando Deus o chamou à noite. No começo não reconheceu a voz, mas depois respondeu: “Fala, que o teu servo está ouvindo”. O chamado começa ouvindo. Deus fala pela sua Palavra, na oração e por meio de líderes maduros. Um jovem que aprende a ouvir a Deus estará pronto para obedecer.','1Sm 3:10'),
+   ('Disponibles para ser enviados','Disponíveis para ser enviados',
+    'Isaías oyó la voz del Señor que decía: «¿A quién enviaré, y quién nos irá?». Y respondió: «Heme aquí, envíame á mí». Dios no busca primero personas capacitadas, sino disponibles; él capacita a quien se ofrece. El llamado puede ser al ministerio, pero también a servir a Dios en la profesión, el estudio y la familia.',
+    'Isaías ouviu a voz do Senhor que dizia: “A quem enviarei? E quem irá por nós?”. E respondeu: “Eis-me aqui! Envia-me!”. Deus não procura primeiro pessoas capacitadas, mas disponíveis; ele capacita quem se oferece. O chamado pode ser para o ministério, mas também para servir a Deus na profissão, nos estudos e na família.','Is 6:8'),
+   ('Acordarse del Creador en la juventud','Lembrar do Criador na juventude',
+    'Eclesiastés 12:1 aconseja: «acuérdate de tu Criador en los días de tu juventud». La juventud es un tiempo de energía, sueños y decisiones que marcan el resto de la vida. Entregar a Dios estos años no es perderlos, sino invertirlos en lo que permanece. Quien empieza temprano a caminar con Dios construye una base firme para el futuro.',
+    'Eclesiastes 12:1 aconselha: “lembra-te de teu Criador nos dias de tua juventude”. A juventude é um tempo de energia, sonhos e decisões que marcam o resto da vida. Entregar estes anos a Deus não é perdê-los, mas investi-los naquilo que permanece. Quem começa cedo a andar com Deus constrói uma base firme para o futuro.','Ec 12:1')],
+  [('¿Qué excusas usan los jóvenes para no servir a Dios ahora?',
+    'Que desculpas os jovens usam para não servir a Deus agora?'),
+   ('¿Qué respondió Dios a la excusa de Jeremías?',
+    'O que Deus respondeu à desculpa de Jeremias?'),
+   ('¿Cómo podemos aprender a reconocer la voz de Dios?',
+    'Como podemos aprender a reconhecer a voz de Deus?'),
+   ('¿En qué lugares o áreas podrían servir a Dios desde ahora?',
+    'Em que lugares ou áreas vocês poderiam servir a Deus desde agora?'),
+   ('¿Qué sueños tienen para el futuro y cómo pueden ponerlos en las manos de Dios?',
+    'Que sonhos vocês têm para o futuro e como podem colocá-los nas mãos de Deus?')],
+  ('Pregunte a Dios en oración cómo quiere usarle y converse con un líder sobre un área en la que pueda empezar a servir este mes.',
+   'Pergunte a Deus em oração como ele quer usar você e converse com um líder sobre uma área em que possa começar a servir neste mês.'),
+  '1Tm 4:12',
+  ('Señor, aquí estamos: habla, que Tus siervos oyen. Quita de nosotros el miedo y las excusas. Queremos acordarnos de Ti en nuestra juventud y servirte desde ahora. Envíanos. En el nombre de Jesús, amén.',
+   'Senhor, aqui estamos: fala, que os teus servos estão ouvindo. Tira de nós o medo e as desculpas. Queremos lembrar de ti na nossa juventude e te servir desde agora. Envia-nos. Em nome de Jesus, amém.'))
+
+L('Ef 5:15-17',
+  ('El tiempo y las redes sociales','O tempo e as redes sociais'),
+  ('Animar a los jóvenes a usar el tiempo, el celular y las redes sociales con sabiduría y para la gloria de Dios.',
+   'Animar os jovens a usar o tempo, o celular e as redes sociais com sabedoria e para a glória de Deus.'),
+  ('¿Cuántas horas por día creen que pasan mirando el celular? ¿Alguien quiere revisar el dato en su teléfono?',
+   'Quantas horas por dia vocês acham que passam olhando o celular? Alguém quer conferir o dado no telefone?'),
+  ('Pablo escribió: «Mirad, pues, cómo andéis avisadamente; no como necios, mas como sabios; redimiendo el tiempo, porque los días son malos». El tiempo es uno de los regalos más valiosos que Dios nos da, y no se puede recuperar. Hoy el celular y las redes sociales pueden ser herramientas útiles para aprender, comunicarse y compartir el evangelio, pero también pueden robarnos horas, paz y comunión con Dios. Hoy veremos cómo usar el tiempo y las redes con sabiduría.',
+   'Paulo escreveu: “vede cuidadosamente como vos conduzis, não como tolos, mas sim como sábios; aproveitai o tempo, porque os dias são maus”. O tempo é um dos presentes mais valiosos que Deus nos dá, e não pode ser recuperado. Hoje o celular e as redes sociais podem ser ferramentas úteis para aprender, se comunicar e compartilhar o evangelho, mas também podem roubar horas, paz e comunhão com Deus. Hoje veremos como usar o tempo e as redes com sabedoria.'),
+  [('Contar nuestros días','Contar os nossos dias',
+    'Moisés oró: «Enséñanos de tal modo á contar nuestros días, que traigamos al corazón sabiduría». Contar los días es reconocer que la vida es corta y que cada hora cuenta. Un joven sabio piensa en qué está invirtiendo su tiempo: en lo que lo acerca a Dios y a sus metas, o en lo que solo lo distrae.',
+    'Moisés orou: “Ensina-nos a contar nossos dias de tal maneira que alcancemos um coração sábio”. Contar os dias é reconhecer que a vida é curta e que cada hora conta. Um jovem sábio pensa em que está investindo o seu tempo: no que o aproxima de Deus e das suas metas, ou no que só o distrai.','Sl 90:12'),
+   ('Cuidar lo que entra en la mente','Cuidar do que entra na mente',
+    'Filipenses 4:8 nos da un buen filtro: todo lo verdadero, lo honesto, lo justo, lo puro, lo amable y lo de buen nombre, «en esto pensad». Lo que miramos y escuchamos durante horas forma nuestros pensamientos. Antes de seguir una cuenta o ver un video, podemos preguntarnos si pasa por este filtro.',
+    'Filipenses 4:8 nos dá um bom filtro: tudo o que é verdadeiro, respeitável, justo, puro, amável e de boa fama, “nisto pensai”. O que vemos e ouvimos durante horas forma os nossos pensamentos. Antes de seguir um perfil ou assistir a um vídeo, podemos perguntar se ele passa por esse filtro.','Fp 4:8'),
+   ('No dejarnos dominar','Não nos deixar dominar',
+    'Pablo dijo: «Todas las cosas me son lícitas, mas no todas convienen: todas las cosas me son lícitas, mas yo no me meteré debajo de potestad de nada». El celular no es malo en sí mismo, pero si no podemos soltarlo, ya nos está dominando. Ponerle horarios y límites es una forma práctica de mantener a Cristo como Señor.',
+    'Paulo disse: “Todas as coisas me são lícitas, mas nem todas as coisas convêm; todas as coisas me são lícitas, porém eu não deixarei me sujeitar por coisa alguma”. O celular não é mau em si mesmo, mas se não conseguimos largá-lo, ele já está nos dominando. Colocar horários e limites é uma forma prática de manter Cristo como Senhor.','1Co 6:12')],
+  [('¿Qué significa «redimir el tiempo» en la vida de un joven hoy?',
+    'O que significa “aproveitar o tempo” na vida de um jovem hoje?'),
+   ('¿Cuáles son los beneficios y los peligros de las redes sociales?',
+    'Quais são os benefícios e os perigos das redes sociais?'),
+   ('¿Cómo pueden las redes afectar nuestra paz, nuestro sueño y nuestra vida devocional?',
+    'Como as redes podem afetar a nossa paz, o nosso sono e a nossa vida devocional?'),
+   ('¿Qué contenido publicamos y qué dice eso de nuestra fe?',
+    'Que conteúdo publicamos e o que isso diz sobre a nossa fé?')],
+  ('Esta semana establezca un horario sin celular (por ejemplo, la primera media hora del día) y use ese tiempo para la oración y la Palabra.',
+   'Nesta semana estabeleça um horário sem celular (por exemplo, a primeira meia hora do dia) e use esse tempo para a oração e a Palavra.'),
+  'Sl 19:14',
+  ('Señor, enséñanos a contar nuestros días y a usar bien el tiempo que nos das. Que lo que vemos, escuchamos y publicamos sea agradable delante de Ti, y que nada nos domine sino Cristo. Amén.',
+   'Senhor, ensina-nos a contar os nossos dias e a usar bem o tempo que nos dás. Que o que vemos, ouvimos e publicamos seja agradável diante de ti, e que nada nos domine a não ser Cristo. Amém.'))
+
+L('Dn 1:8',
+  ('Firmes como Daniel','Firmes como Daniel'),
+  ('Inspirar a los jóvenes a mantenerse firmes en su fe aun cuando sean minoría o enfrenten presión.',
+   'Inspirar os jovens a permanecer firmes na fé mesmo quando forem minoria ou enfrentarem pressão.'),
+  ('¿Alguna vez sintieron presión para hacer algo que no querían solo para ser aceptados?',
+   'Alguma vez vocês sentiram pressão para fazer algo que não queriam só para serem aceitos?'),
+  ('Daniel era un joven llevado lejos de su tierra, a la corte del rey de Babilonia. Allí le cambiaron el nombre y le ofrecieron la comida del rey. Pero la Biblia dice que «Daniel propuso en su corazón de no contaminarse». Antes de la presión, ya había tomado una decisión. Y lo hizo con respeto, pidiendo permiso al jefe de los eunucos. Hoy los jóvenes también viven rodeados de presiones en el colegio, la facultad y el trabajo. Veremos cómo mantenerse firmes.',
+   'Daniel era um jovem levado para longe da sua terra, para a corte do rei da Babilônia. Ali mudaram o seu nome e lhe ofereceram a comida do rei. Mas a Bíblia diz que “Daniel propôs em seu coração de não se contaminar”. Antes da pressão, ele já tinha tomado uma decisão. E fez isso com respeito, fazendo um pedido ao chefe dos eunucos. Hoje os jovens também vivem cercados de pressões na escola, na faculdade e no trabalho. Veremos como permanecer firmes.'),
+  [('Fe que no se negocia','Fé que não se negocia',
+    'Los amigos de Daniel, frente al horno de fuego, dijeron al rey que Dios podía librarlos, «y si no», tampoco adorarían la estatua. Su fidelidad no dependía del resultado. Mantenerse firme es decidir obedecer a Dios aunque cueste, confiando en que él tiene la última palabra.',
+    'Os amigos de Daniel, diante da fornalha de fogo, disseram ao rei que Deus podia livrá-los, “e se não”, também não adorariam a estátua. A fidelidade deles não dependia do resultado. Permanecer firme é decidir obedecer a Deus mesmo que custe, confiando que ele tem a última palavra.','Dn 3:17-18'),
+   ('La fuerza viene del Señor','A força vem do Senhor',
+    'Pablo dice: «confortaos en el Señor, y en la potencia de su fortaleza. Vestíos de toda la armadura de Dios, para que podáis estar firmes contra las asechanzas del diablo». No nos mantenemos firmes por nuestra fuerza, sino por la de Dios. La oración, la Palabra, la fe y la comunión con la iglesia son parte de esa armadura.',
+    'Paulo diz: “fortalecei-vos no Senhor e na força do seu poder. Revesti-vos de toda a armadura de Deus, para que possais estar firmes contra as ciladas do diabo”. Não permanecemos firmes pela nossa força, mas pela força de Deus. A oração, a Palavra, a fé e a comunhão com a igreja fazem parte dessa armadura.','Ef 6:10-11'),
+   ('Con los ojos en Jesús','Com os olhos em Jesus',
+    'Hebreos 12:2 nos anima a poner los ojos en Jesús, el autor y consumador de la fe, que sufrió la cruz menospreciando la vergüenza. Cuando sentimos vergüenza por ser cristianos o miedo a quedar solos, miramos a Jesús, que soportó mucho más por nosotros. Él es nuestro ejemplo y nuestra fuerza para terminar bien la carrera.',
+    'Hebreus 12:2 nos anima a olhar para Jesus, autor e aperfeiçoador da fé, que suportou a cruz, desprezando a humilhação. Quando sentimos vergonha de ser cristãos ou medo de ficar sozinhos, olhamos para Jesus, que suportou muito mais por nós. Ele é o nosso exemplo e a nossa força para terminar bem a corrida.','Hb 12:2')],
+  [('¿Por qué es importante tomar decisiones antes de que llegue la presión?',
+    'Por que é importante tomar decisões antes que a pressão chegue?'),
+   ('¿Qué podemos aprender de la manera respetuosa en que Daniel actuó?',
+    'O que podemos aprender da maneira respeitosa como Daniel agiu?'),
+   ('¿Qué significa obedecer a Dios «y si no» llega el resultado que esperamos?',
+    'O que significa obedecer a Deus “e se não” vier o resultado que esperamos?'),
+   ('¿En qué situaciones sienten más presión para esconder su fe?',
+    'Em que situações vocês sentem mais pressão para esconder a sua fé?'),
+   ('Repasando esta serie, ¿qué decisión quieren tomar para vivir con propósito?',
+    'Olhando para esta série, que decisão vocês querem tomar para viver com propósito?')],
+  ('Escriba una decisión firme que quiere mantener delante de Dios (como Daniel «propuso en su corazón») y compártala con el grupo para que oren por usted.',
+   'Escreva uma decisão firme que você quer manter diante de Deus (como Daniel “propôs em seu coração”) e compartilhe com o grupo para que orem por você.'),
+  '1Co 16:13',
+  ('Señor, como Daniel, queremos proponer en nuestro corazón serte fieles. Fortalécenos con Tu poder, vístenos con Tu armadura y mantén nuestros ojos en Jesús, aunque seamos pocos. En Su nombre, amén.',
+   'Senhor, como Daniel, queremos propor em nosso coração ser fiéis a ti. Fortalece-nos com o teu poder, reveste-nos com a tua armadura e mantém os nossos olhos em Jesus, ainda que sejamos poucos. Em seu nome, amém.'))
 
 # ================================================================ validação e saída
 TU=re.compile(r'\b(tú|tu|tus|te|ti|contigo|tuyo|tuya|tuyos|tuyas|eres|tienes|puedes|quieres|sabes|estás|has|haz|debes|necesitas|vosotros)\b',re.I)
@@ -629,10 +824,13 @@ QUOTE=re.compile(r'«[^»]*»')
 KEYS='carater igreja vitoria jovens'.split()
 def nw(s):return len(s.split())
 def main():
-    err=[];warn=[];refs=[];bases={}
+    err=[];refs=[];bases={}
     for o in SER:
         for t in (o['n'],o['d']):
             if len(t)!=2 or not all(x.strip() for x in t):err.append(o['k']+': nome/descrição incompletos')
+        for t in (o['n'][0],o['d'][0]):
+            m=TU.search(t)
+            if m:err.append(o['k']+': forma de "tú" em ES: %r'%m.group(0))
         if len(o['l'])!=6:err.append('%s: %d lições'%(o['k'],len(o['l'])))
         for i,l in enumerate(o['l']):
             w='%s#%d'%(o['k'],i+1)
@@ -646,12 +844,12 @@ def main():
             pares=[l['t'],l['obj'],l['gelo'],l['intro'],l['apl'],l['or']]+[p['t'] for p in l['pts']]+[p['x'] for p in l['pts']]+l['perg']
             for t in pares:
                 if len(t)!=2 or not all(isinstance(x,str) and x.strip() for x in t):err.append(w+': par ES/PT incompleto: %r'%(t,))
-            # tamanhos
+            # tamanhos (palavras)
             for k,lo,hi in (('intro',60,100),('or',20,40)):
-                for n,x in zip('ES PT'.split(),l[k]):
+                for n,x in zip(('ES','PT'),l[k]):
                     if not lo<=nw(x)<=hi:err.append('%s %s %s: %d palavras (%d-%d)'%(w,k,n,nw(x),lo,hi))
             for j,p in enumerate(l['pts']):
-                for n,x in zip('ES PT'.split(),p['x']):
+                for n,x in zip(('ES','PT'),p['x']):
                     if not 40<=nw(x)<=80:err.append('%s p%d %s: %d palavras (40-80)'%(w,j+1,n,nw(x)))
             # ES: sem formas de "tú" fora de citações «...»
             es=[l['t'][0],l['obj'][0],l['gelo'][0],l['intro'][0],l['apl'][0]]+[p['t'][0] for p in l['pts']]+[p['x'][0] for p in l['pts']]+[q[0] for q in l['perg']]
@@ -661,7 +859,7 @@ def main():
             m=TU_CS.search(QUOTE.sub('',l['or'][0]))
             if m:err.append(w+': pronome de Deus em minúscula na oração ES: %r'%m.group(0))
             # PT: citações em aspas curvas, não «»
-            for x in [l['intro'][1]]+[p['x'][1] for p in l['pts']]:
+            for x in [l['intro'][1],l['apl'][1]]+[p['x'][1] for p in l['pts']]+[q[1] for q in l['perg']]:
                 if '«' in x or '»' in x:err.append(w+': «» em PT')
     if [o['k'] for o in SER]!=KEYS:err.append('ordem/chaves das séries diferente do pedido')
     for w,r in refs:
