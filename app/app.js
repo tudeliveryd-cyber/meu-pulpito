@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v156';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v157';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -3038,7 +3038,7 @@ async function vdOpen(text){
      <div class="vr-adj"><span>${esc(t('vd_size'))}</span><div class="row"><button class="vr-ib sm" data-v="fs-" aria-label="A−">A−</button><button class="vr-ib sm" data-v="fs+" aria-label="A+">A+</button></div></div></div>
    <p class="vr-hint">${esc(CH.length?t('vd_tap'):t('vd_notext'))}</p>`;
   document.body.appendChild(ov);document.documentElement.classList.add('vr-on');
-  const cam=$('.vr-cam',ov),pr=$('.vr-pr',ov),tx=$('.vr-tx',ov),tm=$('.vr-tm',ov),cd=$('.vr-cd',ov),capEl=$('.vr-cap',ov);const spans=$$('.vr-c',ov);let cur=0,cv=null,cx=null,drawT=0;
+  const cam=$('.vr-cam',ov),pr=$('.vr-pr',ov),tx=$('.vr-tx',ov),tm=$('.vr-tm',ov),cd=$('.vr-cd',ov),capEl=$('.vr-cap',ov);const spans=$$('.vr-c',ov);let cur=0,cv=null,cx=null,drawT=0,actx=null,asrc=null;
   if(!CH.length)pr.hidden=true;
   let stream=null,mr=null,chunks=[],t0=0,tick=0,raf=0,y=0,paused=false,last=0,wake=null,busy=false,url='';
   const save=()=>{const p=ls.get('mp.vd',{});p.fs=P.fs;p.sp=P.sp;p.face=P.face;if(CH.length)p.cc=P.cc;ls.set('mp.vd',p)};
@@ -3052,14 +3052,17 @@ async function vdOpen(text){
     catch(e){toast(t('vd_perm'));close();return false}if(!ov.isConnected){stopCam();return false}cam.srcObject=stream;try{await cam.play()}catch(e){}return true}
   const scroll=ts=>{if(!last)last=ts;const dt=(ts-last)/1000;last=ts;if(!paused){y+=P.sp*14*dt;const mx=Math.max(0,tx.scrollHeight-pr.clientHeight*0.5);if(y>mx)y=mx;tx.style.transform=`translateY(${-y}px)`;readAt()}raf=requestAnimationFrame(scroll)};
   const fmt=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
-  function close(){cancelAnimationFrame(raf);cancelAnimationFrame(drawT);clearInterval(tick);if(mr){mr.onstop=null;try{if(mr.state!=='inactive')mr.stop()}catch(e){}}stopCam();if(url)URL.revokeObjectURL(url);try{wake&&wake.release()}catch(e){}
+  function close(){cancelAnimationFrame(raf);cancelAnimationFrame(drawT);clearInterval(tick);try{if(asrc)asrc.disconnect();if(actx)actx.close()}catch(e){}if(mr){mr.onstop=null;try{if(mr.state!=='inactive')mr.stop()}catch(e){}}stopCam();if(url)URL.revokeObjectURL(url);try{wake&&wake.release()}catch(e){}
     ov.remove();document.documentElement.classList.remove('vr-on')}
   async function rec(){if(busy||!stream)return;busy=true;
     for(const n of [3,2,1]){cd.hidden=false;cd.textContent=n;await new Promise(r=>setTimeout(r,800));if(!ov.isConnected)return}cd.hidden=true;
     const mime=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9,opus','video/webm'].find(m=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(m))||'';
     let rs=stream;cur=0;spans.forEach((x,i)=>x.classList.toggle('on',!i));showCap();
     if(P.cc&&CH.length){const w=cam.videoWidth||1080,h=cam.videoHeight||1920;cv=document.createElement('canvas');cv.width=w;cv.height=h;cx=cv.getContext('2d');
-      if(cv.captureStream){const draw=()=>{vdFrame(cx,cam,w,h,CH[cur].t);drawT=requestAnimationFrame(draw)};draw();rs=new MediaStream([...cv.captureStream(30).getVideoTracks(),...stream.getAudioTracks()])}else{toast(t('vd_cc_no'));cv=null}}
+      if(cv.captureStream){const draw=()=>{vdFrame(cx,cam,w,h,CH[cur].t);drawT=requestAnimationFrame(draw)};draw();
+        // Safari (iPhone) perde o áudio ao juntar vídeo do canvas com o microfone; passar o áudio pelo Web Audio resolve
+        let aud=stream.getAudioTracks();try{const AC=window.AudioContext||window.webkitAudioContext;if(AC&&aud.length){actx=actx||new AC();if(actx.state==='suspended')await actx.resume();const src=actx.createMediaStreamSource(new MediaStream(aud));const dst=actx.createMediaStreamDestination();src.connect(dst);aud=dst.stream.getAudioTracks();asrc=src}}catch(e){}
+        rs=new MediaStream([...cv.captureStream(30).getVideoTracks(),...aud])}else{toast(t('vd_cc_no'));cv=null}}
     try{mr=new MediaRecorder(rs,Object.assign({videoBitsPerSecond:4e6},mime?{mimeType:mime}:{}))}catch(e){cancelAnimationFrame(drawT);busy=false;toast(t('vd_nosup'));return}
     chunks=[];mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};mr.onstop=done;mr.start(1000);
     try{wake=await navigator.wakeLock?.request('screen')}catch(e){}
