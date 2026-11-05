@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v167';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v168';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1274,7 +1274,7 @@ function projBase(){const c=projCfg();let ig={};try{if(typeof IGR!=='undefined'&
   return{uid:authU.uid,ig:!!planNow().igreja,ch:String(c.ch||pubCfg().ch||ig.n||'').trim().slice(0,80),sub:String(c.sub||'').trim().slice(0,80),logo:(c.logo&&c.logo.length<90000)?c.logo:'',lang:prefs.ui==='pt'?'pt':'es',at:Date.now()}}
 function projEnsure(){if(!authU||localMode)return Promise.resolve(null);let c=meta.proj||{};if(!c.pid){c=Object.assign({},c,{pid:projCode()});meta.proj=c;putMeta();
     const d=projDoc();return d.set(Object.assign(projBase(),{now:{type:'logo'},cfg:{fs:1,bg:'b'}})).then(()=>d)}
-  const d=projDoc();return d.set(projBase(),{merge:true}).then(()=>d).catch(()=>d)}
+  const d=projDoc();let fix={};try{fix={live:firebase.firestore.FieldValue.delete()}}catch(e){}return d.set(Object.assign(projBase(),fix),{merge:true}).then(()=>d).catch(()=>d)}
 function projRenew(){const old=projDoc();const oldPid=projCfg().pid;meta.proj=Object.assign({},meta.proj,{pid:projCode()});putMeta();
   const d=projDoc();const base=Object.assign(projBase(),{now:{type:'logo'},cfg:{fs:1,bg:'b'}});
   const p=d.set(base).then(()=>{if(!old)return;return old.collection('itens').get().then(s=>Promise.all(s.docs.map(x=>d.collection('itens').doc(x.id).set(x.data()).then(()=>x.ref.delete().catch(()=>{}))))).then(()=>old.delete().catch(()=>{}))}).catch(()=>{});

@@ -144,7 +144,7 @@ function startCtl(){MODE='ctl';TAB='b';CFG=Object.assign({fs:1,bg:'b',serif:fals
   UN.push(roomRef().onSnapshot(d=>{if(!d.exists)return;ROOM=d.data();drawNow()},()=>{}));
   UN.push(roomRef().collection('itens').onSnapshot(s=>{ITEMS=s.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>(a.at||0)-(b.at||0));if(['h','i','a','s','g'].includes(TAB))drawTab()},()=>{}));
   MPB.load(BV).catch(()=>{});draw()}
-function setNow(now,label){const n=Object.assign({},now,{at:Date.now()});roomRef().set({now:n,at:Date.now()},{merge:true}).then(()=>toast(t('sent'))).catch(()=>toast(t('offline')));ROOM=Object.assign({},ROOM,{now:n});drawNow()}
+function setNow(now,label){const n=Object.assign({},now,{at:Date.now()});roomRef().set({now:n,at:Date.now()},{merge:true}).then(()=>toast(t('sent'))).catch(e=>toast(t('offline')+(e&&e.code?' ('+e.code+')':'')));ROOM=Object.assign({},ROOM,{now:n});drawNow()}
 function saveCfg(){roomRef().set({cfg:CFG},{merge:true}).catch(()=>{})}
 function draw(){const tabs=[['b','tab_b'],['h','tab_h'],['i','tab_i'],['a','tab_a'],['s','tab_s'],['c','tab_c']];
   const nowbox=`<div class="nowbox"><div class="tx"><small>${esc(t('now'))}</small><b class="nowT"></b></div><button class="btn sm ghost" data-now="logo">${esc(t('logo'))}</button><button class="btn sm ghost" data-now="blank">${esc(t('blank'))}</button></div>`;
