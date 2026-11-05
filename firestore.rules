@@ -12,7 +12,7 @@ service cloud.firestore {
     }
     // Estadísticas (solo números): cada uno escribe la suya; solo el administrador las lee.
     match /stats/{uid} {
-      allow read: if isAdmin();
+      allow read, delete: if isAdmin();
       allow write: if request.auth != null && request.auth.uid == uid;
     }
     // Plan y acceso de cada cuenta: el pastor solo lo lee; solo el administrador lo cambia.

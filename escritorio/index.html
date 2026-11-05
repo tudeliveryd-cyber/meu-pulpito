@@ -139,7 +139,7 @@ function drawTabs(){const u=unread(),dp=D.depo.filter(x=>x.ok&&!x.pub).length;$(
 async function get(c){try{const q=await db.collection(c).get();return q.docs.map(d=>Object.assign({id:d.id},d.data()))}catch(e){return null}}
 async function load(){const [st,pl,ro,de,su,co,cf]=await Promise.all(['stats','planos','roleta','depo','suporte','contato','config'].map(get));
   if(!st){$('#main').innerHTML='<div class="empty">Não foi possível carregar. Verifique a internet e toque em atualizar.</div>';return}
-  D.stats=st;D.planos={};(pl||[]).forEach(p=>D.planos[p.id]=p);D.roleta={};(ro||[]).forEach(r=>D.roleta[r.id]=r);D.depo=(de||[]).sort((a,b)=>(b.at||0)-(a.at||0));
+  D.planos={};(pl||[]).forEach(p=>D.planos[p.id]=p);D.stats=st.filter(r=>!(D.planos[r.id]||{}).deleted);D.roleta={};(ro||[]).forEach(r=>D.roleta[r.id]=r);D.depo=(de||[]).sort((a,b)=>(b.at||0)-(a.at||0));
   D.suporte=(su||[]).sort((a,b)=>(b.at||0)-(a.at||0));D.contato=(co||[]).sort((a,b)=>(b.at||0)-(a.at||0));D.rules=!!su;
   D.cfg={};D.site={};(cf||[]).forEach(c=>{if(c.id==='app')D.cfg=c;if(c.id==='site')D.site=c;if(c.id==='payqr')D.payqr=c});
   live();try{const v=await db.collection('siteStats').doc(today()).get();D.visits=v.exists?v.data():{}}catch(e){D.visits=null}
@@ -175,7 +175,7 @@ const SECN={home:'Início',list:'Sermões',bible:'Bíblia',dic:'Dicionários',ag
 const isOn=r=>(r.email||'')!==ADMIN&&Date.now()-(+r.on||0)<5*6e4;
 const agoMin=ts=>{const m=Math.floor((Date.now()-(+ts||0))/6e4);return m<1?'agora mesmo':'há '+m+' min'};
 const dayStart=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
-let LIVE=null,LIVEt=0;function live(){if(LIVE)return;try{LIVE=db.collection('stats').onSnapshot(q=>{D.stats=q.docs.map(d=>Object.assign({id:d.id},d.data()));clearTimeout(LIVEt);LIVEt=setTimeout(()=>{if(TAB==='resumo'||TAB==='pastores')draw()},800)},()=>{})}catch(x){}}
+let LIVE=null,LIVEt=0;function live(){if(LIVE)return;try{LIVE=db.collection('stats').onSnapshot(q=>{D.stats=q.docs.map(d=>Object.assign({id:d.id},d.data())).filter(r=>!(D.planos[r.id]||{}).deleted);clearTimeout(LIVEt);LIVEt=setTimeout(()=>{if(TAB==='resumo'||TAB==='pastores')draw()},800)},()=>{})}catch(x){}}
 setInterval(()=>{if(TAB==='resumo')draw()},60e3);
 function vResumo(){const n=Date.now(),S=D.stats,cnt={pago:0,carencia:0,teste:0,vencido:0,gratis:0};S.forEach(r=>cnt[state(r)]++);
   const pays=allPays(),mk=monthKey(n),pm=new Date(n);pm.setMonth(pm.getMonth()-1);const pk=monthKey(pm.getTime());
@@ -246,13 +246,18 @@ function vPastores(m){const n=Date.now();
       <span class="s">${isOn(r)?'<b style="color:#2E9D63">● online</b> · ':''}${r.sermons||0} sermões · visto ${esc(rel(r.seen))} · desde ${esc(fmtD(r.created))} · ${esc((r.lang||'').toUpperCase())}</span>
       <span class="tags">${pend(r)?'<span class="tag warn">Aguardando liberação</span>':''}${p.blocked?'<span class="tag bad">Bloqueado</span>':''}<span class="tag ${c}">${l}${s==='pago'||s==='carencia'||s==='vencido'?' · '+PNAME[p.plan]+' até '+fmtD(p.until):s==='teste'?' até '+fmtD(p.trial):''}</span>${rl&&!realPays(r.id).length?`<span class="tag gold">Roleta: ${rl.p}% na 1ª compra</span>`:''}${r.ref?`<span class="tag">Indicado por ${esc(byName((D.stats.find(x=>x.id.slice(0,8)===r.ref)||{}).id||r.ref))}</span>`:''}</span>
       <span class="btns"><button class="btn gold" data-pay="${esc(r.id)}">${ic('cash')}Registrar pagamento</button><button class="btn ghost" data-trial="${esc(r.id)}">Dar teste</button>
-       ${(r.email||'')===ADMIN?'':pend(r)||p.blocked?`<button class="btn dark" data-ok="${esc(r.id)}">${ic('check')}Liberar</button>`:`<button class="btn red" data-blk="${esc(r.id)}">Bloquear</button>`}
+       ${(r.email||'')===ADMIN?'':(pend(r)||p.blocked?`<button class="btn dark" data-ok="${esc(r.id)}">${ic('check')}Liberar</button>`:'')+(p.blocked?'':`<button class="btn red" data-blk="${esc(r.id)}">Bloquear</button>`)+`<button class="btn ghost" data-del="${esc(r.id)}" style="color:#B42318">${ic('trash')}Excluir</button>`}
        ${waNum(r.wa)?`<a class="btn ${p.welSent?'ghost':'dark'}" target="_blank" rel="noopener" data-wel="${esc(r.id)}" href="https://wa.me/${waNum(r.wa)}?text=${encodeURIComponent(welMsg(r))}">${ic(p.welSent?'check':'chat')}${p.welSent?'Boas-vindas enviadas':'Enviar boas-vindas'}</a><a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/${waNum(r.wa)}">${ic('chat')}WhatsApp</a>`:''}</span></span></div>`}).join(''):'<div class="empty">Nenhum pastor encontrado.</div>'}</div></div>`;
   const q=$('#q',m);q.oninput=()=>{Q=q.value;const p=q.selectionStart;vPastores(m);const n2=$('#q',m);n2.focus();n2.setSelectionRange(p,p)};$('#f',m).onchange=e=>{F=e.target.value;vPastores(m)};
   m.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>payForm(b.dataset.pay));
   m.querySelectorAll('[data-trial]').forEach(b=>b.onclick=()=>trialForm(b.dataset.trial));
   m.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>setPlan(b.dataset.ok,{ok:true,blocked:false}));
   m.querySelectorAll('[data-blk]').forEach(b=>b.onclick=()=>{if(sure(b))setPlan(b.dataset.blk,{blocked:true,ok:false})});
+  m.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!sure(b,'Excluir? Toque de novo'))return;const uid=b.dataset.del;b.disabled=true;
+    try{await db.collection('planos').doc(uid).set({blocked:true,ok:false,deleted:true,delAt:Date.now(),updated:Date.now()},{merge:true});
+      for(const c of ['stats','depo','roleta','suporte','pub']){try{await db.collection(c).doc(uid).delete()}catch(e){}}
+      D.planos[uid]=Object.assign({},P(uid),{blocked:true,ok:false,deleted:true});D.stats=D.stats.filter(r=>r.id!==uid);D.depo=D.depo.filter(x=>x.id!==uid);delete D.roleta[uid];toast('Conta excluída do Escritório e acesso bloqueado');draw()}
+    catch(e){b.disabled=false;toast('Não foi possível excluir')}});
   m.querySelectorAll('[data-wel]').forEach(b=>b.addEventListener('click',()=>{const u=b.dataset.wel;db.collection('planos').doc(u).set({welSent:Date.now()},{merge:true}).then(()=>{D.planos[u]=Object.assign({},P(u),{welSent:Date.now()});setTimeout(draw,600)}).catch(()=>{})}))}
 async function setPlan(uid,d,msg){try{await db.collection('planos').doc(uid).set(Object.assign({updated:Date.now()},d),{merge:true});D.planos[uid]=Object.assign({},P(uid),d);toast(msg||'Salvo');draw()}catch(e){toast('Não foi possível salvar')}}
 function payForm(uid){const p=P(uid),rl=D.roleta[uid],first=!realPays(uid).length,disc=rl&&first?+rl.p:0;let k=PMON[p.plan]?p.plan:'m';
