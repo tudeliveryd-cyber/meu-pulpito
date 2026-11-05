@@ -18,8 +18,9 @@ if all(os.path.exists(os.path.join(D,'licoes-%d.json'%i)) for i in (1,2)):
         for x in s['l']:assert set(x)>={'t','v','obj','gelo','intro','pts','perg','apl','mem','or'},s['k']
     json.dump({'series':S},open(os.path.join(B,'licoes.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
     print('licoes',len(S),'series',sum(len(s['l']) for s in S),'licoes')
-if all(os.path.exists(os.path.join(D,'ilustracoes-%d.json'%i)) for i in (1,2)):
-    I=[];[I.extend(json.load(open(os.path.join(D,'ilustracoes-%d.json'%i)))['il']) for i in (1,2)]
+ILP=[i for i in range(1,10) if os.path.exists(os.path.join(D,'ilustracoes-%d.json'%i))]
+if len(ILP)>=2:
+    I=[];[I.extend(json.load(open(os.path.join(D,'ilustracoes-%d.json'%i)))['il']) for i in ILP]
     ks=[x['k'] for x in I];assert len(ks)==len(set(ks))
     for x in I:assert x['tipo'] in ('comparacao','cotidiano','natureza','biblica') and all(len(x[k])==2 and all(x[k]) for k in ('t','x','ap')) and 1<=len(x['v'])<=3,x['k']
     json.dump({'il':I},open(os.path.join(B,'ilustracoes.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
