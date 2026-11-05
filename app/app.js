@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v155';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v156';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -3048,7 +3048,7 @@ async function vdOpen(text){
   const readAt=()=>{const line=y+pr.clientHeight*0.28+P.fs*0.7;let i=cur;while(i+1<spans.length&&spans[i+1].offsetTop<=line)i++;while(i>0&&spans[i].offsetTop>line)i--;
     if(i!==cur){spans[cur]&&spans[cur].classList.remove('on');cur=i;spans[cur].classList.add('on');showCap()}};style();
   const stopCam=()=>{if(stream)stream.getTracks().forEach(x=>x.stop());stream=null};
-  async function start(){stopCam();try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:P.face,width:{ideal:1080},height:{ideal:1920}},audio:{echoCancellation:true,noiseSuppression:true}})}
+  async function start(){stopCam();try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:P.face,width:{ideal:1920},height:{ideal:1080},aspectRatio:{ideal:16/9}},audio:{echoCancellation:true,noiseSuppression:true}})}
     catch(e){toast(t('vd_perm'));close();return false}if(!ov.isConnected){stopCam();return false}cam.srcObject=stream;try{await cam.play()}catch(e){}return true}
   const scroll=ts=>{if(!last)last=ts;const dt=(ts-last)/1000;last=ts;if(!paused){y+=P.sp*14*dt;const mx=Math.max(0,tx.scrollHeight-pr.clientHeight*0.5);if(y>mx)y=mx;tx.style.transform=`translateY(${-y}px)`;readAt()}raf=requestAnimationFrame(scroll)};
   const fmt=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
