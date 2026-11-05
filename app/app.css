@@ -997,3 +997,5 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .lt-f{margin-top:34px;padding-top:8px;border-top:2px solid #0F1B33;display:flex;justify-content:space-between;gap:10px;font-family:var(--ui,Inter,sans-serif);font-size:10.5px;color:#5B6475;flex-wrap:wrap}
 .lt-photo{float:right;width:82px;height:104px;border:1.5px dashed #9AA3B2;display:grid;place-items:center;font-family:var(--ui,Inter,sans-serif);font-size:10px;color:#9AA3B2;margin:0 0 10px 14px}
 @media print{#printArea.pm-ig .lt-band{margin:0 0 18pt;height:7pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}#printArea.pm-ig .lt,#printArea.pm-ig .lt *{-webkit-print-color-adjust:exact;print-color-adjust:exact}#printArea.pm-ig .lt-h b{font-size:16pt!important}#printArea.pm-ig .lt h1{font-size:17pt!important}#printArea.pm-ig .lt-photo{width:3cm;height:4cm}}
+
+.nav-brand .wordmark{display:flex;flex-direction:column;gap:5px;line-height:1}.nav-brand .wordmark .nb-tag{flex-basis:auto}
