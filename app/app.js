@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v123';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v124';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1790,7 +1790,7 @@ async function dvImage(n,fmt){const L=lxLang(),l=mL();const e=MIN.dv&&MIN.dv.e[n
   const fy=H-(fmt==='st'?170:110);c.fillStyle='rgba(255,255,255,.12)';c.fillRect(M,fy-56,W-2*M,2);
   try{const mk=await loadImg('mark.png');const mh=86,mw=mk.width*mh/mk.height;c.drawImage(mk,M,fy-20,mw,mh);
     c.font="800 40px Manrope, Inter, sans-serif";c.fillStyle='#fff';c.fillText('MEU',M+mw+22,fy+30);const w1=c.measureText('MEU ').width;c.fillStyle=gold;c.fillText('PÚLPITO',M+mw+22+w1,fy+30);
-    c.fillStyle='rgba(255,255,255,.6)';c.font="600 26px Inter, sans-serif";c.fillText('meupulpito.com',M+mw+22,fy+68)}catch(x){c.fillStyle='#fff';c.font="800 40px Manrope, sans-serif";c.fillText('MEU PÚLPITO · meupulpito.com',M,fy+40)}
+    c.fillStyle='#D6AD55';c.font="700 32px Inter, sans-serif";c.fillText('meupulpito.com',M+mw+22,fy+72)}catch(x){c.fillStyle='#fff';c.font="800 40px Manrope, sans-serif";c.fillText('MEU PÚLPITO · meupulpito.com',M,fy+40)}
   const blob=await new Promise(ok=>cv.toBlob(ok,'image/png'));const name=`devocional-${n}-${fmt==='st'?'status':'instagram'}.png`;const file=new File([blob],name,{type:'image/png'});
   if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:e.t[l]+' — meupulpito.com'})}catch(x){}return}
   const url=URL.createObjectURL(blob);const sh=openSheet(`<h3>${esc(t('dv_img_t'))}</h3><img src="${url}" alt="" style="width:100%;border-radius:14px"><p class="sub" style="margin:0;font-size:13px">${esc(t('dv_img_save'))}</p><a class="btn gold block" href="${url}" download="${name}">${ic('dl')}${esc(t('dv_img_dl'))}</a><button class="btn ghost block" data-act="sheetClose">${esc(t('close'))}</button>`)}
