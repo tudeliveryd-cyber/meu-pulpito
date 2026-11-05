@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <!-- Google Analytics (visitas en tiempo real). No cuenta al administrador ni pruebas locales. -->
+<script>/* ao atualizar a página, volta para o começo (links com # como /#planes continuam indo direto para a seção) */
+(function(){try{if('scrollRestoration' in history)history.scrollRestoration='manual';var n=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];var re=n&&n.type==='reload';
+if(re&&location.hash)history.replaceState(null,'',location.pathname+location.search);
+if(re||!location.hash){window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0)})}}catch(e){}})();</script>
 <script>(function(){try{var r=new URLSearchParams(location.search).get('r');if(r&&/^[A-Za-z0-9]{6,12}$/.test(r)){localStorage.setItem('mp.ref',JSON.stringify({c:r,at:Date.now()}));history.replaceState(null,'',location.pathname+location.hash)}}catch(e){}})();</script>
 <script>
 (function(){try{if(localStorage.getItem('mp.adm')==='1'||!/meupulpito\.com$/.test(location.hostname))return}catch(e){}
