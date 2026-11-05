@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v137';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v138';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1463,7 +1463,7 @@ function startCloud(u){authU=u;localMode=false;loadLocal();
       add(sermons,'s');add(notes,'n');add(agenda,'a');
       const om=ls.get(K.m+'.'+old,null);if(om&&!meta.updated){meta=om;fixMeta()}});
     cacheAll()}
-const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setTimeout(()=>MC.load(),3000);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin&&!(authU&&freshAccount(authU)))setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();waCheck();depoCheck();rolCheck();
+const anon=['s','n','a'].map(k=>(ls.get(K[k],[])||[]).filter(x=>x&&x.id&&!x.deleted));let migrated=false;ready=true;view.tab='home';go('home');setTimeout(pwaShortcut,400);setTimeout(()=>MC.load(),3000);setSync(false,'sync_conn');if(!ls.get('mp.onb',0))setTimeout(()=>{if(!blocked&&!$('.ov')&&!E)onboarding()},900);else if(window.__fromLogin&&!(authU&&freshAccount(authU)))setTimeout(()=>{if(!blocked)toast(t('wb_back',{n:(meta.name||'').trim()||t('pastor')}))},700);window.__fromLogin=false;newsCheck();waCheck();depoCheck();chCheck();rolCheck();
   const db=firebase.firestore();
   const P=[()=>({s:db.collection('pulpito').doc(u.uid).collection('sermoes'),a:db.collection('pulpito').doc(u.uid).collection('agenda'),n:db.collection('pulpito').doc(u.uid).collection('notas'),m:db.collection('pulpito').doc(u.uid).collection('meta').doc('main')}),
            ()=>({s:db.collection('empresa').doc('pulpito').collection(u.uid),a:db.collection('empresa').doc('pulpito').collection(u.uid+'_agenda'),n:db.collection('empresa').doc('pulpito').collection(u.uid+'_notas'),m:db.collection('empresa').doc('pulpito').collection(u.uid+'_meta').doc('main')})];
@@ -1496,7 +1496,7 @@ function ensureFb(){if(fbReady())return Promise.resolve(true);if(fbWait)return f
       firebase.auth().onAuthStateChanged(u=>{if(u&&!authU){localMode=false;ls.set('pulpito.local',false);startCloud(u)}});return true}
     catch(e){fbWait=null;return false}})();return fbWait}
 async function toLogin(){ls.set('pulpito.local',false);localMode=false;showLogin()}
-function startLocal(){localMode=true;ls.set('pulpito.local',true);unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;authU=null;loadLocal();ready=true;setSync(false,'sync_local');go(view.tab||'home')}
+function startLocal(){localMode=true;ls.set('pulpito.local',true);unsubs.forEach(f=>{try{f()}catch(e){}});unsubs=[];cols=null;authU=null;loadLocal();ready=true;setSync(false,'sync_local');go(view.tab||'home');chCheck()}
 function anyShown(){return !!$('#app').firstElementChild}
 function fallback(){if(anyShown())return;showLogin()}
 function initStore(){
@@ -2656,6 +2656,20 @@ function depoSheet(auto){if(localMode||!authU){toLogin();return}let sent=false;
     const b=$('#dpGo',sh);b.disabled=true;
     try{await firebase.firestore().collection('depo').doc(authU.uid).set({q:q.slice(0,600),n:n.slice(0,80),r:$('#dpR',sh).value.trim().slice(0,120),ok:$('#dpOk',sh).checked,lang:prefs.ui==='pt'?'pt':'es',email:(authU.email||'').toLowerCase().slice(0,120),at:Date.now()});
       sent=true;meta.dep=Date.now();putMeta();closeSheet();toast(t('dp_thx'))}catch(e){b.disabled=false;toast(t('dp_err'))}}}
+/* convite para o canal oficial no WhatsApp: aparece no Início, uma vez (e no máximo mais uma, 7 dias depois de «Agora não») */
+const CH_URL='https://whatsapp.com/channel/0029Vb9d3dXFHWpvOk3CTm3J';
+function chCheck(){if(chCheck._t)return;let n=0;chCheck._t=setInterval(()=>{if(++n>60){clearInterval(chCheck._t);return}
+  if(ls.get('mp.ch.ok',0)||(ls.get('mp.ch.n',0)||0)>=2){clearInterval(chCheck._t);return}const later=ls.get('mp.ch.later',0);if(later&&Date.now()-later<7*864e5){clearInterval(chCheck._t);return}
+  if(n<4||!ready||blocked||E||!ls.get('mp.onb',0)||$('.ov')||view.tab!=='home'||view.overlay)return;
+  clearInterval(chCheck._t);chSheet()},4000)}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(a&&a.href===CH_URL)ls.set('mp.ch.ok',1)});
+function chSheet(){ls.set('mp.ch.n',(ls.get('mp.ch.n',0)||0)+1);
+  const sh=openSheet(`<div class="pk"><span class="pk-ic">${ic('chat')}</span><h3>${esc(t('chi_t'))}</h3><p>${esc(t('chi_d'))}</p>
+    <ul class="pl-f" style="align-self:stretch;text-align:left">${['chi_1','chi_2','chi_3'].map(k=>`<li>${ic('check')}<span>${esc(t(k))}</span></li>`).join('')}</ul>
+    <a class="btn gold block" id="chGo" href="${CH_URL}" target="_blank" rel="noopener">${ic('chat')}${esc(t('chi_go'))}</a><button class="btn ghost block" id="chNo">${esc(t('chi_no'))}</button></div>`);
+  $('#chGo',sh).onclick=()=>{ls.set('mp.ch.ok',1);setTimeout(()=>closeSheet(),300)};$('#chNo',sh).onclick=()=>{ls.set('mp.ch.later',Date.now());closeSheet()}}
+Object.assign(I18N.es,{chi_t:'Siga el canal oficial',chi_d:'Reciba en su WhatsApp, gratis, lo mejor de Meu Púlpito para su ministerio.',chi_1:'El devocional de cada día',chi_2:'Consejos para preparar y predicar',chi_3:'Novedades y promociones de la app',chi_go:'Entrar al canal',chi_no:'Ahora no'});
+Object.assign(I18N.pt,{chi_t:'Siga o canal oficial',chi_d:'Receba no seu WhatsApp, grátis, o melhor do Meu Púlpito para o seu ministério.',chi_1:'O devocional de cada dia',chi_2:'Dicas para preparar e pregar',chi_3:'Novidades e promoções do app',chi_go:'Entrar no canal',chi_no:'Agora não'});
 function depoCheck(){if(depoCheck._t)return;let n=0;depoCheck._t=setInterval(()=>{if(++n>40){clearInterval(depoCheck._t);return}
   if(!ready||blocked||E||!authU||localMode)return;
   const later=ls.get('mp.dep.later',0);
