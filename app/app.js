@@ -1268,7 +1268,8 @@ function planContact(k,loaded){if(!loaded&&!PAYQR)return payQrLoad(()=>planConta
   if(C.tigo)secs.push(['tigo',`<div class="py-c"><div class="py-h">${ic('phone')}<b>${esc(t('py_tigo'))}</b><span class="py-v">${esc(money(x.pyg,'pyg'))}</span></div><p class="sub" style="margin:0;font-size:13px;line-height:1.45">${esc(t('py_tigo_d'))}</p>
     ${row(t('py_num'),C.tigo.num,C.tigo.num.replace(/\D/g,''))}${row(t('py_holder'),C.tigo.name,0)}${row(t('py_doc'),C.tigo.doc,1)}</div>`]);
   const qrBox=(img,v)=>`<div class="py-c"><div class="py-h">${ic('qr')}<b>${esc(t('py_qr'))}</b><span class="py-v">${esc(v)}</span></div><img class="py-qr" src="${img}" alt="QR" width="220" height="220"><p class="sub" style="margin:0;font-size:12.5px;line-height:1.45">${esc(t('py_qr_d'))}</p><a class="btn sm ghost" href="${img}" download="qr-meupulpito.png">${ic('dl')}${esc(t('py_qr_save'))}</a></div>`;
-  if(C.qrPy)secs.push(['qrpy',qrBox(C.qrPy,money(x.pyg,'pyg'))]);
+  const qp=(PAYQR&&/^data:image\/(png|jpeg|webp);base64,/.test(PAYQR['py_'+k]||'')&&PAYQR['py_'+k].length<200000)?PAYQR['py_'+k]:C.qrPy;
+  if(qp)secs.push(['qrpy',qrBox(qp,money(x.pyg,'pyg'))]);
   if(C.qrBr)secs.push(['qrbr',qrBox(C.qrBr,money(x.brl,'brl'))]);
   if(C.pix)secs.push(['pix',`<div class="py-c"><div class="py-h">${ic('copy')}<b>Pix</b><span class="py-v">${esc(money(x.brl,'brl'))}</span></div>
     ${row(t('py_pixkey'),C.pix.key,/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(C.pix.key)?C.pix.key.replace(/\D/g,''):1)}${row(t('py_holder'),C.pix.name,0)}${row(t('py_bank'),C.pix.bank,0)}${row(t('py_cur'),'Real (R$)',0)}</div>`]);
