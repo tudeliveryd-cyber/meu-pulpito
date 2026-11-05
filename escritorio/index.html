@@ -136,9 +136,11 @@ const TABS=[['resumo','home','Resumo'],['atend','chat','Atendimento'],['pastores
 function unread(){return D.suporte.reduce((s,x)=>s+(+x.ua||0),0)+D.contato.filter(x=>!x.done).length}
 function drawTabs(){const u=unread(),dp=D.depo.filter(x=>x.ok&&!x.pub).length;$('#tabs').innerHTML=TABS.map(([k,i,l])=>`<button data-t="${k}" aria-pressed="${TAB===k}">${ic(i)}${l}${k==='atend'&&u?` <span class="bdg">${u}</span>`:''}${k==='dep'&&dp?` <span class="bdg">${dp}</span>`:''}</button>`).join('')}
 
-async function get(c){try{const q=await db.collection(c).get();return q.docs.map(d=>Object.assign({id:d.id},d.data()))}catch(e){return null}}
+const LOADN={pend:new Set(),err:{}};function loadMsg(){const m=$('#main');if(!m||!LOADN.pend.size)return;const t=m.querySelector('.empty');if(t&&/Carregando/.test(t.textContent))t.textContent='Carregando… ('+[...LOADN.pend].join(', ')+')'}
+async function get(c){LOADN.pend.add(c);loadMsg();try{const q=await Promise.race([db.collection(c).get(),new Promise((_,ko)=>setTimeout(()=>ko(new Error('tempo esgotado')),20000))]);LOADN.pend.delete(c);loadMsg();return q.docs.map(d=>Object.assign({id:d.id},d.data()))}catch(e){LOADN.pend.delete(c);LOADN.err[c]=String(e&&e.message||e).slice(0,80);loadMsg();return null}}
 async function load(){const [st,pl,ro,de,su,co,cf]=await Promise.all(['stats','planos','roleta','depo','suporte','contato','config'].map(get));
-  if(!st){$('#main').innerHTML='<div class="empty">Não foi possível carregar. Verifique a internet e toque em atualizar.</div>';return}
+  if(!st){$('#main').innerHTML='<div class="empty">Não foi possível carregar ('+(LOADN.err.stats||'')+'). Verifique a internet e toque em atualizar.</div>';return}
+  const bad=Object.keys(LOADN.err);if(bad.length)setTimeout(()=>toast('Não carregou: '+bad.join(', ')+'. Toque em atualizar.'),500);
   D.planos={};(pl||[]).forEach(p=>D.planos[p.id]=p);D.stats=st.filter(r=>!(D.planos[r.id]||{}).deleted);D.roleta={};(ro||[]).forEach(r=>D.roleta[r.id]=r);D.depo=(de||[]).sort((a,b)=>(b.at||0)-(a.at||0));
   D.suporte=(su||[]).sort((a,b)=>(b.at||0)-(a.at||0));D.contato=(co||[]).sort((a,b)=>(b.at||0)-(a.at||0));D.rules=!!su;
   D.cfg={};D.site={};(cf||[]).forEach(c=>{if(c.id==='app')D.cfg=c;if(c.id==='site')D.site=c;if(c.id==='payqr')D.payqr=c});
