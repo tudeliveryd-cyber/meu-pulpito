@@ -63,7 +63,7 @@ service cloud.firestore {
     match /pub/{uid} {
       allow read: if true;
       allow create, update: if request.auth != null && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['on','n','ch','city','msg','wa','ig','ev','lang','photo','rp','upd','pid'])
+        && request.resource.data.keys().hasOnly(['on','n','ch','city','msg','wa','ig','ev','lang','photo','rp','upd'])
         && request.resource.data.on is bool
         && request.resource.data.n is string && request.resource.data.n.size() <= 80
         && request.resource.data.ch is string && request.resource.data.ch.size() <= 80
@@ -75,10 +75,10 @@ service cloud.firestore {
         && request.resource.data.ev is list && request.resource.data.ev.size() <= 6;
       allow delete: if request.auth != null && (request.auth.uid == uid || isAdmin());
     }
-    // Projeção e transmissão (meupulpito.com/projetar/#CODIGO): a equipe de mídia entra só com o código da sala (16+ letras),
+    // Projeção (meupulpito.com/projetar/#CODIGO): a equipe de mídia entra só com o código da sala (16+ letras),
     // sem senha do pastor. Só o pastor cria e apaga a sala; quem tem o código muda o que está na tela, os hinos, imagens e avisos.
     function projKeys() {
-      return ['uid','ig','ch','sub','logo','lang','now','cfg','live','at'];
+      return ['uid','ig','ch','sub','logo','lang','now','cfg','at'];
     }
     match /proj/{pid} {
       allow read: if pid.size() >= 16;
@@ -89,8 +89,7 @@ service cloud.firestore {
         && ((request.auth != null && request.auth.uid == resource.data.uid) || request.resource.data.ig == resource.data.ig)
         && request.resource.data.keys().hasOnly(projKeys())
         && (!request.resource.data.keys().hasAny(['logo']) || (request.resource.data.logo is string && request.resource.data.logo.size() <= 90000))
-        && (!request.resource.data.keys().hasAny(['now']) || request.resource.data.now is map)
-        && (!request.resource.data.keys().hasAny(['live']) || request.resource.data.live is map);
+        && (!request.resource.data.keys().hasAny(['now']) || request.resource.data.now is map);
       allow delete: if request.auth != null && (request.auth.uid == resource.data.uid || isAdmin());
       match /itens/{id} {
         allow read: if pid.size() >= 16;
