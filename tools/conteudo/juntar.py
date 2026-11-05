@@ -7,8 +7,14 @@ assert len(e)==365,len(e)
 refs=collections.Counter(x['v'] for x in e);dup=[r for r,n in refs.items() if n>1];assert not dup,dup
 for x in e:assert set(x)>= {'t','v','r','a','o'} and all(len(x[k])==2 and all(x[k]) for k in 'trao'),x
 json.dump({'src':'Meu Púlpito','e':e},open(os.path.join(B,'devocional.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
-for f in ('sugestoes','manual'):
-    d=json.load(open(os.path.join(D,f+'.json')));json.dump(d,open(os.path.join(B,f+'.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
+# sugestões e manual: parte 1 + partes extras (sugestoes-2.json, manual-2.json...), se existirem
+for f,key in (('sugestoes','occ'),('manual','c')):
+    d=json.load(open(os.path.join(D,f+'.json')))
+    for i in range(2,10):
+        p=os.path.join(D,'%s-%d.json'%(f,i))
+        if os.path.exists(p):d[key]+=json.load(open(p))[key]
+    ks=[x['k'] for x in d[key]];assert len(ks)==len(set(ks)),f
+    json.dump(d,open(os.path.join(B,f+'.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
 print('devocional',len(e),'sugestoes',sum(len(o['s']) for o in json.load(open(os.path.join(B,'sugestoes.json')))['occ']),'manual',len(json.load(open(os.path.join(B,'manual.json')))['c']))
 # Lições (2 partes) e ilustrações (2 partes), se existirem
 if all(os.path.exists(os.path.join(D,'licoes-%d.json'%i)) for i in (1,2)):
