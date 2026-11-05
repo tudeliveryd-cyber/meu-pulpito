@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v160';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v161';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1326,7 +1326,8 @@ function salaSheet(){if(!authU||localMode){toast(t('pb_need_acc'));return}if(!ig
     <label class="s">${esc(t('sl_name'))}<input class="inp" id="slN" value="${esc(c.n||meta.name||'')}" autocomplete="off" maxlength="40"></label>
     <p class="sub" style="margin:0;font-size:12.5px">${esc(t('sl_how'))}</p><p class="sub" style="margin:0;font-size:12.5px">${esc(t('sl_lim'))}</p>
     ${c.on?`<p class="sub" style="margin:0;font-weight:700;color:var(--gold)">${esc(t('sl_on'))}</p><a class="btn gold block" data-ext="1" href="${esc(salaUrl())}" target="_blank" rel="noopener">${esc(t('sl_enter'))}</a><button class="btn ghost block" data-sl="off">${esc(t('sl_off'))}</button>`:`<button class="btn gold block" data-sl="on">${esc(t('sl_start'))}</button>`}`,{cls:'tall'});
-  const save=on=>{const n=$('#slN',sh).value.trim().slice(0,40);c=Object.assign({},salaCfg(),{n,on});meta.sala=c;putMeta();const d=salaDoc();if(!d)return Promise.resolve();return d.set({uid:authU.uid,code:c.code,n,on,max:6,at:Date.now()})};
+  const save=on=>{const prev=salaCfg();const n=$('#slN',sh).value.trim().slice(0,40);c=Object.assign({},prev,{n,on});meta.sala=c;putMeta();const d=salaDoc();if(!d)return Promise.resolve();return d.set({uid:authU.uid,code:c.code,n,on,max:6,at:Date.now()}).catch(e=>{meta.sala=prev;c=prev;putMeta();throw e})};
+  if(c.on){const d=salaDoc();if(d)d.set({uid:authU.uid,code:c.code,n:c.n||'',on:true,max:6,at:Date.now()}).catch(()=>{meta.sala=Object.assign({},c,{on:false});putMeta();closeSheet();salaSheet()})}
   sh.addEventListener('click',e=>{const b=e.target.closest('[data-sl]');if(!b)return;const a=b.dataset.sl;
     if(a==='copy'){copyText(t('sl_share_msg',{u:salaUrl(),c:c.code})).then(()=>toast(t('copied')));return}
     if(a==='share'){const txt=t('sl_share_msg',{u:salaUrl(),c:c.code});if(navigator.share)navigator.share({text:txt}).catch(()=>{});else copyText(txt).then(()=>toast(t('copied')));return}
