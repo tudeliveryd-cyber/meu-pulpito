@@ -63,7 +63,7 @@ service cloud.firestore {
     match /pub/{uid} {
       allow read: if true;
       allow create, update: if request.auth != null && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['on','n','ch','city','msg','wa','ig','ev','lang','photo','rp','upd'])
+        && request.resource.data.keys().hasOnly(['on','n','ch','city','msg','wa','ig','ev','lang','photo','rp','upd','pid'])
         && request.resource.data.on is bool
         && request.resource.data.n is string && request.resource.data.n.size() <= 80
         && request.resource.data.ch is string && request.resource.data.ch.size() <= 80
@@ -74,6 +74,59 @@ service cloud.firestore {
         && request.resource.data.photo is string && request.resource.data.photo.size() <= 90000
         && request.resource.data.ev is list && request.resource.data.ev.size() <= 6;
       allow delete: if request.auth != null && (request.auth.uid == uid || isAdmin());
+    }
+    // Projeção e transmissão (meupulpito.com/projetar/#CODIGO): a equipe de mídia entra só com o código da sala (16+ letras),
+    // sem senha do pastor. Só o pastor cria e apaga a sala; quem tem o código muda o que está na tela, os hinos, imagens e avisos.
+    function projKeys() {
+      return ['uid','ig','ch','sub','logo','lang','now','cfg','live','at'];
+    }
+    match /proj/{pid} {
+      allow read: if pid.size() >= 16;
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(projKeys());
+      allow update: if pid.size() >= 16
+        && request.resource.data.uid == resource.data.uid
+        && ((request.auth != null && request.auth.uid == resource.data.uid) || request.resource.data.ig == resource.data.ig)
+        && request.resource.data.keys().hasOnly(projKeys())
+        && (!request.resource.data.keys().hasAny(['logo']) || (request.resource.data.logo is string && request.resource.data.logo.size() <= 90000))
+        && (!request.resource.data.keys().hasAny(['now']) || request.resource.data.now is map)
+        && (!request.resource.data.keys().hasAny(['live']) || request.resource.data.live is map);
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.uid || isAdmin());
+      match /itens/{id} {
+        allow read: if pid.size() >= 16;
+        allow create, update: if pid.size() >= 16
+          && request.resource.data.keys().hasOnly(['t','n','x','d','v','pts','at'])
+          && request.resource.data.t in ['hino','img','aviso','sermao']
+          && (!request.resource.data.keys().hasAny(['d']) || (request.resource.data.d is string && request.resource.data.d.size() <= 300000))
+          && (!request.resource.data.keys().hasAny(['x']) || (request.resource.data.x is string && request.resource.data.x.size() <= 20000))
+          && (!request.resource.data.keys().hasAny(['n']) || (request.resource.data.n is string && request.resource.data.n.size() <= 120));
+        allow delete: if pid.size() >= 16;
+      }
+    }
+    // Sala de reunião (meupulpito.com/reuniao/#SALA): o pastor cria a sala; quem tem o código entra.
+    // p = participantes, sig = sinais WebRTC (ofertas, respostas e candidatos). Apagados ao sair; o administrador pode limpar.
+    match /sala/{rid} {
+      allow read: if rid.size() >= 12;
+      allow create, update: if request.auth != null && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['uid','code','n','on','at','max'])
+        && request.resource.data.code is string && request.resource.data.code.size() >= 4 && request.resource.data.code.size() <= 8;
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.uid || isAdmin());
+      function salaOk() {
+        return rid.size() >= 12 && get(/databases/$(database)/documents/sala/$(rid)).data.on == true
+          && request.resource.data.code == get(/databases/$(database)/documents/sala/$(rid)).data.code;
+      }
+      match /p/{pid} {
+        allow read: if rid.size() >= 12;
+        allow create, update: if salaOk() && request.resource.data.keys().hasOnly(['code','n','at','cam','mic'])
+          && request.resource.data.n is string && request.resource.data.n.size() <= 40;
+        allow delete: if rid.size() >= 12;
+      }
+      match /sig/{sid} {
+        allow read: if rid.size() >= 12;
+        allow create, update: if salaOk() && request.resource.data.keys().hasOnly(['code','from','to','k','d','at'])
+          && request.resource.data.d is string && request.resource.data.d.size() <= 20000;
+        allow delete: if rid.size() >= 12;
+      }
     }
     // Atendimento: conversa de cada pastor com o suporte. Só ele e o administrador leem.
     match /suporte/{uid} {

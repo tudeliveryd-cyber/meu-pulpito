@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1220">
+<title>Projeção · Meu Púlpito</title>
+<link rel="icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+:root{--navy:#0B1220;--navy2:#111A2E;--navy3:#1A2540;--gold:#D6AD55;--gold2:#B8913F;--text:#E6EAF2;--muted:#9AA3B2;--line:rgba(255,255,255,.12);--bg:#0E1626}
+*{box-sizing:border-box;margin:0}html{-webkit-text-size-adjust:100%}
+body{background:var(--navy);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}input,textarea,select{font:inherit}
+.wrap{max-width:640px;margin:0 auto;padding:18px 16px 40px}
+.top{display:flex;align-items:center;gap:12px;padding:6px 0 14px}.top img{width:44px;height:36px}.top b{font-size:18px}.top b span{color:var(--gold)}.top small{display:block;font-size:11px;letter-spacing:.18em;color:var(--muted);font-weight:700}
+h1{font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1.2}h2{font-size:18px;font-weight:800}
+.sub{color:var(--muted);font-size:14px;line-height:1.5}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.inp{width:100%;background:var(--navy2);border:1.5px solid var(--line);border-radius:12px;color:#fff;padding:12px 14px;font-size:16px;outline:none}.inp:focus{border-color:var(--gold)}
+textarea.inp{min-height:120px;resize:vertical;line-height:1.5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid transparent;border-radius:999px;padding:0 18px;height:46px;font-weight:700;font-size:15px;background:var(--navy3);color:#fff}
+.btn.gold{background:var(--gold);color:#0B1220}.btn.ghost{background:transparent;border-color:var(--line)}.btn.block{width:100%}.btn.sm{height:38px;padding:0 14px;font-size:14px}.btn.danger{color:#F87171;border-color:rgba(248,113,113,.4);background:transparent}
+.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.big{display:flex;flex-direction:column;align-items:flex-start;gap:4px;background:var(--bg);border:1.5px solid var(--line);border-radius:18px;padding:18px;text-align:left;color:#fff;width:100%}.big b{font-size:18px}.big span{color:var(--muted);font-size:13.5px}.big:active{border-color:var(--gold)}.big svg{width:30px;height:30px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-bottom:6px}
+.tabs{display:flex;gap:6px;overflow:auto;padding:4px 0 10px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tabs button{flex:none;border:1.5px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}.tabs button[aria-pressed=true]{background:#fff;color:#0B1220;border-color:#fff}
+.list{display:flex;flex-direction:column;gap:8px}
+.it{display:flex;align-items:center;gap:10px;background:var(--navy2);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;color:#fff;text-align:left;width:100%}.it b{display:block;font-size:15px}.it span{display:block;color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.it .tx{flex:1;min-width:0}.it.on{border-color:var(--gold)}
+.it img{width:64px;height:40px;object-fit:cover;border-radius:8px;flex:none;background:#000}
+.slides{display:grid;gap:8px}.sl{background:var(--navy2);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;color:#fff;text-align:left;white-space:pre-wrap;line-height:1.45;font-size:15px}.sl.on{border-color:var(--gold);background:#1b2742}
+.now{position:sticky;bottom:0;background:linear-gradient(transparent,var(--navy) 30%);padding:14px 0 10px;margin-top:10px}
+.nowbox{background:var(--bg);border:1.5px solid var(--line);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:10px}.nowbox .tx{flex:1;min-width:0}.nowbox small{display:block;color:var(--gold);font-weight:800;letter-spacing:.14em;font-size:11px}.nowbox b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.grow{flex:1}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#fff;color:#0B1220;font-weight:700;padding:10px 16px;border-radius:999px;font-size:14px;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.prev{background:#000;border-radius:14px;padding:16px;min-height:90px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;line-height:1.4}
+.seg{display:flex;background:var(--navy2);border-radius:12px;padding:3px;gap:2px}.seg button{flex:1;border:0;background:transparent;color:var(--muted);border-radius:10px;padding:8px;font-weight:700;font-size:14px}.seg button[aria-pressed=true]{background:#fff;color:#0B1220}
+.live{display:flex;align-items:center;gap:8px}.dot{width:10px;height:10px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 4px rgba(239,68,68,.25)}
+/* ---- tela ---- */
+#screen{position:fixed;inset:0;background:#000;color:#fff;display:none;overflow:hidden;cursor:none}
+#screen.on{display:block}
+#scr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10vh 5vw 12vh;text-align:center}
+#scr .t{font-weight:600;line-height:1.25;white-space:pre-wrap;max-width:94vw;text-wrap:balance}
+#scr .ref{position:absolute;left:0;right:0;bottom:4vh;font-size:3.2vh;color:var(--gold);font-weight:800;letter-spacing:.06em}
+#scr .ttl{position:absolute;left:0;right:0;top:4vh;font-size:2.8vh;color:#9AA3B2;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+#scr img.full{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+#scr .logo{display:flex;flex-direction:column;align-items:center;gap:3vh}#scr .logo img{max-height:34vh;max-width:60vw;object-fit:contain}#scr .logo b{font-size:6vh;font-weight:800;letter-spacing:-.01em}#scr .logo small{color:#9AA3B2;font-size:2.6vh;letter-spacing:.2em;font-weight:700}
+#scr .clock{font-size:22vh;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}#scr .cmsg{font-size:5vh;color:#C7CEDB;margin-top:2vh;font-weight:600}
+#scrHint{position:absolute;right:14px;bottom:10px;color:#64748B;font-size:12px;opacity:.7}
+#scr.serif .t{font-family:Georgia,"Times New Roman",serif;font-weight:500}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="i-tv" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol><symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol><symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="16" cy="9" r="1.5"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/></symbol></svg>
+<div id="app" class="wrap"></div>
+<div id="screen"><div id="scr"></div><div id="scrHint"></div></div>
+<script src="../app/firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="biblia.js"></script>
+<script>
+(function(){
+firebase.initializeApp(window.FIREBASE_CONFIG);const db=firebase.firestore();
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ic=n=>`<svg><use href="#i-${n}"/></svg>`;
+const T={es:{t:'Proyección',d:'Pantalla para el proyector o la TV y panel de control para el equipo de medios.',code:'Código de la sala',code_ph:'Ej.: K7F2…',enter:'Entrar',bad:'Código no encontrado. Pídale al pastor el código en la app: Configuración → Proyección y transmisión.',scr:'Pantalla',scr_d:'Abra aquí en la computadora conectada al proyector o en el navegador de la TV. Queda a pantalla completa.',ctl:'Control',ctl_d:'Abra en el celular o en otra computadora: elige qué proyectar.',exit:'Salir de la sala',tab_b:'Biblia',tab_h:'Himnos',tab_i:'Imágenes',tab_a:'Avisos',tab_s:'Sermón',tab_c:'Reloj',tab_l:'En vivo',ref:'Referencia',ref_ph:'Ej.: Juan 3:16-18',ver:'Versión',show:'Proyectar',nf:'No encontré esa referencia.',prev:'Anterior',next:'Siguiente',hnew:'Nuevo himno o canción',hn:'Título',hx:'Letra (separe cada pantalla con una línea en blanco)',save:'Guardar',del:'Eliminar',sure:'¿Eliminar? Toque de nuevo',edit:'Editar',inew:'Agregar imagen',iempty:'Ninguna imagen. Agregue fondos, avisos o fotos (hasta 20).',ibig:'Imagen muy grande; use otra.',anew:'Nuevo aviso',ax:'Texto del aviso',sempty:'El pastor aún no envió ningún sermón. En la app: menú del sermón → Enviar a la proyección.',pts:'Puntos',clock_m:'Minutos',clock_msg:'Mensaje (opcional)',clock_go:'Iniciar cuenta regresiva',clock_now:'Hora actual',blank:'Pantalla negra',logo:'Logo',now:'EN PANTALLA',nothing:'Nada proyectado',cfg:'Ajustes',fs:'Tamaño de letra',bg:'Fondo',bg_b:'Negro',bg_n:'Azul',bg_s:'Serif',bg_sa:'Sin serif',help:'Pida al pastor el código de la sala.',lyrics:'Escriba la letra con permiso: himnos de dominio público o con autorización.',live:'Transmisión en vivo',live_d:'Pegue el enlace de la transmisión (YouTube, Facebook o Instagram). Aparece en la página pública del pastor con el aviso «En vivo ahora».',live_url:'Enlace de la transmisión',live_t:'Título (opcional)',live_on:'Marcar «En vivo ahora»',live_off:'Terminar transmisión',live_now:'En vivo ahora',live_none:'Sin transmisión en vivo.',live_bad:'El enlace debe empezar con https://',saved:'Guardado',sent:'Proyectado',empty:'Nada todavía.',ch_wait:'Esperando el control…',offline:'Sin conexión; reintentando…'},
+  pt:{t:'Projeção',d:'Tela para o projetor ou a TV e painel de controle para a equipe de mídia.',code:'Código da sala',code_ph:'Ex.: K7F2…',enter:'Entrar',bad:'Código não encontrado. Peça ao pastor o código no app: Configurações → Projeção e transmissão.',scr:'Tela',scr_d:'Abra aqui no computador ligado ao projetor ou no navegador da TV. Fica em tela cheia.',ctl:'Controle',ctl_d:'Abra no celular ou em outro computador: escolhe o que projetar.',exit:'Sair da sala',tab_b:'Bíblia',tab_h:'Hinos',tab_i:'Imagens',tab_a:'Avisos',tab_s:'Sermão',tab_c:'Relógio',tab_l:'Ao vivo',ref:'Referência',ref_ph:'Ex.: João 3:16-18',ver:'Versão',show:'Projetar',nf:'Não encontrei essa referência.',prev:'Anterior',next:'Próximo',hnew:'Novo hino ou louvor',hn:'Título',hx:'Letra (separe cada tela com uma linha em branco)',save:'Salvar',del:'Excluir',sure:'Excluir? Toque de novo',edit:'Editar',inew:'Adicionar imagem',iempty:'Nenhuma imagem. Adicione fundos, avisos ou fotos (até 20).',ibig:'Imagem muito grande; use outra.',anew:'Novo aviso',ax:'Texto do aviso',sempty:'O pastor ainda não enviou nenhum sermão. No app: menu do sermão → Enviar para a projeção.',pts:'Pontos',clock_m:'Minutos',clock_msg:'Mensagem (opcional)',clock_go:'Iniciar contagem regressiva',clock_now:'Hora atual',blank:'Tela preta',logo:'Logo',now:'NA TELA',nothing:'Nada projetado',cfg:'Ajustes',fs:'Tamanho da letra',bg:'Fundo',bg_b:'Preto',bg_n:'Azul',bg_s:'Serifa',bg_sa:'Sem serifa',help:'Peça ao pastor o código da sala.',lyrics:'Escreva a letra com permissão: hinos de domínio público ou com autorização.',live:'Transmissão ao vivo',live_d:'Cole o link da transmissão (YouTube, Facebook ou Instagram). Ele aparece na página pública do pastor com o aviso «Ao vivo agora».',live_url:'Link da transmissão',live_t:'Título (opcional)',live_on:'Marcar «Ao vivo agora»',live_off:'Encerrar transmissão',live_now:'Ao vivo agora',live_none:'Sem transmissão ao vivo.',live_bad:'O link deve começar com https://',saved:'Salvo',sent:'Projetado',empty:'Nada ainda.',ch_wait:'Aguardando o controle…',offline:'Sem conexão; tentando de novo…'}};
+let L=(navigator.language||'es').toLowerCase().startsWith('pt')?'pt':'es';const t=k=>(T[L]||T.es)[k]||k;
+const ls={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+let PID='',ROOM=null,ITEMS=[],MODE='',TAB='b',UN=[];let CFG={fs:1,bg:'b',serif:false};
+const app=$('#app');
+const head=()=>`<div class="top"><img src="../app/mark.png" alt=""><div><b>MEU <span>PÚLPITO</span></b><small>${esc(t('t').toUpperCase())}</small></div></div>`;
+function roomRef(){return db.collection('proj').doc(PID)}
+/* ---------------- entrada ---------------- */
+function vEntry(err){app.innerHTML=head()+`<h1>${esc(t('t'))}</h1><p class="sub">${esc(t('d'))}</p>
+  <div class="card" style="margin-top:14px"><label class="lbl" for="code">${esc(t('code'))}</label><input class="inp" id="code" autocapitalize="characters" autocomplete="off" placeholder="${esc(t('code_ph'))}" value="${esc(ls.get('mp.proj.code',''))}" style="font-size:20px;letter-spacing:.12em;text-align:center">
+  ${err?`<p class="sub" style="color:#F87171">${esc(t('bad'))}</p>`:''}<button class="btn gold block" id="go">${esc(t('enter'))}</button><p class="sub" style="font-size:13px">${esc(t('help'))}</p></div>`;
+  $('#go').onclick=()=>enter($('#code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,''));$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')$('#go').click()})}
+async function enter(code){if(code.length<16){vEntry(true);return}const b=$('#go');if(b)b.disabled=true;try{const d=await db.collection('proj').doc(code).get();if(!d.exists){vEntry(true);return}PID=code;ROOM=d.data();ls.set('mp.proj.code',code);if(ROOM.lang==='pt'||ROOM.lang==='es')L=ROOM.lang;location.hash=code;vChoose()}catch(e){vEntry(true)}}
+function vChoose(){app.innerHTML=head()+`<h1>${esc(ROOM.ch||t('t'))}</h1><p class="sub">${esc(t('code'))}: <b style="letter-spacing:.1em">${esc(PID)}</b></p>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+  ${ROOM.ig?`<button class="big" id="bScr">${ic('tv')}<b>${esc(t('scr'))}</b><span>${esc(t('scr_d'))}</span></button>`:''}
+  <button class="big" id="bCtl">${ic('phone')}<b>${esc(t('ctl'))}</b><span>${esc(t('ctl_d'))}</span></button>
+  <button class="btn ghost" id="bOut">${esc(t('exit'))}</button></div>`;
+  const s=$('#bScr');if(s)s.onclick=()=>startScreen();$('#bCtl').onclick=()=>startCtl();$('#bOut').onclick=()=>{PID='';ROOM=null;ls.set('mp.proj.code','');location.hash='';vEntry()}}
+/* ---------------- tela ---------------- */
+let CLK=null;
+function startScreen(){MODE='scr';const sc=$('#screen');sc.classList.add('on');document.body.style.overflow='hidden';
+  try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}
+  $('#scrHint').textContent=L==='pt'?'F = tela cheia · Esc = sair':'F = pantalla completa · Esc = salir';setTimeout(()=>{$('#scrHint').style.display='none'},6000);
+  document.addEventListener('keydown',e=>{if(MODE!=='scr')return;if(e.key==='f'||e.key==='F'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(x){}}if(e.key==='Escape'&&!document.fullscreenElement){stopScreen()}});
+  sc.addEventListener('dblclick',()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(x){}});
+  let lastTap=0;sc.addEventListener('touchend',()=>{const n=Date.now();if(n-lastTap<400)stopScreen();lastTap=n});
+  UN.push(roomRef().onSnapshot(d=>{if(!d.exists)return;ROOM=d.data();renderScreen(ROOM.now||{type:'logo'},ROOM.cfg||{})},()=>{}));
+  renderScreen({type:'logo'},{})}
+function stopScreen(){MODE='';$('#screen').classList.remove('on');document.body.style.overflow='';UN.forEach(f=>{try{f()}catch(e){}});UN=[];clearInterval(CLK);vChoose()}
+function fit(el,max,min){let fs=max;el.style.fontSize=fs+'vh';const box=el.parentElement;const H=box.clientHeight*.78,W=box.clientWidth*.9;let n=0;while(n++<40&&(el.scrollHeight>H||el.scrollWidth>W)&&fs>min){fs=Math.max(min,fs*0.9);el.style.fontSize=fs+'vh'}}
+function renderScreen(now,cfg){const sc=$('#scr');clearInterval(CLK);sc.className=cfg.serif?'serif':'';$('#screen').style.background=cfg.bg==='n'?'#0B1220':'#000';const k=(+cfg.fs||1);
+  const type=now.type||'logo';
+  if(type==='blank'){sc.innerHTML='';return}
+  if(type==='logo'){sc.innerHTML=`<div class="logo">${ROOM.logo?`<img src="${ROOM.logo}" alt="">`:''}<b>${esc(ROOM.ch||'')}</b>${ROOM.sub?`<small>${esc(ROOM.sub)}</small>`:''}</div>`;return}
+  if(type==='img'){sc.innerHTML=`<img class="full" src="${now.d||''}" alt="">`;return}
+  if(type==='clock'){const draw=()=>{const left=now.end?Math.max(0,Math.round((now.end-Date.now())/1000)):null;const txt=left==null?new Date().toLocaleTimeString(L==='pt'?'pt-BR':'es',{hour:'2-digit',minute:'2-digit'}):Math.floor(left/60)+':'+String(left%60).padStart(2,'0');sc.innerHTML=`<div><div class="clock">${txt}</div>${now.msg?`<div class="cmsg">${esc(now.msg)}</div>`:''}</div>`};draw();CLK=setInterval(draw,1000);return}
+  const title=now.title?`<div class="ttl">${esc(now.title)}</div>`:'';const ref=now.ref?`<div class="ref">${esc(now.ref)}</div>`:'';
+  sc.innerHTML=`${title}<div class="t">${esc(now.text||'')}</div>${ref}`;const el=sc.querySelector('.t');const len=(now.text||'').length;const max=(len<80?14:len<200?11:len<400?8.5:6.5)*k;fit(el,max,2.2)}
+addEventListener('resize',()=>{if(MODE==='scr'&&ROOM)renderScreen(ROOM.now||{type:'logo'},ROOM.cfg||{})});
+/* ---------------- controle ---------------- */
+let BV='',BP=null,BT=null,HID=null,HI=0,SID=null,SI=0,sureT=null;
+function startCtl(){MODE='ctl';TAB=ROOM.ig?'b':'l';CFG=Object.assign({fs:1,bg:'b',serif:false},ROOM.cfg||{});BV=ls.get('mp.proj.ver','')||(L==='pt'?'pt':'es');
+  UN.push(roomRef().onSnapshot(d=>{if(!d.exists)return;ROOM=d.data();drawNow();if(TAB==='l')drawTab()},()=>{}));
+  UN.push(roomRef().collection('itens').onSnapshot(s=>{ITEMS=s.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>(a.at||0)-(b.at||0));if(['h','i','a','s'].includes(TAB))drawTab()},()=>{}));
+  MPB.load(BV).catch(()=>{});draw()}
+function setNow(now,label){const n=Object.assign({},now,{at:Date.now()});roomRef().set({now:n,at:Date.now()},{merge:true}).then(()=>toast(t('sent'))).catch(()=>toast(t('offline')));ROOM=Object.assign({},ROOM,{now:n});drawNow()}
+function saveCfg(){roomRef().set({cfg:CFG},{merge:true}).catch(()=>{})}
+function draw(){const tabs=[['b','tab_b'],['h','tab_h'],['i','tab_i'],['a','tab_a'],['s','tab_s'],['c','tab_c']].filter(()=>ROOM.ig).concat([['l','tab_l']]);
+  app.innerHTML=head()+`<div class="row" style="justify-content:space-between"><div><h1 style="font-size:20px">${esc(ROOM.ch||t('ctl'))}</h1><p class="sub" style="font-size:12.5px">${esc(t('code'))}: ${esc(PID)}</p></div><button class="btn sm ghost" id="bOut">${ic('x')}${esc(t('exit'))}</button></div>
+  <div class="tabs">${tabs.map(([k,l])=>`<button data-tab="${k}" aria-pressed="${TAB===k}">${esc(t(l))}</button>`).join('')}${ROOM.ig?`<button data-tab="g" aria-pressed="${TAB==='g'}">${esc(t('cfg'))}</button>`:''}</div>
+  <div id="tab"></div>${ROOM.ig?`<div class="now"><div class="nowbox"><div class="tx"><small>${esc(t('now'))}</small><b id="nowT"></b></div><button class="btn sm ghost" data-now="logo">${esc(t('logo'))}</button><button class="btn sm ghost" data-now="blank">${esc(t('blank'))}</button></div></div>`:''}`;
+  $('#bOut').onclick=()=>{UN.forEach(f=>{try{f()}catch(e){}});UN=[];MODE='';vChoose()};
+  $$('[data-tab]').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;$$('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawTab()});
+  $$('[data-now]').forEach(b=>b.onclick=()=>setNow({type:b.dataset.now}));
+  drawTab();drawNow()}
+function drawNow(){const e=$('#nowT');if(!e)return;const n=ROOM.now||{};const m={logo:t('logo'),blank:t('blank'),clock:t('tab_c'),img:t('tab_i')};e.textContent=n.type&&n.type!=='logo'&&n.type!=='blank'&&n.type!=='clock'&&n.type!=='img'?((n.ref||n.title||'')+(n.text?' · '+n.text.slice(0,50):'')):(m[n.type]||t('nothing'))}
+function drawTab(){const box=$('#tab');if(!box)return;({b:tBible,h:tHinos,i:tImgs,a:tAvisos,s:tSermao,c:tClock,g:tCfg,l:tLive}[TAB]||tBible)(box)}
+/* Bíblia */
+function tBible(box){box.innerHTML=`<div class="card"><label class="lbl">${esc(t('ref'))}</label><div class="row"><input class="inp grow" id="bq" placeholder="${esc(t('ref_ph'))}" autocomplete="off" value="${esc(BT?BT.q:'')}"><button class="btn gold" id="bgo">${esc(t('show'))}</button></div>
+  <label class="lbl">${esc(t('ver'))}</label><select class="inp" id="bver">${MPB.VGROUPS.map(([g,ks])=>`<optgroup label="${g==='pt'?'Português':'Español'}">${ks.map(k=>`<option value="${k}"${k===BV?' selected':''}>${esc(MPB.VNAME[k])}</option>`).join('')}</optgroup>`).join('')}</select>
+  <div class="prev" id="bprev">${BT?esc(BT.text):''}</div><div class="row"><button class="btn ghost grow" id="bprevB">${ic('back')}${esc(t('prev'))}</button><button class="btn ghost grow" id="bnextB">${esc(t('next'))}${ic('next')}</button></div></div>`;
+  $('#bver').onchange=()=>{BV=$('#bver').value;ls.set('mp.proj.ver',BV);MPB.load(BV).then(()=>{if(BP)showVerse(BP)}).catch(()=>{})};
+  const go=()=>{const p=MPB.parseRef($('#bq').value);if(!p){toast(t('nf'));return}showVerse(p)};$('#bgo').onclick=go;$('#bq').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+  $('#bprevB').onclick=()=>step(-1);$('#bnextB').onclick=()=>step(1)}
+async function showVerse(p){try{await MPB.load(BV)}catch(e){toast(t('offline'));return}const parts=MPB.text(BV,p);if(!parts){toast(t('nf'));return}
+  const lang=MPB.VFILE[BV].startsWith('pt')?'pt':'es';const txt=parts.length===1?parts[0].t:parts.map(x=>x.v+' '+x.t).join(' ');const ref=MPB.label({b:p.b,ch:p.ch,vs:parts.map(x=>x.v)},lang)+' · '+MPB.VNAME[BV];
+  BP=p;BT={q:MPB.label(p,lang),text:txt};const pv=$('#bprev');if(pv)pv.textContent=txt;const q=$('#bq');if(q)q.value=BT.q;setNow({type:'verse',text:txt,ref})}
+function step(d){if(!BP)return;const vs=BP.vs||[1];const n=vs.length;const first=vs[0];let s=first+d*n;if(s<1)return;const p={b:BP.b,ch:BP.ch,vs:Array.from({length:n},(_,i)=>s+i)};const parts=MPB.text(BV,p);if(!parts){if(d>0){const p2={b:BP.b,ch:BP.ch+1,vs:[1]};if(MPB.text(BV,p2))showVerse(p2)}return}showVerse({b:p.b,ch:p.ch,vs:parts.map(x=>x.v)})}
+/* Hinos */
+function slidesOf(x){return String(x||'').replace(/\r/g,'').split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean)}
+function tHinos(box){const H=ITEMS.filter(x=>x.t==='hino');const h=HID&&H.find(x=>x.id===HID);
+  if(h){const S=slidesOf(h.x);box.innerHTML=`<div class="row" style="justify-content:space-between;margin-bottom:10px"><button class="btn sm ghost" id="hback">${ic('back')}${esc(t('tab_h'))}</button><div class="row"><button class="btn sm ghost" id="hedit">${ic('pen')}${esc(t('edit'))}</button></div></div><h2 style="margin-bottom:8px">${esc(h.n)}</h2>
+    <div class="slides">${S.map((s,i)=>`<button class="sl${i===HI&&ROOM.now&&ROOM.now.hid===h.id?' on':''}" data-si="${i}">${esc(s)}</button>`).join('')||`<p class="sub">${esc(t('empty'))}</p>`}</div>`;
+    $('#hback').onclick=()=>{HID=null;drawTab()};$('#hedit').onclick=()=>hinoForm(h);
+    $$('[data-si]').forEach(b=>b.onclick=()=>{HI=+b.dataset.si;setNow({type:'hino',title:h.n,text:S[HI],hid:h.id,i:HI});$$('.sl').forEach(x=>x.classList.toggle('on',x===b))});return}
+  box.innerHTML=`<button class="btn gold block" id="hnew" style="margin-bottom:10px">${ic('plus')}${esc(t('hnew'))}</button><p class="sub" style="font-size:12.5px;margin-bottom:10px">${esc(t('lyrics'))}</p><div class="list">${H.map(x=>`<button class="it" data-h="${x.id}"><div class="tx"><b>${esc(x.n)}</b><span>${esc(slidesOf(x.x).length)} ${L==='pt'?'telas':'pantallas'}</span></div>${ic('next')}</button>`).join('')||`<p class="sub">${esc(t('empty'))}</p>`}</div>`;
+  $('#hnew').onclick=()=>hinoForm(null);$$('[data-h]').forEach(b=>b.onclick=()=>{HID=b.dataset.h;HI=0;drawTab()})}
+function hinoForm(h){const box=$('#tab');box.innerHTML=`<div class="card"><h2>${esc(h?t('edit'):t('hnew'))}</h2><label class="lbl">${esc(t('hn'))}</label><input class="inp" id="hn" value="${esc(h?h.n:'')}" autocomplete="off"><label class="lbl">${esc(t('hx'))}</label><textarea class="inp" id="hx" rows="10">${esc(h?h.x:'')}</textarea>
+  <button class="btn gold block" id="hsave">${esc(t('save'))}</button>${h?`<button class="btn ghost block danger" id="hdel">${ic('trash')}${esc(t('del'))}</button>`:''}<button class="btn ghost block" id="hcancel">${ic('back')}</button></div>`;
+  $('#hsave').onclick=()=>{const n=$('#hn').value.trim(),x=$('#hx').value.trim();if(!n||!x)return;const id=h?h.id:uid();roomRef().collection('itens').doc(id).set({t:'hino',n:n.slice(0,120),x:x.slice(0,20000),at:h?h.at||Date.now():Date.now()}).then(()=>toast(t('saved'))).catch(()=>toast(t('offline')));HID=id;drawTab()};
+  $('#hcancel').onclick=()=>drawTab();const d=$('#hdel');if(d)d.onclick=()=>{if(!d.dataset.s){d.dataset.s=1;d.textContent=t('sure');return}roomRef().collection('itens').doc(h.id).delete();HID=null;drawTab()}}
+/* Imagens */
+function tImgs(box){const I=ITEMS.filter(x=>x.t==='img');box.innerHTML=`<label class="btn gold block" style="margin-bottom:10px;cursor:pointer">${ic('img')}${esc(t('inew'))}<input type="file" accept="image/*" id="ifile" hidden></label><div class="list">${I.map(x=>`<div class="it${ROOM.now&&ROOM.now.iid===x.id?' on':''}"><img src="${x.d}" alt=""><button class="tx" data-i="${x.id}" style="background:none;border:0;color:#fff;padding:0;text-align:left"><b>${esc(x.n||'')}</b><span>${esc(t('show'))}</span></button><button class="btn sm ghost danger" data-idel="${x.id}">${ic('trash')}</button></div>`).join('')||`<p class="sub">${esc(t('iempty'))}</p>`}</div>`;
+  $('#ifile').onchange=()=>{const f=$('#ifile').files[0];if(!f)return;if(I.length>=20){toast(t('ibig'));return}const img=new Image();const u=URL.createObjectURL(f);img.onload=()=>{const M=1280;const r=Math.min(1,M/Math.max(img.width,img.height));const cv=document.createElement('canvas');cv.width=Math.round(img.width*r);cv.height=Math.round(img.height*r);const cx=cv.getContext('2d');cx.drawImage(img,0,0,cv.width,cv.height);let q=.82,d=cv.toDataURL('image/jpeg',q);while(d.length>280000&&q>.4){q-=.1;d=cv.toDataURL('image/jpeg',q)}URL.revokeObjectURL(u);if(d.length>280000){toast(t('ibig'));return}
+    roomRef().collection('itens').doc(uid()).set({t:'img',n:f.name.replace(/\.[a-z0-9]+$/i,'').slice(0,60),d,at:Date.now()}).then(()=>toast(t('saved'))).catch(()=>toast(t('offline')))};img.src=u};
+  $$('[data-i]').forEach(b=>b.onclick=()=>{const x=I.find(y=>y.id===b.dataset.i);if(x)setNow({type:'img',d:x.d,iid:x.id})});
+  $$('[data-idel]').forEach(b=>b.onclick=()=>{if(!b.dataset.s){b.dataset.s=1;b.textContent=t('sure');return}roomRef().collection('itens').doc(b.dataset.idel).delete()})}
+/* Avisos */
+function tAvisos(box){const A=ITEMS.filter(x=>x.t==='aviso');box.innerHTML=`<div class="card" style="margin-bottom:10px"><label class="lbl">${esc(t('anew'))}</label><textarea class="inp" id="ax" rows="3" placeholder="${esc(t('ax'))}"></textarea><div class="row"><button class="btn gold grow" id="ago">${esc(t('show'))}</button><button class="btn ghost" id="asave">${esc(t('save'))}</button></div></div>
+  <div class="list">${A.map(x=>`<div class="it${ROOM.now&&ROOM.now.aid===x.id?' on':''}"><button class="tx" data-a="${x.id}" style="background:none;border:0;color:#fff;padding:0;text-align:left"><b style="white-space:pre-wrap">${esc(x.x)}</b></button><button class="btn sm ghost danger" data-adel="${x.id}">${ic('trash')}</button></div>`).join('')}</div>`;
+  $('#ago').onclick=()=>{const x=$('#ax').value.trim();if(!x)return;setNow({type:'aviso',text:x})};
+  $('#asave').onclick=()=>{const x=$('#ax').value.trim();if(!x)return;roomRef().collection('itens').doc(uid()).set({t:'aviso',x:x.slice(0,2000),at:Date.now()}).then(()=>toast(t('saved')));$('#ax').value=''};
+  $$('[data-a]').forEach(b=>b.onclick=()=>{const x=A.find(y=>y.id===b.dataset.a);if(x)setNow({type:'aviso',text:x.x,aid:x.id})});
+  $$('[data-adel]').forEach(b=>b.onclick=()=>{if(!b.dataset.s){b.dataset.s=1;b.textContent=t('sure');return}roomRef().collection('itens').doc(b.dataset.adel).delete()})}
+/* Sermão */
+function tSermao(box){const S=ITEMS.filter(x=>x.t==='sermao').sort((a,b)=>(b.at||0)-(a.at||0));const s=SID&&S.find(x=>x.id===SID)||S[0];if(s)SID=s.id;
+  if(!s){box.innerHTML=`<p class="sub">${esc(t('sempty'))}</p>`;return}
+  box.innerHTML=`${S.length>1?`<select class="inp" id="ssel" style="margin-bottom:10px">${S.map(x=>`<option value="${x.id}"${x.id===s.id?' selected':''}>${esc(x.n)}</option>`).join('')}</select>`:''}<h2 style="margin-bottom:8px">${esc(s.n)}</h2>${s.v?`<p class="sub" style="margin-bottom:8px">${esc(s.v)}</p>`:''}
+  <div class="slides"><button class="sl${ROOM.now&&ROOM.now.sid===s.id&&ROOM.now.i===-1?' on':''}" data-sp="-1"><b>${esc(s.n)}</b>${s.v?'\n'+esc(s.v):''}</button>${(s.pts||[]).map((p,i)=>`<button class="sl${ROOM.now&&ROOM.now.sid===s.id&&ROOM.now.i===i?' on':''}" data-sp="${i}"><b>${i+1}. ${esc(p.t)}</b>${p.v?'\n'+esc(p.v):''}</button>`).join('')}</div>`;
+  const sel=$('#ssel');if(sel)sel.onchange=()=>{SID=sel.value;drawTab()};
+  $$('[data-sp]').forEach(b=>b.onclick=()=>{const i=+b.dataset.sp;if(i<0)setNow({type:'sermon',title:L==='pt'?'Mensagem':'Mensaje',text:s.n,ref:s.v||'',sid:s.id,i:-1});else{const p=s.pts[i];setNow({type:'sermon',title:(L==='pt'?'Ponto ':'Punto ')+(i+1),text:p.t,ref:p.v||'',sid:s.id,i})}$$('.sl').forEach(x=>x.classList.toggle('on',x===b))})}
+/* Relógio */
+function tClock(box){box.innerHTML=`<div class="card"><label class="lbl">${esc(t('clock_m'))}</label><input class="inp" id="cm" type="number" inputmode="numeric" value="5" min="1" max="180"><label class="lbl">${esc(t('clock_msg'))}</label><input class="inp" id="cmsg" autocomplete="off" placeholder="${L==='pt'?'Ex.: O culto começa em':'Ej.: El culto comienza en'}"><button class="btn gold block" id="cgo">${esc(t('clock_go'))}</button><button class="btn ghost block" id="cnow">${esc(t('clock_now'))}</button></div>`;
+  $('#cgo').onclick=()=>{const m=Math.max(1,Math.min(180,+$('#cm').value||5));setNow({type:'clock',end:Date.now()+m*60000,msg:$('#cmsg').value.trim().slice(0,80)})};$('#cnow').onclick=()=>setNow({type:'clock',msg:$('#cmsg').value.trim().slice(0,80)})}
+/* Ajustes */
+function tCfg(box){box.innerHTML=`<div class="card"><label class="lbl">${esc(t('fs'))}</label><div class="seg" data-k="fs">${[[.8,'A-'],[1,'A'],[1.25,'A+'],[1.5,'A++']].map(([v,l])=>`<button data-v="${v}" aria-pressed="${+CFG.fs===v}">${l}</button>`).join('')}</div>
+  <label class="lbl">${esc(t('bg'))}</label><div class="seg" data-k="bg"><button data-v="b" aria-pressed="${CFG.bg!=='n'}">${esc(t('bg_b'))}</button><button data-v="n" aria-pressed="${CFG.bg==='n'}">${esc(t('bg_n'))}</button></div>
+  <div class="seg" data-k="serif"><button data-v="false" aria-pressed="${!CFG.serif}">${esc(t('bg_sa'))}</button><button data-v="true" aria-pressed="${!!CFG.serif}">${esc(t('bg_s'))}</button></div></div>`;
+  $$('.seg button').forEach(b=>b.onclick=()=>{const k=b.parentNode.dataset.k;let v=b.dataset.v;v=v==='true'?true:v==='false'?false:isNaN(+v)?v:+v;CFG[k]=v;$$('button',b.parentNode).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));saveCfg()})}
+/* Ao vivo */
+function tLive(box){const lv=ROOM.live||{};box.innerHTML=`<div class="card"><div class="live">${lv.on?'<span class="dot"></span>':''}<h2>${esc(t('live'))}</h2></div><p class="sub">${esc(t('live_d'))}</p>
+  <label class="lbl">${esc(t('live_url'))}</label><input class="inp" id="lurl" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="https://…" value="${esc(lv.url||'')}"><label class="lbl">${esc(t('live_t'))}</label><input class="inp" id="lt" autocomplete="off" value="${esc(lv.title||'')}">
+  ${lv.on?`<p class="sub" style="color:#F87171;font-weight:700">${esc(t('live_now'))}</p><button class="btn ghost block" id="lsave">${esc(t('save'))}</button><button class="btn block danger" id="loff">${esc(t('live_off'))}</button>`:`<p class="sub">${esc(t('live_none'))}</p><button class="btn gold block" id="lon">${esc(t('live_on'))}</button>`}</div>`;
+  const get=()=>{const u=$('#lurl').value.trim();if(u&&!/^https:\/\//.test(u)){toast(t('live_bad'));return null}return{url:u.slice(0,300),title:$('#lt').value.trim().slice(0,100)}};
+  const on=$('#lon');if(on)on.onclick=()=>{const v=get();if(!v||!v.url){toast(t('live_bad'));return}roomRef().set({live:Object.assign(v,{on:true,at:Date.now()}),at:Date.now()},{merge:true}).then(()=>toast(t('saved'))).catch(()=>toast(t('offline')))};
+  const sv=$('#lsave');if(sv)sv.onclick=()=>{const v=get();if(!v)return;roomRef().set({live:Object.assign({},lv,v)},{merge:true}).then(()=>toast(t('saved')))};
+  const off=$('#loff');if(off)off.onclick=()=>roomRef().set({live:Object.assign({},lv,{on:false,endAt:Date.now()})},{merge:true}).then(()=>toast(t('saved')))}
+/* boot */
+const h=(location.hash||'').slice(1).toUpperCase().replace(/[^A-Z0-9]/g,'');if(h.length>=16)enter(h);else vEntry();
+})();
+</script>
+</body>
+</html>

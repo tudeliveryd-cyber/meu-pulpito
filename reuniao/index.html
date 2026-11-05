@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1220">
+<title>Reunião · Meu Púlpito</title>
+<link rel="icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+:root{--navy:#0B1220;--navy2:#111A2E;--navy3:#1A2540;--gold:#D6AD55;--text:#E6EAF2;--muted:#9AA3B2;--line:rgba(255,255,255,.12);--bg:#0E1626}
+*{box-sizing:border-box;margin:0}html{-webkit-text-size-adjust:100%}
+body{background:var(--navy);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+button{font:inherit;cursor:pointer}input{font:inherit}
+.wrap{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+.top{display:flex;align-items:center;gap:12px;padding:6px 0 14px}.top img{width:44px;height:36px}.top b{font-size:18px}.top b span{color:var(--gold)}.top small{display:block;font-size:11px;letter-spacing:.18em;color:var(--muted);font-weight:700}
+h1{font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1.2}.sub{color:var(--muted);font-size:14px;line-height:1.5}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.inp{width:100%;background:var(--navy2);border:1.5px solid var(--line);border-radius:12px;color:#fff;padding:12px 14px;font-size:16px;outline:none}.inp:focus{border-color:var(--gold)}
+.lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid transparent;border-radius:999px;padding:0 18px;height:46px;font-weight:700;font-size:15px;background:var(--navy3);color:#fff}
+.btn.gold{background:var(--gold);color:#0B1220}.btn.ghost{background:transparent;border-color:var(--line)}.btn.block{width:100%}.btn.danger{background:#7F1D1D}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.err{color:#F87171;font-size:14px}
+/* sala */
+#room{position:fixed;inset:0;display:none;flex-direction:column;background:#000}
+#room.on{display:flex}
+#grid{flex:1;display:grid;gap:4px;padding:4px;grid-template-columns:1fr;align-content:stretch;min-height:0}
+#grid.n2{grid-template-columns:1fr 1fr}#grid.n3,#grid.n4{grid-template-columns:1fr 1fr}#grid.n5,#grid.n6{grid-template-columns:1fr 1fr}
+@media(orientation:portrait) and (max-width:700px){#grid.n2{grid-template-columns:1fr}}
+@media(min-width:900px){#grid.n3{grid-template-columns:1fr 1fr 1fr}#grid.n5,#grid.n6{grid-template-columns:1fr 1fr 1fr}}
+.tile{position:relative;background:var(--navy2);border-radius:14px;overflow:hidden;min-height:0}
+.tile video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.tile.me video{transform:scaleX(-1)}
+.tile .nm{position:absolute;z-index:2;left:8px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;display:flex;align-items:center;gap:6px}
+.tile .nm svg{width:14px;height:14px;fill:none;stroke:#F87171;stroke-width:2.2;stroke-linecap:round}
+.tile .av{position:absolute;z-index:1;inset:0;display:flex;align-items:center;justify-content:center;font:800 42px Inter,sans-serif;color:#fff;background:var(--navy3)}
+.tile .st:empty{display:none}.tile .st{position:absolute;z-index:2;top:8px;right:8px;font-size:11px;color:#C7CEDB;background:rgba(0,0,0,.45);padding:3px 8px;border-radius:999px}
+#bar{display:flex;justify-content:center;gap:12px;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:#000}
+#bar button{width:56px;height:56px;border-radius:50%;border:0;background:var(--navy3);color:#fff;display:flex;align-items:center;justify-content:center}
+#bar button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#bar button[aria-pressed=true]{background:#fff;color:#0B1220}#bar button.end{background:#DC2626}
+#info{position:absolute;z-index:5;top:10px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+#info span{background:rgba(0,0,0,.5);color:#fff;font-size:12.5px;padding:5px 10px;border-radius:999px;pointer-events:auto}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#fff;color:#0B1220;font-weight:700;padding:10px 16px;border-radius:999px;font-size:14px;z-index:99}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol><symbol id="i-micoff" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M4 4l16 16"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></symbol><symbol id="i-camoff" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3M4 4l16 16"/></symbol><symbol id="i-flip" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 12a8 8 0 0 1-14 5l-2-2M20 4v5h-5M4 20v-5h5"/></symbol><symbol id="i-end" viewBox="0 0 24 24"><path d="M3 14c5-5 13-5 18 0l-3 3-3-2v-3a9 9 0 0 0-6 0v3l-3 2z"/></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 1 0-5.7l2.3-2.3a4 4 0 0 1 5.7 5.7L17 12.7M14 10a4 4 0 0 1 0 5.7l-2.3 2.3a4 4 0 0 1-5.7-5.7L7 11.3"/></symbol></svg>
+<div id="app" class="wrap"></div>
+<div id="room"><div id="grid"></div><div id="info"><span id="iN"></span><span id="iC"></span></div><div id="bar"><button id="bMic" aria-pressed="true" title="Mic"></button><button id="bCam" aria-pressed="true" title="Cam"></button><button id="bFlip" title="Flip"></button><button id="bEnd" class="end" title="End"></button></div></div>
+<script src="../app/firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+firebase.initializeApp(window.FIREBASE_CONFIG);const db=firebase.firestore();
+const $=(s,r=document)=>r.querySelector(s);const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const ic=n=>`<svg><use href="#i-${n}"/></svg>`;
+const T={es:{t:'Sala de reunión',d:'Reunión por video de hasta 6 personas. Funciona en el celular o la computadora, sin instalar nada.',code:'Código de la sala',name:'Su nombre',name_ph:'Como quiere aparecer',enter:'Entrar',nf:'Sala no encontrada o cerrada. Pida el enlace y el código a quien la abrió.',bad:'Código incorrecto.',full:'La sala está llena (6 personas).',perm:'Permita el acceso a la cámara y al micrófono para entrar.',noweb:'Este navegador no permite videollamadas. Use Safari (iPhone) o Chrome.',wait:'Esperando a los demás… Comparta el enlace y el código.',conn:'Conectando…',fail:'No fue posible conectar con {n}. En algunas redes la conexión directa no funciona.',left:'{n} salió',joined:'{n} entró',closed:'La sala fue cerrada.',you:'Usted',copy:'Copiar enlace',copied:'Copiado',people:'{n} en la sala',ended:'Usted salió de la reunión.',again:'Volver a entrar',help:'Pida el código a quien abrió la sala.'},
+  pt:{t:'Sala de reunião',d:'Reunião por vídeo com até 6 pessoas. Funciona no celular ou no computador, sem instalar nada.',code:'Código da sala',name:'Seu nome',name_ph:'Como você quer aparecer',enter:'Entrar',nf:'Sala não encontrada ou fechada. Peça o link e o código a quem a abriu.',bad:'Código incorreto.',full:'A sala está cheia (6 pessoas).',perm:'Permita o acesso à câmera e ao microfone para entrar.',noweb:'Este navegador não permite videochamadas. Use o Safari (iPhone) ou o Chrome.',wait:'Aguardando os demais… Compartilhe o link e o código.',conn:'Conectando…',fail:'Não foi possível conectar com {n}. Em algumas redes a conexão direta não funciona.',left:'{n} saiu',joined:'{n} entrou',closed:'A sala foi fechada.',you:'Você',copy:'Copiar link',copied:'Copiado',people:'{n} na sala',ended:'Você saiu da reunião.',again:'Entrar de novo',help:'Peça o código a quem abriu a sala.'}};
+let L=(navigator.language||'es').toLowerCase().startsWith('pt')?'pt':'es';const t=(k,v)=>{let s=(T[L]||T.es)[k]||k;if(v)Object.keys(v).forEach(x=>{s=s.replace('{'+x+'}',v[x])});return s};
+const ls={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+const head=`<div class="top"><img src="../app/mark.png" alt=""><div><b>MEU <span>PÚLPITO</span></b><small>${esc(t('t').toUpperCase())}</small></div></div>`;
+const RID=(location.hash||'').slice(1).replace(/[^A-Za-z0-9]/g,'').slice(0,24);
+let ME='';try{ME=sessionStorage.getItem('mp.sala.me')||''}catch(e){}if(!ME){ME=Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-3);try{sessionStorage.setItem('mp.sala.me',ME)}catch(e){}}
+let ROOM=null,CODE='',NAME='',local=null,facing='user',UN=[],peers={},micOn=true,camOn=true;window.__peers=peers;
+const app=$('#app');
+function vEntry(err){app.innerHTML=head+`<h1>${esc(t('t'))}</h1><p class="sub">${esc(t('d'))}</p><div class="card">
+  ${RID?'':`<p class="err">${esc(t('nf'))}</p>`}
+  <label class="lbl" for="code">${esc(t('code'))}</label><input class="inp" id="code" inputmode="numeric" autocomplete="one-time-code" style="font-size:22px;letter-spacing:.2em;text-align:center" value="${esc(ls.get('mp.sala.code.'+RID,''))}">
+  <label class="lbl" for="nm">${esc(t('name'))}</label><input class="inp" id="nm" autocomplete="name" placeholder="${esc(t('name_ph'))}" value="${esc(ls.get('mp.sala.name',''))}" maxlength="40">
+  ${err?`<p class="err">${esc(err)}</p>`:''}<button class="btn gold block" id="go"${RID?'':' disabled'}>${esc(t('enter'))}</button><p class="sub" style="font-size:13px">${esc(t('help'))}</p></div>`;
+  $('#go').onclick=join;$('#nm').addEventListener('keydown',e=>{if(e.key==='Enter')join()})}
+async function join(){const code=$('#code').value.trim(),name=$('#nm').value.trim();if(!code||!name)return;ls.set('mp.sala.name',name);ls.set('mp.sala.code.'+RID,code);const b=$('#go');b.disabled=true;
+  if(!window.RTCPeerConnection||!navigator.mediaDevices){vEntry(t('noweb'));return}
+  try{const d=await db.collection('sala').doc(RID).get();if(!d.exists||!d.data().on){vEntry(t('nf'));return}ROOM=d.data();if(ROOM.code!==code){vEntry(t('bad'));return}
+    const ps=await db.collection('sala').doc(RID).collection('p').get();const alive=ps.docs.filter(x=>x.id!==ME&&Date.now()-(x.data().at||0)<90000);if(alive.length>=(ROOM.max||6)){vEntry(t('full'));return}
+  }catch(e){vEntry(t('nf'));return}
+  CODE=code;NAME=name;ls.set('mp.sala.code.'+RID,code);ls.set('mp.sala.name',name);
+  try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:{facingMode:facing,width:{ideal:640},height:{ideal:480}}})}catch(e){try{local=await navigator.mediaDevices.getUserMedia({audio:true});camOn=false}catch(e2){vEntry(t('perm'));return}}
+  startRoom()}
+/* ---- sala ---- */
+const pRef=()=>db.collection('sala').doc(RID).collection('p'),sRef=()=>db.collection('sala').doc(RID).collection('sig');
+function startRoom(){$('#room').classList.add('on');document.body.style.overflow='hidden';$('#iN').textContent=NAME;
+  $('#bMic').innerHTML=ic('mic');$('#bCam').innerHTML=ic(camOn?'cam':'camoff');$('#bCam').setAttribute('aria-pressed',String(camOn));$('#bFlip').innerHTML=ic('flip');$('#bEnd').innerHTML=ic('end');
+  $('#bMic').onclick=()=>{micOn=!micOn;local.getAudioTracks().forEach(tr=>tr.enabled=micOn);$('#bMic').setAttribute('aria-pressed',String(micOn));$('#bMic').innerHTML=ic(micOn?'mic':'micoff');presence();tileMe()};
+  $('#bCam').onclick=()=>{camOn=!camOn;local.getVideoTracks().forEach(tr=>tr.enabled=camOn);$('#bCam').setAttribute('aria-pressed',String(camOn));$('#bCam').innerHTML=ic(camOn?'cam':'camoff');presence();tileMe()};
+  $('#bFlip').onclick=flip;$('#bEnd').onclick=leave;
+  tileMe();presence();UN.push(setInterval(presence,30000));
+  UN.push(db.collection('sala').doc(RID).onSnapshot(d=>{if(!d.exists||!d.data().on){toast(t('closed'));leave()}},()=>{}));
+  UN.push(pRef().onSnapshot(s=>{const now=Date.now();const ids=[];s.docChanges().forEach(ch=>{const id=ch.doc.id;if(id===ME)return;const x=ch.doc.data();if(ch.type==='removed'||now-(x.at||0)>120000){drop(id,true);return}ids.push(id);
+      if(!peers[id]){peers[id]={name:x.n,pc:null,stream:null,cam:x.cam!==false,mic:x.mic!==false};tileFor(id);if(ME<id)offer(id);}else{peers[id].name=x.n;peers[id].cam=x.cam!==false;peers[id].mic=x.mic!==false;tileFor(id)}});count()},()=>{}));
+  UN.push(sRef().where('to','==',ME).onSnapshot(s=>{s.docChanges().forEach(ch=>{if(ch.type!=='added')return;const x=ch.doc.data();ch.doc.ref.delete().catch(()=>{});onSignal(x.from,x.k,x.d)})},()=>{}));
+  addEventListener('beforeunload',leave);addEventListener('pagehide',leave)}
+function presence(){pRef().doc(ME).set({code:CODE,n:NAME,at:Date.now(),cam:camOn,mic:micOn}).catch(()=>{})}
+function sendSig(to,k,d){return sRef().add({code:CODE,from:ME,to,k,d:JSON.stringify(d),at:Date.now()}).catch(()=>{})}
+const ICE={iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]};
+function pcFor(id){const P=peers[id];if(P.pc)return P.pc;const pc=new RTCPeerConnection(ICE);P.pc=pc;P.stream=new MediaStream();P.q=[];
+  local.getTracks().forEach(tr=>pc.addTrack(tr,local));
+  pc.ontrack=e=>{e.streams[0]?e.streams[0].getTracks().forEach(tr=>P.stream.addTrack(tr)):P.stream.addTrack(e.track);tileFor(id)};
+  pc.onicecandidate=e=>{if(e.candidate)sendSig(id,'ice',e.candidate.toJSON())};
+  pc.onconnectionstatechange=()=>{const st=pc.connectionState;P.state=st;tileFor(id);if(st==='failed'){toast(t('fail',{n:P.name||''}));if(ME<id){try{pc.restartIce()}catch(e){}}}if(st==='closed')drop(id)};
+  pc.onnegotiationneeded=()=>{if(ME<id&&pc.signalingState==='stable'&&P.started)offer(id)};
+  return pc}
+async function offer(id){const P=peers[id];const pc=pcFor(id);P.started=true;try{const o=await pc.createOffer();await pc.setLocalDescription(o);await sendSig(id,'offer',{type:o.type,sdp:o.sdp})}catch(e){}}
+async function onSignal(from,k,raw){let d;try{d=JSON.parse(raw)}catch(e){return}if(!peers[from]){peers[from]={name:'',cam:true,mic:true};tileFor(from)}const P=peers[from];const pc=pcFor(from);
+  try{if(k==='offer'){if(pc.signalingState!=='stable'&&ME<from)return;await pc.setRemoteDescription(d);P.started=true;const a=await pc.createAnswer();await pc.setLocalDescription(a);await sendSig(from,'answer',{type:a.type,sdp:a.sdp});flushIce(P,pc)}
+    else if(k==='answer'){if(pc.signalingState==='have-local-offer'){await pc.setRemoteDescription(d);flushIce(P,pc)}}
+    else if(k==='ice'){if(pc.remoteDescription)await pc.addIceCandidate(d).catch(()=>{});else P.q.push(d)}}catch(e){}}
+function flushIce(P,pc){(P.q||[]).forEach(c=>pc.addIceCandidate(c).catch(()=>{}));P.q=[]}
+function drop(id,quiet){const P=peers[id];if(!P)return;try{P.pc&&P.pc.close()}catch(e){}delete peers[id];const el=document.getElementById('t_'+id);if(el)el.remove();if(!quiet&&P.name)toast(t('left',{n:P.name}));count()}
+function count(){const n=Object.keys(peers).length+1;$('#iC').textContent=t('people',{n});const g=$('#grid');g.className='n'+Math.min(6,n);if(n===1)$('#iC').textContent=t('wait')}
+function tileMe(){let el=document.getElementById('t_me');if(!el){el=document.createElement('div');el.id='t_me';el.className='tile me';el.innerHTML='<video autoplay playsinline muted></video><div class="nm"></div>';$('#grid').prepend(el);el.querySelector('video').srcObject=local}
+  el.querySelector('.nm').innerHTML=esc(t('you'))+(micOn?'':ic('micoff'));const v=el.querySelector('video');v.style.visibility=camOn&&local.getVideoTracks().length?'':'hidden';let av=el.querySelector('.av');if(!camOn||!local.getVideoTracks().length){if(!av){av=document.createElement('div');av.className='av';el.appendChild(av)}av.textContent=(NAME[0]||'·').toUpperCase()}else if(av)av.remove()}
+function tileFor(id){const P=peers[id];if(!P)return;let el=document.getElementById('t_'+id);if(!el){el=document.createElement('div');el.id='t_'+id;el.className='tile';el.innerHTML='<video autoplay playsinline></video><div class="nm"></div><div class="st"></div>';$('#grid').appendChild(el);count();if(P.name)toast(t('joined',{n:P.name}))}
+  const v=el.querySelector('video');if(P.stream&&v.srcObject!==P.stream){v.srcObject=P.stream;v.play&&v.play().catch(()=>{})}
+  el.querySelector('.nm').innerHTML=esc(P.name||'…')+(P.mic?'':ic('micoff'));const st=el.querySelector('.st');st.textContent=P.state==='connected'?'':(P.state==='failed'?'×':t('conn'));
+  const hasV=P.stream&&P.stream.getVideoTracks().length;let av=el.querySelector('.av');if(!P.cam||!hasV){if(!av){av=document.createElement('div');av.className='av';el.appendChild(av)}av.textContent=(P.name||'·')[0].toUpperCase()}else if(av)av.remove()}
+async function flip(){if(!local.getVideoTracks().length)return;facing=facing==='user'?'environment':'user';try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:640},height:{ideal:480}}});const nt=s.getVideoTracks()[0];const ot=local.getVideoTracks()[0];
+  Object.values(peers).forEach(P=>{const sn=P.pc&&P.pc.getSenders().find(x=>x.track&&x.track.kind==='video');if(sn)sn.replaceTrack(nt).catch(()=>{})});local.removeTrack(ot);ot.stop();local.addTrack(nt);nt.enabled=camOn;document.getElementById('t_me').classList.toggle('me',facing==='user');tileMe()}catch(e){}}
+let LEFT=false;
+function leave(){if(LEFT)return;LEFT=true;UN.forEach(f=>{try{typeof f==='function'?f():clearInterval(f)}catch(e){}});UN=[];Object.keys(peers).forEach(id=>drop(id,true));try{local&&local.getTracks().forEach(tr=>tr.stop())}catch(e){}
+  try{pRef().doc(ME).delete().catch(()=>{});sRef().where('to','==',ME).get().then(s=>s.forEach(d=>d.ref.delete().catch(()=>{}))).catch(()=>{})}catch(e){}
+  $('#room').classList.remove('on');document.body.style.overflow='';$('#grid').innerHTML='';app.innerHTML=head+`<h1>${esc(t('t'))}</h1><div class="card"><p class="sub">${esc(t('ended'))}</p><button class="btn gold block" id="again">${esc(t('again'))}</button></div>`;$('#again').onclick=()=>{LEFT=false;peers={};vEntry()}}
+vEntry()
+})();
+</script>
+</body>
+</html>
