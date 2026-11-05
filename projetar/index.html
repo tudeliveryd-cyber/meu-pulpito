@@ -260,7 +260,7 @@ document.addEventListener('keydown',e=>{if(MODE!=='ctl')return;const tg=e.target
   else if(e.key==='ArrowLeft'||e.key==='PageUp'||e.key==='ArrowUp'){e.preventDefault();navStep(-1)}
   else if(e.key==='b'||e.key==='B'){setNow({type:'blank'})}else if(e.key==='l'||e.key==='L'){setNow({type:'logo'})}});
 /* boot */
-const h=(location.hash||'').slice(1).toUpperCase().replace(/[^A-Z0-9]/g,'');const AUTO=/[?&]tela=1/.test(location.search);const saved=ls.get('mp.proj.code','');if(h.length>=16)enter(h,AUTO);else if(saved&&saved.length>=16)enter(saved);else vEntry();
+const h=(location.hash||'').slice(1).toUpperCase().replace(/[^A-Z0-9]/g,'');const AUTO=/[?&]tela=1/.test(location.search);const saved=ls.get('mp.proj.code','');if(h.length>=16)enter(h,AUTO);else if(saved&&saved.length>=16)enter(saved,AUTO);else vEntry();
 })();
 </script>
 </body>
