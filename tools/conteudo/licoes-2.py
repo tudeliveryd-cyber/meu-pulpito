@@ -1,0 +1,684 @@
+# Lições de estudo bíblico para células e Escola Dominical (Meu Púlpito) — parte 2.
+# 4 séries x 6 lições: carater, igreja, vitoria, jovens. Cada texto é um par [ES, PT].
+# Cada lição: título, texto-base, objetivo, quebra-gelo, introdução (para o líder ler),
+# 3 pontos com explicação e referência, perguntas de discussão, aplicação, versículo para memorizar e oração.
+# Uso: python3 tools/conteudo/licoes-2.py          -> valida e grava tools/conteudo/licoes-2.json
+#      python3 tools/conteudo/licoes-2.py --print  -> imprime o texto de cada referência nas duas Bíblias
+import json,os,re,sys
+HERE=os.path.dirname(os.path.abspath(__file__))
+BIB=os.path.join(HERE,'..','..','app','biblia')
+PT=json.load(open(os.path.join(BIB,'pt-livre.json'),encoding='utf-8'))
+ES=json.load(open(os.path.join(BIB,'es-rv1909.json'),encoding='utf-8'))
+
+# Abreviações (só para legibilidade deste arquivo); a saída usa "livro.cap.vers" com livro 0-based.
+AB='Gn Ex Lv Nm Dt Js Jz Rt 1Sm 2Sm 1Rs 2Rs 1Cr 2Cr Ed Ne Et Job Sl Pv Ec Ct Is Jr Lm Ez Dn Os Jl Am Ob Jon Mq Na Hc Sf Ag Zc Ml Mt Mc Lc Jo At Rm 1Co 2Co Gl Ef Fp Cl 1Ts 2Ts 1Tm 2Tm Tt Fm Hb Tg 1Pe 2Pe 1Jo 2Jo 3Jo Jd Ap'.split()
+BK={a:i for i,a in enumerate(AB)}
+def ref(s):
+    m=re.fullmatch(r'(\S+) (\d+):(\d+)(?:-(\d+))?',s)
+    if not m or m.group(1) not in BK:raise ValueError('ref inválida: '+s)
+    b,c,v,w=BK[m.group(1)],int(m.group(2)),int(m.group(3)),m.group(4)
+    return '%d.%d.%d'%(b,c,v)+('-'+w if w else '')
+def verses(r):
+    b,c,v=r.split('.');v1,_,v2=v.partition('-')
+    b,c,v1=int(b),int(c),int(v1);v2=int(v2) if v2 else v1
+    return [(b,c,x) for x in range(v1,v2+1)]
+def exists(bib,b,c,v):
+    return 0<=b<len(bib) and 1<=c<=len(bib[b]) and 1<=v<=len(bib[b][c-1]) and bool((bib[b][c-1][v-1] or '').strip())
+
+SER=[]
+def S(k,nes,npt,des,dpt):
+    SER.append({'k':k,'n':[nes,npt],'d':[des,dpt],'l':[]})
+def L(v,t,obj,gelo,intro,pts,perg,apl,mem,ora):
+    SER[-1]['l'].append({'t':list(t),'v':v,'obj':list(obj),'gelo':list(gelo),'intro':list(intro),
+        'pts':[{'t':[a,b],'x':[c,d],'v':r} for a,b,c,d,r in pts],
+        'perg':[list(p) for p in perg],'apl':list(apl),'mem':mem,'or':list(ora)})
+
+# ================================================================ Caráter cristão
+S('carater','Carácter cristiano – fruto del Espíritu','Caráter cristão – fruto do Espírito',
+  'Seis estudios sobre el fruto del Espíritu y cómo se manifiesta en la vida diaria del creyente.',
+  'Seis estudos sobre o fruto do Espírito e como ele se manifesta na vida diária do crente.')
+
+L('1Co 13:4-7',
+  ('El amor que viene de Dios','O amor que vem de Deus'),
+  ('Comprender que el amor cristiano es una forma de vivir que nace del amor de Dios por nosotros.',
+   'Compreender que o amor cristão é um modo de viver que nasce do amor de Deus por nós.'),
+  ('¿Quién fue la persona que más les mostró amor en su niñez y cómo lo hacía?',
+   'Quem foi a pessoa que mais demonstrou amor a vocês na infância e como ela fazia isso?'),
+  ('Cuando Pablo enumera el fruto del Espíritu en Gálatas 5:22, el amor aparece en primer lugar. En 1 Corintios 13 él describe ese amor de forma muy práctica (la Reina-Valera lo llama «caridad»). No habla de un sentimiento pasajero, sino de actitudes: ser sufrido, ser benigno, no tener envidia, no buscar lo suyo. Este amor no nace de nuestro esfuerzo; es obra del Espíritu Santo en el corazón. Hoy vamos a ver de dónde viene este amor, cómo se nota y hasta dónde llega.',
+   'Quando Paulo enumera o fruto do Espírito em Gálatas 5:22, o amor aparece em primeiro lugar. Em 1 Coríntios 13 ele descreve esse amor de forma bem prática. Não fala de um sentimento passageiro, mas de atitudes: ser paciente, ser bondoso, não ter inveja, não buscar os próprios interesses. Esse amor não nasce do nosso esforço; é obra do Espírito Santo no coração. Hoje vamos ver de onde vem esse amor, como ele se percebe e até onde ele chega.'),
+  [('El origen: Dios nos amó primero','A origem: Deus nos amou primeiro',
+    'Juan escribe: «Nosotros le amamos á él, porque él nos amó primero». No podemos dar lo que no hemos recibido. Antes de pedirnos que amemos, Dios nos amó cuando todavía estábamos lejos de él. Quien recibe ese amor en la cruz de Cristo comienza a ver a los demás con otros ojos. El amor cristiano es una respuesta de gratitud.',
+    'João escreve: “Nós amamos, porque ele nos amou primeiro”. Não podemos dar o que não recebemos. Antes de nos pedir que amássemos, Deus nos amou quando ainda estávamos longe dele. Quem recebe esse amor na cruz de Cristo começa a ver os outros com outros olhos. O amor cristão é uma resposta de gratidão.','1Jo 4:19'),
+   ('La marca: el amor entre hermanos','A marca: o amor entre irmãos',
+    'Jesús dio un mandamiento nuevo: amarnos unos a otros como él nos amó. Y añadió que en esto todos conocerían que somos sus discípulos. La gente no siempre lee la Biblia, pero sí observa cómo nos tratamos en la iglesia, en la casa y en el trabajo. La paciencia, el perdón y la ayuda mutua hablan más que muchas palabras.',
+    'Jesus deu um novo mandamento: que nos amemos uns aos outros como ele nos amou. E acrescentou que nisto todos conheceriam que somos seus discípulos. As pessoas nem sempre leem a Bíblia, mas observam como nos tratamos na igreja, em casa e no trabalho. A paciência, o perdão e a ajuda mútua falam mais do que muitas palavras.','Jo 13:34-35'),
+   ('El alcance: amar incluso al enemigo','O alcance: amar até o inimigo',
+    'Jesús fue más lejos: «Amad á vuestros enemigos, haced bien á los que os aborrecen». Amar a quien nos ama es fácil; el amor de Dios se ve cuando bendecimos a quien nos hirió y oramos por él. Esto no significa aprobar el mal, sino no devolver mal por mal y dejar que el Espíritu transforme nuestra respuesta.',
+    'Jesus foi mais longe: “Amai os vossos inimigos; fazei bem aos que vos odeiam”. Amar quem nos ama é fácil; o amor de Deus aparece quando abençoamos quem nos feriu e oramos por essa pessoa. Isso não significa aprovar o mal, mas não pagar o mal com o mal e deixar o Espírito transformar a nossa reação.','Lc 6:27-28')],
+  [('De las características del amor en 1 Corintios 13:4-7, ¿cuál les parece más difícil de practicar? ¿Por qué?',
+    'Das características do amor em 1 Coríntios 13:4-7, qual parece mais difícil de praticar? Por quê?'),
+   ('¿Cómo cambia nuestra manera de amar el saber que Dios nos amó primero?',
+    'Como muda a nossa maneira de amar saber que Deus nos amou primeiro?'),
+   ('¿Qué ve la gente de afuera cuando observa cómo nos tratamos en la iglesia?',
+    'O que as pessoas de fora veem quando observam como nos tratamos na igreja?'),
+   ('¿Qué pasos prácticos ayudan a bendecir a alguien que nos ha herido?',
+    'Que passos práticos ajudam a abençoar alguém que nos feriu?')],
+  ('Piense en una persona difícil de amar y haga esta semana algo concreto por ella: una oración, una llamada o un gesto de ayuda.',
+   'Pense em uma pessoa difícil de amar e faça nesta semana algo concreto por ela: uma oração, uma ligação ou um gesto de ajuda.'),
+  '1Jo 4:7',
+  ('Señor, gracias porque Tú nos amaste primero. Derrama Tu amor en nuestros corazones por el Espíritu Santo, para que amemos a nuestros hermanos y también a quienes nos han herido. En el nombre de Jesús, amén.',
+   'Senhor, obrigado porque tu nos amaste primeiro. Derrama o teu amor em nossos corações pelo Espírito Santo, para que amemos nossos irmãos e também aqueles que nos feriram. Em nome de Jesus, amém.'))
+
+L('Hc 3:17-18',
+  ('Gozo que no depende de las circunstancias','Alegria que não depende das circunstâncias'),
+  ('Descubrir que el gozo del cristiano está en el Señor y no en lo que tenemos o en cómo nos va.',
+   'Descobrir que a alegria do cristão está no Senhor e não no que temos ou em como as coisas vão.'),
+  ('¿Qué cosa sencilla de la vida diaria les produce alegría?',
+   'Que coisa simples do dia a dia traz alegria a vocês?'),
+  ('El profeta Habacuc describe una situación terrible para un pueblo que vivía del campo: la higuera sin flores, las vides sin fruto, los campos sin cosecha y los corrales sin vacas. Aun así declara: «Con todo, yo me alegraré en Jehová». El gozo que el Espíritu produce no es lo mismo que la felicidad que depende de que todo salga bien. Es una alegría profunda que tiene su raíz en Dios mismo. Hoy veremos de dónde viene ese gozo y cómo se mantiene en tiempos difíciles.',
+   'O profeta Habacuque descreve uma situação terrível para um povo que vivia do campo: a figueira sem flores, as videiras sem fruto, os campos sem colheita e os currais sem vacas. Mesmo assim ele declara: “Mesmo assim eu me alegrarei no SENHOR”. A alegria que o Espírito produz não é a mesma coisa que a felicidade que depende de tudo dar certo. É uma alegria profunda que tem raiz no próprio Deus. Hoje veremos de onde vem essa alegria e como ela se mantém em tempos difíceis.'),
+  [('El gozo del Señor es nuestra fuerza','A alegria do Senhor é a nossa força',
+    'Cuando el pueblo lloraba al escuchar la ley, Nehemías les dijo que no se entristecieran, «porque el gozo de Jehová es vuestra fortaleza». La tristeza constante nos debilita, pero el gozo que viene de Dios nos sostiene para seguir trabajando, sirviendo y luchando. No es negar el dolor, sino recordar que Dios sigue siendo bueno.',
+    'Quando o povo chorava ao ouvir a lei, Neemias lhes disse que não se entristecessem, “porque a alegria do SENHOR é vossa força”. A tristeza constante nos enfraquece, mas a alegria que vem de Deus nos sustenta para continuar trabalhando, servindo e lutando. Não é negar a dor, mas lembrar que Deus continua sendo bom.','Ne 8:10'),
+   ('Un gozo que Jesús comparte','Uma alegria que Jesus compartilha',
+    'Jesús habló a sus discípulos para que su gozo estuviera en ellos y su gozo fuera cumplido. El gozo cristiano no es algo que fabricamos; es la alegría del mismo Cristo en nosotros. Cuanto más permanecemos en él por la oración y la Palabra, más crece esa alegría que el mundo no puede dar ni quitar.',
+    'Jesus falou aos seus discípulos para que a sua alegria estivesse neles e a alegria deles fosse completa. A alegria cristã não é algo que fabricamos; é a alegria do próprio Cristo em nós. Quanto mais permanecemos nele pela oração e pela Palavra, mais cresce essa alegria que o mundo não pode dar nem tirar.','Jo 15:11'),
+   ('Cantar a medianoche','Cantar à meia-noite',
+    'Pablo y Silas estaban presos, después de ser azotados. A medianoche oraban y cantaban himnos a Dios, y los demás presos los oían. Su gozo no dependía de la cárcel, sino del Señor. Cuando un creyente alaba en medio de la prueba, otros lo están observando y pueden conocer a Dios a través de ese testimonio.',
+    'Paulo e Silas estavam presos, depois de terem sido açoitados. À meia-noite oravam e cantavam hinos a Deus, e os outros presos os escutavam. A alegria deles não dependia da prisão, mas do Senhor. Quando um crente louva no meio da prova, outros estão observando e podem conhecer a Deus por meio desse testemunho.','At 16:25')],
+  [('¿Cuál es la diferencia entre estar contento porque todo va bien y tener el gozo del Señor?',
+    'Qual é a diferença entre estar contente porque tudo vai bem e ter a alegria do Senhor?'),
+   ('¿Qué cosas suelen robarnos el gozo en la semana?',
+    'Que coisas costumam roubar a nossa alegria durante a semana?'),
+   ('¿Cómo puede la oración y la Palabra renovar nuestra alegría?',
+    'Como a oração e a Palavra podem renovar a nossa alegria?'),
+   ('¿Alguien quiere compartir un momento difícil en que Dios le dio gozo?',
+    'Alguém quer compartilhar um momento difícil em que Deus lhe deu alegria?')],
+  ('Esta semana, cuando llegue un momento difícil, deténgase y dé gracias a Dios por tres cosas concretas antes de quejarse.',
+   'Nesta semana, quando chegar um momento difícil, pare e agradeça a Deus por três coisas concretas antes de reclamar.'),
+  'Fp 4:4',
+  ('Padre, aunque falten muchas cosas, queremos alegrarnos en Ti. Llena nuestro corazón con el gozo de Cristo y haz que nuestra alegría sea un testimonio para quienes nos rodean. En el nombre de Jesús, amén.',
+   'Pai, ainda que faltem muitas coisas, queremos nos alegrar em ti. Enche o nosso coração com a alegria de Cristo e faze que a nossa alegria seja um testemunho para quem está ao nosso redor. Em nome de Jesus, amém.'))
+
+L('Fp 4:6-7',
+  ('La paz que guarda el corazón','A paz que guarda o coração'),
+  ('Aprender que la paz de Dios comienza por la reconciliación con él y se mantiene por la oración confiada.',
+   'Aprender que a paz de Deus começa pela reconciliação com ele e se mantém pela oração confiante.'),
+  ('¿Cuál es el lugar o el momento del día en que ustedes se sienten más tranquilos?',
+   'Qual é o lugar ou o momento do dia em que vocês se sentem mais tranquilos?'),
+  ('Vivimos en un mundo lleno de preocupaciones: cuentas por pagar, problemas de salud, conflictos en la familia. Pablo escribió a los filipenses desde la prisión y aun así les habló de una paz «que sobrepuja todo entendimiento». Esta paz es parte del fruto del Espíritu. No es la ausencia de problemas, sino la presencia de Dios que guarda el corazón y la mente. En este estudio veremos tres aspectos de la paz: paz con Dios, paz de Dios y paz con los demás.',
+   'Vivemos em um mundo cheio de preocupações: contas para pagar, problemas de saúde, conflitos na família. Paulo escreveu aos filipenses da prisão e mesmo assim lhes falou de uma paz “que excede todo entendimento”. Essa paz faz parte do fruto do Espírito. Não é a ausência de problemas, mas a presença de Deus que guarda o coração e a mente. Neste estudo veremos três aspectos da paz: paz com Deus, paz de Deus e paz com os outros.'),
+  [('Paz con Dios','Paz com Deus',
+    'Antes de sentir paz, necesitamos estar en paz con Dios. Romanos 5:1 dice que, justificados por la fe, tenemos paz para con Dios por medio de nuestro Señor Jesucristo. El pecado nos separaba de él, pero Cristo pagó la deuda. Esta paz no depende de nuestras emociones; es una realidad para todo el que cree en Jesús.',
+    'Antes de sentir paz, precisamos estar em paz com Deus. Romanos 5:1 diz que, justificados pela fé, temos paz com Deus por meio do nosso Senhor Jesus Cristo. O pecado nos separava dele, mas Cristo pagou a dívida. Essa paz não depende das nossas emoções; é uma realidade para todo aquele que crê em Jesus.','Rm 5:1'),
+   ('La paz de Dios en medio de la ansiedad','A paz de Deus no meio da ansiedade',
+    'Isaías dice que Dios guardará en completa paz a aquel cuyo pensamiento persevera en él, porque en él ha confiado. La paz crece cuando llevamos nuestras preocupaciones a Dios en oración, con acción de gracias, en lugar de darles vueltas en la mente. Donde ponemos nuestro pensamiento, allí se decide nuestra paz.',
+    'Isaías diz que Deus guardará em completa paz aquele que tem firme entendimento, pois confia nele. A paz cresce quando levamos as nossas preocupações a Deus em oração, com ações de graças, em vez de ficar remoendo-as na mente. Onde colocamos o nosso pensamento, ali se decide a nossa paz.','Is 26:3'),
+   ('Paz con los demás','Paz com os outros',
+    'Pablo enseña: «Si se puede hacer, cuanto está en vosotros, tened paz con todos los hombres». No siempre depende solo de nosotros, pero sí debemos hacer nuestra parte: pedir perdón, evitar palabras que hieren y buscar la reconciliación. Quien tiene la paz de Dios en el corazón se convierte en un instrumento de paz en su casa y en la iglesia.',
+    'Paulo ensina: “No que for possível de vossa parte, tende paz com todos”. Nem sempre depende só de nós, mas devemos fazer a nossa parte: pedir perdão, evitar palavras que ferem e buscar a reconciliação. Quem tem a paz de Deus no coração se torna um instrumento de paz em casa e na igreja.','Rm 12:18')],
+  [('¿Qué diferencia hay entre «paz con Dios» y «la paz de Dios»?',
+    'Que diferença há entre “paz com Deus” e “a paz de Deus”?'),
+   ('Según Filipenses 4:6, ¿qué debemos hacer con las preocupaciones?',
+    'Segundo Filipenses 4:6, o que devemos fazer com as preocupações?'),
+   ('¿Por qué la acción de gracias ayuda a tener paz?',
+    'Por que as ações de graças ajudam a ter paz?'),
+   ('¿Hay alguna relación en la que ustedes necesiten dar el primer paso para buscar la paz?',
+    'Há algum relacionamento em que vocês precisam dar o primeiro passo para buscar a paz?')],
+  ('Escriba sus tres mayores preocupaciones, preséntelas a Dios en oración con acción de gracias y dé un paso para estar en paz con alguien.',
+   'Escreva suas três maiores preocupações, apresente-as a Deus em oração com ações de graças e dê um passo para ficar em paz com alguém.'),
+  'Jo 14:27',
+  ('Señor Jesús, gracias porque por Tu sangre tenemos paz con Dios. Te entregamos nuestras preocupaciones. Guarda nuestros corazones y nuestras mentes, y haznos pacificadores en nuestros hogares. En Tu nombre, amén.',
+   'Senhor Jesus, obrigado porque pelo teu sangue temos paz com Deus. Entregamos a ti as nossas preocupações. Guarda os nossos corações e as nossas mentes, e faze-nos pacificadores em nossos lares. Em teu nome, amém.'))
+
+L('Tg 5:7-8',
+  ('La paciencia del labrador','A paciência do lavrador'),
+  ('Entender que la paciencia es fruto del Espíritu que nos ayuda a esperar en Dios y a soportar a los demás con amor.',
+   'Entender que a paciência é fruto do Espírito que nos ajuda a esperar em Deus e a suportar os outros com amor.'),
+  ('¿En qué situación de la vida diaria pierden ustedes la paciencia con más facilidad?',
+   'Em que situação do dia a dia vocês perdem a paciência com mais facilidade?'),
+  ('Santiago usa una imagen que todos entienden: el labrador siembra y luego espera. No puede apurar la lluvia ni obligar a la semilla a crecer en un día. Espera con paciencia el precioso fruto de la tierra. Así también nosotros somos llamados a esperar la venida del Señor con corazones firmes. En Gálatas 5:22 la paciencia aparece como parte del fruto del Espíritu (en la Reina-Valera, «tolerancia»). Hoy veremos que la paciencia tiene que ver con Dios, con los demás y con nuestras propias reacciones.',
+   'Tiago usa uma imagem que todos entendem: o lavrador semeia e depois espera. Ele não pode apressar a chuva nem obrigar a semente a crescer em um dia. Espera com paciência o precioso fruto da terra. Assim também nós somos chamados a esperar a vinda do Senhor com corações firmes. Em Gálatas 5:22 a paciência aparece como parte do fruto do Espírito. Hoje veremos que a paciência tem a ver com Deus, com os outros e com as nossas próprias reações.'),
+  [('Dios es paciente con nosotros','Deus é paciente conosco',
+    'El Salmo 103:8 dice que el Señor es misericordioso y clemente, lento para la ira y grande en misericordia. Si Dios no fuera paciente, ninguno de nosotros estaría aquí. Cada vez que recordamos cuántas veces él nos ha esperado y perdonado, se hace más fácil tener paciencia con los demás.',
+    'O Salmo 103:8 diz que o SENHOR é misericordioso e piedoso, que demora para se irar e é grande em bondade. Se Deus não fosse paciente, nenhum de nós estaria aqui. Cada vez que lembramos quantas vezes ele nos esperou e perdoou, fica mais fácil ter paciência com os outros.','Sl 103:8'),
+   ('Soportarnos unos a otros en amor','Suportar uns aos outros em amor',
+    'Pablo pide que vivamos con humildad, mansedumbre y paciencia, soportándonos los unos a los otros en amor. En toda familia y en toda iglesia hay personas con un carácter distinto al nuestro. La paciencia no es aguantar en silencio con rencor, sino aceptar al otro con sus límites mientras Dios trabaja en él y en nosotros.',
+    'Paulo pede que vivamos com humildade, mansidão e paciência, tolerando uns aos outros em amor. Em toda família e em toda igreja há pessoas com um temperamento diferente do nosso. A paciência não é aguentar calado com rancor, mas aceitar o outro com seus limites enquanto Deus trabalha nele e em nós.','Ef 4:2'),
+   ('Lentos para enojarnos','Lentos para nos irar',
+    'Proverbios enseña que el que tarde se aira es grande de entendimiento. Muchas palabras que lamentamos fueron dichas en un momento de impaciencia. Antes de responder, podemos respirar, orar en silencio y pensar. Esa pausa, guiada por el Espíritu, evita heridas y abre espacio para una respuesta sabia.',
+    'Provérbios ensina que quem demora para se irar tem muito entendimento. Muitas palavras das quais nos arrependemos foram ditas num momento de impaciência. Antes de responder, podemos respirar, orar em silêncio e pensar. Essa pausa, guiada pelo Espírito, evita feridas e abre espaço para uma resposta sábia.','Pv 14:29')],
+  [('¿Qué nos enseña el ejemplo del labrador sobre la manera de esperar en Dios?',
+    'O que o exemplo do lavrador nos ensina sobre a maneira de esperar em Deus?'),
+   ('¿En qué áreas de su vida les cuesta esperar el tiempo de Dios?',
+    'Em que áreas da sua vida é difícil esperar o tempo de Deus?'),
+   ('¿Cómo nos ayuda recordar la paciencia de Dios con nosotros?',
+    'Como nos ajuda lembrar a paciência de Deus conosco?'),
+   ('¿Qué pueden hacer para no responder con enojo en el momento de la tensión?',
+    'O que vocês podem fazer para não responder com raiva no momento da tensão?')],
+  ('Identifique la situación en que más pierde la paciencia y, esta semana, antes de reaccionar, haga una pausa para orar en silencio.',
+   'Identifique a situação em que você mais perde a paciência e, nesta semana, antes de reagir, faça uma pausa para orar em silêncio.'),
+  'Gl 6:9',
+  ('Señor, gracias por Tu paciencia con nosotros. Danos un corazón firme para esperar Tu tiempo y paciencia para tratar a los demás con amor. Que el Espíritu Santo controle nuestras reacciones. En el nombre de Jesús, amén.',
+   'Senhor, obrigado pela tua paciência conosco. Dá-nos um coração firme para esperar o teu tempo e paciência para tratar os outros com amor. Que o Espírito Santo controle as nossas reações. Em nome de Jesus, amém.'))
+
+L('Lc 10:33-35',
+  ('Bondad que se pone en acción','Bondade que entra em ação'),
+  ('Reconocer que la benignidad y la bondad se demuestran con hechos concretos hacia quien lo necesita.',
+   'Reconhecer que a benignidade e a bondade se demonstram com atitudes concretas para com quem precisa.'),
+  ('¿Recuerdan algún gesto de bondad de un desconocido que les haya sorprendido?',
+   'Vocês se lembram de algum gesto de bondade de um desconhecido que os surpreendeu?'),
+  ('En la parábola del buen samaritano, un hombre queda herido en el camino. Otros pasan de largo, pero un samaritano se acerca, venda sus heridas, lo lleva a un mesón, cuida de él y paga por su atención. Jesús contó esta historia para mostrar quién es nuestro prójimo. El fruto del Espíritu incluye la benignidad y la bondad: un corazón amable y manos dispuestas a hacer el bien. Hoy veremos que la bondad cristiana sigue el ejemplo de Jesús, no se cansa y no deja pasar la oportunidad.',
+   'Na parábola do bom samaritano, um homem fica ferido no caminho. Outros passam de largo, mas um samaritano se aproxima, faz curativo nas feridas, leva-o a uma hospedaria, cuida dele e paga pelo atendimento. Jesus contou essa história para mostrar quem é o nosso próximo. O fruto do Espírito inclui a benignidade e a bondade: um coração amável e mãos dispostas a fazer o bem. Hoje veremos que a bondade cristã segue o exemplo de Jesus, não se cansa e não deixa passar a oportunidade.'),
+  [('Jesús anduvo haciendo bienes','Jesus andou fazendo o bem',
+    'Pedro resumió el ministerio de Jesús diciendo que Dios lo ungió con el Espíritu Santo y con poder, y que anduvo haciendo bienes y sanando a todos los oprimidos del diablo. El mismo Espíritu que estaba sobre Jesús vive en el creyente. Por eso la bondad no es un adorno, sino una señal de que seguimos a Cristo.',
+    'Pedro resumiu o ministério de Jesus dizendo que Deus o ungiu com o Espírito Santo e com poder, e que ele percorreu os lugares fazendo o bem e curando todos os oprimidos pelo diabo. O mesmo Espírito que estava sobre Jesus vive no crente. Por isso a bondade não é um enfeite, mas um sinal de que seguimos a Cristo.','At 10:38'),
+   ('Hacer bien a todos','Fazer o bem a todos',
+    'Pablo dice: «Así que, entre tanto que tenemos tiempo, hagamos bien á todos, y mayormente á los domésticos de la fe». La bondad empieza en casa y en la iglesia, pero no se queda allí; alcanza al vecino, al compañero de trabajo y al desconocido. El samaritano no preguntó si el herido era de su pueblo.',
+    'Paulo diz: “Portanto, enquanto tivermos oportunidade, façamos o bem a todos; mas principalmente aos familiares da fé”. A bondade começa em casa e na igreja, mas não fica ali; alcança o vizinho, o colega de trabalho e o desconhecido. O samaritano não perguntou se o ferido era do seu povo.','Gl 6:10'),
+   ('No retener el bien','Não reter o bem',
+    'Proverbios 3:27 nos aconseja no detener el bien de quien lo necesita cuando tenemos poder para hacerlo. Muchas veces la bondad se pierde por dejarla para después. Una visita, una comida, una palabra de ánimo o una ayuda económica pueden ser la respuesta de Dios para alguien hoy. La pregunta es si estamos atentos.',
+    'Provérbios 3:27 nos aconselha a não deter o bem daqueles que precisam quando temos poder para fazê-lo. Muitas vezes a bondade se perde por deixá-la para depois. Uma visita, uma refeição, uma palavra de ânimo ou uma ajuda financeira podem ser a resposta de Deus para alguém hoje. A pergunta é se estamos atentos.','Pv 3:27')],
+  [('¿Por qué creen que el sacerdote y el levita pasaron de largo?',
+    'Por que vocês acham que o sacerdote e o levita passaram de largo?'),
+   ('¿Qué costo tuvo para el samaritano ayudar al herido?',
+    'Que custo teve para o samaritano ajudar o ferido?'),
+   ('¿Quiénes son hoy los «heridos en el camino» cerca de nosotros?',
+    'Quem são hoje os “feridos no caminho” perto de nós?'),
+   ('¿Qué nos impide muchas veces hacer el bien que sabemos que debemos hacer?',
+    'O que muitas vezes nos impede de fazer o bem que sabemos que devemos fazer?'),
+   ('¿Qué podría hacer esta célula, como grupo, por alguien que lo necesita?',
+    'O que esta célula poderia fazer, como grupo, por alguém que está precisando?')],
+  ('Elija una persona necesitada que conozca y haga por ella esta semana un acto concreto de bondad, sin esperar nada a cambio.',
+   'Escolha uma pessoa necessitada que você conheça e faça por ela nesta semana um ato concreto de bondade, sem esperar nada em troca.'),
+  'Cl 3:12',
+  ('Señor, abre nuestros ojos para ver a quienes están heridos en el camino. Danos un corazón compasivo y manos dispuestas, como Jesús, que anduvo haciendo bienes. Que no dejemos para mañana el bien que podemos hacer hoy. Amén.',
+   'Senhor, abre os nossos olhos para ver os que estão feridos no caminho. Dá-nos um coração compassivo e mãos dispostas, como Jesus, que andou fazendo o bem. Que não deixemos para amanhã o bem que podemos fazer hoje. Amém.'))
+
+L('Gl 5:22-23',
+  ('Fieles, mansos y con dominio propio','Fiéis, mansos e com domínio próprio'),
+  ('Conocer las últimas virtudes del fruto del Espíritu y depender del Espíritu para vivirlas cada día.',
+   'Conhecer as últimas virtudes do fruto do Espírito e depender do Espírito para vivê-las a cada dia.'),
+  ('Si pudieran cambiar un hábito en su vida con solo desearlo, ¿cuál sería?',
+   'Se vocês pudessem mudar um hábito na sua vida só por desejar, qual seria?'),
+  ('Terminamos esta serie con las tres últimas virtudes del fruto del Espíritu: fidelidad, mansedumbre y dominio propio. En la Reina-Valera aparecen como «fe», «mansedumbre» y «templanza». Notemos que Pablo dice «el fruto», no «los frutos»: no es una lista para escoger, sino un solo carácter que el Espíritu forma en nosotros, el carácter de Cristo. Un árbol no da fruto por esfuerzo, sino por estar conectado a la raíz. Así también, estas virtudes crecen cuando caminamos cerca del Espíritu Santo.',
+   'Encerramos esta série com as três últimas virtudes do fruto do Espírito: fidelidade, mansidão e domínio próprio. Notemos que Paulo diz “o fruto”, não “os frutos”: não é uma lista para escolher, mas um só caráter que o Espírito forma em nós, o caráter de Cristo. Uma árvore não dá fruto por esforço, mas por estar ligada à raiz. Assim também, essas virtudes crescem quando caminhamos perto do Espírito Santo.'),
+  [('Fieles en lo poco','Fiéis no pouco',
+    'Jesús enseñó que el que es fiel en lo muy poco, también en lo más es fiel. La fidelidad se prueba en cosas pequeñas: cumplir la palabra dada, llegar a tiempo, ser honesto con el dinero, perseverar en el servicio cuando nadie aplaude. Dios confía mayores responsabilidades a quienes son fieles en lo pequeño.',
+    'Jesus ensinou que quem é fiel no mínimo também é fiel no muito. A fidelidade é provada nas coisas pequenas: cumprir a palavra dada, chegar no horário, ser honesto com o dinheiro, perseverar no serviço quando ninguém aplaude. Deus confia responsabilidades maiores a quem é fiel no pouco.','Lc 16:10'),
+   ('Mansos como Jesús','Mansos como Jesus',
+    'Jesús dijo: «aprended de mí, que soy manso y humilde de corazón». La mansedumbre no es debilidad. Jesús tenía todo el poder y, aun así, trataba a las personas con dulzura y no buscaba imponerse. El manso no necesita ganar cada discusión, porque confía en que Dios defiende su causa.',
+    'Jesus disse: “aprendei de mim, porque sou manso e humilde de coração”. A mansidão não é fraqueza. Jesus tinha todo o poder e, mesmo assim, tratava as pessoas com brandura e não buscava se impor. O manso não precisa vencer cada discussão, porque confia que Deus defende a sua causa.','Mt 11:29'),
+   ('Dominio propio','Domínio próprio',
+    'Proverbios dice que el que se enseñorea de su espíritu es mejor que el que toma una ciudad. Controlar la lengua, los impulsos, los gastos y los deseos es una gran victoria. El dominio propio no se logra solo con fuerza de voluntad; es fruto de una vida rendida al Espíritu, que nos ayuda a decir no a lo que nos destruye.',
+    'Provérbios diz que aquele que domina o seu espírito é melhor do que aquele que toma uma cidade. Controlar a língua, os impulsos, os gastos e os desejos é uma grande vitória. O domínio próprio não se alcança só com força de vontade; é fruto de uma vida rendida ao Espírito, que nos ajuda a dizer não ao que nos destrói.','Pv 16:32')],
+  [('¿Por qué es importante que Pablo hable de «el fruto» y no de «los frutos»?',
+    'Por que é importante que Paulo fale de “o fruto” e não de “os frutos”?'),
+   ('¿En qué cosas pequeñas Dios está probando nuestra fidelidad?',
+    'Em que coisas pequenas Deus está provando a nossa fidelidade?'),
+   ('¿Cómo responde una persona mansa cuando es criticada?',
+    'Como uma pessoa mansa reage quando é criticada?'),
+   ('¿En qué área de su vida necesitan más dominio propio?',
+    'Em que área da sua vida vocês precisam de mais domínio próprio?'),
+   ('Repasando la serie, ¿qué aspecto del fruto del Espíritu ha crecido más en ustedes?',
+    'Olhando para a série, que aspecto do fruto do Espírito mais cresceu em vocês?')],
+  ('Escoja un área donde necesita fidelidad, mansedumbre o dominio propio, y pida a un hermano de confianza que ore por usted y le pregunte cómo le va.',
+   'Escolha uma área em que você precisa de fidelidade, mansidão ou domínio próprio, e peça a um irmão de confiança que ore por você e pergunte como você está indo.'),
+  'Gl 5:25',
+  ('Espíritu Santo, forma en nosotros el carácter de Cristo. Haznos fieles en lo poco, mansos de corazón y con dominio sobre nuestros impulsos. Queremos andar en el Espíritu cada día. En el nombre de Jesús, amén.',
+   'Espírito Santo, forma em nós o caráter de Cristo. Faze-nos fiéis no pouco, mansos de coração e com domínio sobre os nossos impulsos. Queremos andar no Espírito a cada dia. Em nome de Jesus, amém.'))
+
+# ================================================================ A igreja e o serviço
+S('igreja','La iglesia y el servicio','A igreja e o serviço',
+  'Seis estudios sobre lo que es la iglesia y cómo cada miembro sirve, da, enseña y comparte el evangelio.',
+  'Seis estudos sobre o que é a igreja e como cada membro serve, contribui, ensina e compartilha o evangelho.')
+
+L('1Co 12:12-14',
+  ('La iglesia, cuerpo de Cristo','A igreja, corpo de Cristo'),
+  ('Comprender que la iglesia es el cuerpo de Cristo y que cada creyente es un miembro necesario.',
+   'Compreender que a igreja é o corpo de Cristo e que cada crente é um membro necessário.'),
+  ('Si tuvieran que elegir una parte del cuerpo para describir su manera de ser, ¿cuál sería y por qué?',
+   'Se vocês tivessem que escolher uma parte do corpo para descrever o seu jeito de ser, qual seria e por quê?'),
+  ('Muchas personas piensan en la iglesia como un edificio o una reunión del domingo. Pero la Biblia usa una imagen viva: la iglesia es un cuerpo. Pablo explica que el cuerpo es uno y tiene muchos miembros, y que todos fuimos bautizados por un mismo Espíritu en un cuerpo, sin importar el origen o la condición social. En este estudio veremos quién es la cabeza de ese cuerpo, por qué cada miembro es importante y cómo nos necesitamos unos a otros.',
+   'Muitas pessoas pensam na igreja como um prédio ou uma reunião de domingo. Mas a Bíblia usa uma imagem viva: a igreja é um corpo. Paulo explica que o corpo é um e tem muitos membros, e que todos fomos batizados em um só Espírito para um só corpo, não importa a origem ou a condição social. Neste estudo veremos quem é a cabeça desse corpo, por que cada membro é importante e como precisamos uns dos outros.'),
+  [('Cristo es la cabeza','Cristo é a cabeça',
+    'Pablo dice que Dios sometió todas las cosas debajo de los pies de Cristo y lo dio por cabeza sobre todas las cosas a la iglesia, la cual es su cuerpo. La iglesia no pertenece al pastor ni a un grupo de líderes; pertenece a Jesús. Él dirige, y nosotros obedecemos. Cuando todos miramos a la cabeza, el cuerpo se mueve en armonía.',
+    'Paulo diz que Deus sujeitou todas as coisas debaixo dos pés de Cristo e o constituiu cabeça sobre todas as coisas para a igreja, que é o seu corpo. A igreja não pertence ao pastor nem a um grupo de líderes; pertence a Jesus. Ele dirige, e nós obedecemos. Quando todos olhamos para a cabeça, o corpo se move em harmonia.','Ef 1:22-23'),
+   ('Muchos miembros, distintas funciones','Muitos membros, funções diferentes',
+    'En Romanos 12:4-5 Pablo recuerda que en un cuerpo hay muchos miembros, pero no todos tienen la misma operación. Así también, siendo muchos, somos un cuerpo en Cristo. Unos enseñan, otros cantan, otros limpian, otros visitan. Ninguna función es más espiritual que otra cuando se hace para el Señor. La diferencia no divide; completa.',
+    'Em Romanos 12:4-5 Paulo lembra que em um corpo há muitos membros, mas nem todos têm a mesma função. Assim também, sendo muitos, somos um só corpo em Cristo. Uns ensinam, outros cantam, outros limpam, outros visitam. Nenhuma função é mais espiritual que outra quando é feita para o Senhor. A diferença não divide; completa.','Rm 12:4-5'),
+   ('Nos necesitamos unos a otros','Precisamos uns dos outros',
+    'El ojo no puede decir a la mano: «No te he menester». Pablo añade que los miembros que parecen más débiles son necesarios. Nadie en la iglesia sobra, y nadie se basta a sí mismo. Cuando un hermano se aparta, todo el cuerpo lo siente. Por eso nos cuidamos, nos buscamos y nos valoramos.',
+    'O olho não pode dizer à mão: “Não tenho necessidade de ti”. Paulo acrescenta que os membros que parecem mais fracos são muito mais necessários. Ninguém na igreja sobra, e ninguém basta a si mesmo. Quando um irmão se afasta, todo o corpo sente. Por isso cuidamos uns dos outros, nos procuramos e nos valorizamos.','1Co 12:21-22')],
+  [('¿Qué diferencia hay entre «ir a la iglesia» y «ser parte del cuerpo de Cristo»?',
+    'Que diferença há entre “ir à igreja” e “ser parte do corpo de Cristo”?'),
+   ('¿Qué pasa en un cuerpo cuando un miembro no hace su parte?',
+    'O que acontece em um corpo quando um membro não faz a sua parte?'),
+   ('¿Alguna vez se sintieron poco importantes en la iglesia? ¿Qué dice este texto al respecto?',
+    'Alguma vez vocês se sentiram pouco importantes na igreja? O que este texto diz sobre isso?'),
+   ('¿Cómo podemos cuidar a los hermanos que se han alejado?',
+    'Como podemos cuidar dos irmãos que se afastaram?')],
+  ('Esta semana comuníquese con un hermano que no ha visto en las reuniones y dígale que es importante para el cuerpo de Cristo.',
+   'Nesta semana entre em contato com um irmão que você não tem visto nas reuniões e diga a ele que ele é importante para o corpo de Cristo.'),
+  '1Co 12:27',
+  ('Señor Jesús, Tú eres la cabeza de la iglesia. Gracias por hacernos parte de Tu cuerpo. Enséñanos a valorar a cada hermano, a cumplir nuestra función y a cuidarnos unos a otros con amor. Amén.',
+   'Senhor Jesus, tu és a cabeça da igreja. Obrigado por nos fazer parte do teu corpo. Ensina-nos a valorizar cada irmão, a cumprir a nossa função e a cuidar uns dos outros com amor. Amém.'))
+
+L('Ef 4:1-6',
+  ('Guardar la unidad del Espíritu','Guardar a unidade do Espírito'),
+  ('Valorar la unidad de la iglesia y asumir actitudes concretas para cuidarla.',
+   'Valorizar a unidade da igreja e assumir atitudes concretas para cuidar dela.'),
+  ('¿Qué equipo, grupo o familia conocen que funciona muy bien en unidad? ¿Cuál es su secreto?',
+   'Que time, grupo ou família vocês conhecem que funciona muito bem em unidade? Qual é o segredo?'),
+  ('Pablo, desde la prisión, ruega a los efesios que anden como es digno de su vocación, con humildad, mansedumbre y paciencia, «solícitos á guardar la unidad del Espíritu en el vínculo de la paz». Notemos que no dice «crear» la unidad, sino «guardarla». La unidad ya existe porque hay un cuerpo, un Espíritu, un Señor, una fe, un bautismo y un Dios y Padre de todos. Nuestra tarea es protegerla. Hoy veremos por qué la unidad es tan importante y cómo cuidarla.',
+   'Paulo, da prisão, roga aos efésios que andem como é digno do chamado, com humildade, mansidão e paciência, procurando “guardar a unidade do Espírito pelo vínculo da paz”. Notemos que ele não diz “criar” a unidade, mas “guardá-la”. A unidade já existe porque há um só corpo, um só Espírito, um só Senhor, uma só fé, um só batismo e um só Deus e Pai de todos. A nossa tarefa é protegê-la. Hoje veremos por que a unidade é tão importante e como cuidar dela.'),
+  [('La oración de Jesús','A oração de Jesus',
+    'Antes de ir a la cruz, Jesús oró al Padre por los que creerían en él: «Para que todos sean una cosa». Y dio la razón: «para que el mundo crea». La unidad de la iglesia es un testimonio poderoso. Una iglesia dividida aleja a las personas; una iglesia unida muestra que Jesús es real.',
+    'Antes de ir para a cruz, Jesus orou ao Pai pelos que creriam nele: “Para que todos sejam um”. E deu a razão: “para que o mundo creia”. A unidade da igreja é um testemunho poderoso. Uma igreja dividida afasta as pessoas; uma igreja unida mostra que Jesus é real.','Jo 17:21'),
+   ('La humildad protege la unidad','A humildade protege a unidade',
+    'Pablo pide a los filipenses que tengan el mismo amor y que nada hagan por contienda o por vanagloria, sino con humildad. La mayoría de las divisiones nacen del orgullo: querer tener razón, querer el primer lugar, no aceptar ser corregido. Cuando cada uno considera a los demás antes que a sí mismo, los conflictos pierden fuerza.',
+    'Paulo pede aos filipenses que tenham o mesmo amor e que nada façam por rivalidade ou vanglória, mas com humildade. A maioria das divisões nasce do orgulho: querer ter razão, querer o primeiro lugar, não aceitar ser corrigido. Quando cada um considera os outros superiores a si mesmo, os conflitos perdem a força.','Fp 2:2-3'),
+   ('El amor, vínculo perfecto','O amor, vínculo da perfeição',
+    'Colosenses 3:14 dice que sobre todas las cosas nos vistamos de amor, que es el vínculo de la perfección. Unidad no significa que todos pensemos igual en todo, sino que el amor nos mantiene juntos aun en las diferencias. Las palabras amables, el perdón rápido y la oración unos por otros son los hilos que nos unen.',
+    'Colossenses 3:14 diz que acima de tudo nos revistamos do amor, que é o vínculo da perfeição. Unidade não significa que todos pensem igual em tudo, mas que o amor nos mantém juntos mesmo nas diferenças. As palavras gentis, o perdão rápido e a oração uns pelos outros são os fios que nos unem.','Cl 3:14')],
+  [('¿Por qué Pablo dice «guardar» la unidad y no «crear» la unidad?',
+    'Por que Paulo diz “guardar” a unidade e não “criar” a unidade?'),
+   ('¿Qué cosas amenazan la unidad en una iglesia o en una célula?',
+    'Que coisas ameaçam a unidade em uma igreja ou em uma célula?'),
+   ('¿Cómo afecta al testimonio de la iglesia la falta de unidad?',
+    'Como a falta de unidade afeta o testemunho da igreja?'),
+   ('¿Qué podemos hacer cuando escuchamos un comentario que divide?',
+    'O que podemos fazer quando ouvimos um comentário que divide?')],
+  ('Esta semana evite todo comentario negativo sobre hermanos o líderes y, en su lugar, ore por ellos por nombre.',
+   'Nesta semana evite todo comentário negativo sobre irmãos ou líderes e, em vez disso, ore por eles pelo nome.'),
+  'Sl 133:1',
+  ('Padre, gracias porque nos hiciste un solo cuerpo en Cristo. Líbranos del orgullo y de las palabras que dividen. Vístenos de amor y ayúdanos a guardar la unidad del Espíritu, para que el mundo crea. Amén.',
+   'Pai, obrigado porque nos fizeste um só corpo em Cristo. Livra-nos do orgulho e das palavras que dividem. Reveste-nos de amor e ajuda-nos a guardar a unidade do Espírito, para que o mundo creia. Amém.'))
+
+L('1Pe 4:10-11',
+  ('Servir con los dones que Dios dio','Servir com os dons que Deus deu'),
+  ('Reconocer que cada creyente recibió dones de Dios para servir a los demás y glorificar a Dios.',
+   'Reconhecer que cada crente recebeu dons de Deus para servir aos outros e glorificar a Deus.'),
+  ('¿Qué habilidad o talento tiene alguien de su familia que ustedes admiran?',
+   'Que habilidade ou talento alguém da sua família tem que vocês admiram?'),
+  ('Pedro escribe: «Cada uno según el don que ha recibido, adminístrelo á los otros». Esto significa que no hay creyentes sin dones. Dios repartió su gracia de muchas maneras, y nosotros somos administradores de lo que recibimos, no dueños. El don no es para presumir, sino para servir, y el objetivo final es que «en todas cosas sea Dios glorificado por Jesucristo». Hoy veremos la variedad de los dones, el ejemplo de Jesús como siervo y la actitud con la que debemos servir.',
+   'Pedro escreve: “Cada um sirva aos outros segundo o dom que recebeu”. Isso significa que não há crentes sem dons. Deus repartiu a sua graça de muitas maneiras, e nós somos administradores do que recebemos, não donos. O dom não é para se exibir, mas para servir, e o objetivo final é que “em tudo Deus seja glorificado por meio de Jesus Cristo”. Hoje veremos a variedade dos dons, o exemplo de Jesus como servo e a atitude com que devemos servir.'),
+  [('Dones diferentes según la gracia','Dons diferentes segundo a graça',
+    'En Romanos 12:6-8 Pablo menciona varios dones: profecía, servicio, enseñanza, exhortación, repartir, presidir y hacer misericordia. Algunos son visibles y otros pasan desapercibidos, pero todos vienen de la gracia de Dios. Cada uno debe ejercer su don con dedicación: el que reparte, con sencillez; el que preside, con solicitud; el que hace misericordia, con alegría.',
+    'Em Romanos 12:6-8 Paulo menciona vários dons: profecia, serviço, ensino, exortação, repartir, liderar e exercer misericórdia. Alguns são visíveis e outros passam despercebidos, mas todos vêm da graça de Deus. Cada um deve exercer o seu dom com dedicação: o que reparte, com generosidade; o que lidera, com empenho; o que exerce misericórdia, com alegria.','Rm 12:6-8'),
+   ('El ejemplo de Jesús','O exemplo de Jesus',
+    'Jesús, el Señor y Maestro, lavó los pies de sus discípulos y dijo: «ejemplo os he dado, para que como yo os he hecho, vosotros también hagáis». Lavar pies era tarea de siervos. Si el mismo Señor se inclinó para servir, ningún trabajo en la iglesia está por debajo de nosotros. El verdadero liderazgo cristiano se mide por el servicio.',
+    'Jesus, o Senhor e Mestre, lavou os pés dos seus discípulos e disse: “vos tenho dado exemplo, para que como eu vos tenho feito, façais vós também”. Lavar pés era tarefa de servos. Se o próprio Senhor se inclinou para servir, nenhum trabalho na igreja está abaixo de nós. A verdadeira liderança cristã se mede pelo serviço.','Jo 13:14-15'),
+   ('Servir sin desanimarse','Servir sem desanimar',
+    'Pablo anima: «estad firmes y constantes, creciendo en la obra del Señor siempre, sabiendo que vuestro trabajo en el Señor no es vano». A veces servimos y nadie lo nota, o encontramos dificultades. Pero Dios ve cada esfuerzo. Lo que hacemos para él tiene valor eterno, aunque hoy no veamos todos los resultados.',
+    'Paulo anima: “sede firmes, imóveis e sempre abundantes na obra do Senhor, sabendo que o vosso trabalho não é vão no Senhor”. Às vezes servimos e ninguém percebe, ou encontramos dificuldades. Mas Deus vê cada esforço. O que fazemos para ele tem valor eterno, ainda que hoje não vejamos todos os resultados.','1Co 15:58')],
+  [('¿Por qué Pedro nos llama «administradores» de los dones y no dueños?',
+    'Por que Pedro nos chama de “administradores” dos dons e não de donos?'),
+   ('¿Qué dones o habilidades reconocen en las personas de esta célula?',
+    'Que dons ou habilidades vocês reconhecem nas pessoas desta célula?'),
+   ('¿Qué nos enseña Jesús al lavar los pies de sus discípulos?',
+    'O que Jesus nos ensina ao lavar os pés dos seus discípulos?'),
+   ('¿Qué cosas nos desaniman en el servicio y cómo podemos vencerlas?',
+    'Que coisas nos desanimam no serviço e como podemos vencê-las?'),
+   ('¿En qué área de la iglesia podrían comenzar a servir este mes?',
+    'Em que área da igreja vocês poderiam começar a servir neste mês?')],
+  ('Converse con su líder o pastor y ofrézcase para servir en un área concreta de la iglesia en este mes.',
+   'Converse com o seu líder ou pastor e ofereça-se para servir em uma área concreta da igreja neste mês.'),
+  'Mc 10:45',
+  ('Señor, gracias por los dones que nos has dado. Queremos usarlos para servir a otros y no para nosotros mismos. Danos un corazón humilde como el de Jesús, y que en todo seas glorificado. Amén.',
+   'Senhor, obrigado pelos dons que nos deste. Queremos usá-los para servir aos outros e não a nós mesmos. Dá-nos um coração humilde como o de Jesus, e que em tudo sejas glorificado. Amém.'))
+
+L('2Co 9:6-8',
+  ('Dar con alegría y ser buenos mayordomos','Dar com alegria e ser bons mordomos'),
+  ('Entender que todo lo que tenemos pertenece a Dios y que dar es un acto de adoración, fe y alegría.',
+   'Entender que tudo o que temos pertence a Deus e que contribuir é um ato de adoração, fé e alegria.'),
+  ('¿Cuál es el regalo más significativo que alguien les dio? ¿Qué lo hizo especial?',
+   'Qual foi o presente mais significativo que alguém deu a vocês? O que o tornou especial?'),
+  ('Hablar de dinero en la iglesia a veces incomoda, pero la Biblia habla mucho de él, porque nuestro bolsillo revela nuestro corazón. Pablo usa la imagen de la siembra: el que siembra escasamente, escasamente segará. Y añade: «Dios ama el dador alegre». Dar no es una obligación triste, sino una respuesta de gratitud a un Dios generoso. Además, Dios es poderoso para hacer que abunde en nosotros toda gracia. Hoy veremos que somos mayordomos de lo que Dios nos confió.',
+   'Falar de dinheiro na igreja às vezes incomoda, mas a Bíblia fala muito sobre isso, porque o nosso bolso revela o nosso coração. Paulo usa a imagem da semeadura: o que semeia pouco, também pouco colherá. E acrescenta: “Deus ama ao que dá com alegria”. Contribuir não é uma obrigação triste, mas uma resposta de gratidão a um Deus generoso. Além disso, Deus é poderoso para fazer abundar em nós toda graça. Hoje veremos que somos mordomos do que Deus nos confiou.'),
+  [('Honrar a Dios con las primicias','Honrar a Deus com as primícias',
+    'Proverbios 3:9 enseña a honrar al Señor con nuestros bienes y con las primicias de todos nuestros frutos. Las primicias son la primera parte, no lo que sobra. Cuando separamos primero la parte de Dios, declaramos que él es el primero en nuestra vida y que confiamos en su provisión para lo demás.',
+    'Provérbios 3:9 ensina a honrar o Senhor com os nossos bens e com a primeira parte de toda a nossa renda. As primícias são a primeira parte, não o que sobra. Quando separamos primeiro a parte de Deus, declaramos que ele é o primeiro em nossa vida e que confiamos na sua provisão para o restante.','Pv 3:9'),
+   ('Diezmos y ofrendas con fe','Dízimos e ofertas com fé',
+    'En Malaquías 3:10 Dios pide al pueblo traer todos los diezmos al alfolí, para que haya alimento en su casa, y lo invita a probarlo. Los diezmos y las ofrendas sostienen la obra de Dios y a quienes sirven en ella. Dar con fe es confiar en que Dios es fiel a su palabra y cuida de quien lo honra.',
+    'Em Malaquias 3:10 Deus pede ao povo que traga todos os dízimos à casa do tesouro, para que haja alimento em sua casa, e o convida a prová-lo. Os dízimos e as ofertas sustentam a obra de Deus e os que servem nela. Contribuir com fé é confiar que Deus é fiel à sua palavra e cuida de quem o honra.','Ml 3:10'),
+   ('Mayordomos fieles','Mordomos fiéis',
+    'Pablo dice que «se requiere en los dispensadores, que cada uno sea hallado fiel». Un mayordomo administra los bienes de otro. Nuestro dinero, nuestro tiempo, nuestra salud y nuestros talentos pertenecen a Dios. Ser fiel incluye ofrendar, pero también evitar deudas innecesarias, trabajar con honestidad y ayudar al necesitado.',
+    'Paulo diz que “exige-se dos guardiões que cada um seja fiel”. Um mordomo administra os bens de outro. O nosso dinheiro, o nosso tempo, a nossa saúde e os nossos talentos pertencem a Deus. Ser fiel inclui contribuir, mas também evitar dívidas desnecessárias, trabalhar com honestidade e ajudar o necessitado.','1Co 4:2')],
+  [('¿Qué significa para ustedes ser un «dador alegre»?',
+    'O que significa para vocês ser alguém que “dá com alegria”?'),
+   ('¿Por qué es importante dar a Dios la primera parte y no lo que sobra?',
+    'Por que é importante dar a Deus a primeira parte e não o que sobra?'),
+   ('¿Qué cosas, además del dinero, Dios nos ha confiado para administrar?',
+    'Que coisas, além do dinheiro, Deus nos confiou para administrar?'),
+   ('¿Qué temores o excusas nos impiden ser generosos?',
+    'Que medos ou desculpas nos impedem de ser generosos?')],
+  ('Revise cómo usa su dinero este mes y separe primero la parte de Dios; además, bendiga con algo concreto a una persona necesitada.',
+   'Reveja como você usa o seu dinheiro neste mês e separe primeiro a parte de Deus; além disso, abençoe com algo concreto uma pessoa necessitada.'),
+  'At 20:35',
+  ('Señor, todo lo que tenemos viene de Tu mano. Queremos honrarte con nuestros bienes y ser mayordomos fieles. Líbranos del egoísmo y del temor, y haznos dadores alegres. En el nombre de Jesús, amén.',
+   'Senhor, tudo o que temos vem da tua mão. Queremos honrar-te com os nossos bens e ser mordomos fiéis. Livra-nos do egoísmo e do medo, e faze-nos pessoas que dão com alegria. Em nome de Jesus, amém.'))
+
+L('Mt 28:18-20',
+  ('Hacer discípulos','Fazer discípulos'),
+  ('Entender que el discipulado es seguir a Jesús y ayudar a otros a seguirlo, enseñándoles a obedecer su Palabra.',
+   'Entender que o discipulado é seguir a Jesus e ajudar outros a segui-lo, ensinando-os a obedecer a sua Palavra.'),
+  ('¿Quién les enseñó algo importante en la vida (un oficio, una receta, a manejar)? ¿Cómo lo hizo?',
+   'Quem ensinou a vocês algo importante na vida (uma profissão, uma receita, a dirigir)? Como fez isso?'),
+  ('Antes de subir al cielo, Jesús dio a sus discípulos una misión clara: «id, y doctrinad á todos los Gentiles». Otras versiones dicen «haced discípulos». No se trata solo de que las personas levanten la mano en una reunión, sino de acompañarlas hasta que aprendan a guardar todo lo que Jesús mandó. Para esta tarea tenemos una promesa: «yo estoy con vosotros todos los días». Hoy veremos qué es ser discípulo y cómo formar a otros.',
+   'Antes de subir ao céu, Jesus deu aos seus discípulos uma missão clara: “ide, fazei discípulos a todas as nações”. Não se trata apenas de as pessoas levantarem a mão em uma reunião, mas de acompanhá-las até que aprendam a guardar tudo o que Jesus mandou. Para essa tarefa temos uma promessa: “eu estou convosco todos os dias”. Hoje veremos o que é ser discípulo e como formar outros.'),
+  [('Ser discípulo: seguir cada día','Ser discípulo: seguir a cada dia',
+    'Jesús dijo: «Si alguno quiere venir en pos de mí, niéguese á sí mismo, y tome su cruz cada día, y sígame». Nadie puede formar discípulos sin ser discípulo. Seguir a Jesús es una decisión diaria de poner su voluntad por encima de la nuestra. El discipulado empieza en nuestra propia obediencia.',
+    'Jesus disse: “Se alguém quer vir após mim, negue-se a si mesmo, tome cada dia sua cruz, e siga-me”. Ninguém pode formar discípulos sem ser discípulo. Seguir a Jesus é uma decisão diária de colocar a vontade dele acima da nossa. O discipulado começa na nossa própria obediência.','Lc 9:23'),
+   ('Crecer en comunidad','Crescer em comunidade',
+    'La primera iglesia perseveraba en la doctrina de los apóstoles, en la comunión, en el partimiento del pan y en las oraciones. El discipulado no se hace a solas. Crecemos cuando aprendemos la Palabra, compartimos la vida, celebramos la Cena del Señor y oramos juntos. Las células son un lugar ideal para esto.',
+    'A primeira igreja perseverava na doutrina dos apóstolos, na comunhão, no partir do pão e nas orações. O discipulado não se faz sozinho. Crescemos quando aprendemos a Palavra, compartilhamos a vida, celebramos a Ceia do Senhor e oramos juntos. As células são um lugar ideal para isso.','At 2:42'),
+   ('Enseñar a otros que enseñen','Ensinar outros que ensinem',
+    'Pablo pidió a Timoteo que lo que había oído de él lo encargara a hombres fieles que fueran idóneos para enseñar también a otros. Aquí vemos cuatro generaciones: Pablo, Timoteo, los fieles y otros. Así el evangelio se multiplica. Cada creyente maduro puede acompañar a alguien más nuevo en la fe.',
+    'Paulo pediu a Timóteo que o que tinha ouvido dele confiasse a pessoas fiéis que fossem competentes para ensinar também a outros. Aqui vemos quatro gerações: Paulo, Timóteo, os fiéis e outros. Assim o evangelho se multiplica. Cada crente maduro pode acompanhar alguém mais novo na fé.','2Tm 2:2')],
+  [('¿Cuál es la diferencia entre un creyente y un discípulo?',
+    'Qual é a diferença entre um crente e um discípulo?'),
+   ('¿Qué significa en la práctica «tomar su cruz cada día»?',
+    'O que significa na prática “tomar a sua cruz a cada dia”?'),
+   ('¿Quién les ayudó a crecer en la fe cuando eran nuevos?',
+    'Quem ajudou vocês a crescer na fé quando eram novos convertidos?'),
+   ('¿A quién podrían acompañar ustedes en su crecimiento espiritual?',
+    'Quem vocês poderiam acompanhar no crescimento espiritual?')],
+  ('Ore por una persona más nueva en la fe y propóngale reunirse una vez por semana para leer la Biblia y orar juntos.',
+   'Ore por uma pessoa mais nova na fé e proponha a ela se encontrarem uma vez por semana para ler a Bíblia e orar juntos.'),
+  'Jo 8:31',
+  ('Señor Jesús, queremos seguirte cada día y obedecer Tu Palabra. Danos amor y paciencia para acompañar a otros en la fe. Gracias porque prometiste estar con nosotros todos los días. Amén.',
+   'Senhor Jesus, queremos seguir-te a cada dia e obedecer à tua Palavra. Dá-nos amor e paciência para acompanhar outros na fé. Obrigado porque prometeste estar conosco todos os dias. Amém.'))
+
+L('At 1:8',
+  ('Testigos con el poder del Espíritu','Testemunhas com o poder do Espírito'),
+  ('Animar a cada creyente a compartir el evangelio con el poder del Espíritu Santo, comenzando por su propio entorno.',
+   'Animar cada crente a compartilhar o evangelho com o poder do Espírito Santo, começando pelo seu próprio ambiente.'),
+  ('¿Cómo conocieron ustedes el evangelio? ¿Quién les habló de Jesús por primera vez?',
+   'Como vocês conheceram o evangelho? Quem falou de Jesus a vocês pela primeira vez?'),
+  ('Las últimas palabras de Jesús antes de subir al cielo fueron una promesa y una misión: «recibiréis la virtud del Espíritu Santo que vendrá sobre vosotros; y me seréis testigos». Jesús no nos llamó a ser abogados que defienden un caso, sino testigos que cuentan lo que han visto y vivido. El poder del Espíritu nos da valor para hablar. La misión empieza en «Jerusalem», es decir, donde estamos, y llega hasta lo último de la tierra. Hoy veremos por qué y cómo testificar.',
+   'As últimas palavras de Jesus antes de subir ao céu foram uma promessa e uma missão: “vós recebereis poder do Espírito Santo, que virá sobre vós; e vós sereis minhas testemunhas”. Jesus não nos chamou para sermos advogados que defendem um caso, mas testemunhas que contam o que viram e viveram. O poder do Espírito nos dá coragem para falar. A missão começa em “Jerusalém”, isto é, onde estamos, e chega até os confins da terra. Hoje veremos por que e como testemunhar.'),
+  [('Las personas necesitan oír','As pessoas precisam ouvir',
+    'Pablo pregunta: «¿cómo creerán á aquel de quien no han oído? ¿y cómo oirán sin haber quien les predique?». Hay familiares, vecinos y compañeros que nunca escucharon el evangelio con claridad. Dios eligió usar personas para llevar su mensaje. Si nosotros callamos, ¿quién les hablará?',
+    'Paulo pergunta: “E como crerão naquele de quem não ouviram? E como ouvirão sem haver quem pregue?”. Há familiares, vizinhos e colegas que nunca ouviram o evangelho com clareza. Deus escolheu usar pessoas para levar a sua mensagem. Se nós ficarmos calados, quem falará a eles?','Rm 10:14'),
+   ('El poder de un testimonio sencillo','O poder de um testemunho simples',
+    'Después de hablar con Jesús, la mujer samaritana volvió a su ciudad, y muchos samaritanos creyeron en él por la palabra de la mujer que daba testimonio: «me dijo todo lo que he hecho». Ella no era una predicadora preparada; solo contó su encuentro con Jesús. Nuestro testimonio personal es una herramienta poderosa.',
+    'Depois de falar com Jesus, a mulher samaritana voltou à sua cidade, e muitos samaritanos creram nele pela palavra da mulher que testemunhava: “Ele me disse tudo quanto eu tenho feito”. Ela não era uma pregadora preparada; apenas contou o seu encontro com Jesus. O nosso testemunho pessoal é uma ferramenta poderosa.','Jo 4:39'),
+   ('Sin avergonzarnos del evangelio','Sem nos envergonharmos do evangelho',
+    'Pablo declaró: «no me avergüenzo del evangelio: porque es potencia de Dios para salud á todo aquel que cree». A veces el temor al rechazo nos hace callar. Pero el poder no está en nuestras palabras bonitas, sino en el mensaje de Cristo. Nuestra parte es hablar con amor; la obra en el corazón la hace Dios.',
+    'Paulo declarou: “não me envergonho do Evangelho, pois é o poder de Deus para a salvação de todo aquele que crê”. Às vezes o medo da rejeição nos faz calar. Mas o poder não está nas nossas palavras bonitas, e sim na mensagem de Cristo. A nossa parte é falar com amor; a obra no coração é Deus quem faz.','Rm 1:16')],
+  [('¿Qué significa ser «testigo» de Jesús?',
+    'O que significa ser “testemunha” de Jesus?'),
+   ('¿Cuál es nuestra «Jerusalem», es decir, el lugar donde debemos empezar a testificar?',
+    'Qual é a nossa “Jerusalém”, isto é, o lugar onde devemos começar a testemunhar?'),
+   ('¿Qué temores tenemos al hablar de Jesús y cómo nos ayuda el Espíritu Santo?',
+    'Que medos temos ao falar de Jesus e como o Espírito Santo nos ajuda?'),
+   ('¿Cómo podrían contar su testimonio en dos o tres minutos?',
+    'Como vocês poderiam contar o seu testemunho em dois ou três minutos?'),
+   ('¿A quién podrían invitar a la próxima reunión de la célula?',
+    'Quem vocês poderiam convidar para a próxima reunião da célula?')],
+  ('Escriba los nombres de tres personas que no conocen a Jesús, ore por ellas cada día y comparta su testimonio con al menos una esta semana.',
+   'Escreva o nome de três pessoas que não conhecem Jesus, ore por elas todos os dias e compartilhe o seu testemunho com pelo menos uma nesta semana.'),
+  'Mc 16:15',
+  ('Espíritu Santo, llénanos de Tu poder y quita de nosotros el temor. Pon en nuestra boca palabras de vida para nuestros familiares, vecinos y amigos. Que muchos crean en Jesús por nuestro testimonio. Amén.',
+   'Espírito Santo, enche-nos do teu poder e tira de nós o medo. Põe em nossa boca palavras de vida para nossos familiares, vizinhos e amigos. Que muitos creiam em Jesus pelo nosso testemunho. Amém.'))
+
+# ================================================================ Vitória nas lutas
+S('vitoria','Victoria en las luchas','Vitória nas lutas',
+  'Seis estudios sobre cómo enfrentar con la Palabra de Dios la ansiedad, la tentación, el sufrimiento, la falta de perdón, el miedo y la desesperanza.',
+  'Seis estudos sobre como enfrentar com a Palavra de Deus a ansiedade, a tentação, o sofrimento, a falta de perdão, o medo e a desesperança.')
+
+L('Mt 6:31-34',
+  ('Vencer la ansiedad','Vencer a ansiedade'),
+  ('Aprender a enfrentar la ansiedad confiando en el cuidado del Padre y buscando primero su reino.',
+   'Aprender a enfrentar a ansiedade confiando no cuidado do Pai e buscando em primeiro lugar o seu Reino.'),
+  ('¿Qué cosas suelen quitarles el sueño por la noche?',
+   'Que coisas costumam tirar o sono de vocês à noite?'),
+  ('La ansiedad es una de las luchas más comunes de nuestro tiempo. Jesús conocía esta realidad y habló de ella en el Sermón del Monte: «No os congojéis pues, diciendo: ¿Qué comeremos, ó qué beberemos, ó con qué nos cubriremos?». Él no ignoró nuestras necesidades; dijo que el Padre celestial sabe que las tenemos. La respuesta de Jesús es buscar primero el reino de Dios y vivir un día a la vez. Hoy veremos tres verdades que nos ayudan a vencer la ansiedad.',
+   'A ansiedade é uma das lutas mais comuns do nosso tempo. Jesus conhecia essa realidade e falou dela no Sermão do Monte: “Não andeis, pois, ansiosos, dizendo: Que comeremos? Ou que beberemos? Ou com que nos vestiremos?”. Ele não ignorou as nossas necessidades; disse que o Pai celestial sabe que precisamos delas. A resposta de Jesus é buscar primeiro o Reino de Deus e viver um dia de cada vez. Hoje veremos três verdades que nos ajudam a vencer a ansiedade.'),
+  [('El Padre cuida de nosotros','O Pai cuida de nós',
+    'Jesús dijo: «Mirad las aves del cielo, que no siembran, ni siegan, ni allegan en alfolíes; y vuestro Padre celestial las alimenta». Y preguntó: «¿No sois vosotros mucho mejores que ellas?». Si Dios cuida de los pájaros, mucho más cuidará de sus hijos. La ansiedad pierde fuerza cuando recordamos quién es nuestro Padre.',
+    'Jesus disse: “Olhai para as aves do céu, que não semeiam, nem ceifam, nem ajuntam em celeiros; e contudo vosso Pai celestial as alimenta”. E perguntou: “Não sois vós muito mais importantes que elas?”. Se Deus cuida dos passarinhos, muito mais cuidará dos seus filhos. A ansiedade perde força quando lembramos quem é o nosso Pai.','Mt 6:26'),
+   ('Echar la carga sobre el Señor','Lançar o fardo sobre o Senhor',
+    'El Salmo 55:22 dice: «Echa sobre Jehová tu carga, y él te sustentará». Muchas veces cargamos solos lo que Dios nos invita a entregarle. Echar la carga es un acto concreto: nombrar en oración cada preocupación y dejarla en sus manos. Él no promete quitar todo problema, pero sí sostenernos.',
+    'O Salmo 55:22 diz: “Entrega tuas preocupações ao SENHOR, e ele te sustentará”. Muitas vezes carregamos sozinhos o que Deus nos convida a entregar a ele. Lançar o fardo é um ato concreto: nomear em oração cada preocupação e deixá-la em suas mãos. Ele não promete tirar todo problema, mas promete nos sustentar.','Sl 55:22'),
+   ('Descanso en Jesús','Descanso em Jesus',
+    'Jesús invita: «Venid á mí todos los que estáis trabajados y cargados, que yo os haré descansar». La ansiedad nos agota, porque nos hace vivir mañana los problemas de hoy y los de pasado mañana. En la presencia de Jesús encontramos descanso para el alma. Buscar ayuda de hermanos y, cuando sea necesario, de profesionales, también es una forma de cuidar la vida que Dios nos dio.',
+    'Jesus convida: “Vinde a mim todos vós que estais cansados e sobrecarregados, e eu vos farei descansar”. A ansiedade nos esgota, porque nos faz viver hoje os problemas de amanhã e de depois de amanhã. Na presença de Jesus encontramos descanso para a alma. Buscar ajuda de irmãos e, quando necessário, de profissionais, também é uma forma de cuidar da vida que Deus nos deu.','Mt 11:28')],
+  [('¿Qué preocupaciones mencionó Jesús en este texto? ¿Cuáles serían las de hoy?',
+    'Que preocupações Jesus mencionou neste texto? Quais seriam as de hoje?'),
+   ('¿Qué significa en la práctica buscar primero el reino de Dios?',
+    'O que significa na prática buscar primeiro o Reino de Deus?'),
+   ('¿Por qué es útil vivir «un día a la vez»?',
+    'Por que é útil viver “um dia de cada vez”?'),
+   ('¿Cómo podemos apoyarnos como célula cuando alguien está ansioso?',
+    'Como podemos apoiar uns aos outros como célula quando alguém está ansioso?')],
+  ('Cada noche de esta semana, antes de dormir, nombre en oración sus preocupaciones una por una y entréguelas al Señor.',
+   'Cada noite desta semana, antes de dormir, nomeie em oração as suas preocupações uma por uma e entregue-as ao Senhor.'),
+  '1Pe 5:7',
+  ('Padre celestial, Tú sabes lo que necesitamos. Echamos sobre Ti nuestras cargas y nuestras preocupaciones. Danos descanso en Jesús y fe para buscar primero Tu reino, un día a la vez. Amén.',
+   'Pai celestial, tu sabes do que precisamos. Lançamos sobre ti os nossos fardos e as nossas preocupações. Dá-nos descanso em Jesus e fé para buscar primeiro o teu Reino, um dia de cada vez. Amém.'))
+
+L('1Co 10:12-13',
+  ('Firmes ante la tentación','Firmes diante da tentação'),
+  ('Reconocer cómo actúa la tentación y usar los recursos que Dios nos da para vencerla.',
+   'Reconhecer como a tentação age e usar os recursos que Deus nos dá para vencê-la.'),
+  ('Cuando eran niños, ¿qué travesura les costaba más resistir?',
+   'Quando eram crianças, que travessura era mais difícil de resistir?'),
+  ('Todo creyente enfrenta tentaciones. Pablo nos advierte: «el que piensa estar firme, mire no caiga». Nadie está por encima de la tentación. Pero también nos da una gran promesa: Dios es fiel y no nos dejará ser tentados más de lo que podemos llevar, sino que dará la salida. Ser tentado no es pecado; el pecado es ceder. En este estudio veremos de dónde viene la tentación, cómo la venció Jesús y qué podemos hacer para mantenernos firmes.',
+   'Todo crente enfrenta tentações. Paulo nos adverte: “aquele que pensa estar de pé, olhe para que não caia”. Ninguém está acima da tentação. Mas ele também nos dá uma grande promessa: Deus é fiel e não nos deixará ser tentados além do que podemos, mas dará a saída. Ser tentado não é pecado; o pecado é ceder. Neste estudo veremos de onde vem a tentação, como Jesus a venceu e o que podemos fazer para nos manter firmes.'),
+  [('Cómo funciona la tentación','Como a tentação funciona',
+    'Santiago explica que cada uno es tentado cuando de su propia concupiscencia es atraído y cebado. Luego el deseo concibe y da a luz el pecado, y el pecado engendra muerte. La tentación empieza con un pensamiento que alimentamos. Por eso es más fácil cortarla al principio que cuando ya hemos jugado con ella.',
+    'Tiago explica que cada um é tentado quando é atraído e seduzido pelo seu próprio mau desejo. Depois o desejo concebe e dá à luz o pecado, e o pecado gera a morte. A tentação começa com um pensamento que alimentamos. Por isso é mais fácil cortá-la no começo do que quando já brincamos com ela.','Tg 1:14-15'),
+   ('Jesús venció con la Palabra','Jesus venceu com a Palavra',
+    'Cuando el diablo tentó a Jesús en el desierto, él respondió: «Escrito está: No con solo el pan vivirá el hombre, mas con toda palabra que sale de la boca de Dios». Jesús no discutió con sus propias ideas; usó la Escritura. Conocer y memorizar la Palabra nos da respuestas firmes en el momento de la prueba.',
+    'Quando o diabo tentou Jesus no deserto, ele respondeu: “Está escrito: Não só de pão viverá o ser humano, mas de toda palavra que sai da boca de Deus”. Jesus não discutiu com as suas próprias ideias; usou a Escritura. Conhecer e memorizar a Palavra nos dá respostas firmes no momento da prova.','Mt 4:4'),
+   ('Velar y orar','Vigiar e orar',
+    'En Getsemaní Jesús dijo a sus discípulos: «Velad y orad, para que no entréis en tentación: el espíritu á la verdad está presto, mas la carne enferma». Velar es estar atento: evitar lugares, amistades y contenidos que nos debilitan. Orar es depender de Dios. Quien vela y ora encuentra la salida que Dios promete.',
+    'No Getsêmani Jesus disse aos seus discípulos: “Vigiai e orai, para que não entreis em tentação. De fato, o espírito está pronto, mas a carne é fraca”. Vigiar é estar atento: evitar lugares, amizades e conteúdos que nos enfraquecem. Orar é depender de Deus. Quem vigia e ora encontra a saída que Deus promete.','Mt 26:41')],
+  [('¿Por qué es peligroso pensar «a mí eso nunca me va a pasar»?',
+    'Por que é perigoso pensar “isso nunca vai acontecer comigo”?'),
+   ('Según Santiago, ¿en qué momento es más fácil detener la tentación?',
+    'Segundo Tiago, em que momento é mais fácil deter a tentação?'),
+   ('¿Qué «salidas» nos da Dios cuando somos tentados?',
+    'Que “saídas” Deus nos dá quando somos tentados?'),
+   ('¿Qué versículos podríamos memorizar para usar en el momento de la tentación?',
+    'Que versículos poderíamos memorizar para usar no momento da tentação?'),
+   ('¿Qué ayuda puede dar un hermano de confianza en esta lucha?',
+    'Que ajuda um irmão de confiança pode dar nessa luta?')],
+  ('Identifique la tentación que más le afecta, memorice un versículo para enfrentarla y aléjese de aquello que la alimenta.',
+   'Identifique a tentação que mais afeta você, memorize um versículo para enfrentá-la e afaste-se daquilo que a alimenta.'),
+  'Sl 119:11',
+  ('Señor, reconocemos que somos débiles, pero Tú eres fiel. Danos la salida en cada tentación, guarda Tu Palabra en nuestro corazón y ayúdanos a velar y orar. En el nombre de Jesús, amén.',
+   'Senhor, reconhecemos que somos fracos, mas tu és fiel. Dá-nos a saída em cada tentação, guarda a tua Palavra em nosso coração e ajuda-nos a vigiar e orar. Em nome de Jesus, amém.'))
+
+L('2Co 4:16-18',
+  ('Esperanza en medio del sufrimiento','Esperança no meio do sofrimento'),
+  ('Encontrar en la Palabra consuelo y propósito para atravesar el sufrimiento con fe.',
+   'Encontrar na Palavra consolo e propósito para atravessar o sofrimento com fé.'),
+  ('¿Qué les ayuda a ustedes a seguir adelante cuando tienen un día muy difícil?',
+   'O que ajuda vocês a seguir em frente quando têm um dia muito difícil?'),
+  ('El sufrimiento llega a la vida de todos, también de los creyentes: enfermedades, pérdidas, problemas económicos, traiciones. Pablo sufrió mucho, y aun así escribió: «no desmayamos». Él reconocía que el hombre exterior se va desgastando, pero el interior se renueva de día en día. No negaba el dolor, sino que lo miraba a la luz de la eternidad. En este estudio veremos que Dios obra en medio del sufrimiento, nos acompaña en él y nos fortalece con su gracia.',
+   'O sofrimento chega à vida de todos, também dos crentes: doenças, perdas, problemas financeiros, traições. Paulo sofreu muito e, mesmo assim, escreveu: “não desfalecemos”. Ele reconhecia que o ser exterior se desgasta, mas o interior se renova a cada dia. Não negava a dor, mas a olhava à luz da eternidade. Neste estudo veremos que Deus age no meio do sofrimento, nos acompanha nele e nos fortalece com a sua graça.'),
+  [('Dios obra para bien','Deus age para o bem',
+    'Romanos 8:28 dice que a los que aman a Dios todas las cosas les ayudan a bien. No dice que todas las cosas sean buenas, sino que Dios puede usar aun lo malo para nuestro bien y su propósito. Esto no siempre se entiende en el momento, pero nos da seguridad de que nada está fuera de su control.',
+    'Romanos 8:28 diz que todas as coisas contribuem juntamente para o bem daqueles que amam a Deus. Não diz que todas as coisas são boas, mas que Deus pode usar até o que é mau para o nosso bem e para o seu propósito. Isso nem sempre se entende no momento, mas nos dá a segurança de que nada está fora do controle dele.','Rm 8:28'),
+   ('Dios está con nosotros en el fuego','Deus está conosco no fogo',
+    'Dios promete en Isaías: «Cuando pasares por las aguas, yo seré contigo; y por los ríos, no te anegarán». No promete que no pasaremos por aguas y fuego, sino que no pasaremos solos. Su presencia es nuestro mayor consuelo. En el dolor, la iglesia también es un instrumento de esa presencia cuando visita, ora y acompaña.',
+    'Deus promete em Isaías: “Quando passares pelas águas, estarei contigo; e ao passares pelos rios, eles não te submergirão”. Ele não promete que não passaremos por águas e fogo, mas que não passaremos sozinhos. A sua presença é o nosso maior consolo. Na dor, a igreja também é instrumento dessa presença quando visita, ora e acompanha.','Is 43:2'),
+   ('Su gracia es suficiente','A sua graça é suficiente',
+    'Pablo pidió tres veces que Dios le quitara un sufrimiento, y el Señor le respondió: «Bástate mi gracia; porque mi potencia en la flaqueza se perfecciona». A veces Dios sana y libra; otras veces nos da fuerza para seguir. En ambos casos su gracia es suficiente, y su poder se manifiesta en nuestra debilidad.',
+    'Paulo pediu três vezes que Deus tirasse dele um sofrimento, e o Senhor respondeu: “Minha graça te basta, porque meu poder se aperfeiçoa na fraqueza”. Às vezes Deus cura e livra; outras vezes nos dá força para continuar. Nos dois casos a sua graça é suficiente, e o seu poder se manifesta na nossa fraqueza.','2Co 12:9')],
+  [('¿Por qué Pablo llama «leve y momentánea» a la tribulación, si él sufrió tanto?',
+    'Por que Paulo chama a aflição de “leve e momentânea”, se ele sofreu tanto?'),
+   ('¿Cuál es la diferencia entre «todo es bueno» y «Dios obra todo para bien»?',
+    'Qual é a diferença entre “tudo é bom” e “Deus faz tudo contribuir para o bem”?'),
+   ('¿Cómo han sentido la presencia de Dios en un momento de dolor?',
+    'Como vocês sentiram a presença de Deus em um momento de dor?'),
+   ('¿Qué podemos hacer, como célula, por un hermano que está sufriendo?',
+    'O que podemos fazer, como célula, por um irmão que está sofrendo?')],
+  ('Visite, llame o escriba esta semana a alguien que esté atravesando un sufrimiento, y ore con esa persona.',
+   'Visite, ligue ou escreva nesta semana para alguém que esteja passando por um sofrimento, e ore com essa pessoa.'),
+  'Rm 8:18',
+  ('Señor, en medio del dolor confiamos en Ti. Renueva nuestro interior cada día, haznos sentir Tu presencia en las aguas y en el fuego, y danos Tu gracia, que es suficiente. En el nombre de Jesús, amén.',
+   'Senhor, no meio da dor confiamos em ti. Renova o nosso interior a cada dia, faze-nos sentir a tua presença nas águas e no fogo, e dá-nos a tua graça, que é suficiente. Em nome de Jesus, amém.'))
+
+L('Mt 18:21-22',
+  ('La libertad del perdón','A liberdade do perdão'),
+  ('Comprender que perdonar es un mandato de Cristo y un camino de libertad, basado en el perdón que recibimos de Dios.',
+   'Compreender que perdoar é um mandamento de Cristo e um caminho de liberdade, baseado no perdão que recebemos de Deus.'),
+  ('¿Por qué creen que a veces es tan difícil pedir perdón o perdonar?',
+   'Por que vocês acham que às vezes é tão difícil pedir perdão ou perdoar?'),
+  ('Pedro hizo una pregunta que muchos nos hacemos: «Señor, ¿cuántas veces perdonaré á mi hermano que pecare contra mí? ¿hasta siete?». Él pensaba que siete veces ya era mucho. Jesús respondió: «hasta setenta veces siete». No quiso dar un número para contar, sino enseñar que el perdón no tiene límite. Guardar rencor es como cargar un peso que nos hace daño a nosotros mismos. Hoy veremos por qué debemos perdonar, cómo hacerlo y qué libertad trae el perdón.',
+   'Pedro fez uma pergunta que muitos de nós fazemos: “Senhor, até quantas vezes meu irmão pecará contra mim, e eu lhe perdoarei? Até sete?”. Ele pensava que sete vezes já era muito. Jesus respondeu: “até setenta vezes sete”. Ele não quis dar um número para contar, mas ensinar que o perdão não tem limite. Guardar rancor é como carregar um peso que faz mal a nós mesmos. Hoje veremos por que devemos perdoar, como fazer isso e que liberdade o perdão traz.'),
+  [('Perdonados para perdonar','Perdoados para perdoar',
+    'Pablo dice: «sed los unos con los otros benignos, misericordiosos, perdonándoos los unos á los otros, como también Dios os perdonó en Cristo». La medida de nuestro perdón es el perdón que recibimos. Cuando recordamos cuánto nos perdonó Dios, la ofensa del otro se ve más pequeña.',
+    'Paulo diz: “sede benignos uns com os outros, misericordiosos, perdoando-vos uns aos outros, como também Deus vos perdoou em Cristo”. A medida do nosso perdão é o perdão que recebemos. Quando lembramos o quanto Deus nos perdoou, a ofensa do outro parece menor.','Ef 4:32'),
+   ('Un asunto serio para Jesús','Um assunto sério para Jesus',
+    'Después de enseñar el Padre Nuestro, Jesús dijo: «si no perdonareis á los hombres sus ofensas, tampoco vuestro Padre os perdonará vuestras ofensas». El perdón no es opcional para el discípulo. Perdonar no significa que lo ocurrido no importó, ni siempre que la relación vuelve a ser igual; significa entregar a Dios el derecho de cobrar la deuda.',
+    'Depois de ensinar o Pai Nosso, Jesus disse: “se não perdoardes às pessoas, também vosso Pai não vos perdoará vossas ofensas”. O perdão não é opcional para o discípulo. Perdoar não significa que o que aconteceu não teve importância, nem sempre que o relacionamento volta a ser igual; significa entregar a Deus o direito de cobrar a dívida.','Mt 6:14-15'),
+   ('Dios puede transformar el mal','Deus pode transformar o mal',
+    'José fue vendido por sus hermanos y sufrió muchos años. Al final les dijo: «Vosotros pensasteis mal sobre mí, mas Dios lo encaminó á bien». José pudo perdonar porque vio la mano de Dios en su historia. Cuando confiamos en que Dios es justo y soberano, quedamos libres para perdonar y seguir adelante.',
+    'José foi vendido pelos seus irmãos e sofreu muitos anos. No fim lhes disse: “Vós pensastes mal sobre mim, mas Deus o encaminhou para o bem”. José pôde perdoar porque viu a mão de Deus na sua história. Quando confiamos que Deus é justo e soberano, ficamos livres para perdoar e seguir em frente.','Gn 50:20')],
+  [('¿Qué quiso enseñar Jesús con «setenta veces siete»?',
+    'O que Jesus quis ensinar com “setenta vezes sete”?'),
+   ('¿Qué es y qué no es perdonar?',
+    'O que é e o que não é perdoar?'),
+   ('¿Cómo nos afecta guardar rencor en el cuerpo, la mente y la vida espiritual?',
+    'Como guardar rancor nos afeta no corpo, na mente e na vida espiritual?'),
+   ('¿Qué nos enseña la historia de José sobre el perdón?',
+    'O que a história de José nos ensina sobre o perdão?'),
+   ('¿Hay alguien a quien necesitan perdonar o a quien necesitan pedir perdón?',
+    'Há alguém a quem vocês precisam perdoar ou a quem precisam pedir perdão?')],
+  ('En oración, nombre ante Dios a la persona que necesita perdonar y declare que la perdona; si es posible y prudente, busque la reconciliación.',
+   'Em oração, diga diante de Deus o nome da pessoa que você precisa perdoar e declare que a perdoa; se for possível e prudente, busque a reconciliação.'),
+  'Cl 3:13',
+  ('Padre, gracias por perdonarnos en Cristo. Hoy decidimos perdonar a quienes nos ofendieron. Sana las heridas de nuestro corazón, quita todo rencor y danos la libertad que viene de Tu perdón. Amén.',
+   'Pai, obrigado por nos perdoar em Cristo. Hoje decidimos perdoar aqueles que nos ofenderam. Cura as feridas do nosso coração, tira todo rancor e dá-nos a liberdade que vem do teu perdão. Amém.'))
+
+L('Is 41:10',
+  ('Vencer el miedo con la presencia de Dios','Vencer o medo com a presença de Deus'),
+  ('Enfrentar el miedo con la certeza de la presencia y el poder de Dios.',
+   'Enfrentar o medo com a certeza da presença e do poder de Deus.'),
+  ('¿A qué le tenían miedo cuando eran niños? ¿Cómo lo superaron?',
+   'Do que vocês tinham medo quando eram crianças? Como superaram?'),
+  ('El miedo es una emoción humana: miedo a la enfermedad, a la pobreza, a la violencia, al futuro, a la soledad. La Biblia repite muchas veces la frase «no temas», porque Dios conoce nuestro corazón. En Isaías 41:10 el Señor no solo dice «no temas», sino que da la razón: «yo soy contigo». Y añade tres promesas: «te esfuerzo», «siempre te ayudaré» y «siempre te sustentaré». En este estudio veremos cómo la presencia de Dios, su compañía en el valle y el Espíritu que nos dio vencen el miedo.',
+   'O medo é uma emoção humana: medo da doença, da pobreza, da violência, do futuro, da solidão. A Bíblia repete muitas vezes a frase “não temas”, porque Deus conhece o nosso coração. Em Isaías 41:10 o Senhor não diz apenas “não temas”, mas dá a razão: “eu estou contigo”. E acrescenta três promessas: eu te fortaleço, te ajudo e te sustento. Neste estudo veremos como a presença de Deus, a sua companhia no vale e o Espírito que ele nos deu vencem o medo.'),
+  [('Esfuerzo y valentía','Força e coragem',
+    'Cuando Josué debía guiar al pueblo después de Moisés, Dios le dijo: «Mira que te mando que te esfuerces y seas valiente: no temas ni desmayes, porque Jehová tu Dios será contigo en donde quiera que fueres». El valor no es la ausencia de miedo, sino obedecer a Dios a pesar del miedo, sabiendo que él va con nosotros.',
+    'Quando Josué devia conduzir o povo depois de Moisés, Deus lhe disse: “Olha que te mando que te esforces e sejas valente: não temas nem desmaies, porque o SENHOR teu Deus será contigo onde quer que fores”. Coragem não é ausência de medo, mas obedecer a Deus apesar do medo, sabendo que ele vai conosco.','Js 1:9'),
+   ('El Pastor en el valle','O Pastor no vale',
+    'David escribió: «Aunque ande en valle de sombra de muerte, no temeré mal alguno; porque tú estarás conmigo». David no dice que evitará el valle, sino que no estará solo en él. El Buen Pastor guía, protege y consuela con su vara y su cayado. Su presencia cambia la manera de atravesar los momentos oscuros.',
+    'Davi escreveu: “Ainda que eu venha a andar pelo vale da sombra da morte, não temerei mal algum, porque tu estás comigo”. Davi não diz que evitará o vale, mas que não estará sozinho nele. O Bom Pastor guia, protege e consola com a sua vara e o seu cajado. A sua presença muda a maneira de atravessar os momentos escuros.','Sl 23:4'),
+   ('Un espíritu de poder, amor y templanza','Um espírito de força, amor e moderação',
+    'Pablo recordó a Timoteo: «no nos ha dado Dios el espíritu de temor, sino el de fortaleza, y de amor, y de templanza». El miedo que paraliza no viene de Dios. El Espíritu Santo nos da fuerza para actuar, amor para servir aun con riesgo y una mente equilibrada para tomar decisiones sabias.',
+    'Paulo lembrou a Timóteo: “Deus não nos deu espírito de medo; mas sim de força, de amor, e de moderação”. O medo que paralisa não vem de Deus. O Espírito Santo nos dá força para agir, amor para servir mesmo com risco e uma mente equilibrada para tomar decisões sábias.','2Tm 1:7')],
+  [('¿Cuáles son los miedos más comunes en nuestra comunidad hoy?',
+    'Quais são os medos mais comuns na nossa comunidade hoje?'),
+   ('¿Qué promesas encontramos en Isaías 41:10?',
+    'Que promessas encontramos em Isaías 41:10?'),
+   ('¿Qué diferencia hace saber que Dios está con nosotros en el valle?',
+    'Que diferença faz saber que Deus está conosco no vale?'),
+   ('¿Cómo puede el miedo impedirnos obedecer a Dios?',
+    'Como o medo pode nos impedir de obedecer a Deus?')],
+  ('Escriba Isaías 41:10 en un papel o en el celular, léalo cada vez que sienta miedo y dé un paso de obediencia que el temor le ha impedido dar.',
+   'Escreva Isaías 41:10 em um papel ou no celular, leia-o toda vez que sentir medo e dê um passo de obediência que o medo impediu você de dar.'),
+  'Sl 56:3',
+  ('Señor, en el día que tememos, en Ti confiamos. Gracias porque estás con nosotros en todo valle. Llénanos de Tu Espíritu de poder, amor y templanza, y danos valor para obedecerte. Amén.',
+   'Senhor, no dia em que tivermos medo, confiaremos em ti. Obrigado porque estás conosco em todo vale. Enche-nos do teu Espírito de força, amor e moderação, e dá-nos coragem para te obedecer. Amém.'))
+
+L('Rm 15:13',
+  ('Abundar en esperanza','Abundar em esperança'),
+  ('Afirmar la esperanza cristiana basada en la fidelidad de Dios y en la promesa de la eternidad con él.',
+   'Afirmar a esperança cristã baseada na fidelidade de Deus e na promessa da eternidade com ele.'),
+  ('¿Qué cosa están esperando con ilusión en estos días?',
+   'Que coisa vocês estão esperando com expectativa nestes dias?'),
+  ('Terminamos esta serie hablando de esperanza. Después de considerar la ansiedad, la tentación, el sufrimiento, el perdón y el miedo, Pablo nos presenta al «Dios de esperanza», que nos llena de gozo y paz creyendo, para que abundemos en esperanza por la virtud del Espíritu Santo. La esperanza bíblica no es un simple deseo de que las cosas mejoren; es una certeza basada en el carácter y las promesas de Dios. Hoy veremos tres razones para mantener viva la esperanza.',
+   'Encerramos esta série falando de esperança. Depois de considerar a ansiedade, a tentação, o sofrimento, o perdão e o medo, Paulo nos apresenta o “Deus da esperança”, que nos enche de toda alegria e paz na fé, para que abundemos em esperança no poder do Espírito Santo. A esperança bíblica não é um simples desejo de que as coisas melhorem; é uma certeza baseada no caráter e nas promessas de Deus. Hoje veremos três razões para manter viva a esperança.'),
+  [('Misericordias nuevas cada mañana','Misericórdias novas a cada manhã',
+    'Lamentaciones fue escrito en medio de gran destrucción. Aun así, el autor dice: «Esto reduciré á mi corazón, por lo cual esperaré». Y recuerda que las misericordias de Dios nunca decayeron: «Nuevas son cada mañana; grande es tu fidelidad». La esperanza crece cuando decidimos recordar la fidelidad de Dios.',
+    'Lamentações foi escrito em meio a grande destruição. Mesmo assim, o autor diz: “Disto me recordarei na minha mente, por isso terei esperança”. E lembra que as misericórdias de Deus não têm fim: “Elas são novas a cada manhã; grande é a tua fidelidade”. A esperança cresce quando decidimos lembrar a fidelidade de Deus.','Lm 3:21-23'),
+   ('Un ancla para el alma','Uma âncora para a alma',
+    'Hebreos describe nuestra esperanza como «segura y firme ancla del alma». El ancla no detiene la tormenta, pero mantiene el barco firme para que no sea arrastrado. Nuestra esperanza está anclada en Cristo, que entró por nosotros a la presencia de Dios. Las olas pueden ser fuertes, pero el ancla resiste.',
+    'Hebreus descreve a nossa esperança como “uma segura e firme âncora da alma”. A âncora não impede a tempestade, mas mantém o barco firme para que não seja arrastado. A nossa esperança está ancorada em Cristo, que entrou por nós na presença de Deus. As ondas podem ser fortes, mas a âncora resiste.','Hb 6:19'),
+   ('Lo mejor está por venir','O melhor ainda está por vir',
+    'Apocalipsis 21:4 promete que Dios limpiará toda lágrima de los ojos de los suyos, y que no habrá más muerte, ni llanto, ni clamor, ni dolor. Las luchas de hoy no son el final de la historia. Los que están en Cristo tienen un futuro glorioso, y esa certeza nos da fuerzas para perseverar hoy.',
+    'Apocalipse 21:4 promete que Deus limpará toda lágrima dos olhos dos seus, e que não haverá mais morte, nem pranto, nem clamor, nem dor. As lutas de hoje não são o fim da história. Os que estão em Cristo têm um futuro glorioso, e essa certeza nos dá forças para perseverar hoje.','Ap 21:4')],
+  [('¿Cuál es la diferencia entre la esperanza del mundo y la esperanza cristiana?',
+    'Qual é a diferença entre a esperança do mundo e a esperança cristã?'),
+   ('¿Qué fidelidades de Dios pueden recordar en su propia vida?',
+    'Que fidelidades de Deus vocês podem lembrar na sua própria vida?'),
+   ('¿Qué significa tener la esperanza como «ancla del alma»?',
+    'O que significa ter a esperança como “âncora da alma”?'),
+   ('¿Cómo cambia nuestra manera de vivir la promesa de Apocalipsis 21:4?',
+    'Como a promessa de Apocalipse 21:4 muda a nossa maneira de viver?'),
+   ('¿Qué aprendieron en esta serie que les ayudará en sus luchas?',
+    'O que vocês aprenderam nesta série que vai ajudar nas suas lutas?')],
+  ('Escriba una lista de diez fidelidades de Dios en su vida y compártala con alguien que esté desanimado.',
+   'Escreva uma lista de dez fidelidades de Deus na sua vida e compartilhe com alguém que esteja desanimado.'),
+  'Sl 42:11',
+  ('Dios de esperanza, llénanos de todo gozo y paz en la fe. Gracias porque Tus misericordias son nuevas cada mañana. Mantén nuestra alma anclada en Cristo hasta el día en que enjugues toda lágrima. Amén.',
+   'Deus da esperança, enche-nos de toda alegria e paz na fé. Obrigado porque as tuas misericórdias são novas a cada manhã. Mantém a nossa alma ancorada em Cristo até o dia em que enxugarás toda lágrima. Amém.'))
+
+# ================================================================ FIM DOS DADOS
+
+# ================================================================ validação e saída
+TU=re.compile(r'\b(tú|tu|tus|te|ti|contigo|tuyo|tuya|tuyos|tuyas|eres|tienes|puedes|quieres|sabes|estás|has|haz|debes|necesitas|vosotros)\b',re.I)
+TU_CS=re.compile(r'\b(tú|tu|tus|te|ti|contigo)\b')  # na oração (dirigida a Deus) só se aceita a forma com maiúscula: Tú, Tu, Te, Ti
+QUOTE=re.compile(r'«[^»]*»')
+KEYS='carater igreja vitoria jovens'.split()
+def nw(s):return len(s.split())
+def main():
+    err=[];warn=[];refs=[];bases={}
+    for o in SER:
+        for t in (o['n'],o['d']):
+            if len(t)!=2 or not all(x.strip() for x in t):err.append(o['k']+': nome/descrição incompletos')
+        if len(o['l'])!=6:err.append('%s: %d lições'%(o['k'],len(o['l'])))
+        for i,l in enumerate(o['l']):
+            w='%s#%d'%(o['k'],i+1)
+            if len(l['pts'])!=3:err.append(w+': %d pontos'%len(l['pts']))
+            if not 4<=len(l['perg'])<=5:err.append(w+': %d perguntas'%len(l['perg']))
+            l['v']=ref(l['v']);refs.append((w+' base',l['v']));bases.setdefault(l['v'],[]).append(w)
+            if len(verses(l['v']))>6:err.append(w+': texto-base com mais de 6 versículos')
+            l['mem']=ref(l['mem']);refs.append((w+' mem',l['mem']))
+            for j,p in enumerate(l['pts']):
+                p['v']=ref(p['v']);refs.append((w+' p%d'%(j+1),p['v']))
+            pares=[l['t'],l['obj'],l['gelo'],l['intro'],l['apl'],l['or']]+[p['t'] for p in l['pts']]+[p['x'] for p in l['pts']]+l['perg']
+            for t in pares:
+                if len(t)!=2 or not all(isinstance(x,str) and x.strip() for x in t):err.append(w+': par ES/PT incompleto: %r'%(t,))
+            # tamanhos
+            for k,lo,hi in (('intro',60,100),('or',20,40)):
+                for n,x in zip('ES PT'.split(),l[k]):
+                    if not lo<=nw(x)<=hi:err.append('%s %s %s: %d palavras (%d-%d)'%(w,k,n,nw(x),lo,hi))
+            for j,p in enumerate(l['pts']):
+                for n,x in zip('ES PT'.split(),p['x']):
+                    if not 40<=nw(x)<=80:err.append('%s p%d %s: %d palavras (40-80)'%(w,j+1,n,nw(x)))
+            # ES: sem formas de "tú" fora de citações «...»
+            es=[l['t'][0],l['obj'][0],l['gelo'][0],l['intro'][0],l['apl'][0]]+[p['t'][0] for p in l['pts']]+[p['x'][0] for p in l['pts']]+[q[0] for q in l['perg']]
+            for t in es:
+                m=TU.search(QUOTE.sub('',t))
+                if m:err.append(w+': forma de "tú" em ES: %r em %r'%(m.group(0),t))
+            m=TU_CS.search(QUOTE.sub('',l['or'][0]))
+            if m:err.append(w+': pronome de Deus em minúscula na oração ES: %r'%m.group(0))
+            # PT: citações em aspas curvas, não «»
+            for x in [l['intro'][1]]+[p['x'][1] for p in l['pts']]:
+                if '«' in x or '»' in x:err.append(w+': «» em PT')
+    if [o['k'] for o in SER]!=KEYS:err.append('ordem/chaves das séries diferente do pedido')
+    for w,r in refs:
+        for b,c,v in verses(r):
+            for nome,bib in (('PT',PT),('ES',ES)):
+                if not exists(bib,b,c,v):err.append('%s: %s não existe em %s'%(w,r,nome))
+    for r,ws in bases.items():
+        if len(ws)>1:err.append('texto-base repetido %s: %s'%(r,', '.join(ws)))
+    if '--print' in sys.argv:
+        for w,r in refs:
+            print('==',w,r)
+            for b,c,v in verses(r):
+                print('  PT %d:%d %s'%(c,v,PT[b][c-1][v-1]));print('  ES %d:%d %s'%(c,v,ES[b][c-1][v-1]))
+    if err:
+        print('\n'.join(err));sys.exit(1)
+    out=os.path.join(HERE,'licoes-2.json')
+    json.dump({'series':SER},open(out,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
+    n=sum(len(o['l']) for o in SER)
+    print('ok: %d séries, %d lições, %d referências -> %s'%(len(SER),n,len(refs),out))
+if __name__=='__main__':main()

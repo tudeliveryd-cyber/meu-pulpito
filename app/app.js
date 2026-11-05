@@ -1246,7 +1246,7 @@ function planContactWa(k){const c=curOrder()[0];const lm=locMoney(PCFG.p[k].pyg)
     <p class="sub" style="margin:0;font-size:12.5px">${esc(t('pl_cond'))}</p>`)}
 /* bloqueo con explicación (los datos nunca se tocan) */
 function planGate(kind){if(isPremium())return true;const F=PCFG.free;
-  const msg={sug:t('pk_sug'),man:t('pk_man'),serm:t('pl_lock_s',{n:F.serm}),dic:t('pl_lock_d',{n:F.dic}),cur:t('pl_lock_c'),preg:t('pl_lock_p'),rec:t('pk_rec'),ser:t('pk_ser'),pdf:t('pk_pdf'),xr:t('pk_xr'),bq:t('pk_bq'),bv:t('pk_bv')}[kind]||'';
+  const msg={sug:t('pk_sug'),man:t('pk_man'),lic:t('pk_lic'),il:t('pk_il'),serm:t('pl_lock_s',{n:F.serm}),dic:t('pl_lock_d',{n:F.dic}),cur:t('pl_lock_c'),preg:t('pl_lock_p'),rec:t('pk_rec'),ser:t('pk_ser'),pdf:t('pk_pdf'),xr:t('pk_xr'),bq:t('pk_bq'),bv:t('pk_bv')}[kind]||'';
   const sh=openSheet(`<div class="pk"><span class="pk-ic">${ic('lock')}</span><span class="prem">PREMIUM</span><h3>${esc(t('pk_t'))}</h3><p>${esc(t('pk_d'))}</p>${msg?`<p class="pk-why">${esc(msg)}</p>`:''}
     <button class="btn gold block" id="pkGo">${esc(t('pk_go'))}</button><button class="btn ghost block" data-act="sheetClose">${esc(t('pk_no'))}</button></div>`);
   $('#pkGo',sh).onclick=()=>{closeSheet();plansSheet()};return false}
@@ -1528,21 +1528,21 @@ function drawNav(){$('#navIn').innerHTML=`<div class="nav-brand" aria-hidden="tr
   +TABS.map(([k,i,l])=>`<button data-act="tab" data-k="${k}" ${view.tab===k||(k==='home'&&view.tab==='cur')?'aria-current="page"':''}>${ic(i)}<span>${esc(t(l))}</span></button>`).join('')
   +`<button class="nav-set" data-act="tab" data-k="profile" ${view.tab==='profile'?'aria-current="page"':''}>${ic('gear')}<span>${esc(t('nav_profile'))}</span></button>`}
 try{WIDE.addEventListener('change',()=>{if(ready&&!blocked&&!E&&!PG&&!view.overlay)render()})}catch(e){}
-const SUBP=['profile','cur','devo','sug','man'];
+const SUBP=['profile','cur','devo','sug','man','lic','il'];
 // Accesos directos del ícono instalado (mantener presionado en Android): ./#new, ./#bible, ./#agenda, ./#dic
 function pwaShortcut(){const h=(location.hash||'').slice(1);if(!h)return;try{history.replaceState(null,'',location.pathname)}catch(e){}
-  if(blocked)return;if(h==='new')newSermon();else if(['bible','agenda','dic','list','devo','sug','man','cur'].includes(h))go(h)}
+  if(blocked)return;if(h==='new')newSermon();else if(['bible','agenda','dic','list','devo','sug','man','lic','il','cur'].includes(h))go(h)}
 function go(tab){if(SUBP.includes(tab)&&!SUBP.includes(view.tab))view.prev=view.tab;view.tab=tab;view.overlay=null;render(true);window.scrollTo(0,0);$('#app').scrollTop=0}
 function render(anim){
   if(!ready)return;if(blocked){showBlocked();return}const sub=SUBP.includes(view.tab);$('#nav').hidden=sub&&!WIDE.matches;document.documentElement.classList.toggle('tabs',!sub);document.documentElement.classList.toggle('subp',sub);drawNav();
   const app=$('#app');const keep=app.querySelector('input:focus');const sel=keep?[keep.id,keep.selectionStart]:null;
-  const html={home:homeHtml,list:listHtml,bible:bibleHtml,dic:dxTabHtml,cur:curHtml,agenda:agendaHtml,profile:profileHtml,devo:devoHtml,sug:sugHtml,man:manHtml}[view.tab]();
+  const html={home:homeHtml,list:listHtml,bible:bibleHtml,dic:dxTabHtml,cur:curHtml,agenda:agendaHtml,profile:profileHtml,devo:devoHtml,sug:sugHtml,man:manHtml,lic:licHtml,il:ilHtml}[view.tab]();
   app.innerHTML=`<section class="view ${anim?'enter':''}" data-tab="${view.tab}"><div class="wrap">${html}</div></section>`;
   if(sel&&sel[0]){const el=document.getElementById(sel[0]);if(el){el.focus();try{el.setSelectionRange(sel[1],sel[1])}catch(e){}}}
   if(view.tab==='bible')bibleAfter();
   if(view.tab==='dic')dxAfter();
   if(view.tab==='cur')curAfter();
-  if(['devo','sug','man'].includes(view.tab))minAfter();
+  if(MINT.includes(view.tab))minAfter();
 }
 
 /* =========================================================
@@ -1655,6 +1655,8 @@ function homeHtml(){if(!CUR&&!homeHtml._cl){homeHtml._cl=1;loadCur().then(()=>{i
   ${!localMode&&authU&&!ls.get('mp.rfx',0)&&liveS().length>=1?`<div class="rp-card rf-home"><div class="between"><span class="sn-hd">${ic('star')}<span>${esc(t('rf_h_eye'))}</span></span><button class="iconbtn sm" data-act="rfHide" aria-label="${esc(t('close'))}">${ic('x')}</button></div><b class="rp-ref" style="font-family:var(--head);font-size:17px">${esc(t('rf_h_t'))}</b><span class="sub" style="font-size:13px;line-height:1.45">${esc(t('rf_h_d'))}</span><div class="row" style="justify-content:flex-end"><button class="btn sm gold" data-act="refer">${ic('share')}${esc(t('rf_h_go'))}</button></div></div>`:''}
   <span class="sect" style="margin-top:4px">${esc(t('min_sec'))}</span>
   <button class="cu-card" data-act="tab" data-k="sug"><span class="dx-gl sm">${ic('lectern')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('sg_t'))}</b><span>${esc(t('sg_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
+  <button class="cu-card" data-act="tab" data-k="lic"><span class="dx-gl sm">${ic('group')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('lc_t'))}</b><span>${esc(t('lc_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
+  <button class="cu-card" data-act="tab" data-k="il"><span class="dx-gl sm">${ic('bulb')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('il_t'))}</b><span>${esc(t('il_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
   <button class="cu-card" data-act="tab" data-k="man"><span class="dx-gl sm">${ic('doc')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('mn_t'))}</b><span>${esc(t('mn_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
   <button class="cu-card" data-act="tab" data-k="cur"><span class="dx-gl sm">${ic('chat')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('cu_t'))}</b><span>${CUR&&CUR.by[curDayId()]?esc(t('cu_home_day',{q:CUR.by[curDayId()].q[cuL()]})):esc(t('cu_d'))}</span></span><span class="dx-go2">${ic('next')}</span></button></div><div class="h-col">
   ${S.length?`<div style="display:flex;flex-direction:column;gap:10px">
@@ -1753,6 +1755,7 @@ function reportSheet(){const wa=String(PCFG.wa||'').replace(/\D/g,'');
 const MIN={dv:null,dvp:null,sg:null,sgp:null,mn:null,mnp:null};
 const minLoad=(k,f)=>MIN[k]?Promise.resolve(MIN[k]):(MIN[k+'p']||(MIN[k+'p']=fetch('biblia/'+f+'?v=1').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>MIN[k]=d).catch(e=>{MIN[k+'p']=null;throw e})));
 const mL=()=>prefs.ui==='pt'?1:0;
+const MINT=['devo','sug','man','lic','il'];
 const MAN_FREE=['ceia','enfermos'];
 let DV={d:null},SG={k:null},MN={k:null};
 // dia do devocional (1–365); no ano bissexto o 29 de fevereiro repete o dia 28 e o resto do ano segue igual
@@ -1761,7 +1764,7 @@ function doy(dt){const d=dt||new Date();const y=d.getFullYear();let n=Math.floor
 function doyDate(n){const y=new Date().getFullYear();return new Date(y,0,n+(isLeap(y)&&n>=60?1:0))}
 function vText(ref,L){const B=BIB[vkey(prefs.bibleVer||L)]||BIB[vkey(L)];const m=String(ref).match(/^(\d+)\.(\d+)\.(\d+)(?:-(\d+))?$/);if(!B||!m)return'';const c=(B[+m[1]]||[])[+m[2]-1]||[];const out=[];for(let v=+m[3];v<=(+m[4]||+m[3]);v++)if(c[v-1])out.push(c[v-1]);return out.join(' ')}
 const eref=(r,L)=>`<button class="tag eref" data-eref="${esc(refStr(r,L))}">${esc(refStr(r,L))}</button>`;
-function minNeedBible(){const L=lxLang();const k=vkey(prefs.bibleVer||L);if(!BIB[k])loadBible(prefs.bibleVer||L).then(()=>{if(['devo','sug','man'].includes(view.tab))render()}).catch(()=>{})}
+function minNeedBible(){const L=lxLang();const k=vkey(prefs.bibleVer||L);if(!BIB[k])loadBible(prefs.bibleVer||L).then(()=>{if(MINT.includes(view.tab))render()}).catch(()=>{})}
 function minHead(title){return`<div class="subhead"><button class="iconbtn" data-act="back" aria-label="${esc(t('close'))}">${ic('back')}</button><h1 class="h">${esc(title)}</h1></div>`}
 function minNewSermon(title,html){if(!canNewSermon())return;[...$$('.ov')].filter(o=>!o._lock).forEach(o=>closeSheet(o));openEditor(null,{id:uid(),html:`<h1>${esc(title)}</h1>${html}`,lang:'',category:'',fav:false,created:Date.now(),log:[],v:2})}
 /* Devocional como imagem para Status (1080×1920) e Instagram (1080×1350) */
@@ -1830,9 +1833,62 @@ function manHtml(){const L=lxLang(),l=mL();if(!MIN.mn)return minHead(t('mn_t'))+
    <span class="lbl">${esc(t('mn_obs'))}</span><ul class="mn-obs">${c.obs.map(x=>`<li>${esc(x[l])}</li>`).join('')}</ul>
    <button class="btn gold block" data-mn="doc">${ic('pen')}${esc(t('mn_doc'))}</button>
    <p class="sub" style="margin:0;font-size:12px;text-align:center">${esc(t('mn_model'))}</p></div>`}
-function minAfter(){const k={devo:['dv','devocional.json'],sug:['sg','sugestoes.json'],man:['mn','manual.json']}[view.tab];const tab=view.tab;if(k&&!MIN[k[0]])minLoad(k[0],k[1]).then(()=>{if(view.tab===tab)render()}).catch(()=>{const a=$('#app .empty p');if(a)a.textContent=t('dict_err')})}
+/* Lições para células e Escola Dominical: a 1ª lição de cada série é grátis */
+let LC={s:null,i:null},IL={tema:'',q:''};
+function licOk(i){return isPremium()||i===0}
+function licText(x,L,l){const o=[x.t[l],t('rp_base')+': '+refStr(x.v,L),'',t('lc_obj')+': '+x.obj[l],'',t('lc_gelo')+': '+x.gelo[l],'',x.intro[l],''];
+  x.pts.forEach((p,i)=>{o.push((i+1)+'. '+p.t[l]+' ('+refStr(p.v,L)+')',p.x[l],'')});
+  o.push(t('lc_perg')+':');x.perg.forEach((p,i)=>o.push((i+1)+') '+p[l]));o.push('',t('lc_apl')+': '+x.apl[l],'',t('lc_mem')+': '+refStr(x.mem,L),'',t('dv_pray')+': '+x.or[l],'','— Meu Púlpito · meupulpito.com');return o.join('\n')}
+function licHtml(){const L=lxLang(),l=mL();if(!MIN.lc)return minHead(t('lc_t'))+`<div class="empty"><p style="margin:0">${esc(t('dx_load'))}</p></div>`;
+  const SS=MIN.lc.series;const sr=LC.s&&SS.find(x=>x.k===LC.s);
+  if(!sr)return minHead(t('lc_t'))+`<p class="sub" style="margin:0 0 4px;line-height:1.5">${esc(t('lc_d'))}</p><div class="mn-grid">${SS.map(x=>`<button class="mn-it" data-lc="ser" data-k="${esc(x.k)}"><b>${esc(x.n[l])}</b><span>${esc(x.d[l])}</span><span class="sub" style="font-size:12px">${esc(t('lc_n',{n:x.l.length}))}</span></button>`).join('')}</div>`;
+  const x=LC.i!=null&&sr.l[LC.i];
+  if(!x)return minHead(sr.n[l])+`<button class="lnk dx-back" data-lc="back">${ic('back')}${esc(t('lc_all'))}</button><p class="sub" style="margin:0;line-height:1.5">${esc(sr.d[l])}</p>
+   <div class="sg-list">${sr.l.map((y,i)=>`<button class="sg-card lc-it" data-lc="open" data-i="${i}"><div class="between"><b>${i+1}. ${esc(y.t[l])}</b>${licOk(i)?'':`<span class="cu-lock">Premium</span>`}</div><span class="sg-v">${esc(refStr(y.v,L))}</span><span class="sub" style="font-size:13px;line-height:1.45">${esc(y.obj[l])}</span></button>`).join('')}</div>`;
+  minNeedBible();const vt=vText(x.v,L);
+  return minHead(sr.n[l])+`<button class="lnk dx-back" data-lc="list">${ic('back')}${esc(sr.n[l])}</button><div class="mn-page lc-page">
+   <span class="lbl">${esc(t('lc_les',{n:LC.i+1,m:sr.l.length}))}</span><h2 class="dv-title">${esc(x.t[l])}</h2>
+   <blockquote class="dv-verse">${vt?esc(vt):esc(t('dx_load'))}<cite>${eref(x.v,L)} <small>${esc(verLabel(prefs.bibleVer||L))}</small></cite></blockquote>
+   <div class="dv-box"><span class="lbl">${esc(t('lc_obj'))}</span><p>${esc(x.obj[l])}</p></div>
+   <div class="dv-box"><span class="lbl">${esc(t('lc_gelo'))}</span><p>${esc(x.gelo[l])}</p></div>
+   <span class="lbl">${esc(t('lc_intro'))}</span><p class="dv-text">${esc(x.intro[l])}</p>
+   <ol class="mn-ord lc-pts">${x.pts.map(p=>`<li><b>${esc(p.t[l])}</b><span>${eref(p.v,L)}</span><span>${esc(p.x[l])}</span></li>`).join('')}</ol>
+   <span class="lbl">${esc(t('lc_perg'))}</span><ol class="lc-q">${x.perg.map(p=>`<li>${esc(p[l])}</li>`).join('')}</ol>
+   <div class="dv-box"><span class="lbl">${esc(t('lc_apl'))}</span><p>${esc(x.apl[l])}</p></div>
+   <div class="dv-box"><span class="lbl">${esc(t('lc_mem'))}</span><p>${vText(x.mem,L)?'«'+esc(vText(x.mem,L))+'» ':''}${eref(x.mem,L)}</p></div>
+   <div class="dv-box pray"><span class="lbl">${esc(t('dv_pray'))}</span><p>${esc(x.or[l])}</p></div>
+   <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn sm ghost" data-lc="share">${ic('share')}${esc(t('lc_share'))}</button><button class="btn sm ghost" data-lc="copy">${ic('copy')}${esc(t('copy_txt'))}</button><button class="btn sm gold" data-lc="doc">${ic('pen')}${esc(t('lc_doc'))}</button></div>
+   <div class="between">${LC.i>0?`<button class="btn sm ghost" data-lc="prev">${ic('back')}${esc(t('lc_prev'))}</button>`:'<span></span>'}${LC.i<sr.l.length-1?`<button class="btn sm ghost" data-lc="next">${esc(t('lc_next'))}${ic('next')}</button>`:''}</div></div>`}
+/* Banco de ilustrações: 2 grátis por tema */
+const IL_FREE=2;
+function ilOk(x){if(isPremium())return true;const T=MIN.il.il.filter(y=>y.tema===x.tema);return T.indexOf(x)<IL_FREE}
+const ilNorm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function ilText(x,L,l){return[x.t[l],'',x.x[l],'',t('il_ap')+': '+x.ap[l],'',x.v.map(r=>refStr(r,L)).join(' · '),'','— Meu Púlpito · meupulpito.com'].join('\n')}
+function ilHtml(){const L=lxLang(),l=mL();if(!MIN.il)return minHead(t('il_t'))+`<div class="empty"><p style="margin:0">${esc(t('dx_load'))}</p></div>`;
+  const A=MIN.il.il;const temas=[...new Set(A.map(x=>x.tema))];const q=ilNorm(IL.q.trim());
+  const list=A.filter(x=>(!IL.tema||x.tema===IL.tema)&&(!q||ilNorm(x.t[l]+' '+x.x[l]+' '+x.ap[l]+' '+t('ilt_'+x.tema)).includes(q)));
+  return minHead(t('il_t'))+`<p class="sub" style="margin:0 0 4px;line-height:1.5">${esc(t('il_d'))}</p>
+   <label class="search">${ic('search')}<input id="ilQ" type="search" placeholder="${esc(t('il_ph'))}" value="${esc(IL.q)}" autocomplete="off" enterkeyhint="search"></label>
+   <div class="chips"><button class="chip" data-il="tema" data-k="" aria-pressed="${!IL.tema}">${esc(t('il_all'))}</button>${temas.map(k=>`<button class="chip" data-il="tema" data-k="${k}" aria-pressed="${IL.tema===k}">${esc(t('ilt_'+k))}</button>`).join('')}</div>
+   <p class="sub" style="margin:0;font-size:12px">${esc(t('il_cnt',{n:list.length}))}</p>
+   <div class="sg-list">${list.length?list.map(x=>{const ok=ilOk(x);const i=A.indexOf(x);return`<div class="sg-card il-card${ok?'':' sg-lk'}"><div class="between"><b>${esc(x.t[l])}</b>${ok?'':`<span class="cu-lock">Premium</span>`}</div><span class="il-tag">${esc(t('ilt_'+x.tema))} · ${esc(t('ilk_'+x.tipo))}</span>
+     ${ok?`<p>${esc(x.x[l])}</p><p class="sg-ap"><b>${esc(t('il_ap'))}:</b> ${esc(x.ap[l])}</p><span class="sg-v">${x.v.map(r=>eref(r,L)).join('')}</span><div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn sm ghost" data-il="copy" data-i="${i}">${ic('copy')}${esc(t('copy_txt'))}</button><button class="btn sm gold" data-il="use" data-i="${i}">${ic('pen')}${esc(t('il_use'))}</button></div>`:`<button class="btn sm ghost" data-il="lock">${ic('lock')}${esc(t('il_unlock'))}</button>`}</div>`}).join(''):`<div class="empty"><p style="margin:0">${esc(t('il_none'))}</p></div>`}</div>
+   <p class="sub" style="margin:0;font-size:12px;text-align:center">${esc(t('il_note'))}</p>`}
+document.addEventListener('input',e=>{if(e.target.id==='ilQ'&&view.tab==='il'){IL.q=e.target.value;clearTimeout(ilHtml._t);ilHtml._t=setTimeout(()=>{if(view.tab==='il')render()},250)}});
 document.addEventListener('click',e=>{const L=lxLang(),l=mL();
-  const r=e.target.closest('[data-eref]');if(r&&['devo','sug','man'].includes(view.tab)&&!r.closest('.ov')){compareRef(r.dataset.eref,null,L);return}
+  const lc=e.target.closest('[data-lc]');if(lc&&view.tab==='lic'){const a=lc.dataset.lc;const sr=MIN.lc&&LC.s&&MIN.lc.series.find(x=>x.k===LC.s);const x=sr&&LC.i!=null&&sr.l[LC.i];
+    if(a==='ser'){LC.s=lc.dataset.k;LC.i=null;render();scrollTo(0,0)}else if(a==='back'){LC.s=null;LC.i=null;render()}else if(a==='list'){LC.i=null;render();scrollTo(0,0)}
+    else if(a==='open'||a==='prev'||a==='next'){const i=a==='open'?+lc.dataset.i:LC.i+(a==='next'?1:-1);if(!licOk(i)){planGate('lic');return}LC.i=i;render();scrollTo(0,0)}
+    else if(a==='share'&&x){const txt=licText(x,L,l);if(navigator.share)navigator.share({text:txt}).catch(()=>{});else copyText(txt).then(()=>toast(t('copied')))}
+    else if(a==='copy'&&x)copyText(licText(x,L,l)).then(()=>toast(t('copied')))
+    else if(a==='doc'&&x)minNewSermon(x.t[l],`<p>${esc(t('rp_base'))}: ${esc(refStr(x.v,L))}</p><h2>${esc(t('lc_obj'))}</h2><p>${esc(x.obj[l])}</p><h2>${esc(t('lc_gelo'))}</h2><p>${esc(x.gelo[l])}</p><h2>${esc(t('lc_intro'))}</h2><p>${esc(x.intro[l])}</p>${x.pts.map((p,i)=>`<h2>${i+1}. ${esc(p.t[l])}</h2><p>${esc(refStr(p.v,L))}</p><p>${esc(p.x[l])}</p>`).join('')}<h2>${esc(t('lc_perg'))}</h2><ol>${x.perg.map(p=>`<li>${esc(p[l])}</li>`).join('')}</ol><h2>${esc(t('lc_apl'))}</h2><p>${esc(x.apl[l])}</p><p>${esc(t('lc_mem'))}: ${esc(refStr(x.mem,L))}</p><h2>${esc(t('dv_pray'))}</h2><p>${esc(x.or[l])}</p>`);return}
+  const il=e.target.closest('[data-il]');if(il&&view.tab==='il'){const a=il.dataset.il;const x=MIN.il&&MIN.il.il[+il.dataset.i];
+    if(a==='tema'){IL.tema=il.dataset.k;render()}else if(a==='lock')planGate('il')
+    else if(a==='copy'&&x)copyText(ilText(x,L,l)).then(()=>toast(t('copied')))
+    else if(a==='use'&&x)minNewSermon(x.t[l],`<p><br></p><h2>${esc(t('il_one'))}</h2><p>${esc(x.x[l])}</p><p>${esc(t('il_ap'))}: ${esc(x.ap[l])}</p><p>${x.v.map(r=>esc(refStr(r,L))).join(' · ')}</p>`);return}});
+function minAfter(){const k={devo:['dv','devocional.json'],sug:['sg','sugestoes.json'],man:['mn','manual.json'],lic:['lc','licoes.json'],il:['il','ilustracoes.json']}[view.tab];const tab=view.tab;if(k&&!MIN[k[0]])minLoad(k[0],k[1]).then(()=>{if(view.tab===tab)render()}).catch(()=>{const a=$('#app .empty p');if(a)a.textContent=t('dict_err')})}
+document.addEventListener('click',e=>{const L=lxLang(),l=mL();
+  const r=e.target.closest('[data-eref]');if(r&&MINT.includes(view.tab)&&!r.closest('.ov')){compareRef(r.dataset.eref,null,L);return}
   const dv=e.target.closest('[data-dv]');if(dv&&view.tab==='devo'){const a=dv.dataset.dv,n=DV.d||doy();const ent=MIN.dv&&MIN.dv.e[n-1];
     if(a==='prev'){DV.d=Math.max(1,n-1);render();scrollTo(0,0)}else if(a==='next'){DV.d=Math.min(365,n+1);render();scrollTo(0,0)}else if(a==='today'){DV.d=null;render()}
     else if(a==='share'&&ent){const vt=vText(ent.v,L);const txt=[ent.t[l],'',vt?'«'+vt+'» — '+refStr(ent.v,L):refStr(ent.v,L),'',ent.r[l],'',t('dv_app')+': '+ent.a[l],'','— '+t('dv_t')+' · Meu Púlpito','https://meupulpito.com'].join('\n');if(navigator.share)navigator.share({text:txt}).catch(()=>{});else copyText(txt).then(()=>toast(t('copied')))}
@@ -1846,6 +1902,7 @@ document.addEventListener('click',e=>{const L=lxLang(),l=mL();
     if(a==='open'){const k=mn.dataset.k;if(!isPremium()&&!MAN_FREE.includes(k)){planGate('man');return}MN.k=k;render();scrollTo(0,0)}else if(a==='back'){MN.k=null;render()}
     else if(a==='copy'&&c){const f=c.falas[+mn.dataset.i];copyText(f.x[l]).then(()=>toast(t('copied')))}
     else if(a==='doc'&&c)minNewSermon(c.n[l],`<h2>${esc(t('mn_ord'))}</h2><ol>${c.ordem.map(x=>`<li><b>${esc(x.t[l])}</b> — ${esc(x.d[l])}</li>`).join('')}</ol><h2>${esc(t('mn_txt'))}</h2><p>${c.textos.map(r=>esc(refStr(r,L))).join(' · ')}</p>${c.falas.map(f=>`<h2>${esc(f.t[l])}</h2><p>${esc(f.x[l]).replace(/\n/g,'<br>')}</p>`).join('')}`);return}});
+Object.assign(I18N.es,{lc_t:'Lecciones para células y Escuela Dominical',lc_home:'Series de estudios listas para enseñar en grupo',lc_d:'Series de estudios bíblicos para células, Escuela Dominical y grupos pequeños. Cada lección trae objetivo, rompehielos, puntos con textos, preguntas, aplicación, versículo para memorizar y oración. La primera lección de cada serie es gratis.',lc_n:'{n} lecciones',lc_all:'Todas las series',lc_les:'Lección {n} de {m}',lc_obj:'Objetivo',lc_gelo:'Para romper el hielo',lc_intro:'Introducción (para el líder)',lc_perg:'Preguntas para conversar',lc_apl:'Aplicación',lc_mem:'Versículo para memorizar',lc_share:'Enviar al grupo',lc_doc:'Abrir como documento',lc_prev:'Anterior',lc_next:'Siguiente',pk_lic:'Acceda a todas las lecciones de cada serie para células y Escuela Dominical.',il_t:'Banco de ilustraciones',il_home:'Comparaciones e imágenes para sus sermones, por tema',il_d:'Ilustraciones para aclarar un punto del sermón: comparaciones de la vida diaria, escenas, imágenes de la naturaleza y escenas bíblicas. Dos por tema son gratis.',il_ph:'Buscar una ilustración',il_all:'Todos',il_cnt:'{n} ilustraciones',il_ap:'Aplicación',il_use:'Usar en un sermón',il_unlock:'Ver con Premium',il_none:'No encontramos ilustraciones con esa búsqueda.',il_one:'Ilustración',il_note:'Sin historias inventadas atribuidas a personas reales: son comparaciones e imágenes para usar con libertad.',pk_il:'Acceda a todas las ilustraciones del banco, en todos los temas.',ilt_fe:'Fe',ilt_oracao:'Oración',ilt_perdao:'Perdón',ilt_graca:'Gracia',ilt_amor:'Amor',ilt_esperanca:'Esperanza',ilt_perseveranca:'Perseverancia',ilt_humildade:'Humildad',ilt_familia:'Familia',ilt_salvacao:'Salvación',ilt_obediencia:'Obediencia',ilt_gratidao:'Gratitud',ilt_espirito:'Espíritu Santo',ilt_igreja:'Iglesia y unidad',ilt_servico:'Servicio',ilt_mordomia:'Mayordomía y generosidad',ilt_tentacao:'Tentación',ilt_sofrimento:'Sufrimiento',ilt_medo:'Miedo y ansiedad',ilt_tempo:'Tiempo y eternidad',ilt_palavra:'Palabra de Dios',ilt_testemunho:'Testimonio y evangelismo',ilt_lideranca:'Liderazgo',ilt_mudanca:'Vida nueva',ilk_comparacao:'Comparación',ilk_cotidiano:'Situación cotidiana',ilk_natureza:'Naturaleza',ilk_biblica:'Escena bíblica'});Object.assign(I18N.pt,{lc_t:'Lições para células e Escola Dominical',lc_home:'Séries de estudos prontas para ensinar em grupo',lc_d:'Séries de estudos bíblicos para células, Escola Dominical e pequenos grupos. Cada lição traz objetivo, quebra-gelo, pontos com textos, perguntas, aplicação, versículo para memorizar e oração. A primeira lição de cada série é grátis.',lc_n:'{n} lições',lc_all:'Todas as séries',lc_les:'Lição {n} de {m}',lc_obj:'Objetivo',lc_gelo:'Quebra-gelo',lc_intro:'Introdução (para o líder)',lc_perg:'Perguntas para conversar',lc_apl:'Aplicação',lc_mem:'Versículo para memorizar',lc_share:'Enviar ao grupo',lc_doc:'Abrir como documento',lc_prev:'Anterior',lc_next:'Próxima',pk_lic:'Acesse todas as lições de cada série para células e Escola Dominical.',il_t:'Banco de ilustrações',il_home:'Comparações e imagens para seus sermões, por tema',il_d:'Ilustrações para clarear um ponto do sermão: comparações do dia a dia, cenas, imagens da natureza e cenas bíblicas. Duas por tema são grátis.',il_ph:'Buscar uma ilustração',il_all:'Todos',il_cnt:'{n} ilustrações',il_ap:'Aplicação',il_use:'Usar num sermão',il_unlock:'Ver com Premium',il_none:'Não encontramos ilustrações com essa busca.',il_one:'Ilustração',il_note:'Sem histórias inventadas atribuídas a pessoas reais: são comparações e imagens para usar à vontade.',pk_il:'Acesse todas as ilustrações do banco, em todos os temas.',ilt_fe:'Fé',ilt_oracao:'Oração',ilt_perdao:'Perdão',ilt_graca:'Graça',ilt_amor:'Amor',ilt_esperanca:'Esperança',ilt_perseveranca:'Perseverança',ilt_humildade:'Humildade',ilt_familia:'Família',ilt_salvacao:'Salvação',ilt_obediencia:'Obediência',ilt_gratidao:'Gratidão',ilt_espirito:'Espírito Santo',ilt_igreja:'Igreja e unidade',ilt_servico:'Serviço',ilt_mordomia:'Mordomia e generosidade',ilt_tentacao:'Tentação',ilt_sofrimento:'Sofrimento',ilt_medo:'Medo e ansiedade',ilt_tempo:'Tempo e eternidade',ilt_palavra:'Palavra de Deus',ilt_testemunho:'Testemunho e evangelismo',ilt_lideranca:'Liderança',ilt_mudanca:'Vida nova',ilk_comparacao:'Comparação',ilk_cotidiano:'Situação do dia a dia',ilk_natureza:'Natureza',ilk_biblica:'Cena bíblica'});
 Object.assign(I18N.es,{dv_img_st:'Imagen para Estado',dv_img_ig:'Imagen para Instagram',dv_img_t:'Imagen del devocional',dv_img_save:'Toque y mantenga la imagen para guardarla, o use el botón de descargar.',dv_img_dl:'Descargar imagen',dv_t:'Devocional diario',dv_today:'Devocional de hoy',dv_read:'leído',dv_prev:'Día anterior',dv_next:'Día siguiente',dv_go_today:'Volver a hoy',dv_app:'Para hoy',dv_pray:'Oración',dv_serm:'Preparar un sermón',dv_day:'Día {n} de 365',
   sg_t:'Sugerencias de predicación',sg_d:'Ideas para cada ocasión: tema, texto base, tres puntos y aplicación. Úselas como punto de partida para su propio mensaje.',sg_all:'Todas las ocasiones',sg_ap:'Aplicación',sg_use:'Usar como base del sermón',sg_unlock:'Ver con Premium',
   mn_t:'Manual del ministro',mn_d:'Modelos para ceremonias y momentos pastorales: preparación, orden del culto, textos bíblicos y palabras sugeridas. Adapte cada modelo a su iglesia.',mn_all:'Todas las ceremonias',mn_prep:'Preparación',mn_ord:'Orden del culto (sugerido)',mn_txt:'Textos bíblicos',mn_fal:'Palabras sugeridas',mn_obs:'Cuidados pastorales',mn_doc:'Crear un guion editable',mn_model:'Modelo sugerido. Ajuste los nombres, el orden y las palabras a su iglesia.',

@@ -906,3 +906,9 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .mn-obs li{padding:10px 12px;border-radius:12px;background:var(--chip);line-height:1.45;font-size:14px}
 .mn-ord{margin:0;padding:0;list-style:none;counter-reset:o;display:flex;flex-direction:column;gap:8px}.mn-ord li{counter-increment:o;display:flex;flex-direction:column;gap:2px;padding-left:38px;position:relative;line-height:1.45}.mn-ord li::before{content:counter(o);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:#0F1B33;color:#D6AD55;font-weight:800;font-size:13px;display:grid;place-items:center}.mn-ord li span{font-size:14px;color:var(--muted)}
 .mn-f{border-radius:14px;box-shadow:0 0 0 1px var(--line) inset;padding:12px 14px}.mn-f summary{font-weight:700;cursor:pointer}.mn-f p{margin:10px 0;line-height:1.6;font-family:var(--serif,Georgia,serif);font-size:16px}
+
+.lc-it{text-align:left;display:flex;flex-direction:column;gap:6px;width:100%}
+.lc-pts li>span:last-child{display:block;margin-top:4px;line-height:1.55}
+.lc-q{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.5}
+.il-tag{font-size:12px;font-weight:600;color:var(--gold-ink)}
+.il-card p{line-height:1.6}
