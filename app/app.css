@@ -1018,3 +1018,5 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 a.prow.plink{text-decoration:none}
 
 .dv-ch{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--surface);box-shadow:0 0 0 1.5px var(--gold) inset;color:var(--fg);text-decoration:none}.dv-ch>.i:first-child{color:var(--gold-ink);flex:none}.dv-ch>span{flex:1;display:flex;flex-direction:column;gap:2px}.dv-ch b{font-size:14.5px}.dv-ch>span>span{font-size:12.5px;color:var(--muted)}.dv-ch>.i:last-child{color:var(--gold-ink);flex:none}
+
+.banner.ann{box-shadow:0 0 0 1.5px var(--gold) inset}.banner.ann .tx b{color:var(--gold-ink)}.banner.ann a.btn{text-decoration:none}

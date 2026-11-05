@@ -123,7 +123,7 @@ function shell(){$('#root').innerHTML=`<header class="top"><img src="../app/mark
   <nav class="tabs" id="tabs"></nav><main id="main"><div class="empty">Carregando…</div></main>`;
   $('#rf').onclick=()=>load();$('#lo').onclick=()=>auth.signOut();
   $('#tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;TAB=b.dataset.t;CONV=null;history.replaceState(null,'','#'+TAB);draw()}}
-const TABS=[['resumo','home','Resumo'],['atend','chat','Atendimento'],['pastores','user','Pastores'],['pag','cash','Pagamentos'],['ind','star','Indicações'],['dep','quote','Depoimentos']];
+const TABS=[['resumo','home','Resumo'],['atend','chat','Atendimento'],['pastores','user','Pastores'],['pag','cash','Pagamentos'],['ind','star','Indicações'],['dep','quote','Depoimentos'],['aviso','send','Aviso no app']];
 function unread(){return D.suporte.reduce((s,x)=>s+(+x.ua||0),0)+D.contato.filter(x=>!x.done).length}
 function drawTabs(){const u=unread(),dp=D.depo.filter(x=>x.ok&&!x.pub).length;$('#tabs').innerHTML=TABS.map(([k,i,l])=>`<button data-t="${k}" aria-pressed="${TAB===k}">${ic(i)}${l}${k==='atend'&&u?` <span class="bdg">${u}</span>`:''}${k==='dep'&&dp?` <span class="bdg">${dp}</span>`:''}</button>`).join('')}
 
@@ -156,7 +156,7 @@ function refData(){const by={};D.stats.forEach(r=>by[r.id.slice(0,8)]=r);const r
 function soon(){const n=Date.now(),wn=(+D.cfg.warn||7)*864e5;return D.stats.filter(r=>{const p=P(r.id);return PMON[p.plan]&&p.until&&p.until-n<wn&&p.until>n-30*864e5}).sort((a,b)=>P(a.id).until-P(b.id).until)}
 
 function draw(){drawTabs();const m=$('#main');clearInterval(poll);
-  if(TAB==='resumo')m.innerHTML=vResumo();else if(TAB==='atend')vAtend(m);else if(TAB==='pastores')vPastores(m);else if(TAB==='pag')m.innerHTML=vPag();else if(TAB==='ind')m.innerHTML=vInd();else if(TAB==='dep')m.innerHTML=vDep();
+  if(TAB==='resumo')m.innerHTML=vResumo();else if(TAB==='atend')vAtend(m);else if(TAB==='pastores')vPastores(m);else if(TAB==='pag')m.innerHTML=vPag();else if(TAB==='ind')m.innerHTML=vInd();else if(TAB==='dep')m.innerHTML=vDep();else if(TAB==='aviso')vAviso(m);
   if(!D.rules&&TAB!=='pastores')m.insertAdjacentHTML('afterbegin',`<div class="card" style="margin-top:0;background:#FEF3C7;box-shadow:none"><b>Falta colar as regras novas no Firebase.</b><span class="s" style="display:block;font-size:13px;margin-top:4px">Sem elas o atendimento, os depoimentos e a roleta não gravam. Abra o Firebase → Firestore Database → Regras.</span></div>`)}
 
 /* ---------- Resumo ---------- */
@@ -302,6 +302,25 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-ref]
     D.planos[to]=Object.assign({},c,upd,{refMonths:(+c.refMonths||0)+1});toast('1 mês de Premium entregue');draw()}catch(err){b.disabled=false;toast('Não foi possível salvar')}});
 
 /* ---------- Depoimentos ---------- */
+/* ---------- Aviso no app (aparece no Início de todos) ---------- */
+function vAviso(m){const A=Object.assign({on:false,tes:'',tpt:'',es:'',pt:'',url:'',bes:'',bpt:'',pop:false,until:''},(D.cfg||{}).ann||{});
+  const f=(id,lb,v,ph,area)=>`<label style="display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--muted)">${lb}${area?`<textarea class="inp" id="${id}" rows="3" placeholder="${esc(ph||'')}">${esc(v)}</textarea>`:`<input class="inp" id="${id}" value="${esc(v)}" placeholder="${esc(ph||'')}">`}</label>`;
+  m.innerHTML=`<h2>Aviso no app</h2><div class="card" style="margin-top:0;display:flex;flex-direction:column;gap:12px">
+   <p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.5">Um aviso que aparece no Início do app para todos os pastores, no idioma de cada um. Quem fechar o aviso não vê de novo, até o senhor salvar um aviso novo.</p>
+   <label class="row" style="gap:10px;font-weight:700;color:var(--ink);font-size:15px"><input type="checkbox" id="avOn" ${A.on?'checked':''} style="width:22px;height:22px;flex:none">Mostrar o aviso no app</label>
+   ${f('avTes','Título em espanhol',A.tes,'Ej.: ¡Novedad en Meu Púlpito!')}${f('avEs','Texto em espanhol',A.es,'Ej.: Ya está disponible el Premium Iglesia para administrar su iglesia.',1)}
+   ${f('avTpt','Título em português',A.tpt,'Ex.: Novidade no Meu Púlpito!')}${f('avPt','Texto em português',A.pt,'Ex.: Já está disponível o Premium Igreja para administrar sua igreja.',1)}
+   ${f('avUrl','Link do botão (opcional)',A.url,'Ex.: meupulpito.com/planos ou o link do canal')}
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${f('avBes','Botão em espanhol',A.bes,'Ver más')}${f('avBpt','Botão em português',A.bpt,'Saiba mais')}</div>
+   <label class="row" style="gap:10px;font-weight:600;color:var(--ink);font-size:14px"><input type="checkbox" id="avPop" ${A.pop?'checked':''} style="width:22px;height:22px;flex:none">Também abrir como janela quando o pastor entrar (uma vez)</label>
+   ${f('avUntil','Mostrar até (opcional)',A.until,'')}
+   <button class="btn gold" id="avGo" style="height:46px">${ic('send')}Salvar e publicar no app</button>
+   ${A.id?`<p style="margin:0;font-size:12.5px;color:var(--muted)">Último aviso salvo em ${esc(fmtDT(A.id))}${A.on?'':' (desligado)'}.</p>`:''}</div>`;
+  const u=$('#avUntil');u.type='date';
+  $('#avGo').onclick=async()=>{const v=id=>$('#'+id).value.trim();let url=v('avUrl');if(url&&!/^https?:\/\//.test(url))url='https://'+url;
+    const ann={on:$('#avOn').checked,tes:v('avTes'),tpt:v('avTpt'),es:v('avEs'),pt:v('avPt'),url,bes:v('avBes'),bpt:v('avBpt'),pop:$('#avPop').checked,until:v('avUntil'),id:Date.now()};
+    if(ann.on&&!(ann.es||ann.pt||ann.tes||ann.tpt)){toast('Escreva o aviso em pelo menos um idioma');return}
+    const b=$('#avGo');b.disabled=true;try{await db.collection('config').doc('app').set({ann},{merge:true});D.cfg=Object.assign({},D.cfg,{ann});toast(ann.on?'Aviso publicado no app':'Aviso desligado');draw()}catch(err){toast('Não foi possível salvar');b.disabled=false}}}
 function vDep(){const T=Array.isArray(D.site.testi)?D.site.testi:[];
   return`<h2>Depoimentos</h2><div class="card" style="margin-top:0"><h3>Recebidos no app</h3><div class="list" style="margin-top:6px">${D.depo.length?D.depo.map(x=>`<div class="it">${ic('quote')}<span class="b"><span class="s" style="color:var(--ink);font-size:14.5px">“${esc(x.q)}”</span><span class="s" style="margin-top:4px">${esc(x.n)}${x.r?' · '+esc(x.r):''} · ${esc(fmtD(x.at))}</span>
      <span class="btns">${x.ok?(x.pub?'<span class="tag ok">No site</span>':`<button class="btn gold" data-pub="${esc(x.id)}">${ic('check')}Publicar no site</button>`):'<span class="tag warn">Sem autorização para publicar</span>'}<button class="btn red" data-ddel="${esc(x.id)}">${ic('trash')}</button></span></span></div>`).join(''):'<div class="empty">Nenhum depoimento recebido ainda.</div>'}</div></div>
