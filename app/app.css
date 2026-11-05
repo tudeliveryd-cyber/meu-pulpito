@@ -1015,3 +1015,4 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .lt-sum th{text-align:left;padding:7px 8px;border-bottom:2px solid #B8902F;color:var(--ink,#0F1B33)}.lt-sum th:last-child,.lt-sum td:last-child{text-align:right;white-space:nowrap}
 .lt-sum td{padding:6px 8px;border-bottom:1px solid #D9DDE5}
 @media print{#printArea.pm-ig .lt-grid{font-size:9.5pt}#printArea.pm-ig .lt-grid thead{display:table-header-group}#printArea.pm-ig .lt-grid tr{break-inside:avoid}}
+a.prow.plink{text-decoration:none}
