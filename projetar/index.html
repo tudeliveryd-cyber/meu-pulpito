@@ -62,7 +62,7 @@ textarea.inp{min-height:120px;resize:vertical;line-height:1.5}
 <script src="biblia.js"></script>
 <script>
 (function(){
-firebase.initializeApp(window.FIREBASE_CONFIG);const db=firebase.firestore();
+firebase.initializeApp(window.FIREBASE_CONFIG);try{firebase.firestore().settings({experimentalForceLongPolling:true,merge:true})}catch(e){}const db=firebase.firestore();
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ic=n=>`<svg><use href="#i-${n}"/></svg>`;

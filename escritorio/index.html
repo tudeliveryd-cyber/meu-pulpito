@@ -117,7 +117,7 @@ const waNum=w=>String(w||'').replace(/\D/g,'');
 const waLang=r=>{if(r.lang==='pt'||r.lang==='es')return r.lang;const w=String(r.wa||'');return w.startsWith('+55')||w.startsWith('55')?'pt':'es'};
 const first=n=>String(n||'').trim().replace(/^(pr|pra|pb|ev|rev)\.?\s+/i,'').split(/\s+/)[0]||'';
 
-firebase.initializeApp(window.FIREBASE_CONFIG);const auth=firebase.auth(),db=firebase.firestore();
+firebase.initializeApp(window.FIREBASE_CONFIG);try{firebase.firestore().settings({experimentalForceLongPolling:true,merge:true})}catch(e){}const auth=firebase.auth(),db=firebase.firestore();
 let D={stats:[],planos:{},roleta:{},depo:[],suporte:[],contato:[],site:{},cfg:{},visits:null},TAB=location.hash.slice(1)||'resumo',CONV=null,poll=0;
 
 function loginView(err){$('#root').innerHTML=`<form class="login" id="lg"><img src="../app/mark-light.png" alt=""><h2 style="margin:0">Escritório do Meu Púlpito</h2><p style="margin:0;color:var(--muted)">Acesso só para o administrador.</p>
