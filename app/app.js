@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v139';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v140';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -2663,15 +2663,16 @@ function depoSheet(auto){if(localMode||!authU){toLogin();return}let sent=false;
 /* convite para o canal oficial no WhatsApp: aparece no Início, uma vez (e no máximo mais uma, 7 dias depois de «Agora não») */
 const CH_URL='https://whatsapp.com/channel/0029Vb9d3dXFHWpvOk3CTm3J';
 function chCheck(){if(chCheck._t)return;let n=0;chCheck._t=setInterval(()=>{if(++n>60){clearInterval(chCheck._t);return}
-  if(ls.get('mp.ch.ok',0)||(ls.get('mp.ch.n',0)||0)>=2){clearInterval(chCheck._t);return}const later=ls.get('mp.ch.later',0);if(later&&Date.now()-later<7*864e5){clearInterval(chCheck._t);return}
+  if(ls.get('mp.ch.ok',0)||meta.chOk||(ls.get('mp.ch.n',0)||0)>=2){clearInterval(chCheck._t);return}const later=ls.get('mp.ch.later',0);if(later&&Date.now()-later<7*864e5){clearInterval(chCheck._t);return}
   if(n<4||!ready||blocked||E||!ls.get('mp.onb',0)||$('.ov')||view.tab!=='home'||view.overlay)return;
   clearInterval(chCheck._t);chSheet()},4000)}
-document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(a&&a.href===CH_URL)ls.set('mp.ch.ok',1)});
+function chDone(){ls.set('mp.ch.ok',1);if(authU&&!localMode&&!meta.chOk){meta.chOk=Date.now();putMeta()}}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(a&&a.href===CH_URL)chDone()});
 function chSheet(){ls.set('mp.ch.n',(ls.get('mp.ch.n',0)||0)+1);
   const sh=openSheet(`<div class="pk"><span class="pk-ic">${ic('chat')}</span><h3>${esc(t('chi_t'))}</h3><p>${esc(t('chi_d'))}</p>
     <ul class="pl-f" style="align-self:stretch;text-align:left">${['chi_1','chi_2','chi_3'].map(k=>`<li>${ic('check')}<span>${esc(t(k))}</span></li>`).join('')}</ul>
     <a class="btn gold block" id="chGo" href="${CH_URL}" target="_blank" rel="noopener">${ic('chat')}${esc(t('chi_go'))}</a><button class="btn ghost block" id="chNo">${esc(t('chi_no'))}</button></div>`);
-  $('#chGo',sh).onclick=()=>{ls.set('mp.ch.ok',1);setTimeout(()=>closeSheet(),300)};$('#chNo',sh).onclick=()=>{ls.set('mp.ch.later',Date.now());closeSheet()}}
+  $('#chGo',sh).onclick=()=>{chDone();setTimeout(()=>closeSheet(),300)};$('#chNo',sh).onclick=()=>{ls.set('mp.ch.later',Date.now());closeSheet()}}
 Object.assign(I18N.es,{chi_t:'Siga el canal oficial',chi_d:'Reciba en su WhatsApp, gratis, lo mejor de Meu Púlpito para su ministerio.',chi_1:'El devocional de cada día',chi_2:'Consejos para preparar y predicar',chi_3:'Novedades y promociones de la app',chi_go:'Entrar al canal',chi_no:'Ahora no'});
 Object.assign(I18N.pt,{chi_t:'Siga o canal oficial',chi_d:'Receba no seu WhatsApp, grátis, o melhor do Meu Púlpito para o seu ministério.',chi_1:'O devocional de cada dia',chi_2:'Dicas para preparar e pregar',chi_3:'Novidades e promoções do app',chi_go:'Entrar no canal',chi_no:'Agora não'});
 function depoCheck(){if(depoCheck._t)return;let n=0;depoCheck._t=setInterval(()=>{if(++n>40){clearInterval(depoCheck._t);return}
