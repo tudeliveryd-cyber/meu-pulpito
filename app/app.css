@@ -1020,3 +1020,19 @@ a.prow.plink{text-decoration:none}
 .dv-ch{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--surface);box-shadow:0 0 0 1.5px var(--gold) inset;color:var(--fg);text-decoration:none}.dv-ch>.i:first-child{color:var(--gold-ink);flex:none}.dv-ch>span{flex:1;display:flex;flex-direction:column;gap:2px}.dv-ch b{font-size:14.5px}.dv-ch>span>span{font-size:12.5px;color:var(--muted)}.dv-ch>.i:last-child{color:var(--gold-ink);flex:none}
 
 .banner.ann{box-shadow:0 0 0 1.5px var(--gold) inset}.banner.ann .tx b{color:var(--gold-ink)}.banner.ann a.btn{text-decoration:none}
+/* Minha Igreja · primeiros passos */
+.ig-gs{background:var(--surface);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 0 0 1.5px var(--gold-soft)}
+.ig-gs-bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.ig-gs-bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .3s}
+.ig-gs-l{display:flex;flex-direction:column;gap:2px}
+.ig-gs-i{display:flex;align-items:center;gap:12px;padding:9px 2px;text-align:left;min-width:0;border-top:1px solid var(--line)}
+.ig-gs-i:first-child{border-top:0}
+.ig-gs-i .ig-mt{flex:1}
+.ig-gs-c{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;box-shadow:inset 0 0 0 1.5px var(--gold);color:var(--gold-ink)}
+.ig-gs-c svg{width:15px;height:15px}
+.ig-gs-i.ok{opacity:.6}
+.ig-gs-i.ok .ig-gs-c{background:var(--gold);box-shadow:none;color:#0B1220}
+.ig-gs-i.ok b{text-decoration:line-through;text-decoration-thickness:1px}
+.ig-gs-go{color:var(--muted);display:flex}
+.ig-gs-go svg{width:16px;height:16px}
+.ig-gs-i .ig-mt span{white-space:normal;line-height:1.35}
