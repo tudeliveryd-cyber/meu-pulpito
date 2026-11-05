@@ -102,6 +102,15 @@ service cloud.firestore {
         allow delete: if pid.size() >= 16;
       }
     }
+    // Acesso da equipe de mídia à projeção: e-mail + senha definidos pelo pastor (só hashes; quem acerta a senha recebe o código da sala).
+    match /projacc/{k} {
+      allow read: if k.size() >= 20;
+      allow create, update: if request.auth != null && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['uid','pid','h','at'])
+        && request.resource.data.pid is string && request.resource.data.pid.size() >= 16
+        && request.resource.data.h is string && request.resource.data.h.size() == 64;
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.uid || isAdmin());
+    }
     // Sala de reunião (meupulpito.com/reuniao/#SALA): o pastor cria a sala; quem tem o código entra.
     // p = participantes, sig = sinais WebRTC (ofertas, respostas e candidatos). Apagados ao sair; o administrador pode limpar.
     match /sala/{rid} {
