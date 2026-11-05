@@ -59,6 +59,10 @@ textarea.inp{height:auto;padding:10px 12px;resize:vertical;line-height:1.4}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:9px 6px;border-top:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:700;border-top:0}td.r,th.r{text-align:right}
 @media (max-width:760px){.chat{grid-template-columns:1fr}.chat.open .cl{display:none}.chat:not(.open) .conv{display:none}.two{grid-template-columns:1fr}}
 .k.on{box-shadow:0 0 0 1.5px #2E9D63 inset}.k.on b{color:#2E9D63}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#2E9D63;margin-right:8px;box-shadow:0 0 0 4px rgba(46,157,99,.18);vertical-align:1px}
+.vch{display:flex;align-items:flex-end;gap:2px;height:120px;margin-top:16px;padding-bottom:16px}.vch div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}.vch i{display:block;width:100%;background:var(--gold);border-radius:3px 3px 0 0;min-height:2px}.vch span{position:absolute;bottom:-16px;font-size:10.5px;color:var(--muted)}
+.vgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:16px}.vgr h3{font-size:14px;margin-bottom:6px}
+.vb{display:grid;grid-template-columns:100px 1fr 40px;gap:8px;align-items:center;font-size:13px;padding:3px 0}.vb i{height:8px;background:#EEF0F4;border-radius:5px;overflow:hidden}.vb u{display:block;height:100%;background:var(--navy);border-radius:5px}.vb b{text-align:right;color:var(--ink)}
+td .inp{height:38px;min-width:0}
 </style>
 </head>
 <body>
@@ -76,6 +80,10 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:9px 6px;b
 <symbol id="undo" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
 <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
 <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
+<symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+<symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+<symbol id="pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
 </defs>
 </svg>
@@ -121,9 +129,9 @@ auth.onAuthStateChanged(u=>{if(!u){loginView();return}if((u.email||'').toLowerCa
 function shell(){$('#root').innerHTML=`<header class="top"><img src="../app/mark.png" alt=""><div><b>MEU <span>PÚLPITO</span></b><small>ESCRITÓRIO</small></div><span class="sp"></span>
   <button id="rf" title="Atualizar">${ic('undo')}</button><button id="lo" title="Sair">${ic('out')}</button></header>
   <nav class="tabs" id="tabs"></nav><main id="main"><div class="empty">Carregando…</div></main>`;
-  $('#rf').onclick=()=>load();$('#lo').onclick=()=>auth.signOut();
+  $('#rf').onclick=()=>{D.vis=null;load()};$('#lo').onclick=()=>auth.signOut();
   $('#tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;TAB=b.dataset.t;CONV=null;history.replaceState(null,'','#'+TAB);draw()}}
-const TABS=[['resumo','home','Resumo'],['atend','chat','Atendimento'],['pastores','user','Pastores'],['pag','cash','Pagamentos'],['ind','star','Indicações'],['dep','quote','Depoimentos'],['aviso','send','Aviso no app']];
+const TABS=[['resumo','home','Resumo'],['atend','chat','Atendimento'],['pastores','user','Pastores'],['pag','cash','Pagamentos'],['ind','star','Indicações'],['dep','quote','Depoimentos'],['aviso','send','Aviso no app'],['site','globe','Site'],['cfg','gear','Preços e pagamento']];
 function unread(){return D.suporte.reduce((s,x)=>s+(+x.ua||0),0)+D.contato.filter(x=>!x.done).length}
 function drawTabs(){const u=unread(),dp=D.depo.filter(x=>x.ok&&!x.pub).length;$('#tabs').innerHTML=TABS.map(([k,i,l])=>`<button data-t="${k}" aria-pressed="${TAB===k}">${ic(i)}${l}${k==='atend'&&u?` <span class="bdg">${u}</span>`:''}${k==='dep'&&dp?` <span class="bdg">${dp}</span>`:''}</button>`).join('')}
 
@@ -156,7 +164,7 @@ function refData(){const by={};D.stats.forEach(r=>by[r.id.slice(0,8)]=r);const r
 function soon(){const n=Date.now(),wn=(+D.cfg.warn||7)*864e5;return D.stats.filter(r=>{const p=P(r.id);return PMON[p.plan]&&p.until&&p.until-n<wn&&p.until>n-30*864e5}).sort((a,b)=>P(a.id).until-P(b.id).until)}
 
 function draw(){drawTabs();const m=$('#main');clearInterval(poll);
-  if(TAB==='resumo')m.innerHTML=vResumo();else if(TAB==='atend')vAtend(m);else if(TAB==='pastores')vPastores(m);else if(TAB==='pag')m.innerHTML=vPag();else if(TAB==='ind')m.innerHTML=vInd();else if(TAB==='dep')m.innerHTML=vDep();else if(TAB==='aviso')vAviso(m);
+  if(TAB==='resumo')m.innerHTML=vResumo();else if(TAB==='atend')vAtend(m);else if(TAB==='pastores')vPastores(m);else if(TAB==='pag')m.innerHTML=vPag();else if(TAB==='ind')m.innerHTML=vInd();else if(TAB==='dep')m.innerHTML=vDep();else if(TAB==='aviso')vAviso(m);else if(TAB==='site')vSite(m);else if(TAB==='cfg')vCfg(m);
   if(!D.rules&&TAB!=='pastores')m.insertAdjacentHTML('afterbegin',`<div class="card" style="margin-top:0;background:#FEF3C7;box-shadow:none"><b>Falta colar as regras novas no Firebase.</b><span class="s" style="display:block;font-size:13px;margin-top:4px">Sem elas o atendimento, os depoimentos e a roleta não gravam. Abra o Firebase → Firestore Database → Regras.</span></div>`)}
 
 /* ---------- Resumo ---------- */
@@ -217,6 +225,13 @@ async function openConv(box){const id=CONV,x=D.suporte.find(s=>s.id===id)||{};co
 
 /* ---------- Pastores ---------- */
 let Q='',F='';
+// mensagem de boas-vindas no idioma do pastor (com o teste grátis, se tiver)
+function welMsg(r){const pt=waLang(r)==='pt',nm=first(r.name),n=nm?' '+nm:'';const p=P(r.id);const tr=+p.trial>Date.now()&&!(PMON[p.plan]&&p.until>Date.now());
+  const d=tr?new Date(+p.trial).toLocaleDateString(pt?'pt-BR':'es-PY',{day:'2-digit',month:'long',year:'numeric'}):'';
+  return pt?(tr?`Olá${n}! Boas-vindas ao Meu Púlpito! Que alegria ter você conosco. Você tem Premium grátis até ${d} para conhecer tudo: as 10 versões da Bíblia, os dicionários bíblico, hebraico, aramaico e grego, e o Modo Pregar. Qualquer dúvida, é só responder esta mensagem. Deus abençoe o seu ministério!\n\nPr. Jean Carlos · Meu Púlpito`
+    :`Olá${n}! Boas-vindas ao Meu Púlpito! Que alegria ter você conosco. Aqui você prepara seus sermões, estuda com a Bíblia e os dicionários bíblico, hebraico, aramaico e grego, e prega pelo celular. Qualquer dúvida, é só responder esta mensagem. Deus abençoe o seu ministério!\n\nPr. Jean Carlos · Meu Púlpito`)
+   :(tr?`¡Hola${n}! Le damos la bienvenida a Meu Púlpito. ¡Qué alegría tenerle con nosotros! Tiene Premium gratis hasta el ${d} para conocer todo: las 10 versiones de la Biblia, los diccionarios bíblico, hebreo, arameo y griego, y el Modo Predicar. Si tiene alguna duda, responda este mensaje. ¡Dios bendiga su ministerio!\n\nPr. Jean Carlos · Meu Púlpito`
+    :`¡Hola${n}! Le damos la bienvenida a Meu Púlpito. ¡Qué alegría tenerle con nosotros! Aquí puede preparar sus sermones, estudiar con la Biblia y los diccionarios bíblico, hebreo, arameo y griego, y predicar desde el celular. Si tiene alguna duda, responda este mensaje. ¡Dios bendiga su ministerio!\n\nPr. Jean Carlos · Meu Púlpito`)}
 function vPastores(m){const n=Date.now();
   const list=D.stats.filter(r=>(!Q||(r.name+' '+r.email+' '+(r.wa||'')).toLowerCase().includes(Q.toLowerCase()))&&(!F||(F==='pend'?pend(r):state(r)===F))).sort((a,b)=>(pend(b)-pend(a))||(b.seen||0)-(a.seen||0));
   m.innerHTML=`<h2>Pastores <span style="color:var(--muted);font-weight:600;font-size:15px">(${D.stats.length})</span></h2>
@@ -228,12 +243,13 @@ function vPastores(m){const n=Date.now();
       <span class="tags">${pend(r)?'<span class="tag warn">Aguardando liberação</span>':''}${p.blocked?'<span class="tag bad">Bloqueado</span>':''}<span class="tag ${c}">${l}${s==='pago'||s==='carencia'||s==='vencido'?' · '+PNAME[p.plan]+' até '+fmtD(p.until):s==='teste'?' até '+fmtD(p.trial):''}</span>${rl&&!realPays(r.id).length?`<span class="tag gold">Roleta: ${rl.p}% na 1ª compra</span>`:''}${r.ref?`<span class="tag">Indicado por ${esc(byName((D.stats.find(x=>x.id.slice(0,8)===r.ref)||{}).id||r.ref))}</span>`:''}</span>
       <span class="btns"><button class="btn gold" data-pay="${esc(r.id)}">${ic('cash')}Registrar pagamento</button><button class="btn ghost" data-trial="${esc(r.id)}">Dar teste</button>
        ${(r.email||'')===ADMIN?'':pend(r)||p.blocked?`<button class="btn dark" data-ok="${esc(r.id)}">${ic('check')}Liberar</button>`:`<button class="btn red" data-blk="${esc(r.id)}">Bloquear</button>`}
-       ${waNum(r.wa)?`<a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/${waNum(r.wa)}">${ic('chat')}WhatsApp</a>`:''}</span></span></div>`}).join(''):'<div class="empty">Nenhum pastor encontrado.</div>'}</div></div>`;
+       ${waNum(r.wa)?`<a class="btn ${p.welSent?'ghost':'dark'}" target="_blank" rel="noopener" data-wel="${esc(r.id)}" href="https://wa.me/${waNum(r.wa)}?text=${encodeURIComponent(welMsg(r))}">${ic(p.welSent?'check':'chat')}${p.welSent?'Boas-vindas enviadas':'Enviar boas-vindas'}</a><a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/${waNum(r.wa)}">${ic('chat')}WhatsApp</a>`:''}</span></span></div>`}).join(''):'<div class="empty">Nenhum pastor encontrado.</div>'}</div></div>`;
   const q=$('#q',m);q.oninput=()=>{Q=q.value;const p=q.selectionStart;vPastores(m);const n2=$('#q',m);n2.focus();n2.setSelectionRange(p,p)};$('#f',m).onchange=e=>{F=e.target.value;vPastores(m)};
   m.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>payForm(b.dataset.pay));
   m.querySelectorAll('[data-trial]').forEach(b=>b.onclick=()=>trialForm(b.dataset.trial));
   m.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>setPlan(b.dataset.ok,{ok:true,blocked:false}));
-  m.querySelectorAll('[data-blk]').forEach(b=>b.onclick=()=>{if(sure(b))setPlan(b.dataset.blk,{blocked:true,ok:false})})}
+  m.querySelectorAll('[data-blk]').forEach(b=>b.onclick=()=>{if(sure(b))setPlan(b.dataset.blk,{blocked:true,ok:false})});
+  m.querySelectorAll('[data-wel]').forEach(b=>b.addEventListener('click',()=>{const u=b.dataset.wel;db.collection('planos').doc(u).set({welSent:Date.now()},{merge:true}).then(()=>{D.planos[u]=Object.assign({},P(u),{welSent:Date.now()});setTimeout(draw,600)}).catch(()=>{})}))}
 async function setPlan(uid,d,msg){try{await db.collection('planos').doc(uid).set(Object.assign({updated:Date.now()},d),{merge:true});D.planos[uid]=Object.assign({},P(uid),d);toast(msg||'Salvo');draw()}catch(e){toast('Não foi possível salvar')}}
 function payForm(uid){const p=P(uid),rl=D.roleta[uid],first=!realPays(uid).length,disc=rl&&first?+rl.p:0;let k=PMON[p.plan]?p.plan:'m';
   const from=PMON[p.plan]&&p.until>Date.now()?isoDay(p.until+43200000):isoDay(Date.now());const price=(k,c)=>{const v=+((D.cfg.p||{})[k]||{})[c]||({m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270},mi:{pyg:75000,brl:59},ti:{pyg:200000,brl:155},ai:{pyg:600000,brl:460}}[k][c]);return disc?(c==='pyg'?Math.floor(v*(100-disc)/100/1000)*1000:Math.floor(v*(100-disc)/100)):v};
@@ -325,8 +341,85 @@ function vDep(){const T=Array.isArray(D.site.testi)?D.site.testi:[];
   return`<h2>Depoimentos</h2><div class="card" style="margin-top:0"><h3>Recebidos no app</h3><div class="list" style="margin-top:6px">${D.depo.length?D.depo.map(x=>`<div class="it">${ic('quote')}<span class="b"><span class="s" style="color:var(--ink);font-size:14.5px">“${esc(x.q)}”</span><span class="s" style="margin-top:4px">${esc(x.n)}${x.r?' · '+esc(x.r):''} · ${esc(fmtD(x.at))}</span>
      <span class="btns">${x.ok?(x.pub?'<span class="tag ok">No site</span>':`<button class="btn gold" data-pub="${esc(x.id)}">${ic('check')}Publicar no site</button>`):'<span class="tag warn">Sem autorização para publicar</span>'}<button class="btn red" data-ddel="${esc(x.id)}">${ic('trash')}</button></span></span></div>`).join(''):'<div class="empty">Nenhum depoimento recebido ainda.</div>'}</div></div>
    <div class="card"><h3>No site agora (${T.filter(x=>x.on!==false).length})</h3><div class="list" style="margin-top:6px">${T.length?T.map((x,i)=>`<div class="it">${ic('quote')}<span class="b"><span class="s" style="color:var(--ink)">“${esc(x.q)}”</span><span class="s">${esc(x.n)}${x.r?' · '+esc(x.r):''}${x.v?' · vídeo':''}</span></span>
-     <button class="btn ${x.on!==false?'ghost':'dark'}" data-ton="${i}">${x.on!==false?'Ocultar':'Mostrar'}</button></div>`).join(''):'<div class="empty">Nenhum depoimento no site.</div>'}</div>
-     <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">Para editar textos ou colocar vídeos, use o app: Painel do administrador → Textos e depoimentos.</p></div>`}
+     <button class="btn ghost" data-tedit="${i}" title="Editar">${ic('pen')}</button><button class="btn ${x.on!==false?'ghost':'dark'}" data-ton="${i}">${x.on!==false?'Ocultar':'Mostrar'}</button></div>`).join(''):'<div class="empty">Nenhum depoimento no site.</div>'}</div>
+     <div class="btns"><button class="btn dark" data-tedit="new">${ic('plus')}Adicionar depoimento</button></div>
+     <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">Só depoimentos reais, com autorização da pessoa.</p></div>`}
+
+/* ---------- formulários ---------- */
+const fld=(id,lb,v,ph,area,im)=>`<label class="f">${esc(lb)}${area?`<textarea class="inp" id="${id}" rows="2" placeholder="${esc(ph||'')}">${esc(v??'')}</textarea>`:`<input class="inp" id="${id}" value="${esc(v??'')}" placeholder="${esc(ph||'')}"${im?` inputmode="${im}"`:''} autocomplete="off" autocapitalize="off">`}</label>`;
+const chk=(id,lb,on,d)=>`<label class="row" style="gap:10px;align-items:flex-start;cursor:pointer"><input type="checkbox" id="${id}" ${on?'checked':''} style="width:22px;height:22px;flex:none;margin-top:1px"><span><b style="font-size:14.5px">${esc(lb)}</b>${d?`<span class="s" style="display:block;font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.45">${esc(d)}</span>`:''}</span></label>`;
+const num=v=>Math.max(0,parseInt(String(v).replace(/\D/g,''),10)||0);
+const httpsOk=v=>/^https:\/\/\S+$/.test(v||'');
+
+/* ---------- Depoimentos: editar e adicionar (texto e vídeo) ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tedit]');if(!b)return;const T=(Array.isArray(D.site.testi)?D.site.testi:[]).slice();const i=b.dataset.tedit==='new'?-1:+b.dataset.tedit;const x=i<0?{q:'',n:'',r:'',v:'',on:true}:T[i];
+  const sh=sheet(`<h3>${i<0?'Adicionar depoimento':'Editar depoimento'}</h3>${fld('tQ','O que a pessoa disse, com as palavras dela',x.q,'',1)}${fld('tN','Nome',x.n,'Ex.: Pr. Luis Gómez')}${fld('tR','Igreja · Cidade',x.r,'')}${fld('tV','Vídeo (opcional): link do YouTube ou de um arquivo .mp4',x.v,'https://…','','url')}
+    <button class="btn gold" id="tGo" style="height:46px">${ic('check')}Salvar no site</button>${i<0?'':`<button class="btn red" id="tDel" style="height:42px">${ic('trash')}Tirar do site</button>`}`);
+  $('#tQ',sh).rows=4;
+  $('#tGo',sh).onclick=async()=>{const q=$('#tQ',sh).value.trim(),n=$('#tN',sh).value.trim(),r=$('#tR',sh).value.trim(),v=$('#tV',sh).value.trim();
+    if(!q||!n){toast('Escreva o depoimento e o nome');return}if(v&&!httpsOk(v)){toast('O link do vídeo deve começar com https://');return}
+    const y={q:q.slice(0,600),n:n.slice(0,80),r:r.slice(0,120),v:v.slice(0,300),on:i<0?true:x.on!==false};if(i<0)T.push(y);else T[i]=y;
+    try{await db.collection('config').doc('site').set({testi:T,updated:Date.now()},{merge:true});D.site.testi=T;closeSheets();toast('Site atualizado');draw()}catch(err){toast('Não foi possível salvar')}};
+  const dl=$('#tDel',sh);if(dl)dl.onclick=async()=>{if(!sure(dl,'Tirar do site? Toque de novo'))return;T.splice(i,1);try{await db.collection('config').doc('site').set({testi:T,updated:Date.now()},{merge:true});D.site.testi=T;closeSheets();toast('Tirado do site');draw()}catch(err){toast('Não foi possível salvar')}}});
+
+/* ---------- Site: aviso no topo, título principal e visitas ---------- */
+let visDays=30;
+function vSite(m){const S=D.site||{},B=S.bar||{},H=S.hero||{},He=H.es||{},Hp=H.pt||{};
+  m.innerHTML=`<h2>Site meupulpito.com</h2>
+  <div class="card" style="margin-top:0;display:flex;flex-direction:column;gap:12px"><h3>Aviso no topo do site</h3>
+   ${chk('sB','Mostrar o aviso',B.on,'Uma faixa dourada no topo do site, por exemplo para uma promoção. Anuncie só promoções que existem de verdade.')}
+   ${fld('sBes','Texto em espanhol',B.es,'Ej.: Promoción de lanzamiento: 20% en el plan anual')}${fld('sBpt','Texto em português',B.pt,'Ex.: Promoção de lançamento: 20% no plano anual')}
+   ${fld('sBu','Link ao tocar (opcional)',B.url,'Ex.: meupulpito.com/planos','','url')}</div>
+  <div class="card" style="display:flex;flex-direction:column;gap:12px"><h3>Título principal</h3><p style="margin:-4px 0 0;font-size:13px;color:var(--muted)">Deixe em branco para usar o texto original do site.</p>
+   ${fld('sHes','Título em espanhol',He.t,'Prepare y organice sus mensajes en un solo lugar.')}${fld('sDes','Subtítulo em espanhol',He.d,'',1)}
+   ${fld('sHpt','Título em português',Hp.t,'Prepare e organize suas mensagens em um só lugar.')}${fld('sDpt','Subtítulo em português',Hp.d,'',1)}</div>
+  <div class="btns"><button class="btn gold" id="sGo" style="height:46px;flex:1">${ic('check')}Salvar no site</button><a class="btn ghost" href="/" target="_blank" rel="noopener" style="height:46px">${ic('globe')}Ver o site</a></div>
+  <div class="card"><div class="between" style="flex-wrap:wrap"><h3>Visitas do site</h3><div class="seg" id="vDays" style="min-width:190px"><button data-n="7" aria-pressed="${visDays===7}">7 dias</button><button data-n="30" aria-pressed="${visDays===30}">30 dias</button></div></div><div id="vBody"><div class="empty">Carregando…</div></div></div>`;
+  $('#sGo').onclick=async()=>{const v=id=>$('#'+id).value.trim();let url=v('sBu');if(url&&!/^https?:\/\//.test(url))url='https://'+url;
+    const bar={on:$('#sB').checked,es:v('sBes'),pt:v('sBpt'),url},hero={es:{t:v('sHes'),d:v('sDes')},pt:{t:v('sHpt'),d:v('sDpt')}};
+    if(bar.on&&!bar.es&&!bar.pt){toast('Escreva o texto do aviso');return}
+    const b=$('#sGo');b.disabled=true;try{await db.collection('config').doc('site').set({bar,hero,updated:Date.now()},{merge:true});D.site=Object.assign({},D.site,{bar,hero});toast('Site atualizado');b.disabled=false}catch(err){toast('Não foi possível salvar');b.disabled=false}};
+  $('#vDays').onclick=e=>{const b=e.target.closest('[data-n]');if(!b)return;visDays=+b.dataset.n;$$('#vDays button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));visDraw()};
+  if(D.vis)visDraw();else get('siteStats').then(r=>{if(!r){const el=$('#vBody');if(el)el.innerHTML='<div class="empty">Não foi possível carregar as visitas.</div>';return}D.vis={};r.forEach(x=>D.vis[x.id]=x);visDraw()})}
+const VK={c:[['cPY','Paraguai'],['cBR','Brasil'],['cAR','Argentina'],['cBO','Bolívia'],['cUS','EUA'],['cOT','Outros']],r:[['rIG','Instagram'],['rWA','WhatsApp'],['rGG','Google'],['rFB','Facebook'],['rDI','Direto / outro']],l:[['es','Espanhol'],['pt','Português']],d:[['mob','Celular'],['dsk','Computador']]};
+function visDraw(){const el=$('#vBody');if(!el||!D.vis)return;const R=D.vis,N=visDays;
+  const dayStr=n=>{try{return new Date(Date.now()-n*864e5).toLocaleDateString('en-CA',{timeZone:'America/Asuncion'})}catch(e){return isoDay(Date.now()-n*864e5)}};
+  const days=Array.from({length:N},(_,i)=>dayStr(N-1-i));const sum=k=>days.reduce((a,d)=>a+(+(R[d]||{})[k]||0),0);const td=R[dayStr(0)]||{};
+  const mx=Math.max(1,...days.map(d=>+(R[d]||{}).v||0));const v=sum('v'),go=sum('go');
+  const bars=L=>{const tot=L.reduce((a,[k])=>a+sum(k),0)||1;const h=L.map(([k,nm])=>{const n=sum(k);return n?`<div class="vb"><span>${esc(nm)}</span><i><u style="width:${Math.round(n/tot*100)}%"></u></i><b>${n}</b></div>`:''}).join('');return h||'<p class="s" style="margin:0;color:var(--muted)">—</p>'};
+  el.innerHTML=`<div class="grid" style="margin-top:12px"><div class="k"><span>Hoje</span><b>${+td.v||0}</b></div><div class="k"><span>Visitas</span><b>${v}</b></div><div class="k"><span>Pessoas</span><b>${sum('u')}</b></div><div class="k"><span>Tocaram Acessar</span><b>${go}</b></div><div class="k"><span>Tocaram WhatsApp</span><b>${sum('wa')}</b></div><div class="k"><span>Foram ao app</span><b>${v?Math.round(go/v*100):0}%</b></div></div>
+   <div class="vch" role="img" aria-label="Visitas por dia">${days.map(d=>{const n=+(R[d]||{}).v||0;return`<div title="${d}: ${n}"><i style="height:${Math.max(2,Math.round(n/mx*100))}%"></i>${N===7?`<span>${d.slice(8)}</span>`:''}</div>`}).join('')}</div>
+   <div class="vgr"><div><h3>País</h3>${bars(VK.c)}</div><div><h3>De onde vieram</h3>${bars(VK.r)}</div><div><h3>Idioma</h3>${bars(VK.l)}</div><div><h3>Aparelho</h3>${bars(VK.d)}</div></div>
+   <p style="margin:12px 0 0;font-size:12.5px;color:var(--muted)">Só números, sem dados das pessoas. «Pessoas» conta cada aparelho uma vez por dia.</p>`}
+
+/* ---------- Preços, testes e dados de pagamento ---------- */
+const PDEF={m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270},mi:{pyg:75000,brl:59},ti:{pyg:200000,brl:155},ai:{pyg:600000,brl:460}},FDEF={serm:2,dic:3,cur:10};
+function vCfg(m){const C=D.cfg||{};const P=Object.assign({},PDEF,C.p||{}),F=Object.assign({},FDEF,C.free||{});const pay=C.pay||{},bk=pay.bk||{},pix=pay.pix||{},card=pay.card||{};
+  const prow=k=>`<tr><td><b>${PNAME[k]}</b></td><td><input class="inp" data-p="${k}.pyg" value="${+P[k].pyg||0}" inputmode="numeric" aria-label="${PNAME[k]} em guaranis"></td><td><input class="inp" data-p="${k}.brl" value="${+P[k].brl||0}" inputmode="numeric" aria-label="${PNAME[k]} em reais"></td></tr>`;
+  m.innerHTML=`<h2>Preços e pagamento</h2>
+  ${C.test!==false?`<div class="card" style="margin-top:0;background:#FEF3C7;box-shadow:none"><b>O Modo teste está ligado.</b><span class="s" style="display:block;font-size:13px;margin-top:4px;color:var(--text)">Todos usam o Premium e o Premium Igreja de graça. Para começar a cobrar, desligue abaixo e toque em Salvar.</span></div>`:''}
+  <div class="card" style="${C.test!==false?'':'margin-top:0;'}display:flex;flex-direction:column;gap:12px"><h3>Testes e acesso</h3>
+   ${chk('cT','Modo teste: tudo liberado para todos',C.test!==false,'Ligado: todos usam tudo de graça. Desligado: cada conta usa o seu plano (grátis, teste ou pago).')}
+   ${chk('cG','Acesso só com a minha liberação',!!C.gate,'Quem criar uma conta fica aguardando até o senhor liberar na aba Pastores.')}</div>
+  <div class="card"><h3>Preços</h3><table style="margin-top:8px"><tr><th>Plano</th><th>₲ Guaranis</th><th>R$ Reais</th></tr>${['m','t','a','mi','ti','ai'].map(prow).join('')}</table></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:12px"><h3>Plano grátis e vencimentos</h3>
+   <div class="two">${fld('cS','Sermões no plano grátis',F.serm,'','','numeric')}${fld('cD','Artigos do dicionário por dia',F.dic,'','','numeric')}</div>
+   <div class="two">${fld('cC','Curiosidades liberadas',F.cur,'','','numeric')}${fld('cRf','Compras de indicados para ganhar 1 mês',C.refN??3,'','','numeric')}</div>
+   <div class="two">${fld('cWn','Dias de aviso antes de vencer',C.warn??7,'','','numeric')}${fld('cGr','Dias de carência depois de vencer',C.grace??3,'','','numeric')}</div>
+   ${fld('cW','WhatsApp para pagamentos (com código do país)',C.wa,'595981234567','','tel')}</div>
+  <button class="btn gold" id="cGo" style="height:46px;width:100%;margin-top:14px">${ic('check')}Salvar preços e testes</button>
+  <div class="card" style="display:flex;flex-direction:column;gap:12px;margin-top:22px"><h3>Formas de pagamento</h3><p style="margin:-4px 0 0;font-size:13px;color:var(--muted);line-height:1.5">Aparecem para o pastor quando ele escolhe um plano. Deixe em branco o que não usar.</p>
+   <b style="font-size:14px">Transferência (Paraguai)</b><div class="two">${fld('pyBank','Banco',bk.bank,'Banco …')}${fld('pyName','Titular',bk.name)}</div><div class="two">${fld('pyAcc','Número da conta',bk.acc,'','','numeric')}${fld('pyAlias','Alias',bk.alias)}</div>${fld('pyDoc','Cédula',bk.doc)}
+   <b style="font-size:14px">Pix (Brasil)</b><div class="two">${fld('pxKey','Chave Pix',pix.key)}${fld('pxName','Titular',pix.name)}</div>${fld('pxBank','Banco',pix.bank)}
+   <b style="font-size:14px">Cartão de crédito ou débito</b><p style="margin:-6px 0 0;font-size:12.5px;color:var(--muted)">Link de pagamento de cada plano (Bancard, Pagopar ou outro). Deve começar com https://</p>
+   <div class="two">${['m','t','a','mi','ti','ai'].map(k=>fld('cd_'+k,PNAME[k],card[k],'https://…','','url')).join('')}</div>
+   <button class="btn dark" id="pyGo" style="height:46px">${ic('check')}Salvar formas de pagamento</button></div>`;
+  $('#cGo').onclick=async()=>{const p={};$$('[data-p]').forEach(i=>{const [k,c]=i.dataset.p.split('.');(p[k]=p[k]||{})[c]=num(i.value)});
+    const v=id=>$('#'+id).value;const cfg={test:$('#cT').checked,gate:$('#cG').checked,p,free:{serm:num(v('cS'))||2,dic:num(v('cD')),cur:num(v('cC'))},refN:Math.min(20,num(v('cRf'))||3),warn:num(v('cWn')),grace:num(v('cGr')),wa:v('cW').replace(/\D/g,''),updated:Date.now()};
+    const b=$('#cGo');b.disabled=true;try{await db.collection('config').doc('app').set(cfg,{merge:true});D.cfg=Object.assign({},D.cfg,cfg);toast(cfg.test?'Salvo · Modo teste ligado':'Salvo · cada conta usa o seu plano');draw()}catch(err){toast('Não foi possível salvar');b.disabled=false}};
+  $('#pyGo').onclick=async()=>{const g=id=>($('#'+id).value||'').trim();const cd={};for(const k of ['m','t','a','mi','ti','ai']){const x=g('cd_'+k);if(x&&!httpsOk(x)){toast('O link de '+PNAME[k]+' deve começar com https://');return}cd[k]=x}
+    const pay={bk:{bank:g('pyBank'),name:g('pyName'),acc:g('pyAcc'),alias:g('pyAlias'),doc:g('pyDoc')},pix:{key:g('pxKey'),name:g('pxName'),bank:g('pxBank')},card:cd};
+    const b=$('#pyGo');b.disabled=true;try{await db.collection('config').doc('app').set({pay,updated:Date.now()},{merge:true});D.cfg=Object.assign({},D.cfg,{pay});toast('Formas de pagamento salvas');b.disabled=false}catch(err){toast('Não foi possível salvar');b.disabled=false}}}
 document.addEventListener('click',async e=>{const p=e.target.closest('[data-pub]'),d=e.target.closest('[data-ddel]'),o=e.target.closest('[data-ton]');
   if(p){const x=D.depo.find(z=>z.id===p.dataset.pub);if(!x)return;p.disabled=true;const T=(Array.isArray(D.site.testi)?D.site.testi:[]).slice();T.push({q:String(x.q).slice(0,600),n:String(x.n).slice(0,80),r:String(x.r||'').slice(0,120),v:'',on:true});
     try{await db.collection('config').doc('site').set({testi:T,updated:Date.now()},{merge:true});await db.collection('depo').doc(x.id).set({pub:true},{merge:true});D.site.testi=T;x.pub=true;toast('Publicado no site');draw()}catch(err){p.disabled=false;toast('Não foi possível publicar')}}

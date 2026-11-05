@@ -1036,3 +1036,4 @@ a.prow.plink{text-decoration:none}
 .ig-gs-go{color:var(--muted);display:flex}
 .ig-gs-go svg{width:16px;height:16px}
 .ig-gs-i .ig-mt span{white-space:normal;line-height:1.35}
+a.prow.plink{color:inherit;flex-wrap:nowrap;cursor:pointer}a.prow.plink>span{flex:1;min-width:0}a.prow.plink>svg{width:18px;height:18px;color:var(--faint);flex:none}

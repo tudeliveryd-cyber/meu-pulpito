@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v142';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v143';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1148,7 +1148,6 @@ function planNow(){const p=planState||{};const until=p.until||0;const now=Date.n
 const isPremium=()=>planNow().premium;
 const money=(n,c)=>c==='brl'?'R$ '+n.toLocaleString('pt-BR'):'₲ '+n.toLocaleString('es-PY');
 const fmtDay=ts=>ts?new Date(ts).toLocaleDateString(prefs.ui==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'short',year:'numeric'}):'—';
-const addMonths=(ts,n)=>{const d=new Date(ts);d.setMonth(d.getMonth()+n);return d.getTime()};
 Object.assign(I18N.es,{pl_fx:'Valores aproximados en {c}, según la cotización del día (ExchangeRate-API). El pago se combina por WhatsApp.',pl_choose:'Elija su plan',pl_terms:'Términos de uso',pl_sub:'Use Meu Púlpito gratis o desbloquee todas las herramientas con Premium.',pl_free:'Gratis',pl_m:'Premium Mensual',pl_t:'Premium Trimestral',pl_a:'Premium Anual',pl_best:'MEJOR PRECIO',
   pl_per_m:'por mes',pl_per_t:'cada 3 meses',pl_per_a:'por año',pl_save:'Ahorre {n}% frente al mensual',pl_eq:'equivale a {v} por mes',
   pl_go_free:'Continuar gratis',pl_go_m:'Elegir Premium Mensual',pl_go_t:'Elegir Premium Trimestral',pl_go_a:'Elegir Premium Anual',
@@ -1233,17 +1232,6 @@ function planContact(k){const C=payCfg();if(!C.bk&&!C.pix&&!(C.card&&C.card[k]))
     ${wa?`<a class="btn ghost block" href="https://wa.me/${wa}?text=${encodeURIComponent(t('pl_pay_msg',{p:planName(k),v:vtxt,e:em}))}" target="_blank" rel="noopener">${esc(t('py_other'))}</a>`:''}
     <p class="sub" style="margin:0;font-size:12.5px">${esc(t('pl_cond'))}</p>`,{cls:'tall'});
   sh.addEventListener('click',e=>{const b=e.target.closest('[data-cp]');if(b)copyTxt(b.dataset.cp)})}
-function admPay(){if(!isAdmin())return;const P=PCFG.pay||{};const bk=P.bk||{},pix=P.pix||{},card=P.card||{};
-  const f=(id,lb,v,ph,im)=>`<label class="fld"><span class="lb">${esc(lb)}</span><input class="inp" id="${id}" value="${esc(v||'')}" placeholder="${esc(ph||'')}" ${im?`inputmode="${im}"`:''} autocomplete="off"></label>`;
-  const sh=openSheet(`<h3>${esc(t('py_adm'))}</h3><p class="sub" style="margin:0;font-size:13.5px;line-height:1.5">${esc(t('py_adm_d'))}</p>
-    <span class="lbl">${esc(t('py_bk'))}</span>${f('pyBank',t('py_bank'),bk.bank,'Banco …')}${f('pyName',t('py_holder'),bk.name)}${f('pyAcc',t('py_acc'),bk.acc,'','numeric')}${f('pyAlias','Alias',bk.alias)}${f('pyDoc',t('py_doc'),bk.doc)}
-    <span class="lbl">Pix (Brasil)</span>${f('pxKey',t('py_pixkey'),pix.key)}${f('pxName',t('py_holder'),pix.name)}${f('pxBank',t('py_bank'),pix.bank)}
-    <span class="lbl">${esc(t('py_card'))}</span><p class="sub" style="margin:0;font-size:12.5px">${esc(t('py_card_adm'))}</p>${f('cdM',planName('m'),card.m,'https://…','url')}${f('cdT',planName('t'),card.t,'https://…','url')}${f('cdA',planName('a'),card.a,'https://…','url')}
-    <button class="btn gold block" id="pyGo">${esc(t('ad_save'))}</button>`,{cls:'tall'});
-  $('#pyGo',sh).onclick=async()=>{const g=id=>($('#'+id,sh).value||'').trim();const u=v=>/^https:\/\/\S+$/.test(v)?v:'';
-    for(const id of ['cdM','cdT','cdA'])if(g(id)&&!u(g(id))){toast(t('py_bad_link'));return}
-    const pay={bk:{bank:g('pyBank'),name:g('pyName'),acc:g('pyAcc'),alias:g('pyAlias'),doc:g('pyDoc')},pix:{key:g('pxKey'),name:g('pxName'),bank:g('pxBank')},card:{m:u(g('cdM')),t:u(g('cdT')),a:u(g('cdA'))}};
-    try{await firebase.firestore().collection('config').doc('app').set({pay,updated:Date.now()},{merge:true});PCFG.pay=pay;ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 function planContactWa(k){const c=curOrder()[0];const lm=locMoney(PCFG.p[k].pyg);const v=(lm?lm+' ('+money(PCFG.p[k].pyg,'pyg')+')':money(PCFG.p[k][c],c))+' '+t('pl_per_'+k);const em=(authU&&authU.email)||'';
   const msg=t('pl_pay_msg',{p:planName(k),v,e:em});const wa=String(PCFG.wa||'').replace(/\D/g,'');
   const sh=openSheet(`<h3>${esc(t('pl_pay_t',{p:planName(k)}))}</h3><p class="pl-price" style="margin:0">${esc(v)}</p><p style="margin:0;line-height:1.5">${esc(t('pl_pay_d'))}</p>
@@ -1279,100 +1267,7 @@ function subHtml(){const N=planNow();const L=prefs.ui;const left=N.paid?Math.max
     <button class="btn sm gold block" data-act="plans">${esc(t('sub_change'))}</button><p class="sub" style="margin:0;font-size:12.5px">${esc(t('sub_cancel_d'))}</p>
   </div></div>`}
 /* administración */
-async function admPlan(uid,label){const db=firebase.firestore();let cur={};try{const d=await db.collection('planos').doc(uid).get();cur=d.exists?d.data():{}}catch(e){}
-  const iso=ts=>todayISO(new Date(ts));const today=PMON[cur.plan]&&cur.until>Date.now()?iso(cur.until+864e5/2):todayISO();let k=PMON[cur.plan]?cur.plan:'m';
-  const sh=openSheet(`<h3>${esc(t('ad_setp',{u:label}))}</h3>
-    <div class="seg" id="apK"><button data-k="trial" aria-pressed="false">${esc(t('tr_short'))}</button>${['m','t','a'].map(x=>`<button data-k="${x}" aria-pressed="${x===k}">${esc(planName(x).replace('Premium ',''))}</button>`).join('')}</div>
-    <div class="seg" id="apK2">${['mi','ti','ai'].map(x=>`<button data-k="${x}" aria-pressed="${x===k}">${esc(planName(x).replace('Premium ',''))}</button>`).join('')}</div>
-    <div id="apTr" hidden><p class="sub" style="margin:0">${esc(t('atr_d'))}</p><div class="seg" id="apTd">${[1,3,7,15,30].map(n=>`<button data-n="${n}" aria-pressed="${n===7}">${n===1?esc(t('tr_24h')):n+' '+esc(t('tr_days'))}</button>`).join('')}</div>
-      ${+cur.trial>Date.now()?`<p class="pl-why" style="margin:0">${esc(t('tr_until',{d:fmtDay(cur.trial)}))}</p><button class="btn ghost block" id="apTrEnd">${esc(t('tr_stop'))}</button>`:''}
-      <button class="btn gold block" id="apTrGo">${esc(t('atr_go'))}</button></div>
-    <div id="apPay">
-    <div class="two"><label class="fld"><span class="lb">${esc(t('ad_from'))}</span><input class="inp" type="date" id="apF" value="${today}"></label><label class="fld"><span class="lb">${esc(t('ad_to'))}</span><input class="inp" type="date" id="apT"></label></div>
-    <div class="two"><label class="fld"><span class="lb">${esc(t('ad_amt'))}</span><input class="inp" id="apA" inputmode="numeric"></label><label class="fld"><span class="lb">&nbsp;</span><select class="inp" id="apC"><option value="pyg">₲ PYG</option><option value="brl">R$ BRL</option></select></label></div>
-    <label class="fld"><span class="lb">${esc(t('ad_note'))}</span><input class="inp" id="apN"></label>
-    <label class="prow" style="padding:0;gap:12px"><span class="k" style="font-size:14px">${esc(t('ad_test_pay'))}</span><input type="checkbox" id="apTst" style="width:24px;height:24px;flex:none"></label>
-    <button class="btn gold block" id="apGo">${esc(t('ad_act'))}</button>
-    ${PMON[cur.plan]?`<button class="btn ghost block" id="apFree">${esc(t('ad_free'))}</button>`:''}</div>`);
-  let trN=7;$('#apTd',sh).onclick=e=>{const b=e.target.closest('[data-n]');if(!b)return;trN=+b.dataset.n;$$('#apTd button',sh).forEach(x=>x.setAttribute('aria-pressed',String(x===b)))};
-  $('#apTrGo',sh).onclick=async()=>{const until=Date.now()+trN*864e5;try{await db.collection('planos').doc(uid).set({trial:until,trialFrom:Date.now(),trialAuto:false,ok:true,blocked:false,updated:Date.now()},{merge:true});closeSheet();toast(t('atr_done',{d:fmtDay(until)}));adminPanel()}catch(e){toast(t('adm_err'))}};
-  const te=$('#apTrEnd',sh);if(te)te.onclick=async()=>{try{await db.collection('planos').doc(uid).set({trial:Date.now()-1000,updated:Date.now()},{merge:true});closeSheet();toast(t('ad_done'));adminPanel()}catch(e){toast(t('adm_err'))}};
-  const sync=()=>{const f=new Date($('#apF',sh).value+'T12:00:00').getTime()||Date.now();$('#apT',sh).value=iso(addMonths(f,PMON[k]));const c=$('#apC',sh).value;const rp=ROLS[uid]&&!(Array.isArray(cur.pays)&&cur.pays.some(x=>!x.test))?+ROLS[uid].p:0;$('#apA',sh).value=rp?rolPrice(PCFG.p[k][c],c,rp):PCFG.p[k][c];const nt=$('#apN',sh);if(rp&&nt&&!nt.value)nt.value=t('rl_adm',{p:rp})};
-  $('#apK2',sh).onclick=$('#apK',sh).onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;$$('#apK button,#apK2 button',sh).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const tr=b.dataset.k==='trial';$('#apTr',sh).hidden=!tr;$('#apPay',sh).hidden=tr;if(tr)return;k=b.dataset.k;sync()};
-  $('#apF',sh).onchange=sync;$('#apC',sh).onchange=sync;sync();
-  $('#apGo',sh).onclick=async()=>{const since=new Date($('#apF',sh).value+'T00:00:00').getTime();const until=new Date($('#apT',sh).value+'T23:59:59').getTime();if(!since||!until||until<=since){toast(t('dict_err'));return}
-    const pay={at:Date.now(),plan:k,amt:+String($('#apA',sh).value).replace(/\D/g,'')||0,cur:$('#apC',sh).value,note:$('#apN',sh).value.trim(),from:since,to:until};if($('#apTst',sh).checked)pay.test=true;
-    try{await db.collection('planos').doc(uid).set({plan:k,since,until,status:'active',updated:Date.now(),pays:firebase.firestore.FieldValue.arrayUnion(pay)},{merge:true});closeSheet();toast(t('ad_done'));closeSheet();adminPanel()}catch(e){toast(t('adm_err'))}};
-  const fr=$('#apFree',sh);if(fr)fr.onclick=async()=>{try{await db.collection('planos').doc(uid).set({plan:'free',until:0,status:'free',trial:(+cur.trial>Date.now()?Date.now()-1000:(cur.trial||0)),updated:Date.now()},{merge:true});closeSheet();toast(t('ad_done'));closeSheet();adminPanel()}catch(e){toast(t('adm_err'))}}}
-function admCfg(){const P=PCFG.p,F=PCFG.free;const row=k=>`<div class="ac-row"><b>${esc(planName(k).replace('Premium ',''))}</b><input class="inp" data-p="${k}.pyg" value="${P[k].pyg}" inputmode="numeric" aria-label="₲"><input class="inp" data-p="${k}.brl" value="${P[k].brl}" inputmode="numeric" aria-label="R$"></div>`;
-  const sh=openSheet(`<h3>${esc(t('ad_cfg'))}</h3>
-    <label class="prow" style="padding:0;gap:12px"><span><span class="k">${esc(t('ad_gate'))}</span><span class="s">${esc(t('ad_gate_d'))}</span></span><input type="checkbox" id="acG" ${PCFG.gate?'checked':''} style="width:24px;height:24px;flex:none"></label>
-    <label class="prow" style="padding:0"><span class="k">${esc(t('ad_test'))}</span><input type="checkbox" id="acT" ${PCFG.test?'checked':''} style="width:24px;height:24px"></label>
-    <div class="ac-row ac-h"><span></span><span>₲ PYG</span><span>R$ BRL</span></div>${row('m')}${row('t')}${row('a')}
-    <span class="lbl">${esc(t('ad_lim'))}</span><div class="ac-row ac3"><input class="inp" id="acS" value="${F.serm}" inputmode="numeric"><input class="inp" id="acD" value="${F.dic}" inputmode="numeric"><input class="inp" id="acC" value="${F.cur}" inputmode="numeric"></div>
-    <span class="lbl">${esc(t('ad_days'))}</span><div class="ac-row ac3" style="grid-template-columns:1fr 1fr"><input class="inp" id="acWn" value="${PCFG.warn??7}" inputmode="numeric" aria-label="aviso"><input class="inp" id="acGr" value="${PCFG.grace??3}" inputmode="numeric" aria-label="gracia"></div>
-    <label class="fld"><span class="lb">${esc(t('ad_wa'))}</span><input class="inp" id="acW" value="${esc(PCFG.wa||'')}" placeholder="595981234567" inputmode="tel"></label>
-    <label class="fld"><span class="lb">${esc(t('rf_cfg'))}</span><input class="inp" id="acRf" value="${refN()}" inputmode="numeric"></label>
-    <button class="btn gold block" id="acGo">${esc(t('ad_save'))}</button>`);
-  $('#acGo',sh).onclick=async()=>{const n=v=>Math.max(0,parseInt(String(v).replace(/\D/g,''),10)||0);const p={m:{},t:{},a:{}};$$('[data-p]',sh).forEach(i=>{const [k,c]=i.dataset.p.split('.');p[k][c]=n(i.value)});
-    const cfg={test:$('#acT',sh).checked,gate:$('#acG',sh).checked,warn:n($('#acWn',sh).value),grace:n($('#acGr',sh).value),wa:$('#acW',sh).value.replace(/[^\d]/g,''),p,free:{serm:n($('#acS',sh).value)||5,dic:n($('#acD',sh).value),cur:n($('#acC',sh).value)},refN:Math.min(20,n($('#acRf',sh).value)||3),updated:Date.now()};
-    try{await firebase.firestore().collection('config').doc('app').set(cfg,{merge:true});PCFG=Object.assign({},PCFG,cfg);ls.set('mp.pcfg',PCFG);closeSheet();toast(t('ad_saved'))}catch(e){toast(t('adm_err'))}}}
 
-/* ---------- Panel del sitio meupulpito.com (solo administrador) ---------- */
-async function admSite(){if(!isAdmin())return;let S={};try{const d=await firebase.firestore().collection('config').doc('site').get();S=d.exists?d.data():{}}catch(e){toast(t('adm_err'));return}
-  let DP=[];try{const q=await firebase.firestore().collection('depo').get();DP=q.docs.map(d=>Object.assign({uid:d.id},d.data())).sort((a,b)=>(b.at||0)-(a.at||0))}catch(e){}
-  const B=S.bar||{},H=S.hero||{};let TS=(Array.isArray(S.testi)?S.testi:[]).map(x=>Object.assign({q:'',n:'',r:'',v:'',on:true},x));
-  const tRow=(x,i)=>`<div class="as-t" data-i="${i}"><div class="between"><b style="font-size:14px">${esc(t('as_t_n',{n:i+1}))}</b><span class="row" style="gap:6px"><label class="as-on"><input type="checkbox" data-k="on" ${x.on!==false?'checked':''}>${esc(t('as_show'))}</label><button class="iconbtn sm" data-del="${i}" aria-label="${esc(t('del_forever'))}">${ic('trash')}</button></span></div>
-    <textarea class="inp" rows="3" data-k="q" placeholder="${esc(t('as_q_ph'))}">${esc(x.q)}</textarea>
-    <input class="inp" data-k="n" value="${esc(x.n)}" placeholder="${esc(t('as_n_ph'))}"><input class="inp" data-k="r" value="${esc(x.r)}" placeholder="${esc(t('as_r_ph'))}"><input class="inp" data-k="v" value="${esc(x.v||'')}" placeholder="${esc(t('as_v_ph'))}" inputmode="url" autocapitalize="off"></div>`;
-  const sh=openSheet(`<h3>${esc(t('as_btn'))}</h3>
-    <span class="lbl">${esc(t('as_bar'))}</span>
-    <label class="prow" style="padding:0;gap:12px"><span><span class="k">${esc(t('as_bar_on'))}</span><span class="s">${esc(t('as_bar_d'))}</span></span><input type="checkbox" id="asB" ${B.on?'checked':''} style="width:24px;height:24px;flex:none"></label>
-    <input class="inp" id="asBes" value="${esc(B.es||'')}" placeholder="ES · ${esc(t('as_bar_ph_es'))}"><input class="inp" id="asBpt" value="${esc(B.pt||'')}" placeholder="PT · ${esc(t('as_bar_ph_pt'))}">
-    <input class="inp" id="asBu" value="${esc(B.url||'')}" placeholder="${esc(t('as_bar_url'))}" inputmode="url" autocapitalize="off">
-    <span class="lbl" style="margin-top:6px">${esc(t('as_hero'))}</span><p class="sub" style="margin:-4px 0 0;font-size:12.5px">${esc(t('as_hero_d'))}</p>
-    <input class="inp" id="asHes" value="${esc((H.es||{}).t||'')}" placeholder="ES · Prepare y organice sus mensajes en un solo lugar."><textarea class="inp" rows="2" id="asDes" placeholder="ES · ${esc(t('as_sub'))}">${esc((H.es||{}).d||'')}</textarea>
-    <input class="inp" id="asHpt" value="${esc((H.pt||{}).t||'')}" placeholder="PT · Prepare e organize suas mensagens em um só lugar."><textarea class="inp" rows="2" id="asDpt" placeholder="PT · ${esc(t('as_sub'))}">${esc((H.pt||{}).d||'')}</textarea>
-    <span class="lbl" style="margin-top:6px">${esc(t('as_testi'))}</span><p class="sub" style="margin:-4px 0 0;font-size:12.5px">${esc(t('as_testi_d'))}</p>
-    ${DP.length?`<span class="lbl" style="margin-top:6px">${esc(t('dp_recv',{n:DP.length}))}</span><div id="asDP" style="display:flex;flex-direction:column;gap:10px">${DP.map((x,i)=>`<div class="as-t as-d" data-dp="${i}"><p style="margin:0;font-size:14px;line-height:1.45">“${esc(x.q||'')}”</p><span class="sub" style="font-size:12.5px">${esc(x.n||'')}${x.r?' · '+esc(x.r):''} · ${esc(fmtDay(x.at))}${x.email?' · '+esc(x.email):''}</span><span class="row" style="gap:6px;flex-wrap:wrap">${x.ok?(x.pub?`<span class="tag ok">${esc(t('dp_used'))}</span>`:`<button class="btn sm gold" data-dpuse="${i}">${ic('plus')}${esc(t('dp_use'))}</button>`):`<span class="tag warn">${esc(t('dp_noauth'))}</span>`}<button class="iconbtn sm" data-dpdel="${i}" aria-label="${esc(t('del_forever'))}">${ic('trash')}</button></span></div>`).join('')}</div>`:''}
-    <div id="asTL" style="display:flex;flex-direction:column;gap:10px"></div>
-    <button class="btn ghost block" id="asAdd">${ic('plus')}${esc(t('as_add'))}</button>
-    <button class="btn gold block" id="asGo">${esc(t('ad_save'))}</button>
-    <a class="lnk" href="/" target="_blank" rel="noopener" style="align-self:center;padding:8px">${esc(t('as_view'))}</a>`,{cls:'big ns'});
-  const read=()=>{TS=$$('#asTL .as-t',sh).map(el=>({q:$('[data-k=q]',el).value.trim(),n:$('[data-k=n]',el).value.trim(),r:$('[data-k=r]',el).value.trim(),v:$('[data-k=v]',el).value.trim(),on:$('[data-k=on]',el).checked}))};
-  const draw=()=>{$('#asTL',sh).innerHTML=TS.length?TS.map(tRow).join(''):`<p class="sub" style="margin:0;font-size:13px">${esc(t('as_none'))}</p>`};draw();
-  $('#asAdd',sh).onclick=()=>{read();TS.push({q:'',n:'',r:'',v:'',on:true});draw();const l=$$('.as-t textarea',sh).pop();if(l)l.focus()};
-  const dpl=$('#asDP',sh);if(dpl)dpl.onclick=async e=>{const u=e.target.closest('[data-dpuse]'),d=e.target.closest('[data-dpdel]');const db=firebase.firestore();
-    if(u){const x=DP[+u.dataset.dpuse];read();TS.push({q:x.q||'',n:x.n||'',r:x.r||'',v:'',on:true});draw();x.pub=true;u.outerHTML=`<span class="tag ok">${esc(t('dp_used'))}</span>`;toast(t('dp_added'));try{await db.collection('depo').doc(x.uid).set({pub:true},{merge:true})}catch(e){}}
-    else if(d){if(!confirmTap(d))return;const x=DP[+d.dataset.dpdel];try{await db.collection('depo').doc(x.uid).delete();d.closest('.as-d').remove()}catch(e){toast(t('adm_err'))}}};
-  $('#asTL',sh).onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;read();TS.splice(+b.dataset.del,1);draw()};
-  $('#asGo',sh).onclick=async()=>{read();const v=id=>$(id,sh).value.trim();let url=v('#asBu');if(url&&!/^https?:\/\//.test(url))url='https://'+url;
-    const site={bar:{on:$('#asB',sh).checked,es:v('#asBes'),pt:v('#asBpt'),url},hero:{es:{t:v('#asHes'),d:v('#asDes')},pt:{t:v('#asHpt'),d:v('#asDpt')}},
-      testi:TS.filter(x=>x.q&&x.n).map(x=>({q:x.q.slice(0,600),n:x.n.slice(0,80),r:x.r.slice(0,120),v:/^https:\/\/\S+$/.test(x.v||'')?x.v.slice(0,300):'',on:x.on})),updated:Date.now()};
-    const badV=TS.find(x=>x.v&&!/^https:\/\/\S+$/.test(x.v));if(badV){toast(t('as_v_bad'));return}
-    if(site.bar.on&&!site.bar.es&&!site.bar.pt){toast(t('as_bar_need'));return}
-    try{await firebase.firestore().collection('config').doc('site').set(site);closeSheet();toast(t('as_saved'))}catch(e){toast(t('adm_err'))}}}
-const VK={c:[['cPY','Paraguay'],['cBR','Brasil'],['cAR','Argentina'],['cBO','Bolivia'],['cUS','EE. UU.'],['cOT','other']],r:[['rIG','Instagram'],['rWA','WhatsApp'],['rGG','Google'],['rFB','Facebook'],['rDI','direct']],l:[['es','Español'],['pt','Português']],d:[['mob','mobile'],['dsk','desktop']]};
-let visDays=30;
-async function admVisits(){if(!isAdmin())return;const sh=openSheet(`<h3>${esc(t('av_btn'))}</h3><div id="avBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big ns'});
-  let rows={};try{const q=await firebase.firestore().collection('siteStats').get();q.docs.forEach(d=>rows[d.id]=d.data())}catch(e){const el=$('#avBody',sh);if(el)el.innerHTML=`<p class="sub" style="margin:0">${esc(t('av_err'))}</p>`;return}
-  const dayStr=n=>{const d=new Date(Date.now()-n*864e5);return d.toLocaleDateString('en-CA',{timeZone:'America/Asuncion'})};
-  const draw=()=>{const el=$('#avBody',sh);if(!el)return;const N=visDays;const days=Array.from({length:N},(_,i)=>dayStr(N-1-i));
-    const sum=(k,ds=days)=>ds.reduce((a,d)=>a+((rows[d]||{})[k]||0),0);const td=rows[dayStr(0)]||{};
-    const mx=Math.max(1,...days.map(d=>(rows[d]||{}).v||0));const lab=k=>t('av_'+k)!=='av_'+k?t('av_'+k):k;
-    const bars=(list)=>{const tot=list.reduce((a,[k])=>a+sum(k),0)||1;return list.map(([k,nm])=>{const n=sum(k);return n?`<div class="av-b"><span>${esc(['other','direct','mobile','desktop'].includes(nm)?t('av_'+nm):nm)}</span><i style="--w:${Math.round(n/tot*100)}%"></i><b>${n}</b></div>`:''}).join('')||`<p class="sub" style="margin:0;font-size:13px">—</p>`};
-    const v=sum('v'),go=sum('go'),wa=sum('wa');
-    el.innerHTML=`<div class="seg sm"><button data-n="7" aria-pressed="${N===7}">${esc(t('av_7'))}</button><button data-n="30" aria-pressed="${N===30}">${esc(t('av_30'))}</button></div>
-      <div class="stats"><div class="stat"><b>${td.v||0}</b><span>${esc(t('av_today'))}</span></div><div class="stat"><b>${v}</b><span>${esc(t('av_visits'))}</span></div><div class="stat"><b>${sum('u')}</b><span>${esc(t('av_people'))}</span></div></div>
-      <div class="stats"><div class="stat"><b>${go}</b><span>${esc(t('av_go'))}</span></div><div class="stat"><b>${wa}</b><span>${esc(t('av_wa'))}</span></div><div class="stat"><b>${v?Math.round(go/v*100):0}%</b><span>${esc(t('av_conv'))}</span></div></div>
-      <span class="lbl">${esc(t('av_per_day'))}</span>
-      <div class="av-ch" role="img" aria-label="${esc(t('av_per_day'))}">${days.map(d=>{const n=(rows[d]||{}).v||0;return`<div class="av-c" title="${d}: ${n}"><i style="--h:${Math.round(n/mx*100)}%"></i>${N===7?`<span>${d.slice(8)}</span>`:''}</div>`}).join('')}</div>
-      ${N===30?`<div class="between" style="margin-top:-6px"><span class="sub" style="font-size:11.5px">${fmtDay(new Date(days[0]+'T12:00:00').getTime())}</span><span class="sub" style="font-size:11.5px">${esc(t('av_today'))}</span></div>`:''}
-      <span class="lbl">${esc(t('av_country'))}</span>${bars(VK.c)}
-      <span class="lbl">${esc(t('av_from'))}</span>${bars(VK.r)}
-      <span class="lbl">${esc(t('av_lang'))} · ${esc(t('av_dev'))}</span>${bars(VK.l)}${bars(VK.d)}
-      <p class="sub" style="font-size:11.5px;margin:0">${esc(t('av_note'))}</p>`;
-    $$('.seg button',el).forEach(b=>b.onclick=()=>{visDays=+b.dataset.n;draw()})};draw()}
 Object.assign(I18N.es,{as_sec:'Sitio meupulpito.com',as_btn:'Textos y testimonios',av_btn:'Visitas del sitio',as_note:'Precios, límites del plan gratis y WhatsApp de «Precios y pruebas» también aparecen en el sitio.',
   as_bar:'Aviso en la parte de arriba',as_bar_on:'Mostrar aviso',as_bar_d:'Una franja dorada arriba del sitio, por ejemplo para una promoción.',as_bar_ph_es:'Ej.: Promoción de lanzamiento: 20% en el plan anual',as_bar_ph_pt:'Ex.: Promoção de lançamento: 20% no plano anual',as_bar_url:'Enlace al tocar (opcional)',as_bar_need:'Escriba el texto del aviso',
   as_hero:'Título principal',as_hero_d:'Deje en blanco para usar el texto original.',as_sub:'Subtítulo',as_testi:'Testimonios',as_testi_d:'Solo testimonios reales, con autorización de la persona. Aparecen en el sitio cuando hay al menos uno marcado.',
@@ -1386,65 +1281,6 @@ Object.assign(I18N.pt,{as_sec:'Site meupulpito.com',as_btn:'Textos e depoimentos
   av_7:'7 dias',av_30:'30 dias',av_today:'Hoje',av_visits:'Visitas',av_people:'Pessoas',av_go:'Tocaram Acessar',av_wa:'Tocaram WhatsApp',av_conv:'Foram ao app',av_per_day:'Visitas por dia',av_country:'País',av_from:'De onde vieram',av_lang:'Idioma',av_dev:'Aparelho',
   av_other:'Outros',av_direct:'Direto / outro',av_mobile:'Celular',av_desktop:'Computador',av_err:'Não foi possível carregar. Confira se publicou as regras novas do Firebase.',av_note:'Só números, sem dados das pessoas. Não conta as suas próprias visitas deste celular. «Pessoas» conta cada aparelho uma vez por dia.'});
 
-// Idioma del mensaje: Paraguay → español, Brasil → portugués; otros países, el idioma que usa en el app
-function remK(r){const p=r.plan||{};const n=Date.now();if(!PMON[p.plan]||!p.until)return'';const wn=(+PCFG.warn||7)*864e5;
-  if(p.until>n)return p.until-n<wn?'s'+p.until:'';return n-p.until<30*864e5?'e'+p.until:''}
-function waLang(r){if(r.lang==='pt'||r.lang==='es')return r.lang;const w=r.wa||'';return w.startsWith('+55')?'pt':'es'}
-function waLink(r,k){const L=waLang(r);const p=(r.plan||{});const nm=(r.name||'').trim().replace(/^(pr|pra|pb|ev|rev)\.?\s+/i,'').split(/\s+/)[0]||'';
-  const trial=+p.trial>Date.now()&&!(PMON[p.plan]&&p.until>Date.now());
-  if(k==='rem'){const exp=p.until<=Date.now();return'https://wa.me/'+String(r.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(t(exp?'wam_exp':'wam_rem',{n:nm?' '+nm:'',p:t('pl_'+p.plan,null,L),d:fmtDayL(p.until,L)},L))}
-  const msg=k==='wel'?t(trial?'wam_wel_tr':'wam_wel',{n:nm?' '+nm:'',d:fmtDayL(p.trial,L)},L):t('wam_cong',{n:nm?' '+nm:'',p:t('pl_'+(p.plan||'m'),null,L)||'Premium',d:fmtDayL(p.until,L)},L);
-  return'https://wa.me/'+String(r.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(msg)}
-const fmtDayL=(ts,L)=>ts?new Date(ts).toLocaleDateString(L==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'long',year:'numeric'}):'';
-async function adminPanel(){if(!isAdmin())return;ADMP.at=0;const sh=openSheet(`<h3>${esc(t('adm_t'))}</h3><div id="admBody"><p class="sub" style="margin:0">${esc(t('adm_load'))}</p></div>`,{cls:'big'});
-  let rows=[];try{const db=firebase.firestore();const[q,pq,rq]=await Promise.all([db.collection('stats').get(),db.collection('planos').get(),db.collection('roleta').get().catch(()=>({docs:[]}))]);
-    ROLS={};rq.docs.forEach(d=>ROLS[d.id]=d.data());
-    const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());rows=q.docs.map(d=>Object.assign({uid:d.id},d.data(),{plan:pm[d.id]||null}))}
-  catch(e){const el=$('#admBody',sh);if(el)el.innerHTML=`<p class="sub" style="margin:0">${esc(t('adm_err'))}</p>`;return}
-  if(!sh.isConnected)return;rows.sort((a,b)=>(b.seen||0)-(a.seen||0));
-  const tot=rows.length,totS=rows.reduce((s,r)=>s+(r.sermons||0),0),a7=rows.filter(r=>Date.now()-(r.seen||0)<7*864e5).length;
-  const uses={};rows.forEach(r=>Object.entries(r.uses||{}).forEach(([k,v])=>uses[k]=(uses[k]||0)+v));
-  const uNames={pregar:t('adm_u_pregar'),dic:t('adm_u_dic'),ia:t('adm_u_ia')};
-  const uTop=Object.entries(uses).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${uNames[k]||k}: ${v}`).join(' · ');
-  const gr=(+PCFG.grace||0)*864e5,wn=(+PCFG.warn||7)*864e5;
-  const pst=r=>{const p=r.plan||{};return PMON[p.plan]&&p.until>Date.now()?'p':+p.trial>Date.now()?'tr':PMON[p.plan]&&p.until?'v':'f'};
-  const pst2=r=>{const p=r.plan||{};const n=Date.now();if(!PMON[p.plan]||!p.until)return'';if(p.until>n)return p.until-n<wn?'soon':'';return p.until+gr>n?'grace':'exp'};
-  const cnt={f:0,p:0,v:0,tr:0};rows.forEach(r=>cnt[pst(r)]++);const nSoon=rows.filter(r=>pst2(r)==='soon'||pst2(r)==='grace').length;
-  const pend=r=>r.email!==ADMIN_EMAIL&&!(r.plan&&(r.plan.ok||r.plan.blocked||PMON[r.plan.plan]));const np=rows.filter(pend).length;
-  rows.sort((a,b)=>(pend(b)?1:0)-(pend(a)?1:0));
-  const byCode={};rows.forEach(r=>byCode[r.uid.slice(0,8)]=r);const RN=refN();
-  const bought=r=>{const p=r.plan||{};return Array.isArray(p.pays)&&p.pays.some(x=>!x.test)};
-  const refCnt={},refBuy={};rows.forEach(r=>{if(r.ref&&byCode[r.ref]){refCnt[r.ref]=(refCnt[r.ref]||0)+1;if(bought(r))refBuy[r.ref]=(refBuy[r.ref]||0)+1}});
-  // o pastor que indicou vê no app quantos dos indicados já compraram
-  try{const db=firebase.firestore();Object.entries(refBuy).forEach(([c,n])=>{const x=byCode[c];if(x&&(x.plan||{}).refBuy!==n)db.collection('planos').doc(x.uid).set({refBuy:n},{merge:true}).catch(()=>{})})}catch(e){}
-  const refHtml=r=>{const by=r.ref&&byCode[r.ref];const code=r.uid.slice(0,8);const nc=refCnt[code],nb=refBuy[code]||0;let h='';
-    if(by){const bn=by.name||by.email||by.uid.slice(0,6);h+=`<span class="tag">${esc(t('rf_by',{n:bn}))}</span>`}
-    const rl=ROLS[r.uid];if(rl&&!bought(r))h+=`<span class="tag tr">${esc(t('rl_adm',{p:rl.p}))}</span>`;
-    if(nc){h+=`<span class="tag ok">${esc(t('rf_cnt',{n:nc,b:nb}))}</span>`;const due=Math.floor(nb/RN)-(+(r.plan||{}).refMonths||0);
-      if(due>0)h+=`<button class="btn sm gold" data-act="admRef" data-to="${esc(r.uid)}">${ic('star')}${esc(t('rf_give',{n:r.name||r.email||''}))}</button>`}
-    return h?`<span style="display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap">${h}</span>`:''};
-  const row=r=>{const nm=r.name||r.email||r.uid.slice(0,6);const bl=!!(r.plan&&r.plan.blocked);const ps=pst(r);const pl=r.plan||{};
-    return`<div class="adm-row"><div style="flex:1;min-width:0"><b>${esc(nm)}</b><span class="sub" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(r.email||'')}</span>
-      <span class="sub" style="font-size:12.5px">${esc(t('adm_n_serm',{n:r.sermons||0}))} · ${esc(t('adm_seen',{d:r.seen?relDate(r.seen):'—'}))} · ${esc((r.lang||'').toUpperCase())}</span>
-      <span style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">${pend(r)?`<span class="tag warn adm-pend">${esc(t('ad_pend'))}</span>`:''}${pst2(r)==='soon'?`<span class="tag warn">${esc(t('ad_soon',{d:fmtDay(pl.until)}))}</span>`:pst2(r)==='grace'?`<span class="tag warn">${esc(t('sub_grace'))} · ${esc(fmtDay(pl.until))}</span>`:ps==='tr'?`<span class="tag tr">${esc(t('tr_name'))}${pl.trialAuto?' '+esc(t('tr_auto')):''} · ${esc(t('tr_until',{d:fmtDay(pl.trial)}))}</span>`:ps==='p'?`<span class="tag ok">${esc(planName(pl.plan))} · ${esc(fmtDay(pl.until))}</span>`:ps==='v'?`<span class="tag warn">${esc(t('sub_exp'))} · ${esc(fmtDay(pl.until))}</span>`:`<span class="tag">${esc(t('pl_free'))}</span>`}<button class="lnk" data-act="admPlan" data-uid="${esc(r.uid)}" data-l="${esc(nm)}">${esc(t('ad_plan'))}</button></span>${refHtml(r)}
-      ${r.wa?`<div class="adm-wa">${(()=>{const L=waLang(r);const k1=pl.welSent;const paid=PMON[pl.plan]&&pl.until>Date.now();const k2=paid&&pl.congSent===pl.until;
-        return`<a class="btn sm ${k1?'ghost':'dark'}" data-act="admWa" data-k="wel" data-uid="${esc(r.uid)}" href="${esc(waLink(r,'wel'))}" target="_blank" rel="noopener">${ic(k1?'check':'chat')}${esc(t(k1?'wa_wel_ok':'wa_wel',null))}</a>`+(remK(r)?(()=>{const k3=pl.remSent===remK(r);return`<a class="btn sm ${k3?'ghost':'dark'}" data-act="admWa" data-k="rem" data-uid="${esc(r.uid)}" data-u="${esc(remK(r))}" href="${esc(waLink(r,'rem'))}" target="_blank" rel="noopener">${ic(k3?'check':'chat')}${esc(t(k3?'wa_rem_ok':'wa_rem'))}</a>`})():'')+(paid?`<a class="btn sm ${k2?'ghost':'gold'}" data-act="admWa" data-k="cong" data-uid="${esc(r.uid)}" data-u="${pl.until}" href="${esc(waLink(r,'cong'))}" target="_blank" rel="noopener">${ic(k2?'check':'chat')}${esc(t(k2?'wa_cong_ok':'wa_cong'))}</a>`:'')+`<span class="sub" style="font-size:12px">${esc(r.wa)} · ${L.toUpperCase()}</span>`})()}</div>`:`<span class="sub" style="display:block;margin-top:6px;font-size:12px">${esc(t('wa_none'))}</span>`}</div>
-      <div class="seg sm adm-seg" data-uid="${esc(r.uid)}"><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="0" aria-pressed="${!bl&&!pend(r)}">${esc(t('adm_on'))}</button><button data-act="admBlock" data-uid="${esc(r.uid)}" data-b="1" aria-pressed="${bl}">${esc(t('adm_off'))}</button></div></div>`};
-  const el=$('#admBody',sh);if(!el)return;
-  el.innerHTML=`${authU&&!authU.emailVerified?`<div class="pl-why" style="margin:0;display:flex;flex-direction:column;gap:8px"><b>${esc(t('ve_t'))}</b><span>${esc(t('ve_d',{e:authU.email||''}))}</span><button class="btn sm dark" data-act="veSend">${ic('check')}${esc(t('ve_go'))}</button></div>`:''}<div class="stats"><div class="stat"><b>${tot}</b><span>${esc(t('adm_users'))}</span></div><div class="stat"><b>${a7}</b><span>${esc(t('adm_act7'))}</span></div><div class="stat"><b>${totS}</b><span>${esc(t('adm_serms'))}</span></div></div>
-    ${uTop?`<p class="sub" style="margin:0;font-size:12.5px">${esc(t('adm_uses'))}: ${esc(uTop)}</p>`:''}
-    ${np?`<p class="pl-why" style="margin:0">${esc(t('ad_npend',{n:np}))}</p>`:''}${nSoon?`<p class="pl-why" style="margin:0">${esc(t('ad_nsoon',{n:nSoon}))}</p>`:''}
-    <p class="sub" style="margin:0;font-size:13px;font-weight:600">${PCFG.gate?esc(t('ad_gate_on'))+' · ':''}${esc(t('ad_cnt',cnt))}${PCFG.test?' · '+esc(t('ad_test')):''}</p>
-    ${PCFG.test?`<p class="pl-why" style="margin:0">${esc(t('ad_sell'))}</p>`:''}
-    <button class="btn ghost block" data-act="admCfg">${ic('sliders')}${esc(t('ad_cfg'))}</button>
-    <button class="btn ghost block" data-act="admPay">${ic('copy')}${esc(t('py_adm'))}</button>
-    <a class="btn gold block" href="/escritorio/" target="_blank" rel="noopener">${ic('sliders')}${esc(t('es_open'))}</a>
-    <button class="btn ghost block" data-act="rlDemo">${ic('star')}${esc(t('rl_test'))}</button>
-    <span class="lbl" style="margin-top:4px">${esc(t('as_sec'))}</span>
-    <div class="adm-site"><button class="btn ghost" data-act="admSite">${ic('pen')}${esc(t('as_btn'))}</button><button class="btn ghost" data-act="admVis">${ic('user')}${esc(t('av_btn'))}</button></div>
-    <p class="sub" style="margin:0;font-size:12.5px">${esc(t('as_note'))}</p>
-    <div class="adm-list">${rows.length?rows.map(row).join(''):`<p class="sub">${esc(t('adm_none'))}</p>`}</div>
-    <p class="sub" style="font-size:11.5px;margin:0">${esc(t('adm_note'))}</p>`}
 let bgT=0;function refreshBg(){clearTimeout(bgT);bgT=setTimeout(()=>{if(!view.tab||view.overlay)return;
   // No redibujar mientras la persona escribe en un campo (se perderían espacios o el cursor); se actualiza al salir del campo
   const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)&&a.type!=='range'&&$('#app').contains(a)){a.addEventListener('blur',()=>refreshBg(),{once:true});return}
@@ -1921,6 +1757,8 @@ document.addEventListener('click',e=>{const L=lxLang(),l=mL();
     if(a==='tema'){IL.tema=il.dataset.k;render()}else if(a==='lock')planGate('il')
     else if(a==='copy'&&x)copyText(ilText(x,L,l)).then(()=>toast(t('copied')))
     else if(a==='use'&&x)minNewSermon(x.t[l],`<p><br></p><h2>${esc(t('il_one'))}</h2><p>${esc(x.x[l])}</p><p>${esc(t('il_ap'))}: ${esc(x.ap[l])}</p><p>${x.v.map(r=>esc(refStr(r,L))).join(' · ')}</p>`);return}});
+Object.assign(I18N.es,{es_t:'Escritorio',es_d:'Pastores, pagos, precios, sitio, avisos y atención',rl_test_d:'Vea la ruleta como la ve un pastor invitado'});
+Object.assign(I18N.pt,{es_t:'Escritório',es_d:'Pastores, pagamentos, preços, site, avisos e atendimento',rl_test_d:'Veja a roleta como um pastor indicado vê'});
 Object.assign(I18N.es,{bk_all:'Descargar todo',bk_all_d:'Sermones, agenda, anotaciones y datos de la iglesia en un solo archivo.',bk_dl:'Descargar',bk_prep:'Preparando el archivo…',bk_has:'El archivo contiene',bk_s:'Sermones',bk_a:'Eventos en la agenda',bk_n:'Anotaciones',bk_i:'Registros de Mi Iglesia',bk_save:'Guardar archivo',bk_tip:'En el iPhone, elija «Guardar en Archivos» o envíelo a usted mismo por WhatsApp. Para recuperarlo, toque «Importar» aquí en la configuración y elija este archivo.',bk_all_ok:'Copia guardada',bk_pick:'Elegir archivo',bk_or:'O pegue el texto de una copia',bk_bad:'Este archivo no es una copia de Meu Púlpito',bk_ig_ok:'Datos de la iglesia restaurados ({n})',bk_ig_lock:'los datos de la iglesia solo se restauran con el plan Premium Iglesia',restore_d:'Elija el archivo guardado en «Descargar todo» o pegue el texto de una copia de seguridad.'});
 Object.assign(I18N.pt,{bk_all:'Baixar tudo',bk_all_d:'Sermões, agenda, anotações e dados da igreja num arquivo só.',bk_dl:'Baixar',bk_prep:'Preparando o arquivo…',bk_has:'O arquivo contém',bk_s:'Sermões',bk_a:'Eventos na agenda',bk_n:'Anotações',bk_i:'Registros do Minha Igreja',bk_save:'Salvar arquivo',bk_tip:'No iPhone, escolha «Salvar em Arquivos» ou envie para você mesmo no WhatsApp. Para recuperar, toque em «Importar» aqui nas configurações e escolha este arquivo.',bk_all_ok:'Cópia salva',bk_pick:'Escolher arquivo',bk_or:'Ou cole o texto de uma cópia',bk_bad:'Este arquivo não é uma cópia do Meu Púlpito',bk_ig_ok:'Dados da igreja restaurados ({n})',bk_ig_lock:'os dados da igreja só são restaurados com o plano Premium Igreja',restore_d:'Escolha o arquivo salvo em «Baixar tudo» ou cole o texto de uma cópia de segurança.'});
 /* ============ Minha Igreja: o código fica em igreja.js e só é baixado quando o pastor abre ============ */
@@ -2014,13 +1852,6 @@ function refSheet(){if(localMode||!authU){toLogin();return}const L=refLink();con
   $('#rfCp',sh).onclick=()=>copyText(L).then(()=>toast(t('rf_copied')));
   $$('[data-ri]',sh).forEach(b=>b.onclick=()=>{b.disabled=true;refImage(b.dataset.ri).finally(()=>{b.disabled=false})});
   $('#rfSh',sh).onclick=()=>{if(navigator.share)navigator.share({title:'Meu Púlpito',text:t('rf_msg0'),url:L}).catch(()=>{});else copyText(msg).then(()=>toast(t('rf_copied')))}}
-let ROLS={};
-// 1 mês de Premium para quem indicou (a cada N indicados que compraram)
-async function admRef(to){const db=firebase.firestore();
-  try{const d=await db.collection('planos').doc(to).get();const c=d.exists?d.data():{};const now=Date.now();
-    const upd=PMON[c.plan]&&c.until>now?{until:addMonths(c.until,1)}:{trial:Math.max(now,+c.trial||0)+30*864e5,trialFrom:now,trialAuto:false,ok:true};
-    upd.refMonths=firebase.firestore.FieldValue.increment(1);upd.updated=now;
-    await db.collection('planos').doc(to).set(upd,{merge:true});closeSheet();toast(t('rf_given'));adminPanel()}catch(e){toast(t('adm_err'))}}
 /* ---------- Roleta de desconto: para quem entrou pelo link de um pastor ---------- */
 const RL_P=[5,10,15,20,30,50],RL_W=[35,30,18,10,5,2];
 let ROL=null;
@@ -2112,12 +1943,12 @@ function onboarding(){let i=0;const sh=openSheet(`<div class="ob"><div id="obIn"
   const paint=()=>{const [icn,tt,dd]=ONB[i];const nm=(meta.name||'').trim();$('#obIn',sh).innerHTML=`${icn==='__logo'?`<span class="ob-logo"><img class="b-d" src="mark.png" alt=""><img class="b-l" src="mark-light.png" alt=""></span>`:`<span class="ob-ic">${ic(icn)}</span>`}<h3 class="ob-t">${esc(t(tt,{n:nm?', '+nm:''}))}</h3><p class="ob-d">${esc(t(dd))}</p>`;
     $$('.ob-dots i',sh).forEach((d,k)=>d.classList.toggle('on',k===i));$('#obNext',sh).textContent=t(i<ONB.length-1?'ob_next':'ob_go');$('#obSkip',sh).style.visibility=i<ONB.length-1?'visible':'hidden'};
   $('#obNext',sh).onclick=()=>{if(i<ONB.length-1){i++;paint()}else closeSheet()};$('#obSkip',sh).onclick=()=>closeSheet();paint()}
-Object.assign(I18N.es,{adp_t:'{n} cuenta(s) esperando liberación',adp_d:'Toque para ver y liberar.',rp_t:'Relatar un problema',rp_d:'Cuéntenos qué pasó y qué estaba haciendo. El mensaje va con la versión del app y el tipo de celular, para corregirlo más rápido.',rp_ph:'Ej.: toqué Predicar y la pantalla quedó en blanco…',rp_tip:'Si puede, después envíe también una captura de pantalla en la misma conversación.',rp_wa:'Enviar por WhatsApp',rp_mail:'Enviar por correo',rp_hd:'Problema en Meu Púlpito:',rp_btn:'Relatar un problema',ob_btn:'Ver la presentación',
+Object.assign(I18N.es,{adp_t:'{n} cuenta(s) esperando liberación',adp_d:'Toque para abrir el Escritorio y liberarlos.',rp_t:'Relatar un problema',rp_d:'Cuéntenos qué pasó y qué estaba haciendo. El mensaje va con la versión del app y el tipo de celular, para corregirlo más rápido.',rp_ph:'Ej.: toqué Predicar y la pantalla quedó en blanco…',rp_tip:'Si puede, después envíe también una captura de pantalla en la misma conversación.',rp_wa:'Enviar por WhatsApp',rp_mail:'Enviar por correo',rp_hd:'Problema en Meu Púlpito:',rp_btn:'Relatar un problema',ob_btn:'Ver la presentación',
   ob0t:'¡Bienvenido a Meu Púlpito{n}!',ob0d:'Su lugar para preparar, organizar y predicar la Palabra. En cuatro pasos le mostramos lo principal.',wb_back:'¡Bienvenido de nuevo, {n}!',ob1t:'Escriba su sermón',ob1d:'Toque «Nuevo sermón». Escriba el título y el texto; con «Versículo» el app coloca el texto bíblico y con «Nuevo punto» organiza el bosquejo. Todo se guarda solo.',
   ob2t:'Predique desde el celular',ob2d:'Toque «Predicar»: letra grande, cronómetro y avance por partes. Puede cambiar el sermón entre español y portugués sin crear una copia.',
   ob3t:'Estudie la Palabra',ob3d:'Biblia en español y portugués, diccionarios Bíblico, Hebreo, Arameo y Griego, y curiosidades bíblicas. Desde el editor, toque el libro para consultar e insertar en el sermón.',
   ob4t:'Organice su ministerio',ob4d:'Agenda de predicaciones, categorías y favoritos. Sus sermones quedan en su cuenta y aparecen en cualquier celular donde entre.',ob_next:'Siguiente',ob_go:'Comenzar',ob_skip:'Saltar'});
-Object.assign(I18N.pt,{adp_t:'{n} conta(s) aguardando liberação',adp_d:'Toque para ver e liberar.',rp_t:'Relatar um problema',rp_d:'Conte o que aconteceu e o que você estava fazendo. A mensagem vai com a versão do app e o tipo de celular, para corrigir mais rápido.',rp_ph:'Ex.: toquei em Pregar e a tela ficou em branco…',rp_tip:'Se puder, depois mande também um print da tela na mesma conversa.',rp_wa:'Enviar pelo WhatsApp',rp_mail:'Enviar por e-mail',rp_hd:'Problema no Meu Púlpito:',rp_btn:'Relatar um problema',ob_btn:'Ver a apresentação',
+Object.assign(I18N.pt,{adp_t:'{n} conta(s) aguardando liberação',adp_d:'Toque para abrir o Escritório e liberar.',rp_t:'Relatar um problema',rp_d:'Conte o que aconteceu e o que você estava fazendo. A mensagem vai com a versão do app e o tipo de celular, para corrigir mais rápido.',rp_ph:'Ex.: toquei em Pregar e a tela ficou em branco…',rp_tip:'Se puder, depois mande também um print da tela na mesma conversa.',rp_wa:'Enviar pelo WhatsApp',rp_mail:'Enviar por e-mail',rp_hd:'Problema no Meu Púlpito:',rp_btn:'Relatar um problema',ob_btn:'Ver a apresentação',
   ob0t:'Bem-vindo ao Meu Púlpito{n}!',ob0d:'Seu lugar para preparar, organizar e pregar a Palavra. Em quatro passos mostramos o principal.',wb_back:'Bem-vindo de volta, {n}!',ob1t:'Escreva seu sermão',ob1d:'Toque em «Novo sermão». Escreva o título e o texto; com «Versículo» o app coloca o texto bíblico e com «Novo ponto» organiza o esboço. Tudo é salvo sozinho.',
   ob2t:'Pregue pelo celular',ob2d:'Toque em «Pregar»: letra grande, cronômetro e avanço por partes. Você pode trocar o sermão entre português e espanhol sem criar uma cópia.',
   ob3t:'Estude a Palavra',ob3d:'Bíblia em português e espanhol, dicionários Bíblico, Hebraico, Aramaico e Grego, e curiosidades bíblicas. No editor, toque no livro para consultar e inserir no sermão.',
@@ -2142,7 +1973,7 @@ function annHtml(){const A=annGet();if(!A||ls.get('mp.ann.x',0)===A.id)return'';
 function annPop(){const A=annGet();if(!A||!A.pop||ls.get('mp.ann.p',0)===A.id||ls.get('mp.ann.x',0)===A.id)return;if(!ready||blocked||E||$('.ov')||view.tab!=='home')return;ls.set('mp.ann.p',A.id);
   const sh=openSheet(`<div class="pk"><span class="pk-ic">${ic('star')}</span>${A.t?`<h3>${esc(A.t)}</h3>`:''}<p style="white-space:pre-line">${esc(A.x)}</p>${A.url?`<a class="btn gold block" href="${esc(A.url)}" target="_blank" rel="noopener">${esc(A.b)}</a>`:''}<button class="btn ghost block" data-act="sheetClose">${esc(t('close'))}</button></div>`)}
 setInterval(()=>{try{annPop()}catch(e){}},5000);
-function bannersHtml(){let h=annHtml()+planBanner();if(isAdmin()&&ls.get('mp.adm',0)!==1)ls.set('mp.adm',1);if(canShowInstall()&&!ls.get('mp.instx',0))h+=`<div class="banner inst-bn"><div class="tx"><b>${esc(t('in_t'))}</b><br>${esc(t('in_d'))}</div><div class="row"><button class="btn sm ghost" data-act="instHide">${esc(t('later'))}</button><button class="btn sm gold" data-act="install">${ic('dl')}${esc(t('in_btn').split(' ')[0])}</button></div></div>`;if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<button class="banner adp" data-act="admin"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</button>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
+function bannersHtml(){let h=annHtml()+planBanner();if(isAdmin()&&ls.get('mp.adm',0)!==1)ls.set('mp.adm',1);if(canShowInstall()&&!ls.get('mp.instx',0))h+=`<div class="banner inst-bn"><div class="tx"><b>${esc(t('in_t'))}</b><br>${esc(t('in_d'))}</div><div class="row"><button class="btn sm ghost" data-act="instHide">${esc(t('later'))}</button><button class="btn sm gold" data-act="install">${ic('dl')}${esc(t('in_btn').split(' ')[0])}</button></div></div>`;if(isAdmin()){admPendCheck();if(ADMP.n)h+=`<a class="banner adp" href="/escritorio/#pastores" target="_blank" rel="noopener"><span class="adp-n">${ADMP.n}</span><div class="tx"><b>${esc(t('adp_t',{n:ADMP.n}))}</b><br>${esc(t('adp_d'))}</div>${ic('next')}</a>`}const r=getResume();const rs=r&&(r.tSec>0||r.top>200)&&sermons.find(x=>x.id===r.id);
   if(rs)h+=`<div class="banner"><div class="tx">${esc(t('cont_preach'))}<br><b class="serif">${esc(derive(rs).title||t('untitled'))}</b>${r.tSec?' · '+fmtSec(r.tSec):''}</div>
     <div class="row"><button class="btn sm ghost" data-act="resNo">${esc(t('end'))}</button><button class="btn sm gold" data-act="resGo">${ic('lectern')}${esc(t('go_on'))}</button></div></div>`;
   if(ls.get(BAK,null)===null)ls.set(BAK,Date.now());
@@ -2942,7 +2773,7 @@ function profileHtml(){const lb=ls.get(BAK,null);const seg=(act,cur,opts)=>`<div
   ${aiVis()?`<div class="pgrp"><div class="prow" style="flex-direction:column;align-items:stretch;gap:8px"><span><span class="k">${ic('spark')} ${esc(t('ai'))}</span><span class="s">${esc(t('ai_d'))}</span></span>
     <label class="s" for="pAi">${esc(t('ai_key'))} · ${esc(t('ai_key_d'))}</label>
     <div class="row"><input class="inp" id="pAi" type="password" autocomplete="off" value="${esc(aiKey())}" placeholder="sk-ant-…" style="height:42px" data-input="pAi"><button class="btn sm dark" data-act="aiTest">${esc(t('ai_test'))}</button></div></div></div>`:''}
-  ${isAdmin()?`<div class="pgrp"><button class="prow plink" data-act="admin"><span><span class="k">${ic('sliders')} ${esc(t('adm_t'))}</span><span class="s">${esc(t('adm_d'))}</span></span>${ic('next')}</button></div>`:''}
+  ${isAdmin()?`<div class="pgrp"><a class="prow plink" href="/escritorio/" target="_blank" rel="noopener"><span><span class="k">${ic('sliders')} ${esc(t('es_t'))}</span><span class="s">${esc(t('es_d'))}</span></span>${ic('next')}</a><button class="prow plink" data-act="rlDemo"><span><span class="k">${ic('star')} ${esc(t('rl_test'))}</span><span class="s">${esc(t('rl_test_d'))}</span></span>${ic('next')}</button></div>`:''}
   <div class="pgrp">
     <a class="prow plink" href="https://whatsapp.com/channel/0029Vb9d3dXFHWpvOk3CTm3J" target="_blank" rel="noopener"><span><span class="k">${esc(t('ch_t'))}</span><span class="s">${esc(t('ch_d'))}</span></span>${ic('next')}</a>
     <button class="prow plink" data-act="privacy"><span><span class="k">${esc(t('priv'))}</span><span class="s">${esc(t('priv_d'))}</span></span>${ic('next')}</button>
@@ -3208,14 +3039,8 @@ function showLogin(mode){window.__fromLogin=true;view.tab='home';ready=false;vie
    Acciones (un solo manejador de toques)
    ========================================================= */
 const ACT={
-  admSite:()=>admSite(),admVis:()=>admVisits(),admPay:()=>admPay(),waEdit:()=>waSheet(false),
-  admWa:b=>{try{window.open(b.href,'_blank','noopener')}catch(e){location.href=b.href}const u=b.dataset.uid,k=b.dataset.k;const d=k==='wel'?{welSent:Date.now()}:k==='rem'?{remSent:b.dataset.u}:{congSent:+b.dataset.u};try{firebase.firestore().collection('planos').doc(u).set(d,{merge:true}).catch(()=>{})}catch(e){}
-    b.classList.remove('dark','gold');b.classList.add('ghost');b.innerHTML=ic('check')+esc(t(k==='wel'?'wa_wel_ok':k==='rem'?'wa_rem_ok':'wa_cong_ok'))},
-  privacy:()=>privacySheet(),delAcc:()=>deleteAccount(),admin:()=>adminPanel(),
-  admBlock:async b=>{if(!isAdmin())return;const uid=b.dataset.uid,blk=b.dataset.b==='1';const seg=b.closest('.adm-seg');
-    try{await firebase.firestore().collection('planos').doc(uid).set({blocked:blk,ok:!blk,updated:Date.now(),by:(authU.email||'')},{merge:true});const pe=b.closest('.adm-row');if(pe){const tg=pe.querySelector('.adm-pend');if(tg)tg.remove()}
-      if(seg)$$('button',seg).forEach(x=>x.setAttribute('aria-pressed',String((x.dataset.b==='1')===blk)));toast(t(blk?'adm_blocked':'adm_active'))}
-    catch(e){toast(t('adm_err'))}},
+  waEdit:()=>waSheet(false),
+  privacy:()=>privacySheet(),delAcc:()=>deleteAccount(),admin:()=>{try{window.open('/escritorio/','_blank','noopener')}catch(e){location.href='/escritorio/'}},
   photo:()=>pickPhoto(),photoRm:()=>{delete meta.photo;meta.photo=null;putMeta();render()},
   tab:b=>{if(b.dataset.k==='list'){listState.f='all';listState.cat=''}go(b.dataset.k)},
   list:b=>{listState.f=b.dataset.f||'all';listState.cat='';listState.q='';go('list')},
@@ -3242,7 +3067,7 @@ const ACT={
   aiGoKey:()=>{closeSheet();closeEditor(()=>go('profile'))},
   aiTest:async b=>{b.disabled=true;try{await aiCall('Responde solo: OK','OK',10);toast(t('ai_ok'))}catch(e){toast(aiErr(e))}b.disabled=false},
   edInfo:()=>infoSheet(),edOrg:()=>orgSheet(),edTpl:()=>tplSheet(),vers:()=>versSheet(),
-  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),annX:()=>{const A=annGet();if(A)ls.set('mp.ann.x',A.id);render()},instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{const u=b.dataset.u;ls.set(/^tr/.test(u)?'mp.trx.'+u.slice(2):'mp.pvx.'+u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),rfHide:()=>{ls.set('mp.rfx',1);render()},support:()=>supSheet(),rlDemo:()=>rolSheet(true),refer:()=>refSheet(),depo:()=>depoSheet(false),admRef:b=>{if(!b.dataset.sure){b.dataset.sure='1';const o=b.innerHTML;b.textContent=t('rf_sure');setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.innerHTML=o}},3000);return}b.disabled=true;admRef(b.dataset.to)},veSend:b=>{b.disabled=true;try{authU.sendEmailVerification().then(()=>toast(t('ve_sent')),()=>{b.disabled=false;toast(t('adm_err'))})}catch(e){b.disabled=false}},onb:()=>{closeSheet();onboarding()},help:()=>helpSheet(),news:()=>newsSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),admPlan:b=>admPlan(b.dataset.uid,b.dataset.l),admCfg:()=>admCfg(),agMode:b=>{agMode=b.dataset.m;render()},
+  pgScr:()=>{if(!PG)return;if(!PG.asc&&!isPremium()){planGate('preg');return}PG.asc?ascStop():ascStart()},plans:()=>plansSheet(),install:()=>installApp(),annX:()=>{const A=annGet();if(A)ls.set('mp.ann.x',A.id);render()},instHide:()=>{ls.set('mp.instx',1);render()},planRenew:b=>planContact(b.dataset.k),pvHide:b=>{const u=b.dataset.u;ls.set(/^tr/.test(u)?'mp.trx.'+u.slice(2):'mp.pvx.'+u,1);render()},back:()=>go(view.prev&&!SUBP.includes(view.prev)?view.prev:'home'),report:()=>reportSheet(),rfHide:()=>{ls.set('mp.rfx',1);render()},support:()=>supSheet(),rlDemo:()=>rolSheet(true),refer:()=>refSheet(),depo:()=>depoSheet(false),veSend:b=>{b.disabled=true;try{authU.sendEmailVerification().then(()=>toast(t('ve_sent')),()=>{b.disabled=false;toast(t('adm_err'))})}catch(e){b.disabled=false}},onb:()=>{closeSheet();onboarding()},help:()=>helpSheet(),news:()=>newsSheet(),subCancel:()=>openSheet(`<h3>${esc(t('sub_cancel'))}</h3><p style="margin:0;line-height:1.5">${esc(t('sub_cancel_d'))}</p><button class="btn ghost block" data-act="sheetClose">${esc(t('got_it'))}</button>`),agMode:b=>{agMode=b.dataset.m;render()},
   lc:b=>{listState.cat=listState.cat===b.dataset.c?'':b.dataset.c;render()},
   resGo:()=>{const r=getResume();if(r)openPreach(r.id,{resume:true})},
   resNo:()=>{ls.set(RES,null);render()},
