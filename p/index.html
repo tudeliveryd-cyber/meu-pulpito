@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1220">
+<title>Meu Púlpito</title>
+<link rel="icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B1220;--navy-2:#111A2E;--navy-3:#1A2540;--text:#334155;--muted:#64748B;--line:#E6E8EE;--soft:#F5F6F8;--gold:#C9A24E;--gold-2:#B8913F;--white:#fff;--ink:#0F172A}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--soft);color:var(--text);font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.hero{background:radial-gradient(900px 400px at 50% -10%,#1A2540 0%,var(--navy) 60%);color:#fff;padding:36px 16px 64px;text-align:center}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+.ph{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);background:#1A2540;display:inline-flex;align-items:center;justify-content:center;font:800 40px Manrope,sans-serif;color:var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+h1{font:800 26px/1.15 Manrope,sans-serif;margin:16px 0 4px;letter-spacing:-.01em}
+.ch{color:#CBD5E1;font-size:15px;margin:0}
+.city{color:#94A3B8;font-size:13.5px;margin:4px 0 0}
+.msg{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 14px;margin:18px auto 0;font-size:15px;color:#E2E8F0;max-width:460px}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px;border-radius:999px;font:700 15px Manrope,sans-serif;text-decoration:none;border:1.5px solid transparent;cursor:pointer}
+.btn.gold{background:var(--gold);color:#0B1220}.btn.ghost{border-color:rgba(255,255,255,.3);color:#fff}
+.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+main{margin:-40px auto 0;max-width:560px;padding:0 16px 40px}
+.card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 30px rgba(11,18,32,.08);margin-bottom:14px}
+.eye{font:700 11px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-2);margin:0 0 6px}
+.card h2{font:800 20px/1.2 Manrope,sans-serif;color:var(--ink);margin:0 0 10px}
+.ev{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}.ev:first-of-type{border-top:0}
+.ev .d{min-width:52px;text-align:center;background:var(--navy);color:#fff;border-radius:12px;padding:6px 4px;line-height:1.1}
+.ev .d b{display:block;font:800 20px Manrope,sans-serif}.ev .d span{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#CBD5E1}
+.ev .x{flex:1;min-width:0}.ev .x b{display:block;color:var(--ink);font-size:15px}.ev .x span{font-size:13.5px;color:var(--muted)}
+blockquote{margin:0 0 10px;padding:12px 14px;border-left:3px solid var(--gold);background:var(--soft);border-radius:0 12px 12px 0;font-family:Georgia,"Times New Roman",serif;font-size:16px;color:var(--ink)}
+blockquote cite{display:block;font:600 12.5px Inter,sans-serif;color:var(--gold-2);margin-top:6px;font-style:normal}
+.r{margin:0 0 12px;color:var(--text)}
+.lnk{display:inline-flex;align-items:center;gap:6px;color:var(--navy);font-weight:700;text-decoration:none;border-bottom:2px solid var(--gold);padding-bottom:1px}
+.rd{display:flex;align-items:center;gap:12px}.rd .n{font:800 28px Manrope,sans-serif;color:var(--navy);min-width:64px;text-align:center;background:var(--soft);border-radius:12px;padding:8px 6px;line-height:1}.rd .n small{display:block;font:600 11px Inter,sans-serif;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.rd b{display:block;color:var(--ink);font-size:16px}.rd span{font-size:13.5px;color:var(--muted)}
+footer{text-align:center;padding:10px 16px 40px;color:var(--muted);font-size:13px}
+footer a{color:var(--navy);font-weight:700;text-decoration:none}
+footer img{width:34px;height:28px;vertical-align:middle;margin-right:6px}
+.empty{min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:#fff;background:var(--navy);flex-direction:column;gap:14px}
+.empty p{max-width:380px;margin:0;color:#CBD5E1}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="root"><div class="empty" id="ld"><p>…</p></div></div>
+<svg width="0" height="0" style="position:absolute"><symbol id="i-wa" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol><symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5V5.5M20 18v3H6.5"/></symbol></svg>
+<script>
+(function(){
+var T={es:{ld:'Cargando…',nf:'Esta página no está disponible.',nf2:'El pastor todavía no la publicó o el enlace está incompleto.',ev:'Próximas predicaciones',none:'Sin fechas programadas por ahora.',dh:'Devocional de hoy',dh_ver:'Reina-Valera 1909',dh_more:'Leer completo en Meu Púlpito',rp:'Lectura bíblica de hoy',rp_day:'día',rp_d:'día {d} de {n}',rp_go:'Leer en la Biblia',wa:'WhatsApp',ig:'Instagram',made:'Página hecha con',make:'Cree la suya',sede:'Sede',anexo:'Anexo',at:'a las'},
+       pt:{ld:'Carregando…',nf:'Esta página não está disponível.',nf2:'O pastor ainda não a publicou ou o link está incompleto.',ev:'Próximas pregações',none:'Sem datas marcadas por enquanto.',dh:'Devocional de hoje',dh_ver:'Bíblia Livre',dh_more:'Ler completo no Meu Púlpito',rp:'Leitura bíblica de hoje',rp_day:'dia',rp_d:'dia {d} de {n}',rp_go:'Ler na Bíblia',wa:'WhatsApp',ig:'Instagram',made:'Página feita com',make:'Crie a sua',sede:'Sede',anexo:'Anexo',at:'às'}};
+var L='es';function t(k,v){var s=(T[L]||T.es)[k]||k;if(v)Object.keys(v).forEach(function(x){s=s.replace('{'+x+'}',v[x])});return s}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var ic=function(n){return'<svg><use href="#i-'+n+'"/></svg>'};
+var uid=(location.hash||'').slice(1).replace(/[^A-Za-z0-9_-]/g,'');
+var root=document.getElementById('root');
+function fail(){document.documentElement.lang=L;root.innerHTML='<div class="empty"><b style="font:800 22px Manrope,sans-serif">'+esc(t('nf'))+'</b><p>'+esc(t('nf2'))+'</p><a class="btn gold" href="https://meupulpito.com/">Meu Púlpito</a></div>'}
+if(!uid){fail()}else{
+var FBC={apiKey:'AIzaSyAuOBVdU5-bcFuaVEsGv4iK8H2krFU9Un8',authDomain:'meu-pulpito-app.firebaseapp.com',projectId:'meu-pulpito-app'};
+var FBV='https://www.gstatic.com/firebasejs/10.12.2/';
+Promise.all([import(FBV+'firebase-app.js'),import(FBV+'firebase-firestore-lite.js')]).then(function(m){var F=m[1],db=F.getFirestore(m[0].initializeApp(FBC,'pub'));return F.getDoc(F.doc(db,'pub',uid))}).then(function(d){
+  var p=d.exists()?d.data():null;if(!p||!p.on){fail();return}L=p.lang==='pt'?'pt':'es';document.documentElement.lang=L==='pt'?'pt-BR':'es';render(p);dhLoad();rpLoad(p)}).catch(function(){fail()});}
+function ini(n){return String(n||'').trim().split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0]}).join('').toUpperCase()||'·'}
+function dayParts(iso){var d=new Date(iso+'T12:00:00');return{d:d.getDate(),m:d.toLocaleDateString(L==='pt'?'pt-BR':'es',{month:'short'}).replace('.',''),w:d.toLocaleDateString(L==='pt'?'pt-BR':'es',{weekday:'long'})}}
+function place(e){return e.p==='sede'?t('sede'):e.p==='anexo'?t('anexo'):(e.p||'')}
+function render(p){document.title=(p.n||'Meu Púlpito')+' · Meu Púlpito';var evs=(p.ev||[]).filter(function(e){return e&&e.d});
+  var h='<header class="hero"><div class="wrap">'+(p.photo?'<img class="ph" src="'+esc(p.photo)+'" alt="">':'<span class="ph">'+esc(ini(p.n))+'</span>')+
+    '<h1>'+esc(p.n||'')+'</h1>'+(p.ch?'<p class="ch">'+esc(p.ch)+'</p>':'')+(p.city?'<p class="city">'+esc(p.city)+'</p>':'')+(p.msg?'<p class="msg">'+esc(p.msg)+'</p>':'')+
+    '<div class="btns">'+(p.wa?'<a class="btn gold" href="https://wa.me/'+esc(p.wa)+'" target="_blank" rel="noopener">'+ic('wa')+esc(t('wa'))+'</a>':'')+(p.ig?'<a class="btn ghost" href="https://instagram.com/'+esc(p.ig)+'" target="_blank" rel="noopener">'+ic('ig')+'@'+esc(p.ig)+'</a>':'')+'</div></div></header><main>';
+  h+='<section class="card"><p class="eye">'+esc(t('ev'))+'</p>'+(evs.length?evs.map(function(e){var x=dayParts(e.d);return'<div class="ev"><div class="d"><b>'+x.d+'</b><span>'+esc(x.m)+'</span></div><div class="x"><b>'+esc(x.w.charAt(0).toUpperCase()+x.w.slice(1))+(e.t?' · '+esc(e.t):'')+'</b><span>'+esc([place(e),e.n].filter(Boolean).join(' · '))+'</span></div></div>'}).join(''):'<p class="r" style="margin:0;color:var(--muted)">'+esc(t('none'))+'</p>')+'</section>';
+  h+='<section class="card" id="dh" hidden><p class="eye">'+esc(t('dh'))+'</p><h2 id="dhT"></h2><blockquote><span id="dhX"></span><cite id="dhN"></cite></blockquote><p class="r" id="dhR"></p><a class="lnk" href="https://meupulpito.com/app/#devo">'+esc(t('dh_more'))+' →</a></section>';
+  h+='<section class="card" id="rp" hidden><p class="eye">'+esc(t('rp'))+'</p><div class="rd"><div class="n" id="rpD"></div><div><b id="rpL"></b><span id="rpN"></span></div></div><p style="margin:12px 0 0"><a class="lnk" href="https://meupulpito.com/app/">'+esc(t('rp_go'))+' →</a></p></section>';
+  h+='</main><footer><a href="https://meupulpito.com/"><img src="../app/mark.png" alt="">'+esc(t('made'))+' Meu Púlpito</a> · <a href="https://meupulpito.com/">'+esc(t('make'))+'</a></footer>';
+  root.innerHTML=h}
+function dhCut(x){var f=x.match(/[^.!?]+[.!?]+/g)||[x];var o=(f[0]||'')+(f[1]||'');var w=o.split(/\s+/);if(w.length>48)o=w.slice(0,45).join(' ');return o.replace(/[.,;:!?]+$/,'')+'…'}
+function dhDay(){var d=new Date(),y=d.getFullYear(),n=Math.floor((new Date(y,d.getMonth(),d.getDate())-new Date(y,0,1))/864e5)+1;if((y%4===0&&(y%100!==0||y%400===0))&&n>=60)n--;return Math.min(365,Math.max(1,n))}
+function dhLoad(){var m=new Date().getMonth()+1;fetch('../app/biblia/devo/'+(m<10?'0':'')+m+'.json?v=1').then(function(r){return r.ok?r.json():null}).then(function(d){var e=d&&d[dhDay()];if(!e)return;var i=L==='pt'?1:0;
+  document.getElementById('dhT').textContent=e.t[i];document.getElementById('dhX').textContent='«'+e.x[i]+'»';document.getElementById('dhN').textContent=e.n[i]+' · '+t('dh_ver');document.getElementById('dhR').textContent=dhCut(e.r[i]);document.getElementById('dh').hidden=false}).catch(function(){})}
+function rpLoad(p){var R=p.rp;if(!R||!R.k||!R.start)return;fetch('rp.json?v=1').then(function(r){return r.json()}).then(function(D){var P=D.plans[R.k];if(!P)return;
+  var bs=P.books||[];if(!P.books)for(var b=P.from;b<=P.to;b++)bs.push(b);var C=[];bs.forEach(function(b){for(var c=1;c<=D.chn[b];c++)C.push([b,c])});
+  var today=new Date();var el=Math.floor((new Date(today.getFullYear(),today.getMonth(),today.getDate())-new Date(R.start+'T00:00:00'))/864e5);if(el<0||el>=P.days)return;
+  var chs=C.slice(Math.floor(el*C.length/P.days),Math.floor((el+1)*C.length/P.days));var names=D.books[L];var g=[];chs.forEach(function(x){var l=g[g.length-1];if(l&&l.b===x[0]&&l.e===x[1]-1)l.e=x[1];else g.push({b:x[0],s:x[1],e:x[1]})});
+  document.getElementById('rpD').innerHTML='<small>'+esc(t('rp_day'))+'</small>'+(el+1);document.getElementById('rpL').textContent=g.map(function(x){return names[x.b]+' '+x.s+(x.e>x.s?'–'+x.e:'')}).join('; ');document.getElementById('rpN').textContent=(D.names[L][R.k]||'')+' · '+t('rp_d',{d:el+1,n:P.days});document.getElementById('rp').hidden=false}).catch(function(){})}
+})();
+</script>
+</body>
+</html>

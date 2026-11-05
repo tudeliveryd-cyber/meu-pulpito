@@ -59,6 +59,22 @@ service cloud.firestore {
         && request.resource.data.ref is string && request.resource.data.ref.size() <= 12;
       allow update, delete: if isAdmin();
     }
+    // Página pública do pastor (meupulpito.com/p/#uid): qualquer um lê; só o próprio pastor escreve, com campos limitados.
+    match /pub/{uid} {
+      allow read: if true;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['on','n','ch','city','msg','wa','ig','ev','lang','photo','rp','upd'])
+        && request.resource.data.on is bool
+        && request.resource.data.n is string && request.resource.data.n.size() <= 80
+        && request.resource.data.ch is string && request.resource.data.ch.size() <= 80
+        && request.resource.data.city is string && request.resource.data.city.size() <= 60
+        && request.resource.data.msg is string && request.resource.data.msg.size() <= 300
+        && request.resource.data.wa is string && request.resource.data.wa.size() <= 20
+        && request.resource.data.ig is string && request.resource.data.ig.size() <= 40
+        && request.resource.data.photo is string && request.resource.data.photo.size() <= 90000
+        && request.resource.data.ev is list && request.resource.data.ev.size() <= 6;
+      allow delete: if request.auth != null && (request.auth.uid == uid || isAdmin());
+    }
     // Atendimento: conversa de cada pastor com o suporte. Só ele e o administrador leem.
     match /suporte/{uid} {
       allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());

@@ -1078,3 +1078,9 @@ html.vr-on,html.vr-on body{overflow:hidden}
 .rc-tx>span{font-size:12px;color:var(--muted);line-height:1.3}
 .rc-tx .cu-lock{display:inline-block;margin-top:3px}
 @media (max-width:360px){.rec2 button{flex-direction:column;align-items:flex-start}}
+
+.py-qr{width:220px;height:220px;max-width:100%;border-radius:12px;background:#fff;padding:8px;align-self:center;object-fit:contain}
+.py-ctry{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}.py-ctry>span{font-size:13px;color:var(--muted);font-weight:600}
+
+.pg.cast .pg-bot,.pg.cast .pg-timer,.pg.cast .pg-rec,.pg.cast .pg-lang,.pg.cast [data-act=pgSet],.pg.cast [data-act=pgIdx]{display:none!important}.pg.cast .pg-top{justify-content:flex-start}.pg.cast .pg-scroll{padding-bottom:40px}
+.ig-xl{display:flex;flex-direction:column;gap:2px;background:var(--bg);border-radius:12px;padding:10px 12px}.ig-xl b{font-size:14px}.ig-xl>span:last-child{font-size:13.5px;color:var(--muted)}
