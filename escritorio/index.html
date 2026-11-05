@@ -93,7 +93,7 @@ const money=(v,c)=>c==='brl'?'R$ '+(+v||0).toLocaleString('pt-BR'):'₲ '+fmtN(v
 const fmtD=ts=>ts?new Date(ts).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}):'—';
 const fmtDT=ts=>ts?new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
 const rel=ts=>{if(!ts)return'—';const d=Math.floor((Date.now()-ts)/864e5);return d<=0?'hoje':d===1?'ontem':d+' dias atrás'};
-const PMON={m:1,t:3,a:12},PNAME={m:'Mensal',t:'Trimestral',a:'Anual'};
+const PMON={m:1,t:3,a:12,mi:1,ti:3,ai:12},PNAME={m:'Mensal',t:'Trimestral',a:'Anual',mi:'Igreja Mensal',ti:'Igreja Trimestral',ai:'Igreja Anual'};
 const addMonths=(ts,n)=>{const d=new Date(ts);const day=d.getDate();d.setMonth(d.getMonth()+n);if(d.getDate()<day)d.setDate(0);return d.getTime()};
 const isoDay=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const today=()=>{try{return new Date().toLocaleDateString('en-CA',{timeZone:'America/Asuncion'})}catch(e){return isoDay(Date.now())}};
@@ -225,9 +225,9 @@ function vPastores(m){const n=Date.now();
   m.querySelectorAll('[data-blk]').forEach(b=>b.onclick=()=>{if(sure(b))setPlan(b.dataset.blk,{blocked:true,ok:false})})}
 async function setPlan(uid,d,msg){try{await db.collection('planos').doc(uid).set(Object.assign({updated:Date.now()},d),{merge:true});D.planos[uid]=Object.assign({},P(uid),d);toast(msg||'Salvo');draw()}catch(e){toast('Não foi possível salvar')}}
 function payForm(uid){const p=P(uid),rl=D.roleta[uid],first=!realPays(uid).length,disc=rl&&first?+rl.p:0;let k=PMON[p.plan]?p.plan:'m';
-  const from=PMON[p.plan]&&p.until>Date.now()?isoDay(p.until+43200000):isoDay(Date.now());const price=(k,c)=>{const v=+((D.cfg.p||{})[k]||{})[c]||({m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270}}[k][c]);return disc?(c==='pyg'?Math.floor(v*(100-disc)/100/1000)*1000:Math.floor(v*(100-disc)/100)):v};
+  const from=PMON[p.plan]&&p.until>Date.now()?isoDay(p.until+43200000):isoDay(Date.now());const price=(k,c)=>{const v=+((D.cfg.p||{})[k]||{})[c]||({m:{pyg:45000,brl:35},t:{pyg:120000,brl:95},a:{pyg:350000,brl:270},mi:{pyg:75000,brl:59},ti:{pyg:200000,brl:155},ai:{pyg:600000,brl:460}}[k][c]);return disc?(c==='pyg'?Math.floor(v*(100-disc)/100/1000)*1000:Math.floor(v*(100-disc)/100)):v};
   const sh=sheet(`<h3>Registrar pagamento · ${esc(byName(uid))}</h3>${disc?`<p class="tag gold" style="align-self:flex-start">Desconto da roleta: ${disc}% (primeira compra)</p>`:''}
-    <div class="seg" id="pk">${['m','t','a'].map(x=>`<button type="button" data-k="${x}" aria-pressed="${x===k}">${PNAME[x]}</button>`).join('')}</div>
+    <div id="pk"><div class="seg">${['m','t','a'].map(x=>`<button type="button" data-k="${x}" aria-pressed="${x===k}">${PNAME[x]}</button>`).join('')}</div><div class="seg" style="margin-top:6px">${['mi','ti','ai'].map(x=>`<button type="button" data-k="${x}" aria-pressed="${x===k}">${PNAME[x]}</button>`).join('')}</div></div>
     <div class="two"><label class="f">Começa em<input class="inp" type="date" id="pf" value="${from}"></label><label class="f">Vence em<input class="inp" type="date" id="pt"></label></div>
     <div class="two"><label class="f">Valor<input class="inp" id="pa" inputmode="numeric"></label><label class="f">Moeda<select class="inp" id="pc"><option value="pyg">₲ Guarani</option><option value="brl">R$ Real</option></select></label></div>
     <label class="f">Observação<input class="inp" id="pn" value="${disc?'Roleta: '+disc+'% na 1ª compra':''}"></label>
