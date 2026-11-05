@@ -39,8 +39,8 @@ textarea.inp{min-height:120px;resize:vertical;line-height:1.5}
 .seg{display:flex;background:var(--navy2);border-radius:12px;padding:3px;gap:2px}.seg button{flex:1;border:0;background:transparent;color:var(--muted);border-radius:10px;padding:8px;font-weight:700;font-size:14px}.seg button[aria-pressed=true]{background:#fff;color:#0B1220}
 .live{display:flex;align-items:center;gap:8px}.dot{width:10px;height:10px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 4px rgba(239,68,68,.25)}
 /* ---- layout largo (computador) ---- */
-.side{display:none}
-@media(min-width:900px){.wrap{max-width:1180px}.ctl{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}.side{display:flex;flex-direction:column;gap:12px;position:sticky;top:16px}.main .now{display:none}.mini{position:relative;padding-top:56.25%;background:#000;border-radius:14px;overflow:hidden;border:1.5px solid var(--line)}.mini iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}}
+.side{display:none}#scrTip{display:none}
+@media(min-width:900px){#scrTip{display:block}.wrap{max-width:1180px}.ctl{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}.side{display:flex;flex-direction:column;gap:12px;position:sticky;top:16px}.main .now{display:none}.mini{position:relative;padding-top:56.25%;background:#000;border-radius:14px;overflow:hidden;border:1.5px solid var(--line)}.mini iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}}
 /* ---- tela ---- */
 #screen{position:fixed;inset:0;background:#000;color:#fff;display:none;overflow:hidden;cursor:none}
 #screen.on{display:block}
@@ -149,7 +149,7 @@ function saveCfg(){roomRef().set({cfg:CFG},{merge:true}).catch(()=>{})}
 function draw(){const tabs=[['b','tab_b'],['h','tab_h'],['i','tab_i'],['a','tab_a'],['s','tab_s'],['c','tab_c']];
   const nowbox=`<div class="nowbox"><div class="tx"><small>${esc(t('now'))}</small><b class="nowT"></b></div><button class="btn sm ghost" data-now="logo">${esc(t('logo'))}</button><button class="btn sm ghost" data-now="blank">${esc(t('blank'))}</button></div>`;
   app.innerHTML=head()+`<div class="row" style="justify-content:space-between"><div><h1 style="font-size:20px">${esc(ROOM.ch||t('ctl'))}</h1></div><div class="row" style="gap:8px"><button class="btn sm ghost" id="bScrTop">${ic('tv')}${esc(t('scr'))}</button><button class="btn sm ghost" id="bOut">${ic('x')}${esc(t('exit'))}</button></div></div>
-  <p class="sub" id="scrTip" style="font-size:12.5px;margin:-6px 0 10px">${esc(t('scr_tip'))}</p>
+  <p class="sub" id="scrTip" style="font-size:12.5px;margin:6px 0 12px">${esc(t('scr_tip'))}</p>
   <div class="ctl"><div class="main"><div class="tabs">${tabs.map(([k,l])=>`<button data-tab="${k}" aria-pressed="${TAB===k}">${esc(t(l))}</button>`).join('')}<button data-tab="g" aria-pressed="${TAB==='g'}">${esc(t('cfg'))}</button></div>
   <div id="tab"></div><div class="now">${nowbox}</div></div>
   <aside class="side"><span class="lbl">${esc(t('preview'))}</span><div class="mini"><iframe id="mini" src="${esc(location.pathname)}?tela=1#${esc(PID)}" title="${esc(t('preview'))}" tabindex="-1"></iframe></div>${nowbox}<button class="btn ghost block" id="bScr2">${ic('tv')}${esc(t('open_scr'))}</button><p class="sub" style="font-size:12.5px">${esc(t('open_scr_d'))}</p></aside></div>`;
