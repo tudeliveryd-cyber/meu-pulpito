@@ -63,6 +63,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:9px 6px;b
 .vgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:16px}.vgr h3{font-size:14px;margin-bottom:6px}
 .vb{display:grid;grid-template-columns:100px 1fr 40px;gap:8px;align-items:center;font-size:13px;padding:3px 0}.vb i{height:8px;background:#EEF0F4;border-radius:5px;overflow:hidden}.vb u{display:block;height:100%;background:var(--navy);border-radius:5px}.vb b{text-align:right;color:var(--ink)}
 td .inp{height:38px;min-width:0}
+.top #toapp{display:inline-flex;align-items:center;gap:4px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 8px;border-radius:8px}.top #toapp svg{width:18px;height:18px}
 </style>
 </head>
 <body>
@@ -127,7 +128,7 @@ auth.onAuthStateChanged(u=>{if(!u){loginView();return}if((u.email||'').toLowerCa
   try{localStorage.setItem('mp.adm','1')}catch(e){}shell();load()});
 
 function shell(){$('#root').innerHTML=`<header class="top"><img src="../app/mark.png" alt=""><div><b>MEU <span>PÚLPITO</span></b><small>ESCRITÓRIO</small></div><span class="sp"></span>
-  <button id="rf" title="Atualizar">${ic('undo')}</button><button id="lo" title="Sair">${ic('out')}</button></header>
+  <a id="toapp" href="../app/" title="Voltar ao app">${ic('back')}<span>App</span></a><button id="rf" title="Atualizar">${ic('undo')}</button><button id="lo" title="Sair">${ic('out')}</button></header>
   <nav class="tabs" id="tabs"></nav><main id="main"><div class="empty">Carregando…</div></main>`;
   $('#rf').onclick=()=>{D.vis=null;load()};$('#lo').onclick=()=>auth.signOut();
   $('#tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;TAB=b.dataset.t;CONV=null;history.replaceState(null,'','#'+TAB);draw()}}
