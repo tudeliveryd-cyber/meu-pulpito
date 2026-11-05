@@ -17,8 +17,9 @@ for f,key in (('sugestoes','occ'),('manual','c')):
     json.dump(d,open(os.path.join(B,f+'.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
 print('devocional',len(e),'sugestoes',sum(len(o['s']) for o in json.load(open(os.path.join(B,'sugestoes.json')))['occ']),'manual',len(json.load(open(os.path.join(B,'manual.json')))['c']))
 # Lições (2 partes) e ilustrações (2 partes), se existirem
-if all(os.path.exists(os.path.join(D,'licoes-%d.json'%i)) for i in (1,2)):
-    S=[];[S.extend(json.load(open(os.path.join(D,'licoes-%d.json'%i)))['series']) for i in (1,2)]
+LCP=[i for i in range(1,10) if os.path.exists(os.path.join(D,'licoes-%d.json'%i))]
+if len(LCP)>=2:
+    S=[];[S.extend(json.load(open(os.path.join(D,'licoes-%d.json'%i)))['series']) for i in LCP]
     ks=[s['k'] for s in S];assert len(ks)==len(set(ks)),ks
     for s in S:
         for x in s['l']:assert set(x)>={'t','v','obj','gelo','intro','pts','perg','apl','mem','or'},s['k']
