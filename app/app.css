@@ -999,3 +999,5 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 @media print{#printArea.pm-ig .lt-band{margin:0 0 18pt;height:7pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}#printArea.pm-ig .lt,#printArea.pm-ig .lt *{-webkit-print-color-adjust:exact;print-color-adjust:exact}#printArea.pm-ig .lt-h b{font-size:16pt!important}#printArea.pm-ig .lt h1{font-size:17pt!important}#printArea.pm-ig .lt-photo{width:3cm;height:4cm}}
 
 .nav-brand .wordmark{display:flex;flex-direction:column;gap:5px;line-height:1}.nav-brand .wordmark .nb-tag{flex-basis:auto}
+
+.sect.sect-sm{font-size:11.5px;letter-spacing:.08em;color:var(--gold-ink);margin:6px 0 -4px}
