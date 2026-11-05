@@ -952,3 +952,15 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .ig-lock h3{margin:0}.ig-lock p{margin:0;line-height:1.5;color:var(--muted)}.ig-lock .pl-f{text-align:left;align-self:stretch}
 .ig-demo{display:flex;flex-direction:column;gap:8px;opacity:.55;pointer-events:none;filter:saturate(.8)}
 .pl-sec{display:flex;flex-direction:column;gap:6px;margin-top:6px;align-items:flex-start}
+.ig-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ig-menu button{background:var(--surface);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;min-width:0}
+.ig-mt{display:flex;flex-direction:column;gap:2px;min-width:0}.ig-mt b{font-size:14px;line-height:1.25}.ig-mt span{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:700px){.ig-menu{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ig-fin{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ig-fin div{background:var(--surface);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ig-fin span{font-size:11.5px;color:var(--muted)}.ig-fin b{font-family:var(--head);font-size:15px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.ig-fin b.ok,.ig-v.ok{color:#2E9D63}.ig-fin b.bad,.ig-v.bad{color:#D0574B}
+.ig-v{flex:none;font-family:var(--head);font-size:14px;font-variant-numeric:tabular-nums}
+.ig-card.late{box-shadow:0 0 0 1.5px #D0574B inset}.ig-card.today{box-shadow:0 0 0 1.5px var(--gold) inset}
+.ig-rt>span.ig-wrap{white-space:normal;line-height:1.45;color:var(--fg);font-size:13.5px}
+.ig-esd{display:flex;flex-direction:column;gap:6px}
