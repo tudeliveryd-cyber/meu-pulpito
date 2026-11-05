@@ -1040,7 +1040,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v143';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v144';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1240,7 +1240,7 @@ function planContactWa(k){const c=curOrder()[0];const lm=locMoney(PCFG.p[k].pyg)
     <p class="sub" style="margin:0;font-size:12.5px">${esc(t('pl_cond'))}</p>`)}
 /* bloqueo con explicación (los datos nunca se tocan) */
 function planGate(kind){if(isPremium())return true;const F=PCFG.free;
-  const msg={sug:t('pk_sug'),man:t('pk_man'),lic:t('pk_lic'),il:t('pk_il'),serm:t('pl_lock_s',{n:F.serm}),dic:t('pl_lock_d',{n:F.dic}),cur:t('pl_lock_c'),preg:t('pl_lock_p'),rec:t('pk_rec'),ser:t('pk_ser'),pdf:t('pk_pdf'),xr:t('pk_xr'),bq:t('pk_bq'),bv:t('pk_bv')}[kind]||'';
+  const msg={sug:t('pk_sug'),man:t('pk_man'),lic:t('pk_lic'),il:t('pk_il'),serm:t('pl_lock_s',{n:F.serm}),dic:t('pl_lock_d',{n:F.dic}),cur:t('pl_lock_c'),preg:t('pl_lock_p'),rec:t('pk_rec'),vid:t('pk_vid'),ser:t('pk_ser'),pdf:t('pk_pdf'),xr:t('pk_xr'),bq:t('pk_bq'),bv:t('pk_bv')}[kind]||'';
   const sh=openSheet(`<div class="pk"><span class="pk-ic">${ic('lock')}</span><span class="prem">PREMIUM</span><h3>${esc(t('pk_t'))}</h3><p>${esc(t('pk_d'))}</p>${msg?`<p class="pk-why">${esc(msg)}</p>`:''}
     <button class="btn gold block" id="pkGo">${esc(t('pk_go'))}</button><button class="btn ghost block" data-act="sheetClose">${esc(t('pk_no'))}</button></div>`);
   $('#pkGo',sh).onclick=()=>{closeSheet();plansSheet()};return false}
@@ -1499,6 +1499,7 @@ function homeHtml(){if(!CUR&&!homeHtml._cl){homeHtml._cl=1;loadCur().then(()=>{i
   ${igHomeHtml()}
   <span class="sect" style="margin-top:4px">${esc(t('min_sec'))}</span>
   <span class="sect sect-sm">${esc(t('min_p'))}</span>
+  <button class="cu-card" data-act="video"><span class="dx-gl sm">${ic('video')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('vd_t'))}${isPremium()?'':` <span class="cu-lock" aria-label="Premium">Premium</span>`}</b><span>${esc(t('vd_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
   <button class="cu-card" data-act="tab" data-k="sug"><span class="dx-gl sm">${ic('lectern')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('sg_t'))}</b><span>${esc(t('sg_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
   <button class="cu-card" data-act="tab" data-k="il"><span class="dx-gl sm">${ic('bulb')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('il_t'))}</b><span>${esc(t('il_home'))}</span></span><span class="dx-go2">${ic('next')}</span></button>
   <button class="cu-card" data-act="tab" data-k="cur"><span class="dx-gl sm">${ic('chat')}</span><span style="flex:1;min-width:0;text-align:left"><b>${esc(t('cu_t'))}</b><span>${CUR&&CUR.by[curDayId()]?esc(t('cu_home_day',{q:CUR.by[curDayId()].q[cuL()]})):esc(t('cu_d'))}</span></span><span class="dx-go2">${ic('next')}</span></button></div><div class="h-col">
@@ -1681,7 +1682,7 @@ function devoHtml(){const L=lxLang(),l=mL();if(!MIN.dv)return minHead(t('dv_t'))
    <p class="dv-text">${esc(e.r[l])}</p>
    <div class="dv-box"><span class="lbl">${esc(t('dv_app'))}</span><p>${esc(e.a[l])}</p></div>
    <div class="dv-box pray"><span class="lbl">${esc(t('dv_pray'))}</span><p>${esc(e.o[l])}</p></div>
-   <div class="row" style="gap:8px;flex-wrap:wrap">${!today?`<button class="btn sm ghost" data-dv="today">${esc(t('dv_go_today'))}</button>`:''}<button class="btn sm ghost" data-dv="share">${ic('share')}${esc(t('cu_share'))}</button><button class="btn sm ghost" data-dv="st">${ic('cam')}${esc(t('dv_img_st'))}</button><button class="btn sm ghost" data-dv="ig">${ic('cam')}${esc(t('dv_img_ig'))}</button><button class="btn sm gold" data-dv="serm">${ic('pen')}${esc(t('dv_serm'))}</button></div>
+   <div class="row" style="gap:8px;flex-wrap:wrap">${!today?`<button class="btn sm ghost" data-dv="today">${esc(t('dv_go_today'))}</button>`:''}<button class="btn sm ghost" data-dv="share">${ic('share')}${esc(t('cu_share'))}</button><button class="btn sm ghost" data-dv="st">${ic('cam')}${esc(t('dv_img_st'))}</button><button class="btn sm ghost" data-dv="ig">${ic('cam')}${esc(t('dv_img_ig'))}</button><button class="btn sm ghost" data-dv="vid">${ic('video')}${esc(t('vd_act'))}</button><button class="btn sm gold" data-dv="serm">${ic('pen')}${esc(t('dv_serm'))}</button></div>
    <a class="dv-ch" href="https://whatsapp.com/channel/0029Vb9d3dXFHWpvOk3CTm3J" target="_blank" rel="noopener">${ic('chat')}<span><b>${esc(t('dv_ch_t'))}</b><span>${esc(t('dv_ch_d'))}</span></span>${ic('next')}</a>
    <p class="sub" style="font-size:12px;margin:0">${esc(t('dv_day',{n}))}</p></div>`}
 /* Sugestões de pregação */
@@ -1782,6 +1783,7 @@ document.addEventListener('click',e=>{const L=lxLang(),l=mL();
   const dv=e.target.closest('[data-dv]');if(dv&&view.tab==='devo'){const a=dv.dataset.dv,n=DV.d||doy();const ent=MIN.dv&&MIN.dv.e[n-1];
     if(a==='prev'){DV.d=Math.max(1,n-1);render();scrollTo(0,0)}else if(a==='next'){DV.d=Math.min(365,n+1);render();scrollTo(0,0)}else if(a==='today'){DV.d=null;render()}
     else if(a==='share'&&ent){const vt=vText(ent.v,L);const txt=[ent.t[l],'',vt?'«'+vt+'» — '+refStr(ent.v,L):refStr(ent.v,L),'',ent.r[l],'',t('dv_app')+': '+ent.a[l],'','— '+t('dv_t')+' · Meu Púlpito','https://meupulpito.com'].join('\n');if(navigator.share)navigator.share({text:txt}).catch(()=>{});else copyText(txt).then(()=>toast(t('copied')))}
+    else if(a==='vid'&&ent){if(!isPremium()){planGate('vid');return}loadBible(prefs.bibleVer||lxLang()).catch(()=>{}).then(()=>videoSheet(vdDevo(ent)))}
     else if((a==='st'||a==='ig')&&ent){dv.disabled=true;dvImage(n,a).finally(()=>{dv.disabled=false})}
     else if(a==='serm'&&ent)minNewSermon(ent.t[l],`<p>${esc(t('rp_base'))}: ${esc(refStr(ent.v,L))}</p><p>${esc(ent.r[l])}</p><p><br></p>`);return}
   const sg=e.target.closest('[data-sg]');if(sg&&view.tab==='sug'){const a=sg.dataset.sg;
@@ -2102,6 +2104,7 @@ function sermonMenu(id){const s=sermons.find(x=>x.id===id);if(!s)return;const d=
    <button class="act" data-act="dup" data-id="${esc(id)}">${ic('copy')}${esc(t('act_dup'))}</button>
    <button class="act" data-act="share" data-id="${esc(id)}">${ic('share')}${esc(t('act_share'))}</button>
    <button class="act" data-act="trans" data-id="${esc(id)}">${ic('lang')}${esc(t('tr_to',{l:sLang(s)==='pt'?'Español':'Português'}))}</button>
+   <button class="act" data-act="video" data-id="${esc(id)}">${ic('video')}${esc(t('vd_act'))}</button>
    <button class="act" data-act="hist" data-id="${esc(id)}">${ic('cal')}${esc(t('act_hist'))}</button>
    <button class="act red" data-act="delAsk" data-id="${esc(id)}">${ic('trash')}${esc(t('act_del'))}</button></div>`);
   return sh}
@@ -2352,6 +2355,7 @@ function edMenu(){if(!E)return;edSave();if(!sermons.find(x=>x.id===E.s.id)){toas
    <button class="act" data-act="vers">${ic('undo')}${esc(t('versions'))}</button>
    <button class="act" data-act="dup" data-id="${esc(id)}">${ic('copy')}${esc(t('act_dup'))}</button>
    <button class="act" data-act="trans" data-id="${esc(id)}">${ic('lang')}${esc(t('tr_to',{l:sLang(E.s)==='pt'?'Español':'Português'}))}</button>
+   <button class="act" data-act="video" data-id="${esc(id)}">${ic('video')}${esc(t('vd_act'))}</button>
    <button class="act" data-act="hist" data-id="${esc(id)}">${ic('cal')}${esc(t('act_hist'))}</button>
    <button class="act red" data-act="delAsk" data-id="${esc(id)}">${ic('trash')}${esc(t('act_del'))}</button></div>`)}
 function pickCategory(cb,cur){const cats=[...new Set([...meta.cats,...sermons.map(catOf).filter(Boolean)])];
@@ -2924,6 +2928,96 @@ async function autoBakSheet(){const L=await snapList();
       closeSheet();toast(t('autobak_done',{n}));render()}})}
 
 /* =========================================================
+   Vídeo com teleprompter (Premium): o pastor grava uma mensagem lendo o texto na tela.
+   O vídeo não fica guardado no app: no fim ele compartilha ou salva na Galeria.
+   ========================================================= */
+const VD_MAX=10*60e3;
+const vdClean=x=>String(x||'').replace(/[*_]/g,'').replace(/\n{3,}/g,'\n\n').trim();
+const vdDevo=e=>{const L=lxLang(),l=mL();const vt=vText(e.v,L);return[e.t[l],'',vt?vt+' ('+refStr(e.v,L)+')':refStr(e.v,L),'',e.r[l],'',e.a[l]].join('\n')};
+function videoSheet(txt){if(!isPremium()){planGate('vid');return}const pr=ls.get('mp.vd',{});
+  const sh=openSheet(`<h3>${esc(t('vd_t'))}</h3><p class="sub" style="margin:0;line-height:1.5">${esc(t('vd_d'))}</p>
+   <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn sm ghost" id="vdDv">${ic('cal')}${esc(t('vd_from_dv'))}</button>${liveS().length?`<button class="btn sm ghost" id="vdS">${ic('doc')}${esc(t('vd_from_s'))}</button>`:''}</div>
+   <textarea class="inp" id="vdT" rows="8" placeholder="${esc(t('vd_ph'))}">${esc(txt||pr.last||'')}</textarea>
+   <button class="btn gold block" id="vdGo">${ic('video')}${esc(t('vd_open'))}</button>
+   <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('vd_tip'))}</p>`,{cls:'tall'});
+  const ta=$('#vdT',sh);
+  $('#vdDv',sh).onclick=async()=>{try{await minLoad('dv','devocional.json');await loadBible(prefs.bibleVer||lxLang())}catch(e){}const e=MIN.dv&&MIN.dv.e[doy()-1];if(e)ta.value=vdDevo(e);else toast(t('dict_err'))};
+  const sb=$('#vdS',sh);if(sb)sb.onclick=()=>{const L=liveS().slice().sort((a,b)=>(b.updated||0)-(a.updated||0)).slice(0,40);
+    const s2=openSheet(`<h3>${esc(t('vd_pick'))}</h3><div class="acts">${L.map(x=>`<button class="act" data-vs="${esc(x.id)}">${ic('doc')}<span style="flex:1;min-width:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(derive(x).title||t('untitled'))}</span></button>`).join('')}</div>`);
+    s2.onclick=e=>{const b=e.target.closest('[data-vs]');if(!b)return;const x=sermons.find(y=>y.id===b.dataset.vs);if(x)ta.value=vdClean(sermonText(x));closeSheet()}};
+  $('#vdGo',sh).onclick=()=>{const v=ta.value.trim();const p=ls.get('mp.vd',{});p.last=v.slice(0,20000);ls.set('mp.vd',p);closeSheet();vdOpen(v)}}
+async function vdOpen(text){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){toast(t('vd_nosup'));return}
+  const P=Object.assign({fs:30,sp:3,face:'user'},ls.get('mp.vd',{}));
+  const ov=document.createElement('div');ov.className='vr';ov.setAttribute('role','dialog');ov.setAttribute('aria-label',t('vd_t'));
+  ov.innerHTML=`<video class="vr-cam" playsinline muted autoplay></video>
+   <div class="vr-top"><button class="vr-ib" data-v="x" aria-label="${esc(t('close'))}">${ic('x')}</button><span class="vr-tm" hidden><i></i><b>0:00</b></span><button class="vr-ib" data-v="flip" aria-label="${esc(t('vd_flip'))}">${ic('undo')}</button></div>
+   <div class="vr-pr" data-v="pause"><div class="vr-tx">${text?esc(text).replace(/\n/g,'<br>'):''}</div></div>
+   <div class="vr-cd" hidden></div>
+   <div class="vr-bot"><div class="vr-adj"><span>${esc(t('vd_speed'))}</span><div class="row"><button class="vr-ib sm" data-v="sp-" aria-label="−">−</button><b class="vr-sp"></b><button class="vr-ib sm" data-v="sp+" aria-label="+">+</button></div></div>
+     <button class="vr-rec" data-v="rec" aria-label="${esc(t('vd_rec'))}"><i></i></button>
+     <div class="vr-adj"><span>${esc(t('vd_size'))}</span><div class="row"><button class="vr-ib sm" data-v="fs-" aria-label="A−">A−</button><button class="vr-ib sm" data-v="fs+" aria-label="A+">A+</button></div></div></div>
+   <p class="vr-hint">${esc(text?t('vd_tap'):t('vd_notext'))}</p>`;
+  document.body.appendChild(ov);document.documentElement.classList.add('vr-on');
+  const cam=$('.vr-cam',ov),pr=$('.vr-pr',ov),tx=$('.vr-tx',ov),tm=$('.vr-tm',ov),cd=$('.vr-cd',ov);
+  if(!text)pr.hidden=true;
+  let stream=null,mr=null,chunks=[],t0=0,tick=0,raf=0,y=0,paused=false,last=0,wake=null,busy=false,url='';
+  const save=()=>{const p=ls.get('mp.vd',{});p.fs=P.fs;p.sp=P.sp;p.face=P.face;ls.set('mp.vd',p)};
+  const style=()=>{tx.style.fontSize=P.fs+'px';$('.vr-sp',ov).textContent=P.sp;cam.classList.toggle('mir',P.face==='user')};style();
+  const stopCam=()=>{if(stream)stream.getTracks().forEach(x=>x.stop());stream=null};
+  async function start(){stopCam();try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:P.face,width:{ideal:1080},height:{ideal:1920}},audio:{echoCancellation:true,noiseSuppression:true}})}
+    catch(e){toast(t('vd_perm'));close();return false}if(!ov.isConnected){stopCam();return false}cam.srcObject=stream;try{await cam.play()}catch(e){}return true}
+  const scroll=ts=>{if(!last)last=ts;const dt=(ts-last)/1000;last=ts;if(!paused){y+=P.sp*14*dt;const mx=Math.max(0,tx.scrollHeight-pr.clientHeight*0.35);if(y>mx)y=mx;tx.style.transform=`translateY(${-y}px)`}raf=requestAnimationFrame(scroll)};
+  const fmt=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  function close(){cancelAnimationFrame(raf);clearInterval(tick);if(mr){mr.onstop=null;try{if(mr.state!=='inactive')mr.stop()}catch(e){}}stopCam();if(url)URL.revokeObjectURL(url);try{wake&&wake.release()}catch(e){}
+    ov.remove();document.documentElement.classList.remove('vr-on')}
+  async function rec(){if(busy||!stream)return;busy=true;
+    for(const n of [3,2,1]){cd.hidden=false;cd.textContent=n;await new Promise(r=>setTimeout(r,800));if(!ov.isConnected)return}cd.hidden=true;
+    const mime=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9,opus','video/webm'].find(m=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(m))||'';
+    try{mr=new MediaRecorder(stream,Object.assign({videoBitsPerSecond:4e6},mime?{mimeType:mime}:{}))}catch(e){busy=false;toast(t('vd_nosup'));return}
+    chunks=[];mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};mr.onstop=done;mr.start(1000);
+    try{wake=await navigator.wakeLock?.request('screen')}catch(e){}
+    t0=Date.now();y=0;paused=false;last=0;pr.classList.remove('paused');tx.style.transform='translateY(0)';ov.classList.add('rec');tm.hidden=false;$('b',tm).textContent='0:00';
+    tick=setInterval(()=>{const ms=Date.now()-t0;$('b',tm).textContent=fmt(ms);if(ms>=VD_MAX){toast(t('vd_max'));stop()}},250);
+    cancelAnimationFrame(raf);if(text)raf=requestAnimationFrame(scroll);busy=false}
+  function stop(){if(!mr||mr.state!=='recording')return;clearInterval(tick);cancelAnimationFrame(raf);ov.classList.remove('rec');try{mr.stop()}catch(e){}}
+  function done(){const type=(mr&&mr.mimeType)||(chunks[0]&&chunks[0].type)||'video/mp4';const blob=new Blob(chunks,{type});chunks=[];stopCam();try{wake&&wake.release()}catch(e){}
+    if(!blob.size){toast(t('vd_err'));start();return}
+    const ext=/mp4/.test(type)?'mp4':'webm';const nw=new Date();const name='meu-pulpito-'+todayISO()+'-'+String(nw.getHours()).padStart(2,'0')+String(nw.getMinutes()).padStart(2,'0')+'.'+ext;
+    const file=new File([blob],name,{type:type.split(';')[0]});url=URL.createObjectURL(blob);const dur=fmt(Date.now()-t0),mb=(blob.size/1048576).toFixed(1).replace('.',prefs.ui==='pt'?',':',');
+    ov.classList.add('done');ov.innerHTML=`<div class="vr-res"><div class="between"><b style="font-size:18px">${esc(t('vd_ready'))}</b><span class="sub">${esc(dur)} · ${mb} MB</span></div>
+      <video class="vr-pv" src="${url}" playsinline controls></video>
+      <button class="btn gold block" data-v="share">${ic('share')}${esc(t('vd_share'))}</button>
+      <div class="two"><button class="btn ghost" data-v="again">${ic('video')}${esc(t('vd_again'))}</button><button class="btn ghost" data-v="x2">${esc(t('close'))}</button></div>
+      <p class="sub" style="margin:0;font-size:12.5px;line-height:1.5">${esc(t('vd_tip'))}</p></div>`;
+    ov._file=file}
+  ov.addEventListener('click',async e=>{const b=e.target.closest('[data-v]');if(!b)return;const v=b.dataset.v;
+    if(v==='x'){if(mr&&mr.state==='recording'&&!confirmTap(b))return;close()}
+    else if(v==='x2'){if(!b.dataset.sure){b.dataset.sure='1';b.textContent=t('vd_discard');setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent=t('close')}},3000);return}close()}
+    else if(v==='flip'){if(mr&&mr.state==='recording')return;P.face=P.face==='user'?'environment':'user';save();style();start()}
+    else if(v==='rec'){if(mr&&mr.state==='recording')stop();else rec()}
+    else if(v==='pause'){if(!(mr&&mr.state==='recording'))return;paused=!paused;pr.classList.toggle('paused',paused)}
+    else if(v==='sp-'||v==='sp+'){P.sp=Math.max(1,Math.min(10,P.sp+(v==='sp+'?1:-1)));save();style()}
+    else if(v==='fs-'||v==='fs+'){P.fs=Math.max(20,Math.min(54,P.fs+(v==='fs+'?4:-4)));save();style()}
+    else if(v==='share'){const f=ov._file;if(!f)return;
+      if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]})}catch(err){if(err&&err.name!=='AbortError')vdDl(f)}}else vdDl(f)}
+    else if(v==='again'){close();vdOpen(text)}});
+  await start()}
+function vdDl(f){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
+Object.assign(I18N.es,{vd_t:'Video con teleprompter',vd_home:'Grabe un mensaje leyendo el texto en la pantalla',vd_d:'Escriba o pegue el texto. Va pasando cerca de la cámara mientras usted habla mirando al frente, y el video queda listo para enviar por WhatsApp o publicar.',
+  vd_from_dv:'Devocional de hoy',vd_from_s:'De un sermón',vd_pick:'Elija el sermón',vd_ph:'Texto del mensaje…',vd_open:'Abrir la cámara',vd_tip:'El video no queda guardado en la app. Para guardarlo en la Galería, toque «Compartir o guardar» y elija «Guardar video».',
+  vd_nosup:'No es posible grabar video en este navegador.',vd_perm:'No pude usar la cámara. Revise el permiso de cámara y micrófono en Ajustes → Safari.',vd_err:'No se grabó el video. Intente de nuevo.',
+  vd_rec:'Grabar',vd_flip:'Cambiar de cámara',vd_speed:'Velocidad',vd_size:'Letra',vd_tap:'Toque el texto para pausarlo mientras graba',vd_notext:'Sin texto: solo la cámara',vd_max:'Se alcanzó el límite de 10 minutos',
+  vd_ready:'Video listo',vd_share:'Compartir o guardar',vd_again:'Grabar de nuevo',vd_discard:'¿Descartar? Toque de nuevo',vd_act:'Grabar en video',
+  pk_vid:'Grabe mensajes en video leyendo el texto en la pantalla, listos para WhatsApp e Instagram.'});
+Object.assign(I18N.pt,{vd_t:'Vídeo com teleprompter',vd_home:'Grave uma mensagem lendo o texto na tela',vd_d:'Escreva ou cole o texto. Ele vai passando perto da câmera enquanto você fala olhando para frente, e o vídeo fica pronto para enviar no WhatsApp ou postar.',
+  vd_from_dv:'Devocional de hoje',vd_from_s:'De um sermão',vd_pick:'Escolha o sermão',vd_ph:'Texto da mensagem…',vd_open:'Abrir a câmera',vd_tip:'O vídeo não fica guardado no app. Para guardar na Galeria, toque em «Compartilhar ou salvar» e escolha «Salvar vídeo».',
+  vd_nosup:'Não é possível gravar vídeo neste navegador.',vd_perm:'Não consegui usar a câmera. Confira a permissão de câmera e microfone em Ajustes → Safari.',vd_err:'O vídeo não foi gravado. Tente de novo.',
+  vd_rec:'Gravar',vd_flip:'Trocar de câmera',vd_speed:'Velocidade',vd_size:'Letra',vd_tap:'Toque no texto para pausar enquanto grava',vd_notext:'Sem texto: só a câmera',vd_max:'Chegou ao limite de 10 minutos',
+  vd_ready:'Vídeo pronto',vd_share:'Compartilhar ou salvar',vd_again:'Gravar de novo',vd_discard:'Descartar? Toque de novo',vd_act:'Gravar em vídeo',
+  pk_vid:'Grave mensagens em vídeo lendo o texto na tela, prontas para o WhatsApp e o Instagram.'});
+
+/* =========================================================
    Audio y dictado
    ========================================================= */
 async function audList(owner){try{const db=await idb();return await new Promise(ok=>{const q=db.transaction('audio').objectStore('audio').getAll();q.onsuccess=()=>ok((q.result||[]).filter(a=>owner===undefined||a.owner===owner).sort((a,b)=>b.at-a.at));q.onerror=()=>ok([])})}catch(e){return[]}}
@@ -3053,7 +3147,7 @@ const ACT={
   share:b=>shareSheet(b.dataset.id),
   trans:b=>{if(E){const id=b.dataset.id;edSave(true);closeEditor(()=>{render();translateSermon(id)})}else translateSermon(b.dataset.id)},
   cmp:b=>compareRef(b.dataset.ref,PG?$('#pg'):null,PG?PG.lang:bver()),
-  hist:b=>histSheet(b.dataset.id),
+  hist:b=>histSheet(b.dataset.id),video:b=>{const x=b.dataset.id&&sermons.find(y=>y.id===b.dataset.id);if(b.closest('.ov'))closeSheet();videoSheet(x?vdClean(sermonText(x)):'')},
   delAsk:b=>{closeSheet();const id=b.dataset.id;const sh=openSheet(`<h3>${esc(t('del_q'))}</h3><p class="serif" style="margin:0;font-size:17px">${esc(derive(sermons.find(x=>x.id===id)||{}).title||'')}</p><div class="two"><button class="btn ghost" data-act="sheetClose">${esc(t('cancel'))}</button><button class="btn danger" id="dYes">${ic('trash')}${esc(t('to_trash'))}</button></div>`);
     $('#dYes',sh).onclick=()=>{closeSheet();if(E&&E.s.id===id){document.removeEventListener('selectionchange',tbState);E=null;view.overlay=null}delSermon(id);render();toast(t('moved_trash'))}},
   sheetClose:()=>closeSheet(),
