@@ -976,3 +976,9 @@ label.prow input[type=checkbox]:checked{background:var(--gold)}label.prow input[
 .lt p{margin:0 0 12px;text-align:justify}.lt .lt-pl{text-align:right;margin-top:22px}
 .lt-sig{display:flex;flex-direction:column;align-items:center;margin-top:46px;font-family:var(--ui,Inter,sans-serif)}.lt-sig i{display:block;width:240px;border-top:1.5px solid #0F1B33;margin-bottom:6px}.lt-sig b{font-size:13px}.lt-sig span{font-size:11.5px;color:#5B6475}
 @media print{#printArea.pm-ig{font-size:12pt}#printArea.pm-ig .lt{font-size:12.5pt;line-height:1.7}#printArea.pm-ig .lt-h img{width:64pt;height:64pt}#printArea.pm-ig .lt h1{font-size:16pt;margin:14pt 0 22pt}#printArea.pm-ig .lt-sig{margin-top:60pt}}
+.lt-sigs{display:flex;justify-content:space-around;gap:20px;flex-wrap:wrap}
+.lt .lt-pre{text-align:left;margin:0 0 8px;font-weight:600}
+.lt-tb{width:100%;border-collapse:collapse;margin:0 0 16px;font-family:var(--ui,Inter,sans-serif);font-size:12.5px}
+.lt-tb th{text-align:left;font-weight:600;color:#5B6475;width:42%;padding:9px 8px 9px 0;border-bottom:1px solid #C9CED8;vertical-align:bottom}
+.lt-tb td{padding:9px 0;border-bottom:1px solid #C9CED8;color:#1B2230;font-weight:600;vertical-align:bottom}
+@media print{#printArea.pm-ig .lt-tb{font-size:11.5pt}#printArea.pm-ig .lt-tb th,#printArea.pm-ig .lt-tb td{padding:10pt 6pt 6pt 0}}
