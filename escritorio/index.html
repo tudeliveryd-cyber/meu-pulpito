@@ -118,7 +118,7 @@ const waLang=r=>{if(r.lang==='pt'||r.lang==='es')return r.lang;const w=String(r.
 const first=n=>String(n||'').trim().replace(/^(pr|pra|pb|ev|rev)\.?\s+/i,'').split(/\s+/)[0]||'';
 
 firebase.initializeApp(window.FIREBASE_CONFIG);try{firebase.firestore().settings({experimentalForceLongPolling:true,merge:true})}catch(e){}const auth=firebase.auth(),db=firebase.firestore();
-let D={stats:[],planos:{},roleta:{},depo:[],suporte:[],contato:[],site:{},cfg:{},visits:null},TAB=location.hash.slice(1)||'resumo',CONV=null,poll=0;
+let D={stats:[],planos:{},roleta:{},depo:[],suporte:[],contato:[],site:{},cfg:{},visits:null},TAB=location.hash.slice(1)||'resumo',CONV=null,poll=0,pollUn=null;
 
 function loginView(err){$('#root').innerHTML=`<form class="login" id="lg"><img src="../app/mark-light.png" alt=""><h2 style="margin:0">Escritório do Meu Púlpito</h2><p style="margin:0;color:var(--muted)">Acesso só para o administrador.</p>
   <input class="inp" id="lgE" type="email" placeholder="E-mail" autocomplete="username" value="${esc(ADMIN)}"><input class="inp" id="lgP" type="password" placeholder="Senha" autocomplete="current-password">
@@ -168,13 +168,13 @@ function refData(){const by={};D.stats.forEach(r=>by[r.id.slice(0,8)]=r);const r
   Object.values(rs).forEach(o=>{o.given=+P(o.who.id).refMonths||0;o.due=Math.floor(o.bought/N)-o.given});return{rs:Object.values(rs).sort((a,b)=>b.due-a.due||b.bought-a.bought),N}}
 function soon(){const n=Date.now(),wn=(+D.cfg.warn||7)*864e5;return D.stats.filter(r=>{const p=P(r.id);return PMON[p.plan]&&p.until&&p.until-n<wn&&p.until>n-30*864e5}).sort((a,b)=>P(a.id).until-P(b.id).until)}
 
-function draw(){drawTabs();const m=$('#main');clearInterval(poll);
+function draw(){drawTabs();const m=$('#main');clearInterval(poll);try{pollUn&&pollUn()}catch(e){}pollUn=null;
   if(TAB==='resumo')m.innerHTML=vResumo();else if(TAB==='atend')vAtend(m);else if(TAB==='pastores')vPastores(m);else if(TAB==='pag')m.innerHTML=vPag();else if(TAB==='ind')m.innerHTML=vInd();else if(TAB==='dep')m.innerHTML=vDep();else if(TAB==='aviso')vAviso(m);else if(TAB==='site')vSite(m);else if(TAB==='cfg')vCfg(m);
   if(!D.rules&&TAB!=='pastores')m.insertAdjacentHTML('afterbegin',`<div class="card" style="margin-top:0;background:#FEF3C7;box-shadow:none"><b>Falta colar as regras novas no Firebase.</b><span class="s" style="display:block;font-size:13px;margin-top:4px">Sem elas o atendimento, os depoimentos e a roleta não gravam. Abra o Firebase → Firestore Database → Regras.</span></div>`)}
 
 /* ---------- Resumo ---------- */
 const SECN={home:'Início',list:'Sermões',bible:'Bíblia',dic:'Dicionários',agenda:'Agenda',devo:'Devocional',sug:'Sugestões',man:'Manual',lic:'Lições',il:'Ilustrações',igr:'Minha Igreja',cur:'Curiosidades',profile:'Configurações',editor:'Escrevendo sermão',pregar:'Pregando'};
-const isOn=r=>(r.email||'')!==ADMIN&&Date.now()-(+r.on||0)<5*6e4;
+const isOn=r=>(r.email||'')!==ADMIN&&Date.now()-(+r.on||0)<9*6e4;
 const agoMin=ts=>{const m=Math.floor((Date.now()-(+ts||0))/6e4);return m<1?'agora mesmo':'há '+m+' min'};
 const dayStart=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
 let LIVE=null,LIVEt=0;function live(){if(LIVE)return;try{LIVE=db.collection('stats').onSnapshot(q=>{D.stats=q.docs.map(d=>Object.assign({id:d.id},d.data())).filter(r=>!(D.planos[r.id]||{}).deleted);clearTimeout(LIVEt);LIVEt=setTimeout(()=>{if(TAB==='resumo'||TAB==='pastores')draw()},800)},()=>{})}catch(x){}}
@@ -223,7 +223,7 @@ async function openConv(box){const id=CONV,x=D.suporte.find(s=>s.id===id)||{};co
   let msgs=[];const ms=$('#ms',box);
   const paint=()=>{ms.innerHTML=msgs.length?msgs.map(m=>`<div class="m ${m.f==='a'?'a':'u'}"><span>${esc(m.t).replace(/\n/g,'<br>')}</span><small>${esc(fmtDT(m.at))}</small></div>`).join(''):'<div class="empty">Sem mensagens.</div>';ms.scrollTop=ms.scrollHeight};
   const loadM=()=>ref.collection('m').orderBy('at').get().then(q=>{const n=q.docs.map(d=>d.data()).sort((a,b)=>a.at-b.at);if(n.length!==msgs.length){msgs=n;paint()}}).catch(()=>{});
-  await loadM();poll=setInterval(()=>{if(CONV===id&&box.isConnected)loadM();else clearInterval(poll)},6000);
+  try{pollUn&&pollUn()}catch(e){}pollUn=ref.collection('m').orderBy('at').onSnapshot(q=>{if(CONV!==id||!box.isConnected){try{pollUn&&pollUn()}catch(e){}pollUn=null;return}msgs=q.docs.map(d=>d.data()).sort((a,b)=>a.at-b.at);paint()},()=>{loadM()});
   if(x.ua){ref.set({ua:0},{merge:true}).catch(()=>{});x.ua=0;drawTabs();const it=document.querySelector(`[data-cv="${CSS.escape(id)}"] .bdg`);if(it)it.remove()}
   $('#sf',box).onsubmit=async e=>{e.preventDefault();const ta=$('#st',box),t=ta.value.trim();if(!t)return;const now=Date.now();const mid='a'+now.toString(36)+Math.random().toString(36).slice(2,6);
     try{await ref.collection('m').doc(mid).set({t,f:'a',at:now});await ref.set({uu:firebase.firestore.FieldValue.increment(1),ua:0,last:t.slice(0,200),at:now},{merge:true});

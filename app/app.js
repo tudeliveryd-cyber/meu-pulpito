@@ -1027,8 +1027,18 @@ const strip=x=>{const c=JSON.parse(JSON.stringify(x));delete c.id;return c};
 function setSync(ok,msg){sync={ok,msg};$$('[data-sync]').forEach(el=>{el.innerHTML=syncHtml()})}
 const syncHtml=()=>`<span class="dot ${sync.ok?'ok':''}"></span>${esc(t(sync.msg))}`;
 
-function putSermon(s,{silent,keep}={}){if(!keep)s.updated=Date.now();const i=sermons.findIndex(x=>x.id===s.id);if(i<0)sermons.unshift(s);else sermons[i]=s;cacheAll();
-  if(cols)cols.s.doc(s.id).set(strip(s)).catch(()=>setSync(false,'sync_pend'));if(!silent)refreshBg()}
+/* Gravação na nuvem agrupada: o aparelho guarda na hora (localStorage); o Firestore recebe só depois de uma pausa
+   (lazy), ou na hora para ações pontuais. Evita uma gravação a cada pausa curta na digitação. */
+const CW={};
+function cloudPut(ref,data,lazy){const k=ref.path;const j=JSON.stringify(data);const p=CW[k];
+  if(p){clearTimeout(p.t);if(!lazy&&p.j===j){delete CW[k]}}
+  if(CW['_l'+k]===j){delete CW[k];return}
+  const go=()=>{delete CW[k];CW['_l'+k]=j;ref.set(data).catch(()=>{delete CW['_l'+k];setSync(false,'sync_pend')})};
+  if(!lazy){go();return}
+  CW[k]={j,go,t:setTimeout(go,6000)};setSync(false,'sync_pend')}
+function cloudFlush(){Object.keys(CW).forEach(k=>{const p=CW[k];if(p&&p.go){clearTimeout(p.t);p.go()}})}
+function putSermon(s,{silent,keep,lazy}={}){if(!keep)s.updated=Date.now();const i=sermons.findIndex(x=>x.id===s.id);if(i<0)sermons.unshift(s);else sermons[i]=s;cacheAll();
+  if(cols)cloudPut(cols.s.doc(s.id),strip(s),lazy);if(!silent)refreshBg()}
 function delSermon(id){const s=sermons.find(x=>x.id===id);if(!s)return;s.deleted=Date.now();putSermon(s)}
 function hardDelSermon(id){sermons=sermons.filter(x=>x.id!==id);cacheAll();if(cols)cols.s.doc(id).delete().catch(()=>{});refreshBg()}
 const liveS=()=>sermons.filter(s=>!s.deleted),liveN=()=>notes.filter(n=>!n.deleted);
@@ -1040,7 +1050,7 @@ function delEvent(id){agenda=agenda.filter(x=>x.id!==id);cacheAll();if(cols)cols
 function putMeta(){meta.updated=Date.now();cacheAll();if(cols)cols.m.set(JSON.parse(JSON.stringify(meta))).catch(()=>{})}
 
 /* ===== Panel del administrador (solo el dueño) · estadísticas y acceso ===== */
-const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v169';
+const ADMIN_EMAIL='tudeliveryd@gmail.com';const APP_VER='v171';
 function isAdmin(){return !!(authU&&(authU.email||'').toLowerCase()===ADMIN_EMAIL)}
 let planState=null,blocked=false;
 function track(k){try{const u=ls.get('mp.uses',{});u[k]=(u[k]||0)+1;ls.set('mp.uses',u)}catch(e){}}
@@ -1054,10 +1064,10 @@ function pushStats(force){if(!cols||!authU||localMode||!window.firebase)return;c
     uses:ls.get('mp.uses',{}),seen:now,created,ver:APP_VER,wa:meta.wa||''};
   if(freshAccount(authU)){const r=refIn();if(r){d.ref=r;if(!meta.refBy){meta.refBy=r;putMeta()}}}
   try{firebase.firestore().collection('stats').doc(authU.uid).set(d,{merge:true}).catch(()=>{})}catch(e){}}
-/* presença: avisa a cada 2 min, só com o app aberto na tela, que o pastor está usando (para o Escritório ver quem está online) */
-function beat(force){if(!authU||localMode||!window.firebase||document.hidden)return;const now=Date.now();if(!force&&now-(beat._at||0)<55e3)return;beat._at=now;
+/* presença: avisa a cada 4 min, só com o app aberto na tela, que o pastor está usando (para o Escritório ver quem está online) */
+function beat(force){if(!authU||localMode||!window.firebase||document.hidden)return;const now=Date.now();if(!force&&now-(beat._at||0)<200e3)return;beat._at=now;
   const sec=E?'editor':PG?'pregar':view.tab||'home';try{firebase.firestore().collection('stats').doc(authU.uid).set({on:now,seen:now,sec,ver:APP_VER},{merge:true}).catch(()=>{})}catch(e){}}
-setInterval(()=>beat(),120e3);document.addEventListener('visibilitychange',()=>{if(!document.hidden)beat(true)});
+setInterval(()=>beat(),240e3);document.addEventListener('visibilitychange',()=>{if(!document.hidden)beat(true)});
 let planLoaded=false;
 const waitingOk=()=>!!(PCFG.gate&&planLoaded&&!isAdmin()&&!(planState&&(planState.ok||PMON[planState.plan])));
 function applyPlan(){const b=!!(planState&&planState.blocked)||waitingOk();if(b===blocked)return;blocked=b;if(b)showBlocked();else if(ready)go(view.tab||'home')}
@@ -1214,9 +1224,10 @@ let PAY_CTRY=null,PAYQR=null;function payQrLoad(cb){if((PAYQR&&(PAYQR.py||PAYQR.
 /* ---------- Segunda tela do Modo Pregar (tablet/TV acompanha o celular) ---------- */
 let CAST={on:false,t:0,un:null,view:false};
 function castDoc(){try{if(!authU||localMode)return null;return firebase.firestore().collection('pulpito').doc(authU.uid).collection('tela').doc('cur')}catch(e){return null}}
-function castPush(force){if(!CAST.on||!PG||CAST.view)return;const now=Date.now();if(!force&&now-CAST.t<250){clearTimeout(CAST._t);CAST._t=setTimeout(()=>castPush(true),260);return}CAST.t=now;const sc=$('#pgScroll');if(!sc)return;const max=Math.max(1,sc.scrollHeight-sc.clientHeight);const d=castDoc();if(!d)return;
-  d.set({id:PG.s.id,lang:PG.lang,r:Math.min(1,sc.scrollTop/max),fs:prefs.p.fs,font:prefs.p.font,bg:prefs.p.bg,outline:!!prefs.p.outline,at:now}).catch(()=>{})}
-function castStart(){if(!isPremium()){planGate('preg');return}const d=castDoc();if(!d){toast(t('pb_need_acc'));return}CAST.on=true;castPush(true);toast(t('cs_on_t'))}
+function castPush(force){if(!CAST.on||!PG||CAST.view)return;const now=Date.now();if(!force&&now-CAST.t<900){clearTimeout(CAST._t);CAST._t=setTimeout(()=>castPush(true),920);return}const sc=$('#pgScroll');if(!sc)return;const max=Math.max(1,sc.scrollHeight-sc.clientHeight);const d=castDoc();if(!d)return;
+  const r=Math.min(1,sc.scrollTop/max);const sig=[PG.s.id,PG.lang,prefs.p.fs,prefs.p.font,prefs.p.bg,!!prefs.p.outline].join('|');if(CAST._sig===sig&&Math.abs((CAST._r??-1)-r)<0.002)return;CAST._sig=sig;CAST._r=r;CAST.t=now;
+  d.set({id:PG.s.id,lang:PG.lang,r,fs:prefs.p.fs,font:prefs.p.font,bg:prefs.p.bg,outline:!!prefs.p.outline,at:now}).catch(()=>{})}
+function castStart(){if(!isPremium()){planGate('preg');return}const d=castDoc();if(!d){toast(t('pb_need_acc'));return}CAST.on=true;CAST._sig=null;castPush(true);toast(t('cs_on_t'))}
 function castStop(){CAST.on=false;const d=castDoc();if(d)d.set({id:null,at:Date.now()}).catch(()=>{})}
 function castView(){const d=castDoc();if(!d){toast(t('pb_need_acc'));return}if(!isPremium()){planGate('preg');return}closeSheet();if(E)closeEditor();
   const w=document.createElement('div');w.className='pg negro';w.id='castWait';w.innerHTML=`<div class="pg-top"><button class="iconbtn" data-cast="exit" aria-label="${esc(t('cs_exit'))}">${ic('x')}</button></div><div class="pg-scroll" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:24px"><div><p style="font-size:22px;font-weight:800;margin:0 0 8px">${esc(t('cs_wait'))}</p><p class="sub" style="font-size:15px;margin:0;max-width:360px">${esc(t('cs_wait_d'))}</p></div></div>`;
@@ -1672,11 +1683,11 @@ function getResume(){const r=ls.get(RES,null);return r&&r.id&&Date.now()-(r.at||
 
 /* ---------- aviso al administrador: cuentas esperando liberación ---------- */
 let ADMP={n:0,at:0,busy:false};
-function admPendCheck(force){if(!isAdmin()||localMode||ADMP.busy)return;if(!force&&Date.now()-ADMP.at<60000)return;ADMP.busy=true;
+function admPendCheck(force){if(!isAdmin()||localMode||ADMP.busy)return;if(!force&&Date.now()-ADMP.at<540e3)return;ADMP.busy=true;
   const db=firebase.firestore();Promise.all([db.collection('stats').get(),db.collection('planos').get()]).then(([q,pq])=>{const pm={};pq.docs.forEach(d=>pm[d.id]=d.data());
     const n=q.docs.filter(d=>{const r=d.data(),p=pm[d.id];return r.email!==ADMIN_EMAIL&&!(p&&(p.ok||p.blocked||PMON[p.plan]))}).length;
     const ch=n!==ADMP.n;ADMP.n=n;ADMP.at=Date.now();if(ch&&view.tab==='home'&&!view.overlay)refreshBg()}).catch(()=>{}).finally(()=>{ADMP.busy=false})}
-setInterval(()=>{if(document.visibilityState==='visible')admPendCheck()},90000);
+setInterval(()=>{if(document.visibilityState==='visible')admPendCheck()},600e3);
 /* ---------- relatar un problema (WhatsApp o correo del administrador) ---------- */
 /* ---------- Novedades de la versión y Ayuda ---------- */
 Object.assign(I18N.es,{wa_rem:'Enviar recordatorio',wa_rem_ok:'Recordatorio enviado',wam_rem:'¡Hola{n}! Paso a recordarle que su {p} de Meu Púlpito vence el {d}. Para seguir con todas las herramientas, solo tiene que renovar: en el app, toque Configuración → Mi suscripción → Cambiar de plan, o responda este mensaje. ¡Dios le bendiga!\n\nPr. Jean Carlos · Meu Púlpito',wam_exp:'¡Hola{n}! Su {p} de Meu Púlpito venció el {d}. Sus sermones siguen guardados. Para volver a tener todas las herramientas, solo tiene que renovar: en el app, toque Configuración → Mi suscripción → Cambiar de plan, o responda este mensaje. ¡Dios le bendiga!\n\nPr. Jean Carlos · Meu Púlpito',wa_t:'Su WhatsApp',wa_d:'Para darle la bienvenida, avisarle sobre su plan y ayudarle cuando lo necesite. No enviamos publicidad.',wa_cc:'País',wa_ph:'Número con código de área',wa_save:'Guardar',wa_later:'Ahora no',wa_priv:'Solo el equipo de Meu Púlpito ve este número.',wa_bad:'Revise el número: escriba el código de área y el número, sin el código del país.',wa_ok:'WhatsApp guardado',wa_add:'Agregar',wa_wel:'Enviar bienvenida',wa_wel_ok:'Bienvenida enviada',wa_cong:'Enviar felicitación',wa_cong_ok:'Felicitación enviada',wa_none:'Sin WhatsApp registrado',
@@ -1966,14 +1977,13 @@ function supSheet(){if(localMode||!authU){toLogin();return}SUP.open=true;let msg
     <p class="sub" style="margin:0;font-size:13.5px;line-height:1.45">${esc(t('su_d'))}</p>
     <div class="su-list" id="suL"><p class="sub" style="margin:auto;text-align:center">${esc(t('dx_load'))}</p></div>
     <form class="su-form" id="suF"><textarea class="inp" id="suT" rows="2" maxlength="2000" placeholder="${esc(t('su_ph'))}"></textarea><button class="btn gold" aria-label="${esc(t('su_send'))}">${ic('next')}</button></form>`,
-    {cls:'big ns',onClose:()=>{SUP.open=false;clearInterval(tm)}});
+    {cls:'big ns',onClose:()=>{SUP.open=false;try{tm&&tm()}catch(e){}}});
   const L=$('#suL',sh);
   const draw=()=>{if(!msgs.length){L.innerHTML=`<p class="sub" style="margin:auto;text-align:center;font-size:13.5px">${esc(t('su_empty'))}</p>`;return}
     const atB=L.scrollHeight-L.scrollTop-L.clientHeight<40;
     L.innerHTML=msgs.map(m=>`<div class="su-m ${m.f==='a'?'a':'u'}"><span>${esc(m.t).replace(/\n/g,'<br>')}</span><small>${m.f==='a'?esc(t('su_team'))+' · ':''}${esc(new Date(m.at).toLocaleString(prefs.ui==='pt'?'pt-BR':'es-PY',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}))}</small></div>`).join('');
     if(atB||!draw._d){L.scrollTop=L.scrollHeight;draw._d=1}};
-  const load=()=>supRef().collection('m').orderBy('at').get().then(q=>{msgs=q.docs.map(d=>d.data()).sort((a,b)=>a.at-b.at).slice(-150);draw()}).catch(()=>{if(!msgs.length)L.innerHTML=`<p class="sub" style="margin:auto;text-align:center">${esc(t('su_off'))}</p>`});
-  load();tm=setInterval(load,7000);supRef().set({uu:0},{merge:true}).catch(()=>{});
+  tm=supRef().collection('m').orderBy('at').limitToLast(150).onSnapshot(q=>{msgs=q.docs.map(d=>d.data()).sort((a,b)=>a.at-b.at);draw()},()=>{if(!msgs.length)L.innerHTML=`<p class="sub" style="margin:auto;text-align:center">${esc(t('su_off'))}</p>`});supRef().set({uu:0},{merge:true}).catch(()=>{});
   sh.addEventListener('click',e=>{if(e.target.closest('[data-x=close]'))closeSheet()});
   $('#suF',sh).onsubmit=async e=>{e.preventDefault();const ta=$('#suT',sh);const tx=ta.value.trim();if(!tx)return;const now=Date.now();
     msgs.push({t:tx,f:'u',at:now});ta.value='';draw._d=0;draw();
@@ -2331,7 +2341,7 @@ function updWc(){numberPts();const el=$('#edWc');if(!el||!E)return;const w=(edTe
 function edText(){const ed=$('#ed');return ed?ed.textContent.trim():''}
 function onEdInput(e){if(!E)return;E.dirty=true;$('#edSaved').innerHTML=`<span class="st" style="display:inline">${esc(t('saving'))}</span>`;
   if(e&&e.inputType==='insertParagraph'){const b=curBlock();if(b&&/^(H1|H2|H3|DIV|BLOCKQUOTE)$/.test(b.tagName)&&!b.textContent.trim()){document.execCommand('formatBlock',false,'<p>')}}
-  clearTimeout(E.saveT);E.saveT=setTimeout(edSave,700);clearTimeout(E.snapT);E.snapT=setTimeout(snap,500)}
+  clearTimeout(E.saveT);E.saveT=setTimeout(edSave,1500);clearTimeout(E.snapT);E.snapT=setTimeout(snap,500)}
 function snap(){if(!E)return;const h=$('#ed').innerHTML;if(h!==E.U[E.U.length-1]){E.U.push(h);if(E.U.length>120)E.U.shift();E.R=[]}}
 function setEd(h){const ed=$('#ed');ed.innerHTML=h;placeholders();const last=ed.lastElementChild;if(last)placeCaret(last,last.childNodes.length);onEdInput()}
 function edUndo(){if(!E)return;clearTimeout(E.snapT);snap();if(E.U.length>1){E.R.push(E.U.pop());setEd(E.U[E.U.length-1])}}
@@ -2339,11 +2349,11 @@ function edRedo(){if(!E||!E.R.length)return;const h=E.R.pop();E.U.push(h);setEd(
 function commitHist(){if(!E||!E.base||!E.s.html||E.base===E.s.html)return;const s=sermons.find(x=>x.id===E.s.id);if(!s)return;
   s.hist=[{at:E.baseAt||Date.now(),html:E.base}].concat(s.hist||[]).slice(0,12);E.s.hist=s.hist;E.base=s.html;E.baseAt=Date.now();putSermon(s,{silent:true})}
 function edSave(force){if(!E)return;clearTimeout(E.saveT);if(!E.dirty&&!force&&!E.isNew)return;const ed=$('#ed');if(!ed)return;
-  const html=cleanHtml(ed.innerHTML);E.s.html=html;E.s.v=2;const d=derive(E.s);E.s.title=d.title;E.s.passage=d.passage;
+  const html=cleanHtml(ed.innerHTML);if(!force&&!E.isNew&&html===E.s.html){E.dirty=false;const sv0=$('#edSaved');if(sv0)sv0.innerHTML=ic('check')+`<span class="st">${esc(t('saved'))}</span>`;return}E.s.html=html;E.s.v=2;const d=derive(E.s);E.s.title=d.title;E.s.passage=d.passage;
   if(E.isNew&&!d.text.trim()){return}
   if(!E.s.langSet){const dl=detectSure(d.title+' '+d.text);if(dl)E.s.lang=dl;else if(!E.s.lang)E.s.lang=detectLang(d.text)}
-  E.isNew=false;E.dirty=false;const cur=sermons.find(x=>x.id===E.s.id);if(cur&&cur.hist)E.s.hist=cur.hist;putSermon(E.s,{silent:true});updWc();if(E.wasEmpty!==!d.text.trim()){E.wasEmpty=!d.text.trim();drawEdMeta()}const sv=$('#edSaved');if(sv)sv.innerHTML=ic('check')+`<span class="st">${esc(t('saved'))}</span>`}
-function closeEditor(then){if(!E)return;bpClose();edSave();commitHist();document.removeEventListener('selectionchange',tbState);document.removeEventListener('selectionchange',trackRange);E=null;view.overlay=null;then?then():render(true)}
+  E.isNew=false;E.dirty=false;const cur=sermons.find(x=>x.id===E.s.id);if(cur&&cur.hist)E.s.hist=cur.hist;putSermon(E.s,{silent:true,lazy:!force});updWc();if(E.wasEmpty!==!d.text.trim()){E.wasEmpty=!d.text.trim();drawEdMeta()}const sv=$('#edSaved');if(sv)sv.innerHTML=ic('check')+`<span class="st">${esc(t('saved'))}</span>`}
+function closeEditor(then){if(!E)return;bpClose();edSave();commitHist();cloudFlush();document.removeEventListener('selectionchange',tbState);document.removeEventListener('selectionchange',trackRange);E=null;view.overlay=null;then?then():render(true)}
 function curBlock(){const ed=$('#ed');const sel=getSelection();if(!ed||!sel.rangeCount)return null;let n=sel.anchorNode;if(!ed.contains(n))return null;
   while(n&&n.parentNode!==ed)n=n.parentNode;return n&&n.nodeType===1?n:null}
 function placeCaret(el,off){if(!el)return;const r=document.createRange();try{if(off===0){r.setStart(el,0)}else{r.selectNodeContents(el);r.collapse(false)}}catch(e){return}const s=getSelection();s.removeAllRanges();s.addRange(r)}
@@ -3407,8 +3417,8 @@ document.addEventListener('submit',e=>{const f=e.target.dataset.form;if(!f)retur
   if(f==='homeSearch'){listState.q=$('#hq').value;listState.f='all';listState.cat='';go('list')}
   if(f==='bSearch'){const inp=$('#bq');inp&&inp.blur()}
   if(f==='catAdd'){const v=$('#catNew').value.trim();if(v&&!meta.cats.includes(v)){meta.cats.push(v);putMeta()}render()}});
-window.addEventListener('pagehide',()=>{if(E){edSave();commitHist()}if(PG)pgSave()});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&E)edSave()});
+window.addEventListener('pagehide',()=>{if(E){edSave();commitHist()}cloudFlush();if(PG)pgSave()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){if(E)edSave();cloudFlush()}});
 
 /* =========================================================
    Inicio de la app
